@@ -84,6 +84,7 @@ canvas{display:block;width:100%;height:100%}
       <button class="pill on" data-val="diagram">Diagram<small>lines + stars</small></button>
       <button class="pill" data-val="stars">Stars Only<small>no lines</small></button>
       <button class="pill" data-val="photo">Photograph<small>real DSS image</small></button>
+      <button class="pill" data-val="artwork">Artwork<small>mythological figure</small></button>
     </div>
   </div>
   <div>
@@ -141,8 +142,6 @@ canvas{display:block;width:100%;height:100%}
 <script>
 // ═══════════════════════════════════════════════════════════
 // DATA  — stars: [ra_deg, dec_deg, mag, colorHint?, name?]
-//         lines: [i,j] index pairs
-//         ra/dec/fov: photo center & field of view (degrees)
 // Source: Stellarium constellationship.fab + HYG v41 catalog
 // ═══════════════════════════════════════════════════════════
 const C = [
@@ -503,6 +502,94 @@ const C = [
 
 ]; // end C
 
+const ART = {
+  And:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/andromeda.webp",anchors:[{ra:12.45351,dec:41.078911,px:0.38672,py:0.41992},{ra:9.83193,dec:30.861024,px:0.65820,py:0.26562},{ra:30.97476,dec:42.329725,px:0.43750,py:0.83594}]},
+  Ant:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/antlia.webp",anchors:[{ra:156.78795,dec:-31.067779,px:0.03125,py:0.65625},{ra:146.05041,dec:-27.769471,px:0.56250,py:0.53906},{ra:149.71786500000002,dec:-35.890973,px:0.32812,py:0.93750}]},
+  Aps:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/apus.webp",anchors:[{ra:250.77189,dec:-77.517435,px:0.25781,py:0.23438},{ra:248.36413499999998,dec:-78.897148,px:0.29688,py:0.33984},{ra:221.965515,dec:-79.044751,px:0.63672,py:0.42969}]},
+  Aql:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/aquila.webp",anchors:[{ra:297.69582,dec:8.868322,px:0.31836,py:0.45312},{ra:284.905665,dec:15.068298,px:0.75195,py:0.25586},{ra:286.56225,dec:-4.882554,px:0.77539,py:0.77539}]},
+  Aqr:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/aquarius.webp",anchors:[{ra:350.74263,dec:-20.10058,px:0.28125,py:0.90625},{ra:331.445985,dec:-0.319851,px:0.34961,py:0.19141},{ra:311.91897,dec:-9.495776,px:0.90820,py:0.09570}]},
+  Ara:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/ara.webp",anchors:[{ra:254.65509,dec:-55.990141,px:0.38281,py:0.27344},{ra:262.77477,dec:-60.683848,px:0.74609,py:0.36328},{ra:271.6578,dec:-50.091477,px:0.41797,py:0.97266}]},
+  Ari:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/aries.webp",anchors:[{ra:42.495945,dec:27.260507,px:0.04688,py:0.50781},{ra:44.80302,dec:21.340429,px:0.22656,py:0.80469},{ra:28.38255,dec:19.293852,px:0.82031,py:0.18359}]},
+  Aur:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/auriga.webp",anchors:[{ra:89.930265,dec:37.212585,px:0.38281,py:0.36914},{ra:79.17225,dec:45.997991,px:0.81836,py:0.40625},{ra:74.24840999999999,dec:33.16609,px:0.56641,py:0.82617}]},
+  Boo:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/bootes.webp",anchors:[{ra:221.24676,dec:27.074222,px:0.43945,py:0.43359},{ra:218.01954,dec:38.308253,px:0.71289,py:0.35938},{ra:208.671165,dec:18.397717,px:0.40430,py:0.78320}]},
+  CMa:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/canis-major.webp",anchors:[{ra:111.02376,dec:-29.303104,px:0.04102,py:0.67773},{ra:103.547505,dec:-12.038628,px:0.62695,py:0.04688},{ra:95.078295,dec:-30.063367,px:0.62109,py:0.96094}]},
+  CMi:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/canis-minor.webp",anchors:[{ra:116.567505,dec:10.768252,px:0.37500,py:0.16797},{ra:114.825495,dec:5.224993,px:0.39453,py:0.66797},{ra:111.78768,dec:8.289315,px:0.71875,py:0.48438}]},
+  CVn:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/canes-venatici.webp",anchors:[{ra:196.43517,dec:35.798899,px:0.45703,py:0.44141},{ra:188.43616500000002,dec:41.35748,px:0.80469,py:0.15625},{ra:188.41215,dec:33.247584,px:0.80859,py:0.59375}]},
+  Cae:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/caelum.webp",anchors:[{ra:67.70874,dec:-44.953749,px:0.06250,py:0.90234},{ra:70.140585,dec:-41.863752,px:0.29688,py:0.56641},{ra:70.514475,dec:-37.144297,px:0.77734,py:0.29297}]},
+  Cam:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/camelopardalis.webp",anchors:[{ra:80.64054,dec:79.231149,px:0.30078,py:0.17969},{ra:73.51254,dec:66.342678,px:0.50000,py:0.52734},{ra:52.26723,dec:59.94033,px:0.85547,py:0.53125}]},
+  Cap:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/capricornus.webp",anchors:[{ra:326.760165,dec:-16.127286,px:0.02930,py:0.85156},{ra:304.51356,dec:-12.544852,px:0.78711,py:0.01367},{ra:312.95538,dec:-26.919133,px:0.89844,py:0.85547}]},
+  Car:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/argonavis.webp",anchors:[{ra:138.300615,dec:-69.717208,px:0.39453,py:0.88867},{ra:153.684105,dec:-42.121942,px:0.12109,py:0.42188},{ra:121.88605500000001,dec:-24.304324,px:0.58203,py:0.04297}]},
+  Cas:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/cassiopeia.webp",anchors:[{ra:28.598760000000002,dec:63.670101,px:0.76172,py:0.65625},{ra:10.126740000000002,dec:56.537331,px:0.31836,py:0.30469},{ra:2.293305,dec:59.14978,px:0.14258,py:0.47461}]},
+  Cen:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/centaurus.webp",anchors:[{ra:211.670925,dec:-36.369954,px:0.23047,py:0.30664},{ra:219.911475,dec:-60.833976,px:0.37891,py:0.86719},{ra:173.945445,dec:-63.019841,px:0.90430,py:0.80469}]},
+  Cep:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/cepheus.webp",anchors:[{ra:354.83729999999997,dec:77.632276,px:0.11719,py:0.65430},{ra:322.16492999999997,dec:70.560716,px:0.24414,py:0.33203},{ra:332.71362,dec:58.201261,px:0.65430,py:0.28711}]},
+  Cet:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/cetus.webp",anchors:[{ra:45.59382,dec:4.352884,px:0.16992,py:0.12305},{ra:41.030625,dec:-13.858696,px:0.05469,py:0.53516},{ra:4.856985,dec:-8.823921,px:0.80469,py:0.85938}]},
+  Cha:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/chamaeleon.webp",anchors:[{ra:184.58718,dec:-79.31224,px:0.11328,py:0.83594},{ra:158.86749,dec:-78.607786,px:0.28516,py:0.48047},{ra:124.630545,dec:-76.919722,px:0.71875,py:0.12891}]},
+  Cir:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/circinus.webp",anchors:[{ra:230.844375,dec:-59.320787,px:0.01953,py:0.14062},{ra:229.37875499999998,dec:-58.801208,px:0.15234,py:0.04297},{ra:220.62738,dec:-64.975138,px:0.91797,py:0.93359}]},
+  Cnc:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/cancer.webp",anchors:[{ra:134.62176,dec:11.857701,px:0.11328,py:0.64844},{ra:124.12884000000001,dec:9.185545,px:0.39453,py:0.99609},{ra:125.01608999999999,dec:27.217707,px:0.80469,py:0.35547}]},
+  Col:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/columba.webp",anchors:[{ra:95.52846,dec:-33.4364,px:0.54297,py:0.11328},{ra:89.78667,dec:-42.815135,px:0.15625,py:0.74219},{ra:82.80313500000001,dec:-35.470519,px:0.79688,py:0.82422}]},
+  Com:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/coma-berenices.webp",anchors:[{ra:197.49703499999998,dec:17.529431,px:0.10547,py:0.77734},{ra:197.96856,dec:27.878183,px:0.14844,py:0.22656},{ra:186.73449,dec:28.268423,px:0.67188,py:0.25000}]},
+  CrA:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/corona-australis.webp",anchors:[{ra:286.60456500000004,dec:-37.063437,px:0.05469,py:0.55469},{ra:278.08885499999997,dec:-39.704001,px:0.85156,py:0.13281},{ra:284.07066000000003,dec:-42.710676,px:0.76172,py:0.81250}]},
+  CrB:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/corona-borealis.webp",anchors:[{ra:240.360705,dec:29.851061,px:0.06250,py:0.72656},{ra:235.68571500000002,dec:26.295637,px:0.78516,py:0.79297},{ra:233.23243499999998,dec:31.359133,px:0.61328,py:0.07812}]},
+  Crt:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/crater.webp",anchors:[{ra:179.003985,dec:-17.150829,px:0.17578,py:0.16016},{ra:169.835205,dec:-14.778541,px:0.62500,py:0.58203},{ra:167.91453,dec:-22.825847,px:0.21484,py:0.94531}]},
+  Cru:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/crux.webp",anchors:[{ra:187.791435,dec:-57.113212,px:0.87500,py:0.16406},{ra:191.930385,dec:-59.688764,px:0.32812,py:0.15625},{ra:186.649665,dec:-63.099092,px:0.16406,py:0.82812}]},
+  Crv:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/corvus.webp",anchors:[{ra:187.466085,dec:-16.515432,px:0.25391,py:0.23047},{ra:188.596815,dec:-23.396759,px:0.30078,py:0.91797},{ra:182.53119,dec:-22.619766,px:0.83203,py:0.73047}]},
+  Cyg:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/cygnus.webp",anchors:[{ra:326.03565000000003,dec:28.742632,px:0.01367,py:0.74609},{ra:289.2756,dec:53.368459,px:0.92578,py:0.08984},{ra:292.680345,dec:27.959681,px:0.91211,py:0.88477}]},
+  Del:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/delphinus.webp",anchors:[{ra:311.6646,dec:16.124296,px:0.23047,py:0.12109},{ra:312.40737,dec:12.545128,px:0.29297,py:0.57812},{ra:308.303205,dec:11.303263,px:0.82422,py:0.55859}]},
+  Dor:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/dorado.webp",anchors:[{ra:88.52487,dec:-63.089627,px:0.21875,py:0.76953},{ra:86.193345,dec:-65.735526,px:0.29297,py:0.89062},{ra:64.00645499999999,dec:-51.486648,px:0.85547,py:0.17969}]},
+  Dra:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/draco.webp",anchors:[{ra:172.85110500000002,dec:69.331076,px:0.02539,py:0.80273},{ra:262.608195,dec:52.301387,px:0.70508,py:0.30078},{ra:297.04275,dec:70.26793,px:0.87695,py:0.83789}]},
+  Equ:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/equuleus.webp",anchors:[{ra:317.58541499999995,dec:10.131579,px:0.06641,py:0.70312},{ra:318.955965,dec:5.247845,px:0.58203,py:0.33594},{ra:320.723385,dec:6.81114,px:0.62500,py:0.62500}]},
+  Eri:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/eridanus.webp",anchors:[{ra:71.375625,dec:-3.254657,px:0.08008,py:0.18555},{ra:44.10687,dec:-8.898144,px:0.57812,py:0.08594},{ra:24.42834,dec:-57.236757,px:0.96289,py:0.95703}]},
+  For:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/fornax.webp",anchors:[{ra:48.018735,dec:-28.987618,px:0.16406,py:0.48828},{ra:42.47574,dec:-27.941981,px:0.50000,py:0.14453},{ra:42.272535000000005,dec:-32.405898,px:0.74219,py:0.50391}]},
+  Gem:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/gemini.webp",anchors:[{ra:116.111895,dec:24.397993,px:0.05469,py:0.31641},{ra:101.32236,dec:12.895591,px:0.45703,py:0.98438},{ra:91.03006500000001,dec:23.263341,px:0.97266,py:0.64453}]},
+  Gru:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/grus.webp",anchors:[{ra:346.71975000000003,dec:-43.520358,px:0.19141,py:0.42578},{ra:342.13858500000003,dec:-51.316864,px:0.33203,py:0.80469},{ra:328.48212,dec:-37.364852,px:0.85938,py:0.17578}]},
+  Her:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/hercules.webp",anchors:[{ra:245.48007,dec:19.15313,px:0.08594,py:0.22461},{ra:244.935165,dec:46.313366,px:0.49609,py:0.93164},{ra:271.88562,dec:28.762488,px:0.86133,py:0.19922}]},
+  Hor:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/horlogium.webp",anchors:[{ra:63.500445,dec:-42.294368,px:0.06250,py:0.91797},{ra:40.164989999999996,dec:-54.549911,px:0.71875,py:0.26172},{ra:45.903585,dec:-59.737775,px:0.91797,py:0.46484}]},
+  Hya:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/hydra.webp",anchors:[{ra:199.730385,dec:-23.171512,px:0.05078,py:0.95898},{ra:170.28414,dec:6.029322,px:0.21680,py:0.29102},{ra:133.84845,dec:5.945563,px:0.78320,py:0.06445}]},
+  Hyi:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/hydrus.webp",anchors:[{ra:29.691765,dec:-61.569859,px:0.05469,py:0.79688},{ra:6.418740000000001,dec:-77.254247,px:0.78516,py:0.16797},{ra:56.809425,dec:-74.238962,px:0.94141,py:0.83984}]},
+  Ind:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/indus.webp",anchors:[{ra:309.39173999999997,dec:-47.291502,px:0.25000,py:0.55859},{ra:313.70247,dec:-58.454155,px:0.60156,py:0.07812},{ra:319.96644,dec:-53.449427,px:0.68359,py:0.38281}]},
+  LMi:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/leo-minor.webp",anchors:[{ra:163.32789,dec:34.214871,px:0.03125,py:0.15625},{ra:143.55576000000002,dec:36.397558,px:0.83594,py:0.49609},{ra:154.06015499999998,dec:29.310501,px:0.23828,py:0.60547}]},
+  Lac:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/lacerta.webp",anchors:[{ra:335.890125,dec:52.229046,px:0.97266,py:0.16406},{ra:337.62192,dec:43.123376,px:0.42188,py:0.48047},{ra:333.9924,dec:37.748737,px:0.26172,py:0.83984}]},
+  Leo:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/leo.webp",anchors:[{ra:177.26494499999998,dec:14.57206,px:0.13477,py:0.80273},{ra:152.09298,dec:11.967207,px:0.74805,py:0.36328},{ra:146.46282000000002,dec:23.774255,px:0.62695,py:0.06250}]},
+  Lep:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/lepus.webp",anchors:[{ra:91.53885,dec:-14.935254,px:0.08203,py:0.18750},{ra:78.074595,dec:-11.869219,px:0.96094,py:0.24219},{ra:76.36527,dec:-22.371032,px:0.83203,py:0.91797}]},
+  Lib:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/libra.webp",anchors:[{ra:229.251735,dec:-9.382917,px:0.16016,py:0.10547},{ra:238.456395,dec:-16.729293,px:0.22656,py:0.66406},{ra:226.017585,dec:-25.281965,px:0.87500,py:0.41797}]},
+  Lup:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/lupus.webp",anchors:[{ra:228.0714,dec:-52.099247,px:0.17578,py:0.50195},{ra:216.54504,dec:-45.379276,px:0.40430,py:0.84961},{ra:230.4516,dec:-36.261376,px:0.83008,py:0.46680}]},
+  Lyn:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/lynx.webp",anchors:[{ra:135.160275,dec:41.782911,px:0.19531,py:0.42188},{ra:111.67855499999999,dec:49.211527,px:0.65820,py:0.41406},{ra:94.90578000000001,dec:59.010964,px:0.92188,py:0.23242}]},
+  Lyr:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/lyra.webp",anchors:[{ra:283.62618,dec:36.898613,px:0.39062,py:0.37500},{ra:279.2346,dec:38.783692,px:0.61328,py:0.14844},{ra:282.51997500000004,dec:33.362667,px:0.54297,py:0.63281}]},
+  Men:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/mensa.webp",anchors:[{ra:70.76646,dec:-70.931027,px:0.39062,py:0.26172},{ra:82.96977,dec:-76.340964,px:0.69922,py:0.53125},{ra:92.18464499999999,dec:-68.843409,px:0.21094,py:0.71484}]},
+  Mic:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/microscopium.webp",anchors:[{ra:319.48449,dec:-32.172539,px:0.47656,py:0.88281},{ra:315.322755,dec:-32.257767,px:0.65625,py:0.57812},{ra:312.49199999999996,dec:-33.779722,px:0.91406,py:0.44922}]},
+  Mon:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/monoceros.webp",anchors:[{ra:122.14854,dec:-2.983786,px:0.03906,py:0.59766},{ra:100.24441499999999,dec:9.895754,px:0.76953,py:0.15625},{ra:93.71388,dec:-6.274776,px:0.99414,py:0.70117}]},
+  Mus:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/musca.webp",anchors:[{ra:188.11701,dec:-72.132988,px:0.22266,py:0.20312},{ra:191.57019,dec:-68.108119,px:0.69141,py:0.26562},{ra:176.402115,dec:-66.728763,px:0.50391,py:0.92188}]},
+  Nor:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/norma.webp",anchors:[{ra:240.80368499999997,dec:-49.229695,px:0.13281,py:0.35156},{ra:243.36971999999997,dec:-54.630467,px:0.78906,py:0.29688},{ra:246.796005,dec:-47.554786,px:0.12500,py:0.87500}]},
+  Oct:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/octans.webp",anchors:[{ra:216.732015,dec:-83.667884,px:0.05859,py:0.06250},{ra:325.368795,dec:-77.390046,px:0.92188,py:0.93359},{ra:341.51538,dec:-81.381615,px:0.96484,py:0.54688}]},
+  Oph:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/ophiuchus.webp",anchors:[{ra:284.05492499999997,dec:4.203595,px:0.00977,py:0.35742},{ra:236.546895,dec:15.421826,px:0.88281,py:0.09180},{ra:262.85397,dec:-23.962643,px:0.46484,py:0.88477}]},
+  Ori:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/orion.webp",anchors:[{ra:88.59579000000001,dec:20.276174,px:0.11523,py:0.02148},{ra:86.939115,dec:-9.669605,px:0.64258,py:0.93164},{ra:72.460035,dec:6.961276,px:0.82227,py:0.17773}]},
+  Pav:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/pavo.webp",anchors:[{ra:306.411885,dec:-56.73509,px:0.21484,py:0.23438},{ra:300.147675,dec:-72.910504,px:0.42969,py:0.81250},{ra:266.433315,dec:-64.723871,px:0.91797,py:0.57031}]},
+  Peg:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/pegasus.webp",anchors:[{ra:326.04649500000005,dec:9.875011,px:0.32031,py:0.08008},{ra:332.49685500000004,dec:33.178224,px:0.09180,py:0.55273},{ra:3.30897,dec:15.183596,px:0.79883,py:0.68164}]},
+  Per:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/perseus.webp",anchors:[{ra:59.46345,dec:40.010215,px:0.32031,py:0.63086},{ra:51.08067,dec:49.86118,px:0.58398,py:0.34180},{ra:42.645945,dec:38.318644,px:0.75195,py:0.75391}]},
+  Phe:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/phoenix.webp",anchors:[{ra:28.41153,dec:-46.302669,px:0.21484,py:0.94922},{ra:2.35254,dec:-45.747426,px:0.81641,py:0.05859},{ra:17.096130000000002,dec:-55.24576,px:0.89453,py:0.83594}]},
+  Pic:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/pictor.webp",anchors:[{ra:102.04791,dec:-61.941391,px:0.01562,py:0.98438},{ra:87.456765,dec:-56.166663,px:0.57812,py:0.53906},{ra:86.821185,dec:-51.066514,px:0.65234,py:0.14844}]},
+  PsA:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/piscis-austrinus.webp",anchors:[{ra:343.98708,dec:-32.539628,px:0.74219,py:0.01953},{ra:326.93397,dec:-30.898304,px:0.32031,py:0.78906},{ra:340.16391,dec:-27.043617,px:0.92188,py:0.35938}]},
+  Psc:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/pisces.webp",anchors:[{ra:15.704565000000002,dec:31.804263,px:0.04688,py:0.20312},{ra:30.511755,dec:2.763759,px:0.21680,py:0.95508},{ra:349.29141,dec:3.282289,px:0.93945,py:0.30273}]},
+  Pyx:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/pyxis.webp",anchors:[{ra:127.61922000000001,dec:-32.159285,px:0.59375,py:0.85938},{ra:130.898085,dec:-33.186385,px:0.36719,py:0.62109},{ra:130.025595,dec:-35.308352,px:0.17188,py:0.78906}]},
+  Ret:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/reticulum.webp",anchors:[{ra:59.686425,dec:-61.400185,px:0.36719,py:0.43750},{ra:63.60606,dec:-62.473858,px:0.60938,py:0.68750},{ra:64.12107,dec:-59.302156,px:0.12500,py:0.86719}]},
+  Scl:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/sculptor.webp",anchors:[{ra:349.705995,dec:-32.532027,px:0.90234,py:0.15234},{ra:353.24268,dec:-37.818268,px:0.93750,py:0.41406},{ra:14.65149,dec:-29.357449,px:0.12500,py:0.67969}]},
+  Sco:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/scorpius.webp",anchors:[{ra:241.35930000000002,dec:-19.805453,px:0.87305,py:0.05664},{ra:263.402175,dec:-37.103821,px:0.12109,py:0.71289},{ra:253.64596500000002,dec:-42.361313,px:0.42383,py:0.90234}]},
+  Sct:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/scutum.webp",anchors:[{ra:281.79363,dec:-4.747867,px:0.20312,py:0.06641},{ra:277.29939,dec:-14.565813,px:0.87500,py:0.48438},{ra:283.67964,dec:-15.603036,px:0.54297,py:0.80469}]},
+  Sex:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/sextans.webp",anchors:[{ra:157.572825,dec:-0.637026,px:0.20312,py:0.42188},{ra:151.98450000000003,dec:-0.371637,px:0.53125,py:0.28125},{ra:148.126815,dec:-8.10503,px:0.92188,py:0.65625}]},
+  Sge:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/sagitta.webp",anchors:[{ra:301.28955,dec:19.991071,px:0.02344,py:0.04688},{ra:295.024125,dec:18.01389,px:0.97266,py:0.83203},{ra:295.26225,dec:17.476041,px:0.85156,py:0.94922}]},
+  Sgr:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/sagittarius.webp",anchors:[{ra:290.418165,dec:-17.847197,px:0.18750,py:0.16016},{ra:290.80464,dec:-44.799778,px:0.59961,py:0.96094},{ra:266.89011000000005,dec:-27.830788,px:0.98828,py:0.19531}]},
+  Tau:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/taurus.webp",anchors:[{ra:84.41119499999999,dec:21.142549,px:0.02539,py:0.17969},{ra:51.20331,dec:9.02887,px:0.77930,py:0.85547},{ra:57.290595,dec:24.053415,px:0.74609,py:0.37500}]},
+  Tel:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/telescopium.webp",anchors:[{ra:280.182855,dec:-47.027246,px:0.23438,py:0.51562},{ra:276.74341499999997,dec:-45.968459,px:0.78906,py:0.31250},{ra:277.207575,dec:-49.070588,px:0.82812,py:0.71875}]},
+  Tra:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/triangulum-australe.webp",anchors:[{ra:238.786245,dec:-63.430727,px:0.20312,py:0.09375},{ra:229.72771500000002,dec:-68.679545,px:0.84375,py:0.11719},{ra:252.166155,dec:-69.027715,px:0.46875,py:0.82812}]},
+  Tri:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/triangulum.webp",anchors:[{ra:32.38587,dec:34.987297,px:0.12500,py:0.32812},{ra:33.984525,dec:33.358895,px:0.10156,py:0.54688},{ra:28.27044,dec:29.578829,px:0.75781,py:0.60938}]},
+  Tuc:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/tucana.webp",anchors:[{ra:7.885875,dec:-62.958218,px:0.20703,py:0.47266},{ra:349.35747,dec:-58.235734,px:0.60156,py:0.33594},{ra:334.625565,dec:-60.259587,px:0.87500,py:0.55078}]},
+  UMa:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/ursa-major.webp",anchors:[{ra:206.88531,dec:49.313265,px:0.05078,py:0.14648},{ra:127.56646500000001,dec:60.718169,px:0.88281,py:0.53125},{ra:154.27428,dec:42.914365,px:0.50391,py:0.76953}]},
+  UMi:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/ursa-minor.webp",anchors:[{ra:37.94625,dec:89.264109,px:0.05859,py:0.07812},{ra:183.049665,dec:77.616241,px:0.75391,py:0.19922},{ra:244.376865,dec:75.75533,px:0.36328,py:0.81641}]},
+  Vir:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/virgo.webp",anchors:[{ra:221.56217999999998,dec:1.892885,px:0.12695,py:0.75977},{ra:176.46483,dec:6.529376,px:0.88672,py:0.11133},{ra:201.298245,dec:-11.161322,px:0.66016,py:0.74609}]},
+  Vol:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/volans.webp",anchors:[{ra:135.611655,dec:-66.396076,px:0.21484,py:0.33203},{ra:109.20762,dec:-67.957152,px:0.82031,py:0.47656},{ra:107.18682,dec:-70.498932,px:0.80859,py:0.63672}]},
+  Vul:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/vulpecula.webp",anchors:[{ra:300.27519,dec:27.753573,px:0.13672,py:0.51953},{ra:292.176405,dec:24.664905,px:0.67969,py:0.43359},{ra:289.054335,dec:21.390428,px:0.94531,py:0.52734}]},
+};
+
 // ═══════════════════════════════════════════════════════════
 // UTILITIES
 // ═══════════════════════════════════════════════════════════
@@ -511,89 +598,85 @@ function makeRng(seed){let s=seed;return()=>{s=(s*1664525+1013904223)>>>0;return
 function magToR(m){return m<=-1?7:m<0?6:m<1?5:m<2?3.8:m<3?2.8:m<4?2.0:m<5?1.4:1.0}
 function starCol(h){return h==='r'?'#ff7060':h==='o'?'#ffb860':h==='b'?'#90c8ff':'#f5eedc'}
 
-// CDS hips2fits — returns a real DSS color JPEG directly
 function photoUrl(con){
   return `https://alasky.u-strasbg.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=640&height=640&fov=${con.fov}&projection=TAN&coordsys=icrs&ra=${con.ra}&dec=${con.dec}&format=jpg`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// PROJECTION  (RA/Dec → canvas x/y)
+// ═══════════════════════════════════════════════════════════
+
+// Compute projection parameters from a constellation's star array.
+// Returns {cRA, cDec, cosD, scale, wrapped} — reusable for any RA/Dec point.
+function getProjection(stars, W, H){
+  const PAD = 0.12;
+  let ras = stars.map(s => s[0]);
+  const wrapped = Math.max(...ras) - Math.min(...ras) > 180;
+  if(wrapped) ras = ras.map(r => r < 180 ? r + 360 : r);
+  const decs  = stars.map(s => s[1]);
+  const cRA   = (Math.min(...ras)  + Math.max(...ras))  / 2;
+  const cDec  = (Math.min(...decs) + Math.max(...decs)) / 2;
+  const cosD  = Math.cos(cDec * Math.PI / 180);
+  const raSky = (Math.max(...ras) - Math.min(...ras)) * cosD;
+  const decSp = Math.max(...decs) - Math.min(...decs);
+  const scale = Math.max(raSky, decSp) / (1 - 2 * PAD) || 1;
+  return {cRA, cDec, cosD, scale, wrapped, W, H};
+}
+
+// Project a single RA/Dec point using pre-computed projection params.
+function projectPoint(ra, dec, p){
+  let r = ra;
+  if(p.wrapped && r < 180) r += 360;
+  return {
+    x: p.W/2 + (p.cRA - r) * p.cosD / p.scale * p.W,
+    y: p.H/2 - (dec - p.cDec) / p.scale * p.H
+  };
+}
+
+// Project all stars in a constellation to canvas coords.
+function projectStars(stars, W, H){
+  const p = getProjection(stars, W, H);
+  return stars.map(s => ({...projectPoint(s[0], s[1], p), mag:s[2], hint:s[3], name:s[4]}));
 }
 
 // ═══════════════════════════════════════════════════════════
 // RENDERING
 // ═══════════════════════════════════════════════════════════
 
-// Project RA/Dec star array to canvas {x,y,mag,hint,name}.
-// East is left (decreasing RA), North is up. Aspect ratio preserved.
-function projectStars(stars, W, H){
-  const PAD = 0.12;
-  let ras = stars.map(s => s[0]);
-  if(Math.max(...ras) - Math.min(...ras) > 180)
-    ras = ras.map(r => r < 180 ? r + 360 : r);
-  const decs = stars.map(s => s[1]);
-  const minRA = Math.min(...ras), maxRA = Math.max(...ras);
-  const minDec = Math.min(...decs), maxDec = Math.max(...decs);
-  const cRA  = (minRA + maxRA) / 2;
-  const cDec = (minDec + maxDec) / 2;
-  const cosD = Math.cos(cDec * Math.PI / 180);
-  const raSky   = (maxRA - minRA) * cosD;
-  const decSpan = maxDec - minDec;
-  const dataRange = Math.max(raSky, decSpan) || 1;
-  const scale = dataRange / (1 - 2 * PAD);
-  return stars.map((s, i) => ({
-    x:    W/2 + (cRA - ras[i]) * cosD / scale * W,
-    y:    H/2 - (decs[i] - cDec) / scale * H,
-    mag:  s[2],
-    hint: s[3],
-    name: s[4]
-  }));
-}
-
-function renderCanvas(canvas, con, mode, showLabels=false){
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-
-  // Background gradient
+function drawBackground(ctx, W, H, con, starField){
   const bg = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.hypot(W,H)/2);
   bg.addColorStop(0,'#0b0e1e'); bg.addColorStop(1,'#020408');
   ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-
-  const proj = projectStars(con.stars, W, H);
-
-  // Background star field — stars / reveal modes
-  if(mode==='stars' || mode==='reveal'){
-    const rng=makeRng(hashStr(con.name+'-bg'));
-    ctx.save();
-    for(let i=0;i<180;i++){
-      const bx=rng()*W, by=rng()*H;
-      const m=3.8+rng()*3;
-      const r=Math.max(.2,1.2-m*.15);
-      ctx.globalAlpha=.12+rng()*.45;
-      ctx.fillStyle=rng()>.8?'rgba(160,190,255,1)':'rgba(210,218,255,1)';
-      ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill();
-    }
-    ctx.globalAlpha=1; ctx.restore();
+  if(!starField) return;
+  const rng=makeRng(hashStr(con.name+'-bg'));
+  ctx.save();
+  for(let i=0;i<180;i++){
+    const bx=rng()*W, by=rng()*H, m=3.8+rng()*3;
+    const r=Math.max(.2,1.2-m*.15);
+    ctx.globalAlpha=.12+rng()*.45;
+    ctx.fillStyle=rng()>.8?'rgba(160,190,255,1)':'rgba(210,218,255,1)';
+    ctx.beginPath(); ctx.arc(bx,by,r,0,Math.PI*2); ctx.fill();
   }
+  ctx.globalAlpha=1; ctx.restore();
+}
 
-  // Connecting lines — diagram / reveal modes
-  if((mode==='diagram'||mode==='reveal') && con.lines.length){
-    ctx.save();
-    ctx.strokeStyle='rgba(80,145,230,0.52)';
-    ctx.lineWidth=1.5;
-    ctx.shadowColor='rgba(100,160,255,0.4)';
-    ctx.shadowBlur=5;
-    for(const [i,j] of con.lines){
-      const a=proj[i], b=proj[j];
-      if(!a||!b) continue;
-      ctx.beginPath();
-      ctx.moveTo(a.x,a.y);
-      ctx.lineTo(b.x,b.y);
-      ctx.stroke();
-    }
-    ctx.restore();
+function drawLines(ctx, proj, con){
+  ctx.save();
+  ctx.strokeStyle='rgba(80,145,230,0.52)';
+  ctx.lineWidth=1.5;
+  ctx.shadowColor='rgba(100,160,255,0.4)';
+  ctx.shadowBlur=5;
+  for(const [i,j] of con.lines){
+    const a=proj[i], b=proj[j];
+    if(!a||!b) continue;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
   }
+  ctx.restore();
+}
 
-  // Stars
+function drawStars(ctx, proj){
   for(const p of proj){
-    const r=magToR(p.mag);
-    const col=starCol(p.hint);
+    const r=magToR(p.mag), col=starCol(p.hint);
     if(p.mag<2.5){
       const gs=p.mag<0?26:p.mag<1?18:p.mag<2?13:8;
       const grd=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,gs);
@@ -605,45 +688,141 @@ function renderCanvas(canvas, con, mode, showLabels=false){
       ctx.beginPath(); ctx.arc(p.x,p.y,gs,0,Math.PI*2); ctx.fill();
     }
     ctx.save();
-    ctx.shadowColor=col;
-    ctx.shadowBlur=p.mag<2?8:p.mag<3?4:2;
+    ctx.shadowColor=col; ctx.shadowBlur=p.mag<2?8:p.mag<3?4:2;
     ctx.fillStyle=col;
     ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
+}
 
-  // Star name labels — reveal mode only
-  if(mode==='reveal' || showLabels){
-    const fs = Math.max(10, Math.round(W * 0.036));
-    ctx.save();
-    ctx.font = `${fs}px system-ui,-apple-system,sans-serif`;
-    ctx.textBaseline = 'middle';
-    for(const p of proj){
-      if(!p.name) continue;
-      const col  = starCol(p.hint);
-      const r    = magToR(p.mag);
-      const pad  = 3;
-      const tw   = ctx.measureText(p.name).width;
-      const th   = fs;
-      // Place label to the right, or flip left if near right edge
-      const toRight = (p.x + r + 6 + tw + pad * 2) < W - 4;
-      const lx = toRight ? p.x + r + 6 : p.x - r - 6 - tw - pad * 2;
-      const ly = p.y - th / 2 - pad;
-      // Dark background pill
-      ctx.fillStyle = 'rgba(4,6,18,0.82)';
-      ctx.beginPath();
-      if(ctx.roundRect) ctx.roundRect(lx, ly, tw + pad*2, th + pad*2, 3);
-      else ctx.rect(lx, ly, tw + pad*2, th + pad*2);
-      ctx.fill();
-      // Label text
-      ctx.fillStyle = col;
-      ctx.globalAlpha = 0.92;
-      ctx.textAlign = 'left';
-      ctx.fillText(p.name, lx + pad, ly + pad + th / 2);
-      ctx.globalAlpha = 1;
-    }
-    ctx.restore();
+function drawLabels(ctx, proj, W){
+  const fs=Math.max(10,Math.round(W*0.036));
+  ctx.save();
+  ctx.font=`${fs}px system-ui,-apple-system,sans-serif`;
+  ctx.textBaseline='middle';
+  for(const p of proj){
+    if(!p.name) continue;
+    const col=starCol(p.hint), r=magToR(p.mag), pad=3;
+    const tw=ctx.measureText(p.name).width, th=fs;
+    const toRight=(p.x+r+6+tw+pad*2)<W-4;
+    const lx=toRight?p.x+r+6:p.x-r-6-tw-pad*2, ly=p.y-th/2-pad;
+    ctx.fillStyle='rgba(4,6,18,0.82)';
+    ctx.beginPath();
+    if(ctx.roundRect) ctx.roundRect(lx,ly,tw+pad*2,th+pad*2,3); else ctx.rect(lx,ly,tw+pad*2,th+pad*2);
+    ctx.fill();
+    ctx.fillStyle=col; ctx.globalAlpha=0.92; ctx.textAlign='left';
+    ctx.fillText(p.name,lx+pad,ly+pad+th/2);
+    ctx.globalAlpha=1;
   }
+  ctx.restore();
+}
+
+function renderCanvas(canvas, con, mode, showLabels=false){
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const starField = mode==='stars'||mode==='reveal';
+  drawBackground(ctx, W, H, con, starField);
+  const proj=projectStars(con.stars, W, H);
+  if(mode==='diagram'||mode==='reveal') drawLines(ctx, proj, con);
+  drawStars(ctx, proj);
+  if(mode==='reveal'||showLabels) drawLabels(ctx, proj, W);
+}
+
+// ═══════════════════════════════════════════════════════════
+// ARTWORK MODE
+// ═══════════════════════════════════════════════════════════
+
+// Solve 3-point affine transform: image pixel coords → canvas coords.
+// Returns [a,b,c,d,e,f] for ctx.setTransform(a,b,c,d,e,f).
+function solveAffine(src, dst){
+  function solve3(rhs){
+    const m=src.map((s,i)=>[s[0],s[1],1,rhs[i]]);
+    for(let col=0;col<3;col++){
+      let mx=col;
+      for(let r=col+1;r<3;r++) if(Math.abs(m[r][col])>Math.abs(m[mx][col])) mx=r;
+      [m[col],m[mx]]=[m[mx],m[col]];
+      for(let r=col+1;r<3;r++){
+        const f=m[r][col]/m[col][col];
+        for(let j=col;j<=3;j++) m[r][j]-=f*m[col][j];
+      }
+    }
+    const x=[0,0,0];
+    for(let i=2;i>=0;i--){
+      x[i]=m[i][3];
+      for(let j=i+1;j<3;j++) x[i]-=m[i][j]*x[j];
+      x[i]/=m[i][i];
+    }
+    return x;
+  }
+  const [a,c,e]=solve3(dst.map(d=>d[0]));
+  const [b,d,f]=solve3(dst.map(d=>d[1]));
+  return [a,b,c,d,e,f];
+}
+
+const artCache={};  // abbr -> HTMLImageElement | 'loading' | 'error'
+
+function showArtworkMode(canvas, con){
+  const art=ART[con.abbr];
+  if(!art){ renderCanvas(canvas,con,'diagram'); return; }
+
+  // Already cached
+  if(artCache[con.abbr] instanceof HTMLImageElement){
+    drawArtwork(canvas,con,artCache[con.abbr]);
+    return;
+  }
+  // Show diagram immediately while image loads
+  renderCanvas(canvas,con,'diagram');
+  if(artCache[con.abbr]==='loading'||artCache[con.abbr]==='error') return;
+
+  artCache[con.abbr]='loading';
+  const img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=()=>{
+    artCache[con.abbr]=img;
+    if(session.pool[session.idx]===con) drawArtwork(canvas,con,img);
+  };
+  img.onerror=()=>{ artCache[con.abbr]='error'; };
+  img.src=art.url;
+}
+
+function drawArtwork(canvas, con, img, showLabels=false){
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  // Background + subtle star field
+  drawBackground(ctx,W,H,con,true);
+
+  // Project anchor points using the same projection as the constellation
+  const proj=getProjection(con.stars,W,H);
+  const art=ART[con.abbr];
+  const canvasPts=art.anchors.map(a=>projectPoint(a.ra,a.dec,proj));
+
+  // Image pixel coords (normalised pos × natural dimensions)
+  const iw=img.naturalWidth, ih=img.naturalHeight;
+  const imgPts=art.anchors.map(a=>[a.px*iw, a.py*ih]);
+  const dstPts=canvasPts.map(p=>[p.x,p.y]);
+
+  const [a,b,c,d,e,f]=solveAffine(imgPts,dstPts);
+
+  // Draw the artwork image with the affine transform
+  ctx.save();
+  ctx.setTransform(a,b,c,d,e,f);
+  ctx.globalAlpha=0.60;
+  ctx.drawImage(img,0,0,iw,ih);
+  ctx.restore();
+
+  // Draw constellation stars on top
+  const starProj=projectStars(con.stars,W,H);
+  drawStars(ctx,starProj);
+  if(showLabels) drawLabels(ctx,starProj,W);
+
+  // Credit
+  ctx.save();
+  ctx.font=`${Math.max(9,Math.round(W*0.026))}px system-ui,sans-serif`;
+  ctx.fillStyle='rgba(255,255,255,0.22)';
+  ctx.textAlign='right';
+  ctx.fillText('Art: Johan Meuris / Free Art Licence',W-8,H-8);
+  ctx.restore();
 }
 
 function showPhotoMode(con){
@@ -672,6 +851,8 @@ function showPhotoMode(con){
   };
   img.src = photoUrl(con);
 }
+
+// ═══════════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════════
 // QUIZ STATE
@@ -719,25 +900,23 @@ function showQuestion(){
   document.getElementById('hud-score').textContent=`${session.correct} correct`;
   document.getElementById('prog-fill').style.width=`${(session.idx/total)*100}%`;
 
-  // Reset photo/canvas state
   const canvas=document.getElementById('quiz-canvas');
   const box=document.getElementById('photo-box');
   box.classList.remove('show');
   document.getElementById('photo-img').classList.remove('show');
   canvas.style.display='block';
 
+  const sz=document.getElementById('canvas-wrap').offsetWidth;
+  canvas.width=canvas.height=sz*(window.devicePixelRatio||1);
+
   if(settings.mode==='photo'){
-    // Size canvas for fallback
-    const sz=document.getElementById('canvas-wrap').offsetWidth;
-    canvas.width=canvas.height=sz*(window.devicePixelRatio||1);
     showPhotoMode(con);
+  } else if(settings.mode==='artwork'){
+    showArtworkMode(canvas, con);
   } else {
-    const sz=document.getElementById('canvas-wrap').offsetWidth;
-    canvas.width=canvas.height=sz*(window.devicePixelRatio||1);
     renderCanvas(canvas, con, settings.mode);
   }
 
-  // Build choices
   const wrongs=getDistractors(con, session.pool);
   const choices=[con,...wrongs].sort(()=>Math.random()-.5);
   const grid=document.getElementById('ans-grid');
@@ -772,13 +951,16 @@ function handleAnswer(chosen, correct){
     document.getElementById('feedback').textContent=`✗ That was ${correct.name} (${correct.abbr})`;
   }
 
-  // Reveal: lines + star name labels after answering
+  // Reveal: add lines + star name labels after answering
+  const canvas=document.getElementById('quiz-canvas');
   if(settings.mode==='stars'){
-    const canvas=document.getElementById('quiz-canvas');
     renderCanvas(canvas, correct, 'reveal');
   } else if(settings.mode==='diagram'){
-    const canvas=document.getElementById('quiz-canvas');
     renderCanvas(canvas, correct, 'diagram', true);
+  } else if(settings.mode==='artwork'){
+    const cached=artCache[correct.abbr];
+    if(cached instanceof HTMLImageElement) drawArtwork(canvas, correct, cached, true);
+    else renderCanvas(canvas, correct, 'diagram', true);
   }
 
   document.getElementById('btn-next').classList.add('show');
