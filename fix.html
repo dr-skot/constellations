@@ -2,147 +2,60 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Constellation Quiz</title>
+<title>Artwork Alignment Fix</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#05060f;--card:#0c0f1e;--border:rgba(255,255,255,0.08);
-  --accent:#5b8af5;--accent2:#a456f7;--text:#d8e2ff;--dim:#5a6480;
-  --ok:#22c55e;--err:#ef4444;
-}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif}
-#app{max-width:680px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding:12px}
-.screen{display:none;flex-direction:column;gap:12px;flex:1}
-.screen.active{display:flex}
-.logo{text-align:center;padding:12px 0 4px}
-.logo h1{font-size:1.7rem;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:#a8bfff}
-.logo p{margin-top:6px;color:var(--dim);font-size:.8rem;letter-spacing:.12em}
-.sec-label{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
-.pill-group{display:flex;gap:8px;flex-wrap:wrap}
-.pill{flex:1;min-width:90px;padding:10px 8px;border:1px solid var(--border);background:var(--card);
-  color:var(--dim);border-radius:10px;cursor:pointer;font-size:.88rem;text-align:center;
-  transition:all .18s;line-height:1.3}
-.pill:hover{border-color:var(--accent);color:var(--text)}
-.pill.on{border-color:var(--accent);background:rgba(91,138,245,.14);color:#b0ccff}
-.pill small{display:block;font-size:.68rem;margin-top:3px;opacity:.7}
-.btn-go{align-self:center;padding:14px 40px;background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;border:none;border-radius:12px;font-size:1rem;cursor:pointer;letter-spacing:.06em;transition:opacity .2s}
-.btn-go:hover{opacity:.85}
-/* quiz */
-.hud{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--dim)}
-.hud-score{color:#a8bfff;font-weight:500}
-.prog-wrap{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px}
-.prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s}
-#canvas-wrap{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#010208;
-  position:relative;aspect-ratio:1;flex-shrink:0;width:80%;align-self:center}
-canvas{display:block;width:100%;height:100%}
-#photo-box{display:none;position:absolute;inset:0;background:#010208;
-  align-items:center;justify-content:center;flex-direction:column;gap:12px}
-#photo-box.show{display:flex}
-#photo-img{width:100%;height:100%;object-fit:cover;display:none;border-radius:inherit}
-#photo-img.show{display:block}
-#photo-msg{color:var(--dim);font-size:.82rem;text-align:center;padding:0 20px}
-.q-label{text-align:center;color:var(--dim);font-size:.8rem;letter-spacing:.1em}
-.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ans-btn{padding:9px 10px;border:1px solid var(--border);background:var(--card);color:var(--text);
-  border-radius:10px;cursor:pointer;font-size:.88rem;text-align:center;transition:all .18s}
-.ans-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(91,138,245,.1)}
-.ans-btn:disabled{cursor:default}
-.ans-btn.ok{border-color:var(--ok)!important;background:rgba(34,197,94,.14)!important;color:#86efac!important}
-.ans-btn.err{border-color:var(--err)!important;background:rgba(239,68,68,.14)!important;color:#fca5a5!important}
-#feedback{text-align:center;min-height:22px;font-size:.88rem;color:var(--dim)}
-.btn-next{align-self:center;padding:8px 28px;border:1px solid var(--accent);background:rgba(91,138,245,.12);
-  color:#b0ccff;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .18s;display:none}
-.btn-next.show{display:block}
-.btn-next:hover{background:rgba(91,138,245,.22)}
-/* results */
-.result-wrap{text-align:center;padding:20px 0}
-.result-num{font-size:3.5rem;font-weight:200;color:#a8bfff;letter-spacing:.04em}
-.result-sub{color:var(--dim);margin-top:4px}
-.result-grade{font-size:1.3rem;margin-top:16px;letter-spacing:.06em}
-.result-stars{font-size:2rem;margin-top:8px;letter-spacing:.15em}
-.btn-again{align-self:center;padding:13px 32px;background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;border:none;border-radius:12px;font-size:.95rem;cursor:pointer;transition:opacity .2s}
-.btn-again:hover{opacity:.85}
-.btn-settings{align-self:center;padding:12px 28px;border:1px solid var(--accent);background:rgba(91,138,245,.1);
-  color:#b0ccff;border-radius:12px;font-size:.95rem;cursor:pointer;transition:all .18s}
-.btn-settings:hover{background:rgba(91,138,245,.2)}
+body{background:#05060f;color:#d8e2ff;font:14px system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:16px;gap:12px}
+h1{font-size:1rem;color:#5b8af5;letter-spacing:.08em;text-transform:uppercase}
+#top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+select{background:#0c0f1e;color:#d8e2ff;border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;font-size:.9rem;cursor:pointer}
+canvas{border:1px solid rgba(255,255,255,.08);border-radius:8px;display:block}
+#controls{width:600px;max-width:100%;display:grid;grid-template-columns:80px 1fr 60px;gap:6px 10px;align-items:center}
+.lbl{text-align:right;color:#5a6480;font-size:.82rem}
+input[type=range]{width:100%;accent-color:#5b8af5}
+.val{font-size:.82rem;color:#b0ccff;text-align:left;font-variant-numeric:tabular-nums}
+#anchors{display:flex;gap:10px;font-size:.8rem;margin-top:4px}
+.anch{display:flex;align-items:center;gap:4px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+button{background:rgba(91,138,245,.15);border:1px solid rgba(91,138,245,.4);color:#b0ccff;border-radius:6px;padding:5px 14px;cursor:pointer;font-size:.85rem}
+button:hover{background:rgba(91,138,245,.28)}
+#info{font-size:.75rem;color:#3a4460;max-width:600px;text-align:center}
 </style>
 </head>
 <body>
-<div id="app">
-
-<div id="screen-start" class="screen active">
-  <div class="logo">
-    <h1>✦ Constellation Quiz</h1>
-    <p>Train your visual recognition of the night sky</p>
-  </div>
-  <div>
-    <div class="sec-label">Display Mode</div>
-    <div class="pill-group" id="mode-group">
-      <button class="pill on" data-val="diagram">Diagram<small>lines + stars</small></button>
-      <button class="pill" data-val="stars">Stars Only<small>no lines</small></button>
-      <button class="pill" data-val="photo">Photograph<small>real DSS image</small></button>
-    </div>
-  </div>
-  <div>
-    <div class="sec-label">Difficulty</div>
-    <div class="pill-group" id="diff-group">
-      <button class="pill on" data-val="1">Famous<small>12 constellations</small></button>
-      <button class="pill" data-val="2">Familiar<small>adds 30 more</small></button>
-      <button class="pill" data-val="3">Expert<small>all 88</small></button>
-    </div>
-  </div>
-  <div>
-    <div class="sec-label">Hemisphere</div>
-    <div class="pill-group" id="hem-group">
-      <button class="pill on" data-val="B">Both</button>
-      <button class="pill" data-val="N">Northern</button>
-      <button class="pill" data-val="S">Southern</button>
-    </div>
-  </div>
-  <button class="btn-go" id="btn-start">Start Quiz ›</button>
+<h1>Artwork Alignment Fix</h1>
+<div id="top">
+  <select id="con-sel"></select>
+  <button id="btn-reset">Reset to Auto</button>
+  <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="chk-fh"> Flip H</label>
+  <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="chk-fv"> Flip V</label>
+  <div id="anchors"></div>
 </div>
+<canvas id="canvas" width="600" height="600"></canvas>
+<div id="controls">
+  <span class="lbl">Rotate</span>
+  <input type="range" id="sl-rot" min="-180" max="180" step="0.5" value="0">
+  <span class="val" id="vl-rot">0.0°</span>
 
-<div id="screen-quiz" class="screen">
-  <div>
-    <div class="hud">
-      <span id="hud-progress">1 / 10</span>
-      <span class="hud-score" id="hud-score">0 correct</span>
-    </div>
-    <div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-  </div>
-  <div id="canvas-wrap">
-    <canvas id="quiz-canvas"></canvas>
-    <div id="photo-box">
-      <img id="photo-img" alt="Night sky photograph">
-      <div id="photo-msg">Loading DSS sky photograph…</div>
-    </div>
-  </div>
-  <p class="q-label">What constellation is this?</p>
-  <div class="ans-grid" id="ans-grid"></div>
-  <div id="feedback"></div>
-  <button class="btn-next" id="btn-next">Next →</button>
-</div>
+  <span class="lbl">Scale</span>
+  <input type="range" id="sl-scl" min="20" max="300" step="1" value="100">
+  <span class="val" id="vl-scl">1.00×</span>
 
-<div id="screen-result" class="screen">
-  <div class="result-wrap">
-    <div class="result-num" id="res-score">0 / 0</div>
-    <div class="result-sub">constellations identified correctly</div>
-    <div class="result-grade" id="res-grade"></div>
-    <div class="result-stars" id="res-stars"></div>
-  </div>
-  <button class="btn-again" id="btn-again">Play Again</button>
-  <button class="btn-settings" id="btn-settings">Change Settings</button>
-</div>
+  <span class="lbl">X offset</span>
+  <input type="range" id="sl-dx" min="-300" max="300" step="1" value="0">
+  <span class="val" id="vl-dx">0px</span>
 
+  <span class="lbl">Y offset</span>
+  <input type="range" id="sl-dy" min="-300" max="300" step="1" value="0">
+  <span class="val" id="vl-dy">0px</span>
+
+  <span class="lbl">Opacity</span>
+  <input type="range" id="sl-op" min="5" max="100" step="1" value="50">
+  <span class="val" id="vl-op">50%</span>
 </div>
+<div id="info">Anchor stars shown as ● on the canvas. Drag sliders to align the figure.</div>
+
 <script>
-// ═══════════════════════════════════════════════════════════
-// DATA  — stars: [ra_deg, dec_deg, mag, colorHint?, name?]
-// Source: Stellarium constellationship.fab + HYG v41 catalog
-// ═══════════════════════════════════════════════════════════
 const C = [
 
 // ── DIFF 1: FAMOUS ────────────────────────────────────────────────────────
@@ -589,17 +502,11 @@ const ART = {
   Vul:{url:"https://raw.githubusercontent.com/Stellarium/stellarium-skycultures/master/western/illustrations/vulpecula.webp",anchors:[{ra:300.27519,dec:27.753573,px:0.13672,py:0.51953},{ra:292.176405,dec:24.664905,px:0.67969,py:0.43359},{ra:289.054335,dec:21.390428,px:0.94531,py:0.52734}]},
 };
 
-// ═══════════════════════════════════════════════════════════
-// UTILITIES
-// ═══════════════════════════════════════════════════════════
 function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return h>>>0}
 function makeRng(seed){let s=seed;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
 function magToR(m){return m<=-1?7:m<0?6:m<1?5:m<2?3.8:m<3?2.8:m<4?2.0:m<5?1.4:1.0}
 function starCol(h){return h==='r'?'#ff7060':h==='o'?'#ffb860':h==='b'?'#90c8ff':'#f5eedc'}
 
-function photoUrl(con){
-  return `https://alasky.u-strasbg.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=640&height=640&fov=${con.fov}&projection=TAN&coordsys=icrs&ra=${con.ra}&dec=${con.dec}&format=jpg`;
-}
 
 // ═══════════════════════════════════════════════════════════
 // PROJECTION  (RA/Dec → canvas x/y)
@@ -638,9 +545,6 @@ function projectStars(stars, W, H){
   return stars.map(s => ({...projectPoint(s[0], s[1], p), mag:s[2], hint:s[3], name:s[4]}));
 }
 
-// ═══════════════════════════════════════════════════════════
-// RENDERING
-// ═══════════════════════════════════════════════════════════
 
 function drawBackground(ctx, W, H, con, starField){
   const bg = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.hypot(W,H)/2);
@@ -716,25 +620,7 @@ function drawLabels(ctx, proj, W){
   ctx.restore();
 }
 
-function renderCanvas(canvas, con, mode, showLabels=false){
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  const starField = mode==='stars'||mode==='reveal';
-  drawBackground(ctx, W, H, con, starField);
-  const proj=projectStars(con.stars, W, H);
-  if(mode==='diagram'||mode==='reveal') drawLines(ctx, proj, con);
-  drawStars(ctx, proj);
-  if(mode==='reveal'||showLabels) drawLabels(ctx, proj, W);
-}
 
-// ═══════════════════════════════════════════════════════════
-// ARTWORK MODE
-// ═══════════════════════════════════════════════════════════
-
-// Solve best-fit similarity transform (uniform scale + rotation + translation,
-// no shear/skew) from n src points to n dst points via least squares.
-// Returns [a,b,c,d,e,f] for ctx.setTransform(a,b,c,d,e,f)
-// where the transform is: x'= a*x - b*y + e,  y'= b*x + a*y + f
 function solveSimilarity(src, dst){
   const n=src.length;
   const sx=src.reduce((s,p)=>s+p[0],0)/n, sy=src.reduce((s,p)=>s+p[1],0)/n;
@@ -755,296 +641,178 @@ function solveSimilarity(src, dst){
   return [a,b,-b,a,e,f];
 }
 
-// Multiply two canvas transforms [a,b,c,d,e,f] (A applied after B).
-function matMul(A,B){
-  const [a1,b1,c1,d1,e1,f1]=A,[a2,b2,c2,d2,e2,f2]=B;
-  return [a1*a2+c1*b2,b1*a2+d1*b2,a1*c2+c1*d2,b1*c2+d1*d2,a1*e2+c1*f2+e1,b1*e2+d1*f2+f1];
+
+
+// ── Matrix helpers ────────────────────────────────────────────────────────────
+// Canvas transform [a,b,c,d,e,f] represents matrix [[a,c,e],[b,d,f],[0,0,1]]
+function matMul(A, B){
+  const [a1,b1,c1,d1,e1,f1]=A, [a2,b2,c2,d2,e2,f2]=B;
+  return [a1*a2+c1*b2, b1*a2+d1*b2, a1*c2+c1*d2, b1*c2+d1*d2,
+          a1*e2+c1*f2+e1, b1*e2+d1*f2+f1];
 }
 
-// Build a tweak transform: rotate+scale around (cx,cy) then translate (dx,dy).
-function makeTweak(cx,cy,angleDeg,scl,dx,dy){
-  const θ=angleDeg*Math.PI/180,c=Math.cos(θ),s=Math.sin(θ);
-  return [c*scl,s*scl,-s*scl,c*scl,scl*(-c*cx+s*cy)+cx+dx,scl*(-s*cx-c*cy)+cy+dy];
+function makeTweak(cx, cy, angleDeg, scl, dx, dy){
+  const θ=angleDeg*Math.PI/180, c=Math.cos(θ), s=Math.sin(θ);
+  return [c*scl, s*scl, -s*scl, c*scl,
+          scl*(-c*cx+s*cy)+cx+dx, scl*(-s*cx-c*cy)+cy+dy];
 }
 
-// Per-constellation artwork corrections applied on top of solveSimilarity.
-// flipH/flipV: mirror in canvas space around anchor centroid.
-// angle(°), scale(×), dx/dy: fraction of canvas W (to stay resolution-independent).
-const ART_CORRECTIONS = {
-  UMi: {flipV:true, angle:55, scale:1.13, dx:-126/600, dy:-32/600},
-};
+// ── State ─────────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx    = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const ANCHOR_COLORS = ['#f87171','#34d399','#60a5fa'];
 
-const artCache={};  // abbr -> HTMLImageElement | 'loading' | 'error'
+let con, img, anchorCanvasPts;
+let tweakAngle=0, tweakScale=1, tweakDx=0, tweakDy=0, opacity=0.5;
+let flipH=false, flipV=false;
 
-// showArtworkMode: overlay artwork on top of whatever is already on the canvas.
-// showLabels=true draws star name labels after the artwork is composited.
-function showArtworkMode(canvas, con, showLabels=false){
-  const art=ART[con.abbr];
-  if(!art) return;
+// ── Populate selector ─────────────────────────────────────────────────────────
+const sel = document.getElementById('con-sel');
+// Only include constellations that have artwork
+const artConAbbrs = Object.keys(ART);
+for(const abbr of artConAbbrs.sort()){
+  const entry = C.find(c=>c.abbr===abbr);
+  if(!entry) continue;
+  const opt = document.createElement('option');
+  opt.value = abbr;
+  opt.textContent = entry.name + ' (' + abbr + ')';
+  if(abbr==='UMi') opt.selected=true;
+  sel.appendChild(opt);
+}
 
-  if(artCache[con.abbr] instanceof HTMLImageElement){
-    drawArtwork(canvas, con, artCache[con.abbr], showLabels);
-    return;
-  }
-  if(artCache[con.abbr]==='loading'||artCache[con.abbr]==='error') return;
+// ── Compute base transform + draw ─────────────────────────────────────────────
+function load(abbr){
+  con = C.find(c=>c.abbr===abbr);
+  if(!con){ return; }
+  const art = ART[abbr];
+  if(!art){ drawDiagram(); return; }
 
-  artCache[con.abbr]='loading';
-  const img=new Image();
-  img.crossOrigin='anonymous';
-  img.onload=()=>{
-    artCache[con.abbr]=img;
-    if(session.pool[session.idx]===con && session.answered)
-      drawArtwork(canvas, con, img, showLabels);
+  // Project anchor stars
+  const proj = getProjection(con.stars, W, H);
+  anchorCanvasPts = art.anchors.map(a=>projectPoint(a.ra, a.dec, proj));
+
+  img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    resetSliders();
+    render();
   };
-  img.onerror=()=>{ artCache[con.abbr]='error'; };
-  img.src=art.url;
+  img.onerror = () => { drawDiagram(); };
+  img.src = art.url;
+
+  drawDiagram(); // show diagram while loading
+  updateAnchorLegend(art);
 }
 
-// drawArtwork: composites the artwork image over the existing canvas content.
-function drawArtwork(canvas, con, img, showLabels=false){
-  const ctx=canvas.getContext('2d');
-  const W=canvas.width, H=canvas.height;
-  const art=ART[con.abbr];
+function updateAnchorLegend(art){
+  const div = document.getElementById('anchors');
+  div.innerHTML = art.anchors.map((a,i)=>{
+    const name = (con.stars.find(s=>Math.abs(s[0]-a.ra)<0.01)) ? '' : '';
+    return '<div class="anch"><span class="dot" style="background:'+ANCHOR_COLORS[i]+'"></span> HIP anchor '+( i+1)+'</div>';
+  }).join('');
+}
 
-  const proj=getProjection(con.stars,W,H);
-  const canvasPts=art.anchors.map(a=>projectPoint(a.ra,a.dec,proj));
+function drawDiagram(){
+  drawBackground(ctx, W, H, con, true);
+  const proj = projectStars(con.stars, W, H);
+  drawLines(ctx, proj, con);
+  drawStars(ctx, proj);
+  drawLabels(ctx, proj, W);
+}
+
+function computeBase(){
+  // Always solve without flip — flips are applied in canvas space in render()
+  const art = ART[con.abbr];
   const iw=img.naturalWidth, ih=img.naturalHeight;
-  const imgPts=art.anchors.map(a=>[a.px*iw, a.py*ih]);
-  const dstPts=canvasPts.map(p=>[p.x,p.y]);
+  const imgPts = art.anchors.map(a=>[a.px*iw, a.py*ih]);
+  const dstPts = anchorCanvasPts.map(p=>[p.x,p.y]);
+  return solveSimilarity(imgPts, dstPts);
+}
 
-  let xform = solveSimilarity(imgPts,dstPts);
+function render(){
+  if(!con) return;
+  drawDiagram();
+  if(!img) return;
 
-  const corr = ART_CORRECTIONS[con.abbr];
-  if(corr){
-    const cx=dstPts.reduce((s,p)=>s+p[0],0)/dstPts.length;
-    const cy=dstPts.reduce((s,p)=>s+p[1],0)/dstPts.length;
-    let flip=[1,0,0,1,0,0];
-    if(corr.flipH) flip=matMul(flip,[-1,0,0,1,2*cx,0]);
-    if(corr.flipV) flip=matMul(flip,[1,0,0,-1,0,2*cy]);
-    const tweak=makeTweak(cx,cy,corr.angle||0,corr.scale||1,(corr.dx||0)*W,(corr.dy||0)*W);
-    xform=matMul(tweak,matMul(flip,xform));
-  }
+  // Centroid of canvas anchor points — center for rotation, scale, and flip
+  const cx = anchorCanvasPts.reduce((s,p)=>s+p.x,0)/anchorCanvasPts.length;
+  const cy = anchorCanvasPts.reduce((s,p)=>s+p.y,0)/anchorCanvasPts.length;
+
+  // Flip in canvas space: mirror around the centroid of the anchor stars.
+  // H flip: x → 2*cx - x   V flip: y → 2*cy - y   Both: 180° rotation around centroid.
+  let flip = [1,0,0,1,0,0];
+  if(flipH) flip = matMul(flip, [-1,0,0,1,2*cx,0]);
+  if(flipV) flip = matMul(flip, [1,0,0,-1,0,2*cy]);
+
+  const tweak = makeTweak(cx, cy, tweakAngle, tweakScale, tweakDx, tweakDy);
+  const [a,b,c,d,e,f] = matMul(tweak, matMul(flip, computeBase()));
 
   ctx.save();
-  ctx.setTransform(...xform);
-  ctx.globalAlpha=0.30;
-  ctx.drawImage(img,0,0,iw,ih);
+  ctx.setTransform(a,b,c,d,e,f);
+  ctx.globalAlpha = opacity;
+  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
   ctx.restore();
 
-  if(showLabels){
-    const starProj=projectStars(con.stars,W,H);
-    drawLabels(ctx,starProj,W);
-  }
-
+  // Draw anchor crosses on top
   ctx.save();
-  ctx.font=`${Math.max(9,Math.round(W*0.026))}px system-ui,sans-serif`;
-  ctx.fillStyle='rgba(255,255,255,0.22)';
-  ctx.textAlign='right';
-  ctx.fillText('Art: Johan Meuris / Free Art Licence',W-8,H-8);
+  anchorCanvasPts.forEach((p,i)=>{
+    ctx.strokeStyle = ANCHOR_COLORS[i];
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(p.x-8,p.y); ctx.lineTo(p.x+8,p.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p.x,p.y-8); ctx.lineTo(p.x,p.y+8); ctx.stroke();
+  });
   ctx.restore();
 }
 
-function showPhotoMode(con){
-  const canvas = document.getElementById('quiz-canvas');
-  const box    = document.getElementById('photo-box');
-  const img    = document.getElementById('photo-img');
-  const msg    = document.getElementById('photo-msg');
-
-  canvas.style.display='none';
-  box.classList.add('show');
-  img.classList.remove('show');
-  msg.style.display='block';
-  msg.textContent='Loading sky photograph…';
-
-  img.onload = ()=>{
-    msg.style.display='none';
-    img.classList.add('show');
-  };
-  img.onerror = ()=>{
-    box.classList.remove('show');
-    canvas.style.display='block';
-    const sz=document.getElementById('canvas-wrap').offsetWidth;
-    canvas.width=canvas.height=sz*(window.devicePixelRatio||1);
-    renderCanvas(canvas, con, 'stars');
-    document.getElementById('feedback').textContent='⚠ Photo unavailable (needs internet) — showing star field';
-  };
-  img.src = photoUrl(con);
+// ── Slider wiring ─────────────────────────────────────────────────────────────
+function resetSliders(){
+  tweakAngle=0; tweakScale=1; tweakDx=0; tweakDy=0; opacity=0.5;
+  document.getElementById('sl-rot').value=0;
+  document.getElementById('sl-scl').value=100;
+  document.getElementById('sl-dx').value=0;
+  document.getElementById('sl-dy').value=0;
+  document.getElementById('sl-op').value=50;
+  updateLabels();
 }
 
-// ═══════════════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════════════
-// QUIZ STATE
-// ═══════════════════════════════════════════════════════════
-let settings={mode:'diagram', diff:'1', hem:'B'};
-let session={pool:[], idx:0, correct:0, answered:false};
-
-function buildPool(){
-  const maxD=parseInt(settings.diff), hem=settings.hem;
-  return C.filter(c=>{
-    if(c.stars.length===0) return false;
-    if(c.diff>maxD) return false;
-    if(hem==='N'&&c.hem==='S') return false;
-    if(hem==='S'&&c.hem==='N') return false;
-    return true;
-  }).sort(()=>Math.random()-.5);
+function updateLabels(){
+  document.getElementById('vl-rot').textContent = tweakAngle.toFixed(1)+'°';
+  document.getElementById('vl-scl').textContent = tweakScale.toFixed(2)+'×';
+  document.getElementById('vl-dx').textContent  = tweakDx+'px';
+  document.getElementById('vl-dy').textContent  = tweakDy+'px';
+  document.getElementById('vl-op').textContent  = Math.round(opacity*100)+'%';
 }
 
-function getDistractors(correct, pool){
-  const others=pool.filter(c=>c!==correct).sort(()=>Math.random()-.5);
-  const same=others.filter(c=>c.diff===correct.diff);
-  const rest=others.filter(c=>c.diff!==correct.diff);
-  return [...same,...rest].slice(0,3);
-}
-
-function startQuiz(){
-  session.pool=buildPool();
-  session.idx=0;
-  session.correct=0;
-  session.answered=false;
-  if(session.pool.length===0){
-    alert('No constellations match those settings. Try broader options.');
-    return;
-  }
-  showScreen('quiz');
-  showQuestion();
-}
-
-function showQuestion(){
-  const con=session.pool[session.idx];
-  session.answered=false;
-
-  const total=session.pool.length;
-  document.getElementById('hud-progress').textContent=`${session.idx+1} / ${total}`;
-  document.getElementById('hud-score').textContent=`${session.correct} correct`;
-  document.getElementById('prog-fill').style.width=`${(session.idx/total)*100}%`;
-
-  const canvas=document.getElementById('quiz-canvas');
-  const box=document.getElementById('photo-box');
-  box.classList.remove('show');
-  document.getElementById('photo-img').classList.remove('show');
-  canvas.style.display='block';
-
-  const sz=document.getElementById('canvas-wrap').offsetWidth;
-  canvas.width=canvas.height=sz*(window.devicePixelRatio||1);
-
-  if(settings.mode==='photo'){
-    showPhotoMode(con);
-  } else {
-    renderCanvas(canvas, con, settings.mode);
-  }
-
-  const wrongs=getDistractors(con, session.pool);
-  const choices=[con,...wrongs].sort(()=>Math.random()-.5);
-  const grid=document.getElementById('ans-grid');
-  grid.innerHTML='';
-  choices.forEach(c=>{
-    const btn=document.createElement('button');
-    btn.className='ans-btn';
-    btn.textContent=c.name;
-    btn.addEventListener('click',()=>handleAnswer(c,con));
-    grid.appendChild(btn);
-  });
-
-  document.getElementById('feedback').textContent='';
-  document.getElementById('btn-next').classList.remove('show');
-}
-
-function handleAnswer(chosen, correct){
-  if(session.answered) return;
-  session.answered=true;
-
-  document.querySelectorAll('.ans-btn').forEach(b=>{
-    b.disabled=true;
-    if(b.textContent===correct.name) b.classList.add('ok');
-    else if(b.textContent===chosen.name&&chosen!==correct) b.classList.add('err');
-  });
-
-  if(chosen===correct){
-    session.correct++;
-    document.getElementById('hud-score').textContent=`${session.correct} correct`;
-    document.getElementById('feedback').textContent=`✓ Correct! — ${correct.abbr}, ${correct.hem==='N'?'Northern':correct.hem==='S'?'Southern':'Equatorial'}`;
-  } else {
-    document.getElementById('feedback').textContent=`✗ That was ${correct.name} (${correct.abbr})`;
-  }
-
-  // Reveal: show lines + star labels + artwork overlay
-  const canvas=document.getElementById('quiz-canvas');
-  if(settings.mode==='stars'){
-    renderCanvas(canvas, correct, 'reveal');
-    showArtworkMode(canvas, correct, true);
-  } else if(settings.mode==='diagram'){
-    renderCanvas(canvas, correct, 'diagram', true);
-    showArtworkMode(canvas, correct, true);
-  }
-
-  document.getElementById('btn-next').classList.add('show');
-}
-
-function nextQuestion(){
-  session.idx++;
-  if(session.idx>=session.pool.length) showResults();
-  else showQuestion();
-}
-
-function showResults(){
-  const total=session.pool.length;
-  const pct=session.correct/total;
-  document.getElementById('res-score').textContent=`${session.correct} / ${total}`;
-  let grade,stars;
-  if(pct>=.9){grade='Astronomer';stars='★★★';}
-  else if(pct>=.7){grade='Sky Watcher';stars='★★☆';}
-  else if(pct>=.5){grade='Stargazer';stars='★☆☆';}
-  else{grade='Keep Practicing';stars='☆☆☆';}
-  document.getElementById('res-grade').textContent=grade;
-  document.getElementById('res-stars').textContent=stars;
-  showScreen('result');
-}
-
-// ═══════════════════════════════════════════════════════════
-// UI
-// ═══════════════════════════════════════════════════════════
-function showScreen(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+n).classList.add('active');
-}
-
-function initPills(id,key){
-  document.getElementById(id).querySelectorAll('.pill').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.getElementById(id).querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));
-      btn.classList.add('on');
-      settings[key]=btn.dataset.val;
-      updateCount();
-    });
-  });
-}
-
-function updateCount(){
-  const n=buildPool().length;
-  document.getElementById('btn-start').textContent=`Start Quiz (${n} constellations) ›`;
-}
-
-document.addEventListener('DOMContentLoaded',()=>{
-  initPills('mode-group','mode');
-  initPills('diff-group','diff');
-  initPills('hem-group','hem');
-  updateCount();
-
-  document.getElementById('btn-start').addEventListener('click',startQuiz);
-  document.getElementById('btn-next').addEventListener('click',nextQuestion);
-  document.getElementById('btn-again').addEventListener('click',startQuiz);
-  document.getElementById('btn-settings').addEventListener('click',()=>showScreen('start'));
-
-  document.addEventListener('keydown',e=>{
-    if(!document.getElementById('screen-quiz').classList.contains('active')) return;
-    const btns=[...document.querySelectorAll('.ans-btn')];
-    const idx={'1':0,'2':1,'3':2,'4':3}[e.key];
-    if(idx!==undefined&&btns[idx]&&!btns[idx].disabled) btns[idx].click();
-    if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').classList.contains('show'))
-      document.getElementById('btn-next').click();
-  });
+document.getElementById('sl-rot').addEventListener('input', e=>{
+  tweakAngle=parseFloat(e.target.value); updateLabels(); render();
 });
+document.getElementById('sl-scl').addEventListener('input', e=>{
+  tweakScale=parseInt(e.target.value)/100; updateLabels(); render();
+});
+document.getElementById('sl-dx').addEventListener('input', e=>{
+  tweakDx=parseInt(e.target.value); updateLabels(); render();
+});
+document.getElementById('sl-dy').addEventListener('input', e=>{
+  tweakDy=parseInt(e.target.value); updateLabels(); render();
+});
+document.getElementById('sl-op').addEventListener('input', e=>{
+  opacity=parseInt(e.target.value)/100; updateLabels(); render();
+});
+document.getElementById('btn-reset').addEventListener('click', ()=>{
+  resetSliders(); render();
+});
+document.getElementById('chk-fh').addEventListener('change', e=>{ flipH=e.target.checked; render(); });
+document.getElementById('chk-fv').addEventListener('change', e=>{ flipV=e.target.checked; render(); });
+sel.addEventListener('change', e=>{
+  img=null; flipH=false; flipV=false;
+  document.getElementById('chk-fh').checked=false;
+  document.getElementById('chk-fv').checked=false;
+  load(e.target.value);
+});
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+load('UMi');
 </script>
 </body>
 </html>
