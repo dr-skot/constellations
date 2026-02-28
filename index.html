@@ -598,7 +598,21 @@ function magToR(m){return m<=-1?7:m<0?6:m<1?5:m<2?3.8:m<3?2.8:m<4?2.0:m<5?1.4:1.
 function starCol(h){return h==='r'?'#ff7060':h==='o'?'#ffb860':h==='b'?'#90c8ff':'#f5eedc'}
 
 function photoUrl(con){
-  return `https://alasky.u-strasbg.fr/hips-image-services/hips2fits?hips=CDS%2FP%2FDSS2%2Fcolor&width=640&height=640&fov=${con.fov}&projection=TAN&coordsys=icrs&ra=${con.ra}&dec=${con.dec}&format=jpg`;
+  return `img/${con.abbr}.jpg`;
+}
+
+// Project stars onto a TAN (gnomonic) image — same projection as photoUrl.
+// East is left, north is up, center = (con.ra, con.dec), full width = con.fov degrees.
+function projectStarsTAN(stars, con, W, H){
+  const ra0=con.ra*Math.PI/180, dec0=con.dec*Math.PI/180;
+  const scale=W/(con.fov*Math.PI/180);
+  return stars.map(s=>{
+    const ra=s[0]*Math.PI/180, dec=s[1]*Math.PI/180;
+    const d=Math.sin(dec0)*Math.sin(dec)+Math.cos(dec0)*Math.cos(dec)*Math.cos(ra-ra0);
+    const xi=Math.cos(dec)*Math.sin(ra-ra0)/d;
+    const eta=(Math.cos(dec0)*Math.sin(dec)-Math.sin(dec0)*Math.cos(dec)*Math.cos(ra-ra0))/d;
+    return {x:W/2-xi*scale, y:H/2-eta*scale, mag:s[2], hint:s[3], name:s[4]};
+  });
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -852,26 +866,30 @@ function showPhotoMode(con){
 
   canvas.style.display='none';
   box.classList.add('show');
-  img.classList.remove('show');
-  msg.style.display='block';
-  msg.textContent='Loading sky photograph…';
-
-  img.onload = ()=>{
-    msg.style.display='none';
-    img.classList.add('show');
-  };
-  img.onerror = ()=>{
-    box.classList.remove('show');
-    canvas.style.display='block';
-    const sz=document.getElementById('canvas-wrap').offsetWidth;
-    canvas.width=canvas.height=sz*(window.devicePixelRatio||1);
-    renderCanvas(canvas, con, 'stars');
-    document.getElementById('feedback').textContent='⚠ Photo unavailable (needs internet) — showing star field';
-  };
+  msg.style.display='none';
+  img.classList.add('show');
   img.src = photoUrl(con);
 }
 
-// ═══════════════════════════════════════════════════════════
+function revealPhotoMode(con){
+  const photoImg = document.getElementById('photo-img');
+  const box      = document.getElementById('photo-box');
+  const canvas   = document.getElementById('quiz-canvas');
+  const ctx      = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+
+  // Move photo onto canvas so we can draw over it
+  box.classList.remove('show');
+  photoImg.classList.remove('show');
+  canvas.style.display='block';
+
+  ctx.drawImage(photoImg, 0, 0, W, H);
+
+  const proj = projectStarsTAN(con.stars, con, W, H);
+  drawLines(ctx, proj, con);
+  drawStars(ctx, proj);
+  drawLabels(ctx, proj, W);
+}
 
 // ═══════════════════════════════════════════════════════════
 // QUIZ STATE
@@ -976,6 +994,8 @@ function handleAnswer(chosen, correct){
   } else if(settings.mode==='diagram'){
     renderCanvas(canvas, correct, 'diagram', true);
     showArtworkMode(canvas, correct, true);
+  } else if(settings.mode==='photo'){
+    revealPhotoMode(correct);
   }
 
   document.getElementById('btn-next').classList.add('show');
