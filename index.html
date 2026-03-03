@@ -56,6 +56,10 @@ canvas{display:block;width:100%;height:100%}
   color:#b0ccff;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .18s;display:none}
 .btn-next.show{display:block}
 .btn-next:hover{background:rgba(91,138,245,.22)}
+#reveal-controls{display:none;flex-direction:row;gap:18px;align-items:center;justify-content:center}
+#reveal-controls.show{display:flex}
+.rev-chk{display:flex;align-items:center;gap:5px;font-size:.82rem;color:var(--dim);cursor:pointer;user-select:none}
+.rev-chk input{accent-color:var(--accent);cursor:pointer;width:13px;height:13px}
 /* results */
 .result-wrap{text-align:center;padding:20px 0}
 .result-num{font-size:3.5rem;font-weight:200;color:#a8bfff;letter-spacing:.04em}
@@ -123,6 +127,10 @@ canvas{display:block;width:100%;height:100%}
   <p class="q-label">What constellation is this?</p>
   <div class="ans-grid" id="ans-grid"></div>
   <div id="feedback"></div>
+  <div id="reveal-controls">
+    <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
+    <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
+  </div>
   <button class="btn-next" id="btn-next">Next →</button>
 </div>
 
@@ -713,18 +721,73 @@ function drawLabels(ctx, proj, W){
   ctx.save();
   ctx.font=`${fs}px system-ui,-apple-system,sans-serif`;
   ctx.textBaseline='middle';
-  for(const p of proj){
-    if(!p.name) continue;
+
+  // Candidate offsets: [dx-fraction-of-label-width, dy-fraction-of-label-height]
+  // relative to star edge; order = preference
+  const H=W; // canvas is square
+  const placed=[]; // {x,y,w,h} of already-placed labels
+
+  function overlaps(ax,ay,aw,ah){
+    for(const b of placed){
+      if(ax<b.x+b.w && ax+aw>b.x && ay<b.y+b.h && ay+ah>b.y) return true;
+    }
+    return false;
+  }
+
+  // Sort: brightest stars first so their labels get priority placement
+  const named=[...proj].filter(p=>p.name).sort((a,b)=>a.mag-b.mag);
+
+  let order=0;
+  for(const p of named){
+    order++;
     const col=starCol(p.hint), r=magToR(p.mag), pad=3;
     const tw=ctx.measureText(p.name).width, th=fs;
-    const toRight=(p.x+r+6+tw+pad*2)<W-4;
-    const lx=toRight?p.x+r+6:p.x-r-6-tw-pad*2, ly=p.y-th/2-pad;
-    ctx.fillStyle='rgba(4,6,18,0.82)';
-    ctx.beginPath();
-    if(ctx.roundRect) ctx.roundRect(lx,ly,tw+pad*2,th+pad*2,3); else ctx.rect(lx,ly,tw+pad*2,th+pad*2);
-    ctx.fill();
+    const lw=tw+pad*2, lh=th+pad*2;
+    const gap=r+5;
+
+    // 8 candidate positions around the star (anchor = top-left of label box)
+    const candidates=[
+      [p.x+gap,          p.y-lh/2      ],  // right
+      [p.x+gap,          p.y-lh-gap/2  ],  // upper-right
+      [p.x+gap,          p.y+gap/2     ],  // lower-right
+      [p.x-gap-lw,       p.y-lh/2      ],  // left
+      [p.x-gap-lw,       p.y-lh-gap/2  ],  // upper-left
+      [p.x-gap-lw,       p.y+gap/2     ],  // lower-left
+      [p.x-lw/2,         p.y-gap-lh    ],  // above
+      [p.x-lw/2,         p.y+gap       ],  // below
+    ];
+
+    let best=candidates[0], bestIdx=0, testedCount=1;
+    for(let i=0;i<candidates.length;i++){
+      const [cx,cy]=candidates[i];
+      if(!overlaps(cx,cy,lw,lh)){ best=candidates[i]; bestIdx=i; break; }
+      testedCount=i+1; // this one was rejected; keep counting
+    }
+
+    if(debugLabels){
+      // Draw only tested candidates: green=chosen, red=rejected
+      candidates.slice(0,testedCount).forEach(([cx,cy],i)=>{
+        ctx.globalAlpha=0.85;
+        ctx.fillStyle=(i===bestIdx)?'#00ff44':'#ff3333';
+        ctx.beginPath(); ctx.arc(cx+lw/2,cy+lh/2,5,0,Math.PI*2); ctx.fill();
+      });
+      // Draw label bounding box
+      ctx.globalAlpha=0.25;
+      ctx.fillStyle='#ffffff';
+      ctx.fillRect(best[0],best[1],lw,lh);
+      // Draw placement order
+      ctx.globalAlpha=1;
+      ctx.fillStyle='#ffff00';
+      ctx.font=`bold ${Math.round(fs*0.7)}px system-ui,sans-serif`;
+      ctx.textAlign='center';
+      ctx.fillText(String(order),p.x,p.y-r-6);
+      ctx.font=`${fs}px system-ui,-apple-system,sans-serif`;
+    }
+
+    const [lx,ly]=best;
+    placed.push({x:lx,y:ly,w:lw,h:lh});
     ctx.fillStyle=col; ctx.globalAlpha=0.92; ctx.textAlign='left';
-    ctx.fillText(p.name,lx+pad,ly+pad+th/2);
+    ctx.fillText(p.name, lx+pad, ly+pad+th/2);
     ctx.globalAlpha=1;
   }
   ctx.restore();
@@ -735,7 +798,7 @@ function renderCanvas(canvas, con, mode, showLabels=false){
   const W=canvas.width, H=canvas.height;
   const starField = mode==='stars'||mode==='reveal';
   drawBackground(ctx, W, H, con, starField);
-  const proj=projectStars(con.stars, W, H);
+  const proj=projectStarsTAN(con.stars, con, W, H);
   if(mode==='diagram'||mode==='reveal') drawLines(ctx, proj, con);
   drawStars(ctx, proj);
   if(mode==='reveal'||showLabels) drawLabels(ctx, proj, W);
@@ -804,7 +867,6 @@ function showArtworkMode(canvas, con, showLabels=false){
 
   artCache[con.abbr]='loading';
   const img=new Image();
-  img.crossOrigin='anonymous';
   img.onload=()=>{
     artCache[con.abbr]=img;
     if(session.pool[session.idx]===con && session.answered)
@@ -820,11 +882,10 @@ function drawArtwork(canvas, con, img, showLabels=false){
   const W=canvas.width, H=canvas.height;
   const art=ART[con.abbr];
 
-  const proj=getProjection(con.stars,W,H);
-  const canvasPts=art.anchors.map(a=>projectPoint(a.ra,a.dec,proj));
+  const canvasPts=projectStarsTAN(art.anchors.map(a=>[a.ra,a.dec,0]),con,W,H).map(p=>({x:p.x,y:p.y}));
   const iw=img.naturalWidth, ih=img.naturalHeight;
   const imgPts=art.anchors.map(a=>[a.px*iw, a.py*ih]);
-  const dstPts=canvasPts.map(p=>[p.x,p.y]);
+  const dstPts=canvasPts.map(p=>[p.x,p.y]);  // canvas positions of artwork anchors
 
   let xform = solveSimilarity(imgPts,dstPts);
 
@@ -841,12 +902,12 @@ function drawArtwork(canvas, con, img, showLabels=false){
 
   ctx.save();
   ctx.setTransform(...xform);
-  ctx.globalAlpha=0.30;
+  ctx.globalAlpha=0.60;
   ctx.drawImage(img,0,0,iw,ih);
   ctx.restore();
 
   if(showLabels){
-    const starProj=projectStars(con.stars,W,H);
+    const starProj=projectStarsTAN(con.stars,con,W,H);
     drawLabels(ctx,starProj,W);
   }
 
@@ -871,24 +932,61 @@ function showPhotoMode(con){
   img.src = photoUrl(con);
 }
 
-function revealPhotoMode(con){
-  const photoImg = document.getElementById('photo-img');
-  const box      = document.getElementById('photo-box');
+function redrawReveal(con){
+  const showDiag = document.getElementById('chk-rev-diagram').checked;
+  const showArt  = document.getElementById('chk-rev-artwork').checked;
   const canvas   = document.getElementById('quiz-canvas');
   const ctx      = canvas.getContext('2d');
   const W=canvas.width, H=canvas.height;
+  const artImg   = artCache[con.abbr] instanceof HTMLImageElement ? artCache[con.abbr] : null;
 
-  // Move photo onto canvas so we can draw over it
-  box.classList.remove('show');
-  photoImg.classList.remove('show');
-  canvas.style.display='block';
+  if(settings.mode==='photo'){
+    ctx.drawImage(document.getElementById('photo-img'), 0, 0, W, H);
+    if(showArt && artImg) drawArtwork(canvas, con, artImg, false);
+    if(showDiag){
+      const proj=projectStarsTAN(con.stars, con, W, H);
+      drawLines(ctx, proj, con);
+      drawStars(ctx, proj);
+      drawLabels(ctx, proj, W);
+    }
+  } else {
+    drawBackground(ctx, W, H, con, settings.mode==='stars');
+    if(showArt && artImg) drawArtwork(canvas, con, artImg, false);
+    const proj=projectStarsTAN(con.stars, con, W, H);
+    if(showDiag) drawLines(ctx, proj, con);
+    drawStars(ctx, proj);
+    if(showDiag) drawLabels(ctx, proj, W);
+  }
+}
 
-  ctx.drawImage(photoImg, 0, 0, W, H);
+function ensureArtLoaded(con){
+  const art=ART[con.abbr];
+  if(!art||artCache[con.abbr]) return;
+  artCache[con.abbr]='loading';
+  const img=new Image();
+  img.onload=()=>{
+    artCache[con.abbr]=img;
+    if(session.pool[session.idx]===con && session.answered) redrawReveal(con);
+  };
+  img.onerror=()=>{ artCache[con.abbr]='error'; };
+  img.src=art.url;
+}
 
-  const proj = projectStarsTAN(con.stars, con, W, H);
-  drawLines(ctx, proj, con);
-  drawStars(ctx, proj);
-  drawLabels(ctx, proj, W);
+function startReveal(con){
+  // For photo mode, swap photo-box → canvas
+  if(settings.mode==='photo'){
+    document.getElementById('photo-box').classList.remove('show');
+    document.getElementById('photo-img').classList.remove('show');
+    document.getElementById('quiz-canvas').style.display='block';
+  }
+  // Show/hide artwork checkbox depending on whether artwork exists
+  const artChk=document.getElementById('chk-rev-artwork').closest('label');
+  artChk.style.display=ART[con.abbr] ? '' : 'none';
+  document.getElementById('chk-rev-diagram').checked=true;
+  document.getElementById('chk-rev-artwork').checked=true;
+  document.getElementById('reveal-controls').classList.add('show');
+  redrawReveal(con);
+  ensureArtLoaded(con);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -896,6 +994,7 @@ function revealPhotoMode(con){
 // ═══════════════════════════════════════════════════════════
 let settings={mode:'diagram', diff:'1', hem:'B'};
 let session={pool:[], idx:0, correct:0, answered:false};
+let debugLabels=false;
 
 function buildPool(){
   const maxD=parseInt(settings.diff), hem=settings.hem;
@@ -965,6 +1064,7 @@ function showQuestion(){
   });
 
   document.getElementById('feedback').textContent='';
+  document.getElementById('reveal-controls').classList.remove('show');
   document.getElementById('btn-next').classList.remove('show');
 }
 
@@ -986,17 +1086,7 @@ function handleAnswer(chosen, correct){
     document.getElementById('feedback').textContent=`✗ That was ${correct.name} (${correct.abbr})`;
   }
 
-  // Reveal: show lines + star labels + artwork overlay
-  const canvas=document.getElementById('quiz-canvas');
-  if(settings.mode==='stars'){
-    renderCanvas(canvas, correct, 'reveal');
-    showArtworkMode(canvas, correct, true);
-  } else if(settings.mode==='diagram'){
-    renderCanvas(canvas, correct, 'diagram', true);
-    showArtworkMode(canvas, correct, true);
-  } else if(settings.mode==='photo'){
-    revealPhotoMode(correct);
-  }
+  startReveal(correct);
 
   document.getElementById('btn-next').classList.add('show');
 }
@@ -1041,8 +1131,16 @@ function initPills(id,key){
 }
 
 function updateCount(){
-  const n=buildPool().length;
-  document.getElementById('btn-start').textContent=`Start Quiz (${n} constellations) ›`;
+  const hem=settings.hem;
+  function hemOk(c){ return c.stars.length>0 && !(hem==='N'&&c.hem==='S') && !(hem==='S'&&c.hem==='N'); }
+  const n1=C.filter(c=>c.diff<=1&&hemOk(c)).length;
+  const n2=C.filter(c=>c.diff<=2&&hemOk(c)).length;
+  const n3=C.filter(c=>c.diff<=3&&hemOk(c)).length;
+  const pills=document.getElementById('diff-group').querySelectorAll('.pill');
+  pills[0].innerHTML=`Famous<small>${n1} constellations</small>`;
+  pills[1].innerHTML=`Familiar<small>adds ${n2-n1} more</small>`;
+  pills[2].innerHTML=`Expert<small>all ${n3}</small>`;
+  document.getElementById('btn-start').textContent=`Start Quiz (${buildPool().length} constellations) ›`;
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1056,6 +1154,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('btn-again').addEventListener('click',startQuiz);
   document.getElementById('btn-settings').addEventListener('click',()=>showScreen('start'));
 
+  document.getElementById('chk-rev-diagram').addEventListener('change',()=>{
+    const con=session.pool[session.idx];
+    if(con&&session.answered) redrawReveal(con);
+  });
+  document.getElementById('chk-rev-artwork').addEventListener('change',()=>{
+    const con=session.pool[session.idx];
+    if(con&&session.answered) redrawReveal(con);
+  });
+
   document.addEventListener('keydown',e=>{
     if(!document.getElementById('screen-quiz').classList.contains('active')) return;
     const btns=[...document.querySelectorAll('.ans-btn')];
@@ -1063,6 +1170,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(idx!==undefined&&btns[idx]&&!btns[idx].disabled) btns[idx].click();
     if((e.key==='Enter'||e.key===' ')&&document.getElementById('btn-next').classList.contains('show'))
       document.getElementById('btn-next').click();
+    if(e.key==='d'||e.key==='D'){
+      debugLabels=!debugLabels;
+      const con=session.pool[session.idx];
+      if(con&&session.answered) redrawReveal(con);
+    }
   });
 });
 </script>

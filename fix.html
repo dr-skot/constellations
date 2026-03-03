@@ -545,6 +545,21 @@ function projectStars(stars, W, H){
   return stars.map(s => ({...projectPoint(s[0], s[1], p), mag:s[2], hint:s[3], name:s[4]}));
 }
 
+// TAN (gnomonic) projection — matches Stellarium's rendering and the photo projection.
+function projectPointTAN(ra, dec, con, W, H){
+  const ra0=con.ra*Math.PI/180, dec0=con.dec*Math.PI/180;
+  const scale=W/(con.fov*Math.PI/180);
+  const r=ra*Math.PI/180, d=dec*Math.PI/180;
+  const denom=Math.sin(dec0)*Math.sin(d)+Math.cos(dec0)*Math.cos(d)*Math.cos(r-ra0);
+  const xi=Math.cos(d)*Math.sin(r-ra0)/denom;
+  const eta=(Math.cos(dec0)*Math.sin(d)-Math.sin(dec0)*Math.cos(d)*Math.cos(r-ra0))/denom;
+  return {x:W/2-xi*scale, y:H/2-eta*scale};
+}
+
+function projectStarsTAN(stars, con, W, H){
+  return stars.map(s=>({...projectPointTAN(s[0],s[1],con,W,H),mag:s[2],hint:s[3],name:s[4]}));
+}
+
 
 function drawBackground(ctx, W, H, con, starField){
   const bg = ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.hypot(W,H)/2);
@@ -688,9 +703,7 @@ function load(abbr){
   const art = ART[abbr];
   if(!art){ drawDiagram(); return; }
 
-  // Project anchor stars
-  const proj = getProjection(con.stars, W, H);
-  anchorCanvasPts = art.anchors.map(a=>projectPoint(a.ra, a.dec, proj));
+  anchorCanvasPts = art.anchors.map(a=>projectPointTAN(a.ra, a.dec, con, W, H));
 
   img = new Image();
   img.crossOrigin = 'anonymous';
@@ -715,7 +728,7 @@ function updateAnchorLegend(art){
 
 function drawDiagram(){
   drawBackground(ctx, W, H, con, true);
-  const proj = projectStars(con.stars, W, H);
+  const proj = projectStarsTAN(con.stars, con, W, H);
   drawLines(ctx, proj, con);
   drawStars(ctx, proj);
   drawLabels(ctx, proj, W);
@@ -746,7 +759,8 @@ function render(){
   if(flipV) flip = matMul(flip, [1,0,0,-1,0,2*cy]);
 
   const tweak = makeTweak(cx, cy, tweakAngle, tweakScale, tweakDx, tweakDy);
-  const [a,b,c,d,e,f] = matMul(tweak, matMul(flip, computeBase()));
+  const xform = matMul(tweak, matMul(flip, computeBase()));
+  const [a,b,c,d,e,f] = xform;
 
   ctx.save();
   ctx.setTransform(a,b,c,d,e,f);
@@ -754,13 +768,25 @@ function render(){
   ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
   ctx.restore();
 
-  // Draw anchor crosses on top
+  // Compute where each artwork anchor (px,py) lands in canvas space
+  const art = ART[con.abbr];
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const artCanvasPts = art.anchors.map(anch => {
+    const ix = anch.px * iw, iy = anch.py * ih;
+    return { x: a*ix + c*iy + e, y: b*ix + d*iy + f };
+  });
+
   ctx.save();
-  anchorCanvasPts.forEach((p,i)=>{
+  ctx.lineWidth = 1.5;
+  anchorCanvasPts.forEach((p, i) => {
     ctx.strokeStyle = ANCHOR_COLORS[i];
-    ctx.lineWidth = 1.5;
+    // + cross at star position
     ctx.beginPath(); ctx.moveTo(p.x-8,p.y); ctx.lineTo(p.x+8,p.y); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(p.x,p.y-8); ctx.lineTo(p.x,p.y+8); ctx.stroke();
+    // × cross at artwork anchor position
+    const q = artCanvasPts[i];
+    ctx.beginPath(); ctx.moveTo(q.x-7,q.y-7); ctx.lineTo(q.x+7,q.y+7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(q.x+7,q.y-7); ctx.lineTo(q.x-7,q.y+7); ctx.stroke();
   });
   ctx.restore();
 }
