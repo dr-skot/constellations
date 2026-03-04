@@ -29,6 +29,8 @@ button:hover{background:rgba(91,138,245,.28)}
   <button id="btn-reset">Reset to Auto</button>
   <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="chk-fh"> Flip H</label>
   <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="chk-fv"> Flip V</label>
+  <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="chk-photo"> Photo</label>
+  <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="chk-art" checked> Artwork</label>
   <div id="anchors"></div>
 </div>
 <canvas id="canvas" width="600" height="600"></canvas>
@@ -50,7 +52,7 @@ button:hover{background:rgba(91,138,245,.28)}
   <span class="val" id="vl-dy">0px</span>
 
   <span class="lbl">Opacity</span>
-  <input type="range" id="sl-op" min="5" max="100" step="1" value="50">
+  <input type="range" id="sl-op" min="0" max="100" step="1" value="50">
   <span class="val" id="vl-op">50%</span>
 </div>
 <div id="info">Anchor stars shown as ● on the canvas. Drag sliders to align the figure.</div>
@@ -100,7 +102,7 @@ const C = [
  stars:[[84.41119499999999,21.142549,3.0,'b'],[68.98015500000001,16.509301,0.9,'r','Aldebaran'],[67.165575,15.870883,3.4],[64.948335,15.627642,3.6,'o'],[65.73370499999999,17.542514,3.8,'o'],[67.154145,19.180431,3.5,'o'],[81.57297,28.60745,1.6,'b','Elnath'],[51.7923,9.73268,3.7,'b'],[60.78909,5.989305,3.9],[51.20331,9.02887,3.6],[54.218265,0.401662,4.3],[60.17007,12.490347,3.4,'b']],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[7,8],[9,10],[3,11],[11,7]]},
 
-{name:"Ursa Major",abbr:"UMa",hem:"N",diff:1,ra:163.9,dec:48.1,fov:84.8,
+{name:"Ursa Major",abbr:"UMa",hem:"N",diff:1,ra:167.0,dec:51.0,fov:55.0,
  stars:[[178.45752000000002,53.69476,2.4,'b','Phecda'],[176.512725,47.779406,3.7,'o'],[167.41593,44.498487,3.0,'o'],[155.582325,41.499516,3.1,'r'],[154.27428,42.914365,3.5],[169.619745,33.094306,3.5,'r'],[183.85629,57.032617,3.3],[165.93232500000002,61.751033,1.8,'o','Dubhe'],[165.46015500000001,56.382427,2.3,'b','Merak'],[193.50708,55.959821,1.8,'b','Alioth'],[200.981205,54.925362,2.2,'b','Mizar'],[206.88531,49.313265,1.9,'b','Alkaid'],[142.881795,63.061861,3.6],[147.748005,59.038735,3.8],[127.56646500000001,60.718169,3.4],[143.215725,51.6773,3.2],[135.906405,47.156525,3.6],[134.80241999999998,48.041826,3.1]],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,3],[3,2],[2,1],[1,5],[6,7],[7,8],[8,0],[0,6],[6,9],[9,10],[10,11],[7,12],[12,13],[13,12],[12,14],[14,13],[13,8],[8,13],[13,15],[15,16],[16,17]]},
 
@@ -132,8 +134,8 @@ const C = [
  stars:[[134.62176,11.857701,4.3],[131.17125,18.154309,3.9,'o'],[124.12884000000001,9.185545,3.5,'r'],[130.82146500000002,21.468501,4.7],[131.67426,28.759898,4.0]],
  lines:[[0,1],[1,2],[2,1],[1,3],[3,4]]},
 
-{name:"Canis Minor",abbr:"CMi",hem:"N",diff:2,ra:113.3,dec:6.8,fov:5.0,
- stars:[[114.825495,5.224993,0.4,null,'Procyon'],[111.78768,8.289315,2.9,'b']],
+{name:"Canis Minor",abbr:"CMi",hem:"N",diff:2,ra:113.5,dec:8.3,fov:12.0,
+ stars:[[114.825495,5.224993,0.4,null,'Procyon'],[111.78768,8.289315,2.9,'b'],[116.567505,10.768252,5.25]],
  lines:[[0,1]]},
 
 {name:"Capricornus",abbr:"Cap",hem:"S",diff:2,ra:316.5,dec:-19.7,fov:33.5,
@@ -212,8 +214,8 @@ const C = [
  stars:[[122.38314,-47.336588,1.8,'b'],[120.896055,-40.003148,2.2,'b','Naos'],[121.88605500000001,-24.304324,2.8],[117.32356499999999,-24.859786,3.3,'o'],[114.70778999999999,-26.803836,3.8,'b'],[113.84541,-28.369323,4.7],[109.285665,-37.09747,2.7,'r'],[99.440295,-43.195934,3.2,'b'],[95.98792499999999,-52.69566,-0.6,'b','Canopus'],[115.95195,-28.954826,3.9],[117.02154,-25.937169,4.4]],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,3]]},
 
-{name:"Sagittarius",abbr:"Sgr",hem:"S",diff:2,ra:281.0,dec:-27.3,fov:30.3,
- stars:[[276.04302,-34.384616,1.8,'b','Kaus Australis'],[271.452045,-30.424091,3.0,'o'],[275.24850000000004,-29.828103,2.7,'r'],[276.992685,-25.4217,2.8,'o'],[281.4141,-26.990778,3.2,'b'],[283.81635,-26.296722,2.0,'b','Nunki'],[286.73505,-27.670423,3.3,'o'],[285.65297999999996,-29.880105,2.6],[274.406895,-36.761686,3.1,'r'],[273.44088,-21.058834,3.8],[290.418165,-17.847197,3.9],[287.440965,-21.023615,2.9],[286.17075,-21.741496,3.8,'o'],[284.432505,-21.106654,3.5,'o']],
+{name:"Sagittarius",abbr:"Sgr",hem:"S",diff:2,ra:279.0,dec:-32.0,fov:38.0,
+ stars:[[276.04302,-34.384616,1.8,'b','Kaus Australis'],[271.452045,-30.424091,3.0,'o'],[275.24850000000004,-29.828103,2.7,'r'],[276.992685,-25.4217,2.8,'o'],[281.4141,-26.990778,3.2,'b'],[283.81635,-26.296722,2.0,'b','Nunki'],[286.73505,-27.670423,3.3,'o'],[285.65297999999996,-29.880105,2.6],[274.406895,-36.761686,3.1,'r'],[273.44088,-21.058834,3.8],[290.418165,-17.847197,3.9],[287.440965,-21.023615,2.9],[286.17075,-21.741496,3.8,'o'],[284.432505,-21.106654,3.5,'o'],[290.80464,-44.799778,4.27],[266.89011,-27.830788,4.54]],
  lines:[[0,1],[1,2],[2,0],[0,2],[2,3],[3,4],[4,2],[2,4],[4,5],[5,6],[6,7],[7,4],[4,7],[7,0],[0,8],[3,9],[10,11],[11,12],[12,13],[13,11]]},
 
 {name:"Serpens",abbr:"Ser",hem:"B",diff:2,ra:249.1,dec:2.0,fov:80.5,
@@ -248,8 +250,8 @@ const C = [
  stars:[[74.3217,53.752101,4.4],[75.85454999999999,60.442245,4.0],[73.51254,66.342678,4.3],[94.711575,69.319787,4.8],[105.016215,76.977408,4.5],[57.589529999999996,71.332266,4.6],[57.380355,65.525972,4.4],[52.26723,59.94033,4.2]],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,3],[3,2],[2,5],[5,6],[6,7]]},
 
-{name:"Canes Venatici",abbr:"CVn",hem:"N",diff:3,ra:191.2,dec:39.8,fov:6.8,
- stars:[[194.007105,38.31838,2.9,'b'],[188.43616500000002,41.35748,4.2]],
+{name:"Canes Venatici",abbr:"CVn",hem:"N",diff:3,ra:191.5,dec:37.5,fov:14.0,
+ stars:[[194.007105,38.31838,2.9,'b'],[188.43616500000002,41.35748,4.2],[196.43517,35.798899,5.195,'b'],[188.41215,33.247584,5.38,'o']],
  lines:[[0,1]]},
 
 {name:"Carina",abbr:"Car",hem:"S",diff:3,ra:144.2,dec:-58.7,fov:60.0,
@@ -328,13 +330,13 @@ const C = [
  stars:[[140.263875,34.392562,3.1,'r'],[139.711035,36.802597,3.8],[136.632375,38.452215,4.6],[135.160275,41.782911,4.0],[125.70881999999999,43.188131,4.2],[111.67855499999999,49.211527,4.6],[104.31918,58.422759,4.3],[94.90578000000001,59.010964,4.4]],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7]]},
 
-{name:"Mensa",abbr:"Men",hem:"S",diff:3,ra:84.1,dec:-73.0,fov:7.9,
- stars:[[92.55948000000001,-74.753045,5.1],[75.679185,-71.3143,5.3]],
- lines:[[0,1]]},
+{name:"Mensa",abbr:"Men",hem:"S",diff:3,ra:82.0,dec:-73.0,fov:14.0,
+ stars:[[92.55948000000001,-74.753045,5.1],[75.679185,-71.3143,5.3],[70.76646,-70.931027,5.511,'b'],[82.96977,-76.340964,5.2,'o'],[92.18465,-68.843409,5.038,'b']],
+ lines:[[0,1],[0,3],[3,1],[1,2],[4,0]]},
 
-{name:"Microscopium",abbr:"Mic",hem:"S",diff:3,ra:312.7,dec:-33.5,fov:5.0,
- stars:[[312.49199999999996,-33.779722,4.9],[312.99483,-33.177974,6.1]],
- lines:[[0,1]]},
+{name:"Microscopium",abbr:"Mic",hem:"S",diff:3,ra:316.0,dec:-33.0,fov:15.0,
+ stars:[[312.49199999999996,-33.779722,4.9],[312.99483,-33.177974,6.1],[315.322755,-32.257767,4.67],[319.48449,-32.172539,4.82]],
+ lines:[[0,1],[1,2],[2,3]]},
 
 {name:"Monoceros",abbr:"Mon",hem:"B",diff:3,ra:103.6,dec:0.2,fov:45.5,
  stars:[[100.24441499999999,9.895754,4.7],[98.22594000000001,7.332965,4.5],[95.942025,4.592865,4.4],[101.9652,2.412159,4.5],[107.966085,-0.492764,4.2],[97.204455,-7.033062,3.8,'b'],[93.71388,-6.274776,4.0,'o'],[122.14854,-2.983786,4.4],[115.31181,-9.551131,3.9,'o']],
@@ -344,9 +346,9 @@ const C = [
  stars:[[176.402115,-66.728763,3.6],[184.393755,-67.960736,4.1],[189.29608499999998,-69.135564,2.7,'b'],[191.57019,-68.108119,3.0,'b'],[195.566385,-71.548855,3.6,'o'],[188.11701,-72.132988,3.8,'b']],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,2]]},
 
-{name:"Norma",abbr:"Nor",hem:"S",diff:3,ra:243.5,dec:-47.7,fov:8.0,
- stars:[[240.80368499999997,-49.229695,4.7],[244.960305,-50.155508,4.0],[246.796005,-47.554786,4.5],[241.62264,-45.173185,4.7]],
- lines:[[0,1],[1,2],[2,3],[3,0]]},
+{name:"Norma",abbr:"Nor",hem:"S",diff:3,ra:243.5,dec:-50.5,fov:14.0,
+ stars:[[240.80368499999997,-49.229695,4.7],[244.960305,-50.155508,4.0],[246.796005,-47.554786,4.5],[241.62264,-45.173185,4.7],[243.36972,-54.630467,4.94,'o']],
+ lines:[[0,1],[1,2],[2,3],[3,0],[4,0],[4,1]]},
 
 {name:"Octans",abbr:"Oct",hem:"S",diff:3,ra:294.5,dec:-80.5,fov:33.0,
  stars:[[216.732015,-83.667884,4.3],[325.368795,-77.390046,3.7,'o'],[341.51538,-81.381615,4.1]],
@@ -388,9 +390,9 @@ const C = [
  stars:[[148.126815,-8.10503,5.1],[151.98450000000003,-0.371637,4.5],[157.572825,-0.637026,5.1],[157.36959,-2.739078,5.2]],
  lines:[[0,1],[1,2],[2,3]]},
 
-{name:"Telescopium",abbr:"Tel",hem:"S",diff:3,ra:275.6,dec:-47.5,fov:5.0,
- stars:[[272.807355,-45.954418,4.5],[276.74341499999997,-45.968459,3.5,'b'],[277.207575,-49.070588,4.1]],
- lines:[[0,1],[1,2]]},
+{name:"Telescopium",abbr:"Tel",hem:"S",diff:3,ra:276.5,dec:-47.5,fov:12.0,
+ stars:[[272.807355,-45.954418,4.5],[276.74341499999997,-45.968459,3.5,'b'],[277.207575,-49.070588,4.1],[280.182855,-47.027246,6.81]],
+ lines:[[0,1],[1,2],[3,1]]},
 
 {name:"Triangulum",abbr:"Tri",hem:"N",diff:3,ra:31.7,dec:32.3,fov:8.7,
  stars:[[28.27044,29.578829,3.4],[32.38587,34.987297,3.0],[34.328595,33.847194,4.0]],
@@ -408,9 +410,9 @@ const C = [
  stars:[[135.611655,-66.396076,4.0],[126.434265,-66.13689,3.8,'o'],[121.982595,-68.617062,4.3],[109.20762,-67.957152,4.0],[107.18682,-70.498932,3.8,'o']],
  lines:[[0,1],[1,2],[2,3],[3,4],[4,2],[2,0]]},
 
-{name:"Vulpecula",abbr:"Vul",hem:"N",diff:3,ra:295.3,dec:24.4,fov:9.0,
- stars:[[292.176405,24.664905,4.4],[298.36539,24.079614,4.6]],
- lines:[[0,1]]},
+{name:"Vulpecula",abbr:"Vul",hem:"N",diff:3,ra:294.5,dec:24.5,fov:16.0,
+ stars:[[292.176405,24.664905,4.4],[298.36539,24.079614,4.6],[300.27519,27.753573,4.66],[289.054335,21.390428,4.77,'b']],
+ lines:[[0,1],[1,2],[3,0]]},
 
 ]; // end C
 
@@ -548,7 +550,7 @@ function projectStars(stars, W, H){
 // TAN (gnomonic) projection — matches Stellarium's rendering and the photo projection.
 function projectPointTAN(ra, dec, con, W, H){
   const ra0=con.ra*Math.PI/180, dec0=con.dec*Math.PI/180;
-  const scale=W/(con.fov*Math.PI/180);
+  const scale=(W/2)/Math.tan(con.fov*Math.PI/360);
   const r=ra*Math.PI/180, d=dec*Math.PI/180;
   const denom=Math.sin(dec0)*Math.sin(d)+Math.cos(dec0)*Math.cos(d)*Math.cos(r-ra0);
   const xi=Math.cos(d)*Math.sin(r-ra0)/denom;
@@ -616,6 +618,7 @@ function drawStars(ctx, proj){
 function drawLabels(ctx, proj, W){
   const fs=Math.max(10,Math.round(W*0.036));
   ctx.save();
+  const baseAlpha=ctx.globalAlpha;
   ctx.font=`${fs}px system-ui,-apple-system,sans-serif`;
   ctx.textBaseline='middle';
   for(const p of proj){
@@ -628,9 +631,9 @@ function drawLabels(ctx, proj, W){
     ctx.beginPath();
     if(ctx.roundRect) ctx.roundRect(lx,ly,tw+pad*2,th+pad*2,3); else ctx.rect(lx,ly,tw+pad*2,th+pad*2);
     ctx.fill();
-    ctx.fillStyle=col; ctx.globalAlpha=0.92; ctx.textAlign='left';
+    ctx.fillStyle=col; ctx.globalAlpha=baseAlpha*0.92; ctx.textAlign='left';
     ctx.fillText(p.name,lx+pad,ly+pad+th/2);
-    ctx.globalAlpha=1;
+    ctx.globalAlpha=baseAlpha;
   }
   ctx.restore();
 }
@@ -678,21 +681,17 @@ const ctx    = canvas.getContext('2d');
 const W = canvas.width, H = canvas.height;
 const ANCHOR_COLORS = ['#f87171','#34d399','#60a5fa'];
 
-let con, img, anchorCanvasPts;
+let con, img, anchorCanvasPts, photoImg;
 let tweakAngle=0, tweakScale=1, tweakDx=0, tweakDy=0, opacity=0.5;
-let flipH=false, flipV=false;
+let flipH=false, flipV=false, showPhoto=false, showArt=true;
 
 // ── Populate selector ─────────────────────────────────────────────────────────
 const sel = document.getElementById('con-sel');
-// Only include constellations that have artwork
-const artConAbbrs = Object.keys(ART);
-for(const abbr of artConAbbrs.sort()){
-  const entry = C.find(c=>c.abbr===abbr);
-  if(!entry) continue;
+for(const entry of [...C].sort((a,b)=>a.name.localeCompare(b.name))){
   const opt = document.createElement('option');
-  opt.value = abbr;
-  opt.textContent = entry.name + ' (' + abbr + ')';
-  if(abbr==='UMi') opt.selected=true;
+  opt.value = entry.abbr;
+  opt.textContent = entry.name + ' (' + entry.abbr + ')' + (ART[entry.abbr] ? '' : ' *');
+  if(entry.abbr==='UMi') opt.selected=true;
   sel.appendChild(opt);
 }
 
@@ -701,14 +700,26 @@ function load(abbr){
   con = C.find(c=>c.abbr===abbr);
   if(!con){ return; }
   const art = ART[abbr];
-  if(!art){ drawDiagram(); return; }
+  if(!art){
+    anchorCanvasPts = []; resetSliders();
+    photoImg = null;
+    const pimg2 = new Image();
+    pimg2.onload = () => { photoImg = pimg2; drawDiagram(); };
+    pimg2.src = `img/${abbr}.jpg`;
+    drawDiagram(); return;
+  }
 
   anchorCanvasPts = art.anchors.map(a=>projectPointTAN(a.ra, a.dec, con, W, H));
+  resetSliders();
+
+  photoImg = null;
+  const pimg = new Image();
+  pimg.onload = () => { photoImg = pimg; if(img) render(); else drawDiagram(); };
+  pimg.src = `img/${abbr}.jpg`;
 
   img = new Image();
   img.crossOrigin = 'anonymous';
   img.onload = () => {
-    resetSliders();
     render();
   };
   img.onerror = () => { drawDiagram(); };
@@ -727,11 +738,24 @@ function updateAnchorLegend(art){
 }
 
 function drawDiagram(){
-  drawBackground(ctx, W, H, con, true);
+  if(showPhoto && photoImg){
+    ctx.drawImage(photoImg, 0, 0, W, H);
+  } else {
+    drawBackground(ctx, W, H, con, true);
+  }
+  ctx.save();
+  if(anchorCanvasPts && anchorCanvasPts.length > 0){
+    const cx = anchorCanvasPts.reduce((s,p)=>s+p.x,0)/anchorCanvasPts.length;
+    const cy = anchorCanvasPts.reduce((s,p)=>s+p.y,0)/anchorCanvasPts.length;
+    const [ta,tb,tc,td,te,tf] = makeTweak(cx, cy, tweakAngle, tweakScale, tweakDx, tweakDy);
+    ctx.transform(ta,tb,tc,td,te,tf);
+  }
+  ctx.globalAlpha = opacity;
   const proj = projectStarsTAN(con.stars, con, W, H);
   drawLines(ctx, proj, con);
   drawStars(ctx, proj);
   drawLabels(ctx, proj, W);
+  ctx.restore();
 }
 
 function computeBase(){
@@ -762,11 +786,13 @@ function render(){
   const xform = matMul(tweak, matMul(flip, computeBase()));
   const [a,b,c,d,e,f] = xform;
 
-  ctx.save();
-  ctx.setTransform(a,b,c,d,e,f);
-  ctx.globalAlpha = opacity;
-  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
-  ctx.restore();
+  if(showArt){
+    ctx.save();
+    ctx.setTransform(a,b,c,d,e,f);
+    ctx.globalAlpha = opacity;
+    ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
+    ctx.restore();
+  }
 
   // Compute where each artwork anchor (px,py) lands in canvas space
   const art = ART[con.abbr];
@@ -776,11 +802,17 @@ function render(){
     return { x: a*ix + c*iy + e, y: b*ix + d*iy + f };
   });
 
+  // Anchor stars move with the diagram tweak, so apply tweak to their canvas positions
+  const [ta,tb,tc,td,te,tf] = tweak;
+  const tweakedAnchors = anchorCanvasPts.map(p => ({
+    x: ta*p.x + tc*p.y + te, y: tb*p.x + td*p.y + tf
+  }));
   ctx.save();
+  ctx.globalAlpha = opacity;
   ctx.lineWidth = 1.5;
-  anchorCanvasPts.forEach((p, i) => {
+  tweakedAnchors.forEach((p, i) => {
     ctx.strokeStyle = ANCHOR_COLORS[i];
-    // + cross at star position
+    // + cross at tweaked star position
     ctx.beginPath(); ctx.moveTo(p.x-8,p.y); ctx.lineTo(p.x+8,p.y); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(p.x,p.y-8); ctx.lineTo(p.x,p.y+8); ctx.stroke();
     // × cross at artwork anchor position
@@ -830,6 +862,8 @@ document.getElementById('btn-reset').addEventListener('click', ()=>{
 });
 document.getElementById('chk-fh').addEventListener('change', e=>{ flipH=e.target.checked; render(); });
 document.getElementById('chk-fv').addEventListener('change', e=>{ flipV=e.target.checked; render(); });
+document.getElementById('chk-photo').addEventListener('change', e=>{ showPhoto=e.target.checked; img ? render() : drawDiagram(); });
+document.getElementById('chk-art').addEventListener('change', e=>{ showArt=e.target.checked; img ? render() : drawDiagram(); });
 sel.addEventListener('change', e=>{
   img=null; flipH=false; flipV=false;
   document.getElementById('chk-fh').checked=false;
