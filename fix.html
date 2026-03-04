@@ -784,6 +784,7 @@ function render(){
     ctx.save();
     ctx.setTransform(a,b,c,d,e,f);
     ctx.globalAlpha = opacity;
+    ctx.globalCompositeOperation = 'screen';
     ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
     ctx.restore();
   }
