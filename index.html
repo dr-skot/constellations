@@ -466,6 +466,43 @@
     #explore-wrap.dragging {
       cursor: grabbing
     }
+
+    #explore-quiz-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 4px;
+      flex-wrap: wrap;
+      min-height: 36px
+    }
+    .eq-prompt { flex: 1; font-size: .95rem; color: var(--text) }
+    .eq-prompt strong { color: #a8d4ff }
+    .eq-score { color: var(--dim); font-size: .85rem; white-space: nowrap }
+    .eq-feedback { font-size: .9rem }
+    .eq-feedback.correct { color: #6f8 }
+    .eq-feedback.wrong { color: #f88 }
+    .btn-eq-next {
+      padding: 4px 14px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .8rem
+    }
+    .btn-eq-next:hover { background: var(--accent); color: #000 }
+    .btn-explore-quiz {
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .78rem;
+      transition: all .18s
+    }
+    .btn-explore-quiz:hover { border-color: var(--accent); color: var(--text) }
+    .btn-explore-quiz.active { border-color: var(--accent); color: var(--accent) }
   </style>
 </head>
 
@@ -538,7 +575,13 @@
       <div class="explore-hdr">
         <button class="btn-back-explore" id="btn-explore-back">← Back</button>
         <span style="color:var(--dim);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase">Sky Explorer</span>
-        <span></span>
+        <button class="btn-explore-quiz" id="btn-explore-quiz">Find It ›</button>
+      </div>
+      <div id="explore-quiz-bar" style="display:none">
+        <div class="eq-prompt">Click on: <strong id="eq-target-name"></strong></div>
+        <div class="eq-score" id="eq-score">0 / 0</div>
+        <div class="eq-feedback" id="eq-feedback"></div>
+        <button class="btn-eq-next" id="eq-next" style="display:none">Next →</button>
       </div>
       <div class="explore-layers">
         <label class="rev-chk"><input type="checkbox" id="chk-ex-photo" checked> Photo</label>
@@ -1234,7 +1277,8 @@
     // EXPLORE MODE
     // ═══════════════════════════════════════════════════════════
     const explorePhotoCache = {};
-    let explore = { ra: 80, dec: 5, fov: 60, drag: null };
+    let explore = { ra: 80, dec: 5, fov: 60, drag: null, quiz: null };
+    let exploreDragMoved = false;
 
     function angularDist(ra1, dec1, ra2, dec2) {
       const toR = Math.PI / 180;
@@ -1493,6 +1537,98 @@
           try { drawExploreArtLayer(ctx, con, viewCon, W, H); } catch (e) { }
         }
       }
+
+      // Quiz: highlight target boundary after answering
+      if (explore.quiz && explore.quiz.answered) {
+        const target = explore.quiz.target;
+        const poly = BOUNDS[target.abbr];
+        if (poly) {
+          const pts = projectStarsTAN(poly.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+          ctx.save();
+          ctx.strokeStyle = 'rgba(100,255,100,0.9)';
+          ctx.lineWidth = Math.max(2, W / 320);
+          ctx.beginPath();
+          let penDown = false;
+          for (const p of pts) {
+            const ok = Math.abs(p.x - W / 2) < 2 * W && Math.abs(p.y - H / 2) < 2 * H;
+            if (!ok) { penDown = false; continue; }
+            if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+            else ctx.lineTo(p.x, p.y);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    function pointInPolygon(ra, dec, poly) {
+      // Normalize all polygon RA values to within ±180° of the test point
+      const norm = poly.map(([r, d]) => {
+        let dr = r - ra;
+        if (dr > 180) dr -= 360;
+        if (dr < -180) dr += 360;
+        return [ra + dr, d];
+      });
+      let inside = false;
+      for (let i = 0, j = norm.length - 1; i < norm.length; j = i++) {
+        const [xi, yi] = norm[i], [xj, yj] = norm[j];
+        if (((yi > dec) !== (yj > dec)) && ra < (xj - xi) * (dec - yi) / (yj - yi) + xi)
+          inside = !inside;
+      }
+      return inside;
+    }
+
+    function startExploreQuiz() {
+      const pool = C.filter(c => BOUNDS[c.abbr]).sort(() => Math.random() - 0.5);
+      explore.quiz = { pool, idx: 0, score: 0, total: 0, target: null, answered: false };
+      document.getElementById('explore-quiz-bar').style.display = 'flex';
+      document.getElementById('btn-explore-quiz').textContent = 'Stop Quiz';
+      document.getElementById('btn-explore-quiz').classList.add('active');
+      document.getElementById('chk-ex-bounds').checked = true;
+      localStorage.setItem('chk-ex-bounds', '1');
+      nextExploreQuestion();
+    }
+
+    function stopExploreQuiz() {
+      explore.quiz = null;
+      document.getElementById('explore-quiz-bar').style.display = 'none';
+      document.getElementById('btn-explore-quiz').textContent = 'Find It ›';
+      document.getElementById('btn-explore-quiz').classList.remove('active');
+      drawExplore();
+    }
+
+    function nextExploreQuestion() {
+      const q = explore.quiz;
+      if (q.idx >= q.pool.length) {
+        q.pool.sort(() => Math.random() - 0.5);
+        q.idx = 0;
+      }
+      q.target = q.pool[q.idx++];
+      q.answered = false;
+      document.getElementById('eq-target-name').textContent = q.target.name;
+      document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
+      document.getElementById('eq-feedback').textContent = '';
+      document.getElementById('eq-feedback').className = 'eq-feedback';
+      document.getElementById('eq-next').style.display = 'none';
+      drawExplore();
+    }
+
+    function handleExploreClick(px, py) {
+      const q = explore.quiz;
+      if (!q || q.answered) return;
+      const W = ec.width, H = ec.height;
+      const coords = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, W, H);
+      const poly = BOUNDS[q.target.abbr];
+      const correct = poly && pointInPolygon(coords.ra, coords.dec, poly);
+      q.answered = true;
+      q.total++;
+      if (correct) q.score++;
+      const fb = document.getElementById('eq-feedback');
+      fb.textContent = correct ? '✓ Correct!' : '✗ Wrong';
+      fb.className = 'eq-feedback ' + (correct ? 'correct' : 'wrong');
+      document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
+      document.getElementById('eq-next').style.display = '';
+      drawExplore();
     }
 
     function initExplore() {
@@ -2104,7 +2240,14 @@
         showScreen('explore');
         initExplore();
       });
-      document.getElementById('btn-explore-back').addEventListener('click', () => showScreen('start'));
+      document.getElementById('btn-explore-back').addEventListener('click', () => {
+        stopExploreQuiz();
+        showScreen('start');
+      });
+      document.getElementById('btn-explore-quiz').addEventListener('click', () => {
+        if (explore.quiz) stopExploreQuiz(); else startExploreQuiz();
+      });
+      document.getElementById('eq-next').addEventListener('click', nextExploreQuestion);
       const exploreCheckboxIds = ['chk-ex-photo', 'chk-ex-diagram', 'chk-ex-starlabels', 'chk-ex-connames', 'chk-ex-equator', 'chk-ex-bounds', 'chk-ex-art'];
       // Restore saved checkbox states
       exploreCheckboxIds.forEach(id => {
@@ -2131,16 +2274,18 @@
       function expDragStart(cx, cy) {
         const { px, py } = expClientToCanvas(cx, cy);
         const anchor = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, ec.width, ec.height);
-        explore.drag = { anchor, startRa: explore.ra, startDec: explore.dec };
+        explore.drag = { anchor, startRa: explore.ra, startDec: explore.dec, startPx: px, startPy: py };
+        exploreDragMoved = false;
         ew.classList.add('dragging');
       }
       function expDragMove(cx, cy) {
         if (!explore.drag) return;
         const { px, py } = expClientToCanvas(cx, cy);
+        const dx = px - explore.drag.startPx, dy = py - explore.drag.startPy;
+        if (!exploreDragMoved && Math.sqrt(dx * dx + dy * dy) < 5) return;
+        exploreDragMoved = true;
         const W = ec.width, H = ec.height;
         const { anchor, startRa, startDec } = explore.drag;
-        // Non-iterative: always compute cursor sky pos from original drag-start view center.
-        // Rotate original center by the rotation that takes cursor-pos → anchor.
         const v_anchor = raDecToVec(anchor.ra, anchor.dec);
         const v_start = raDecToVec(startRa, startDec);
         const cur = pixelToRADec(px, py, startRa, startDec, explore.fov, W, H);
@@ -2156,9 +2301,21 @@
       ec.addEventListener('mousedown', e => expDragStart(e.clientX, e.clientY));
       window.addEventListener('mousemove', e => expDragMove(e.clientX, e.clientY));
       window.addEventListener('mouseup', expDragEnd);
+      ec.addEventListener('click', e => {
+        if (!explore.quiz || explore.quiz.answered || exploreDragMoved) return;
+        const { px, py } = expClientToCanvas(e.clientX, e.clientY);
+        handleExploreClick(px, py);
+      });
       ec.addEventListener('touchstart', e => { e.preventDefault(); expDragStart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
       ec.addEventListener('touchmove', e => { e.preventDefault(); expDragMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
-      ec.addEventListener('touchend', expDragEnd);
+      ec.addEventListener('touchend', e => {
+        expDragEnd();
+        if (explore.quiz && !explore.quiz.answered && !exploreDragMoved && e.changedTouches.length) {
+          const t = e.changedTouches[0];
+          const { px, py } = expClientToCanvas(t.clientX, t.clientY);
+          handleExploreClick(px, py);
+        }
+      });
 
       // Scroll to zoom
       ec.addEventListener('wheel', e => {
