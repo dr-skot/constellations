@@ -1339,8 +1339,7 @@
           const px = gx / GRID * IW, py = gy / GRID * IH;
           const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
           const ep = projectStarsTAN([[rd.ra, rd.dec, 0]], viewCon, W, H)[0];
-          const ok = Math.abs(ep.x - W / 2) < 2 * W && Math.abs(ep.y - H / 2) < 2 * H;
-          verts[gy * gw + gx] = ok ? [px, py, ep.x, ep.y] : null;
+          verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
         }
       }
       for (let gy = 0; gy < GRID; gy++) {
@@ -1398,8 +1397,7 @@
           const qy = artToRef[1] * px + artToRef[3] * py + artToRef[5];
           const rd = pixelToRADec(qx, qy, con.ra, con.dec, con.fov, REF, REF);
           const ep = projectStarsTAN([[rd.ra, rd.dec, 0]], viewCon, W, H)[0];
-          const ok = Math.abs(ep.x - W / 2) < 2 * W && Math.abs(ep.y - H / 2) < 2 * H;
-          verts[gy * gw + gx] = ok ? [px, py, ep.x, ep.y] : null;
+          verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
         }
       }
 
@@ -1469,8 +1467,7 @@
         ctx.beginPath();
         let penDown = false;
         for (const p of pts) {
-          const ok = Math.abs(p.x - W / 2) < 2 * W && Math.abs(p.y - H / 2) < 2 * H;
-          if (!ok) { penDown = false; continue; }
+          if (p.d <= 0) { penDown = false; continue; }
           if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
           else ctx.lineTo(p.x, p.y);
         }
@@ -1490,8 +1487,7 @@
           ctx.beginPath();
           let penDown = false;
           for (const p of pts) {
-            const ok = Math.abs(p.x - W / 2) < 2 * W && Math.abs(p.y - H / 2) < 2 * H;
-            if (!ok) { penDown = false; continue; }
+            if (p.d <= 0) { penDown = false; continue; }
             if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
             else ctx.lineTo(p.x, p.y);
           }
@@ -1503,13 +1499,12 @@
       // Diagram: stars + lines + constellation labels
       if (showDiag) {
         for (const con of visible) {
-          // Filter stars to near-canvas only (avoids d<0 artifacts)
           const proj = projectStarsTAN(con.stars, viewCon, W, H)
             .map((p, i) => ({ ...p, _orig: con.stars[i] }))
-            .filter(p => Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
+            .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
           if (con.lines) {
             const fullProj = projectStarsTAN(con.stars, viewCon, W, H)
-              .map(p => (Math.abs(p.x - W / 2) < 2 * W && Math.abs(p.y - H / 2) < 2 * H) ? p : null);
+              .map(p => p.d > 0 ? p : null);
             drawLines(ctx, fullProj, con);
           }
           drawStars(ctx, proj);
@@ -1538,31 +1533,46 @@
         }
       }
 
-      // Quiz: highlight target boundary after answering
+      // Quiz: highlight boundaries after answering
       if (explore.quiz && explore.quiz.answered) {
-        const target = explore.quiz.target;
-        const poly = BOUNDS[target.abbr];
-        if (poly) {
+        const { target, clicked } = explore.quiz;
+        const lw = Math.max(2, W / 320);
+        const drawBoundary = (con, color) => {
+          const poly = BOUNDS[con.abbr];
+          if (!poly) return;
+          // Must skip off-screen constellations. TAN projection maps points behind the
+          // projection plane to extreme-but-finite coordinates that can fall within the
+          // 2*W pen-up threshold, producing phantom outlines on the wrong side of the sky.
+          if (angularDist(explore.ra, explore.dec, con.ra, con.dec) > explore.fov / 2 + con.fov / 2 + 10) return;
           const pts = projectStarsTAN(poly.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
           ctx.save();
-          ctx.strokeStyle = 'rgba(100,255,100,0.9)';
-          ctx.lineWidth = Math.max(2, W / 320);
+          ctx.strokeStyle = color;
+          ctx.lineWidth = lw;
           ctx.beginPath();
           let penDown = false;
           for (const p of pts) {
-            const ok = Math.abs(p.x - W / 2) < 2 * W && Math.abs(p.y - H / 2) < 2 * H;
-            if (!ok) { penDown = false; continue; }
+            if (p.d <= 0) { penDown = false; continue; }
             if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
             else ctx.lineTo(p.x, p.y);
           }
           ctx.stroke();
           ctx.restore();
-        }
+        };
+        if (clicked && clicked.abbr !== target.abbr) drawBoundary(clicked, 'rgba(255,80,80,0.9)');
+        drawBoundary(target, 'rgba(100,255,100,0.9)');
       }
     }
 
     function pointInPolygon(ra, dec, poly) {
-      // Normalize all polygon RA values to within ±180° of the test point
+      // Ray-casting in RA/Dec space. RA is circular (0–360), so we normalize all
+      // polygon vertices to within ±180° of the test point before testing. Without
+      // this, a polygon near RA=0 (vertices spanning e.g. 350°–10°) would be split
+      // across the 0/360 seam and the ray would miss it.
+      //
+      // NOTE: always pre-filter by angular distance before calling this. The RA
+      // normalization maps far-away polygon vertices to large-but-finite RA values,
+      // and the rightward ray from the test point can cross those phantom vertices,
+      // producing false positives for constellations on the opposite side of the sky.
       const norm = poly.map(([r, d]) => {
         let dr = r - ra;
         if (dr > 180) dr -= 360;
@@ -1616,15 +1626,20 @@
     function handleExploreClick(px, py) {
       const q = explore.quiz;
       if (!q || q.answered) return;
-      const W = ec.width, H = ec.height;
+      const canvas = document.getElementById('explore-canvas');
+      const W = canvas.width, H = canvas.height;
       const coords = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, W, H);
-      const poly = BOUNDS[q.target.abbr];
-      const correct = poly && pointInPolygon(coords.ra, coords.dec, poly);
+      // Pre-filter by angular distance before pointInPolygon — see comment there.
+      const clicked = C.find(c => BOUNDS[c.abbr] &&
+        angularDist(coords.ra, coords.dec, c.ra, c.dec) < 60 &&
+        pointInPolygon(coords.ra, coords.dec, BOUNDS[c.abbr])) || null;
+      const correct = clicked && clicked.abbr === q.target.abbr;
       q.answered = true;
+      q.clicked = clicked;
       q.total++;
       if (correct) q.score++;
       const fb = document.getElementById('eq-feedback');
-      fb.textContent = correct ? '✓ Correct!' : '✗ Wrong';
+      fb.textContent = correct ? '✓ Correct!' : clicked ? `✗ Nope, that's ${clicked.name}` : '✗ Missed';
       fb.className = 'eq-feedback ' + (correct ? 'correct' : 'wrong');
       document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
       document.getElementById('eq-next').style.display = '';
@@ -1645,7 +1660,10 @@
         const d = Math.sin(dec0) * Math.sin(dec) + Math.cos(dec0) * Math.cos(dec) * Math.cos(ra - ra0);
         const xi = Math.cos(dec) * Math.sin(ra - ra0) / d;
         const eta = (Math.cos(dec0) * Math.sin(dec) - Math.sin(dec0) * Math.cos(dec) * Math.cos(ra - ra0)) / d;
-        return { x: W / 2 - xi * scale, y: H / 2 - eta * scale, mag: s[2], hint: s[3], name: s[4] };
+        // d > 0: point is in front of projection plane; d ≤ 0: behind (>90° away),
+        // coords are invalid — dividing by negative d flips signs and can produce
+        // coordinates that accidentally land on screen, causing phantom draws.
+        return { x: W / 2 - xi * scale, y: H / 2 - eta * scale, d, mag: s[2], hint: s[3], name: s[4] };
       });
     }
 
