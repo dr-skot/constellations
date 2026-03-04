@@ -1529,6 +1529,35 @@
       return { ra: ((ra_r * 180 / Math.PI) + 360) % 360, dec: dec_r * 180 / Math.PI };
     }
 
+    function raDecToVec(ra, dec) {
+      const r = ra * Math.PI / 180, d = dec * Math.PI / 180;
+      return [Math.cos(d) * Math.cos(r), Math.cos(d) * Math.sin(r), Math.sin(d)];
+    }
+    function vecToRaDec(v) {
+      return {
+        ra: ((Math.atan2(v[1], v[0]) * 180 / Math.PI) + 360) % 360,
+        dec: Math.asin(Math.max(-1, Math.min(1, v[2]))) * 180 / Math.PI
+      };
+    }
+    function rotateByFromTo(c, from, to) {
+      const dot = from[0]*to[0] + from[1]*to[1] + from[2]*to[2];
+      const angle = Math.acos(Math.max(-1, Math.min(1, dot)));
+      if (angle < 1e-10) return c;
+      const ax = from[1]*to[2] - from[2]*to[1];
+      const ay = from[2]*to[0] - from[0]*to[2];
+      const az = from[0]*to[1] - from[1]*to[0];
+      const len = Math.sqrt(ax*ax + ay*ay + az*az);
+      if (len < 1e-10) return c;
+      const [nx, ny, nz] = [ax/len, ay/len, az/len];
+      const cos = Math.cos(angle), sin = Math.sin(angle);
+      const d = nx*c[0] + ny*c[1] + nz*c[2];
+      return [
+        c[0]*cos + (ny*c[2] - nz*c[1])*sin + nx*d*(1-cos),
+        c[1]*cos + (nz*c[0] - nx*c[2])*sin + ny*d*(1-cos),
+        c[2]*cos + (nx*c[1] - ny*c[0])*sin + nz*d*(1-cos)
+      ];
+    }
+
     // ═══════════════════════════════════════════════════════════
     // PROJECTION  (RA/Dec → canvas x/y)
     // ═══════════════════════════════════════════════════════════
@@ -2102,26 +2131,24 @@
       function expDragStart(cx, cy) {
         const { px, py } = expClientToCanvas(cx, cy);
         const anchor = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, ec.width, ec.height);
-        explore.drag = { anchor };
+        explore.drag = { anchor, startRa: explore.ra, startDec: explore.dec };
         ew.classList.add('dragging');
       }
       function expDragMove(cx, cy) {
         if (!explore.drag) return;
         const { px, py } = expClientToCanvas(cx, cy);
         const W = ec.width, H = ec.height;
-        const { anchor } = explore.drag;
-        // Iteratively solve for the center that keeps anchor under cursor
-        let ra0 = explore.ra, dec0 = explore.dec;
-        for (let i = 0; i < 5; i++) {
-          const cur = pixelToRADec(px, py, ra0, dec0, explore.fov, W, H);
-          let dra = anchor.ra - cur.ra;
-          if (dra > 180) dra -= 360;
-          if (dra < -180) dra += 360;
-          ra0 = ((ra0 + dra) + 360) % 360;
-          dec0 = Math.max(-88, Math.min(88, dec0 + anchor.dec - cur.dec));
-        }
-        explore.ra = ra0;
-        explore.dec = dec0;
+        const { anchor, startRa, startDec } = explore.drag;
+        // Non-iterative: always compute cursor sky pos from original drag-start view center.
+        // Rotate original center by the rotation that takes cursor-pos → anchor.
+        const v_anchor = raDecToVec(anchor.ra, anchor.dec);
+        const v_start = raDecToVec(startRa, startDec);
+        const cur = pixelToRADec(px, py, startRa, startDec, explore.fov, W, H);
+        const v_cur = raDecToVec(cur.ra, cur.dec);
+        const v_new = rotateByFromTo(v_start, v_cur, v_anchor);
+        const newPos = vecToRaDec(v_new);
+        explore.ra = newPos.ra;
+        explore.dec = newPos.dec;
         drawExplore();
       }
       function expDragEnd() { explore.drag = null; ew.classList.remove('dragging'); }
