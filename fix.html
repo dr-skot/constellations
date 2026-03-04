@@ -639,24 +639,18 @@ function drawLabels(ctx, proj, W){
 }
 
 
-function solveSimilarity(src, dst){
-  const n=src.length;
-  const sx=src.reduce((s,p)=>s+p[0],0)/n, sy=src.reduce((s,p)=>s+p[1],0)/n;
-  const dx=dst.reduce((s,p)=>s+p[0],0)/n, dy=dst.reduce((s,p)=>s+p[1],0)/n;
-  // Work in centred coordinates
-  const sc=src.map(p=>[p[0]-sx,p[1]-sy]);
-  const dc=dst.map(p=>[p[0]-dx,p[1]-dy]);
-  let num_a=0, num_b=0, denom=0;
-  for(let i=0;i<n;i++){
-    num_a += sc[i][0]*dc[i][0] + sc[i][1]*dc[i][1];
-    num_b += sc[i][0]*dc[i][1] - sc[i][1]*dc[i][0];
-    denom += sc[i][0]*sc[i][0] + sc[i][1]*sc[i][1];
-  }
-  const a=num_a/denom, b=num_b/denom;
-  // Translation: maps centroid of src to centroid of dst
-  const e=dx - a*sx + b*sy;
-  const f=dy - b*sx - a*sy;
-  return [a,b,-b,a,e,f];
+function solveAffine(src, dst){
+  // Exactly maps 3 src points to 3 dst points: x'=a*x+c*y+e, y'=b*x+d*y+f
+  const [[x1,y1],[x2,y2],[x3,y3]] = src;
+  const [[u1,v1],[u2,v2],[u3,v3]] = dst;
+  const det = x1*(y2-y3) - y1*(x2-x3) + (x2*y3-x3*y2);
+  const a=(u1*(y2-y3)-y1*(u2-u3)+(u2*y3-u3*y2))/det;
+  const c=(x1*(u2-u3)-u1*(x2-x3)+(x2*u3-x3*u2))/det;
+  const e=(x1*(y2*u3-y3*u2)-y1*(x2*u3-x3*u2)+u1*(x2*y3-x3*y2))/det;
+  const b=(v1*(y2-y3)-y1*(v2-v3)+(v2*y3-v3*y2))/det;
+  const d=(x1*(v2-v3)-v1*(x2-x3)+(x2*v3-x3*v2))/det;
+  const f=(x1*(y2*v3-y3*v2)-y1*(x2*v3-x3*v2)+v1*(x2*y3-x3*y2))/det;
+  return [a,b,c,d,e,f];
 }
 
 
@@ -764,7 +758,7 @@ function computeBase(){
   const iw=img.naturalWidth, ih=img.naturalHeight;
   const imgPts = art.anchors.map(a=>[a.px*iw, a.py*ih]);
   const dstPts = anchorCanvasPts.map(p=>[p.x,p.y]);
-  return solveSimilarity(imgPts, dstPts);
+  return solveAffine(imgPts, dstPts);
 }
 
 function render(){

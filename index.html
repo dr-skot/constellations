@@ -810,46 +810,20 @@ function renderCanvas(canvas, con, mode, showLabels=false){
 
 // Solve best-fit similarity transform (uniform scale + rotation + translation,
 // no shear/skew) from n src points to n dst points via least squares.
-// Returns [a,b,c,d,e,f] for ctx.setTransform(a,b,c,d,e,f)
-// where the transform is: x'= a*x - b*y + e,  y'= b*x + a*y + f
-function solveSimilarity(src, dst){
-  const n=src.length;
-  const sx=src.reduce((s,p)=>s+p[0],0)/n, sy=src.reduce((s,p)=>s+p[1],0)/n;
-  const dx=dst.reduce((s,p)=>s+p[0],0)/n, dy=dst.reduce((s,p)=>s+p[1],0)/n;
-  // Work in centred coordinates
-  const sc=src.map(p=>[p[0]-sx,p[1]-sy]);
-  const dc=dst.map(p=>[p[0]-dx,p[1]-dy]);
-  let num_a=0, num_b=0, denom=0;
-  for(let i=0;i<n;i++){
-    num_a += sc[i][0]*dc[i][0] + sc[i][1]*dc[i][1];
-    num_b += sc[i][0]*dc[i][1] - sc[i][1]*dc[i][0];
-    denom += sc[i][0]*sc[i][0] + sc[i][1]*sc[i][1];
-  }
-  const a=num_a/denom, b=num_b/denom;
-  // Translation: maps centroid of src to centroid of dst
-  const e=dx - a*sx + b*sy;
-  const f=dy - b*sx - a*sy;
-  return [a,b,-b,a,e,f];
+// Exactly maps 3 src points to 3 dst points: x'=a*x+c*y+e, y'=b*x+d*y+f
+function solveAffine(src, dst){
+  const [[x1,y1],[x2,y2],[x3,y3]] = src;
+  const [[u1,v1],[u2,v2],[u3,v3]] = dst;
+  const det = x1*(y2-y3) - y1*(x2-x3) + (x2*y3-x3*y2);
+  const a=(u1*(y2-y3)-y1*(u2-u3)+(u2*y3-u3*y2))/det;
+  const c=(x1*(u2-u3)-u1*(x2-x3)+(x2*u3-x3*u2))/det;
+  const e=(x1*(y2*u3-y3*u2)-y1*(x2*u3-x3*u2)+u1*(x2*y3-x3*y2))/det;
+  const b=(v1*(y2-y3)-y1*(v2-v3)+(v2*y3-v3*y2))/det;
+  const d=(x1*(v2-v3)-v1*(x2-x3)+(x2*v3-x3*v2))/det;
+  const f=(x1*(y2*v3-y3*v2)-y1*(x2*v3-x3*v2)+v1*(x2*y3-x3*y2))/det;
+  return [a,b,c,d,e,f];
 }
 
-// Multiply two canvas transforms [a,b,c,d,e,f] (A applied after B).
-function matMul(A,B){
-  const [a1,b1,c1,d1,e1,f1]=A,[a2,b2,c2,d2,e2,f2]=B;
-  return [a1*a2+c1*b2,b1*a2+d1*b2,a1*c2+c1*d2,b1*c2+d1*d2,a1*e2+c1*f2+e1,b1*e2+d1*f2+f1];
-}
-
-// Build a tweak transform: rotate+scale around (cx,cy) then translate (dx,dy).
-function makeTweak(cx,cy,angleDeg,scl,dx,dy){
-  const θ=angleDeg*Math.PI/180,c=Math.cos(θ),s=Math.sin(θ);
-  return [c*scl,s*scl,-s*scl,c*scl,scl*(-c*cx+s*cy)+cx+dx,scl*(-s*cx-c*cy)+cy+dy];
-}
-
-// Per-constellation artwork corrections applied on top of solveSimilarity.
-// flipH/flipV: mirror in canvas space around anchor centroid.
-// angle(°), scale(×), dx/dy: fraction of canvas W (to stay resolution-independent).
-const ART_CORRECTIONS = {
-  UMi: {flipV:true, angle:55, scale:1.13, dx:-126/600, dy:-32/600},
-};
 
 const artCache={};  // abbr -> HTMLImageElement | 'loading' | 'error'
 
@@ -887,18 +861,7 @@ function drawArtwork(canvas, con, img, showLabels=false){
   const imgPts=art.anchors.map(a=>[a.px*iw, a.py*ih]);
   const dstPts=canvasPts.map(p=>[p.x,p.y]);  // canvas positions of artwork anchors
 
-  let xform = solveSimilarity(imgPts,dstPts);
-
-  const corr = ART_CORRECTIONS[con.abbr];
-  if(corr){
-    const cx=dstPts.reduce((s,p)=>s+p[0],0)/dstPts.length;
-    const cy=dstPts.reduce((s,p)=>s+p[1],0)/dstPts.length;
-    let flip=[1,0,0,1,0,0];
-    if(corr.flipH) flip=matMul(flip,[-1,0,0,1,2*cx,0]);
-    if(corr.flipV) flip=matMul(flip,[1,0,0,-1,0,2*cy]);
-    const tweak=makeTweak(cx,cy,corr.angle||0,corr.scale||1,(corr.dx||0)*W,(corr.dy||0)*W);
-    xform=matMul(tweak,matMul(flip,xform));
-  }
+  const xform = solveAffine(imgPts,dstPts);
 
   ctx.save();
   ctx.setTransform(...xform);
