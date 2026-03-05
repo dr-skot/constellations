@@ -34,7 +34,7 @@
 #viewer-select-row { display:none; justify-content:center; margin-top:10px; }
 .viewer-mode #viewer-select-row { display:flex; }
 #viewer-tweak { display:none; padding:8px 16px; }
-.viewer-mode #viewer-tweak { display:block; }
+/* .viewer-mode #viewer-tweak { display:block; } */
 .tweak-row { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:.8rem; }
 .tweak-row label { width:80px; flex-shrink:0; }
 .tweak-val { color:var(--accent); }
