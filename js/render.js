@@ -331,30 +331,40 @@ function redrawReveal(con) {
   const margin = Math.max(10, W * 0.04);
 
   // Pre-project the current constellation's boundary for PIP checks.
-  // Used to detect (and correct) labels that land inside the wrong polygon.
   const curVisPts = (BOUNDS[origAbbr] || [])
     .flatMap(ring => projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H))
     .filter(p => p.d > 0);
 
-  // Search for a canvas point that is (a) inside the visible circle, (b) outside
-  // the current constellation's boundary, optionally biased toward a direction.
-  function findOutsideCur(biasDx, biasDy) {
-    const biasLen = Math.sqrt(biasDx * biasDx + biasDy * biasDy);
-    // Primary search: radially outward in the bias direction
-    if (biasLen > 1) {
-      for (let t = 0.45; t <= 0.94; t += 0.04) {
-        const tx = cirCx + (biasDx / biasLen) * R * t;
-        const ty = cirCy + (biasDy / biasLen) * R * t;
-        if (curVisPts.length < 3 || !pointInPoly2D(tx, ty, curVisPts)) return { x: tx, y: ty };
+  // Search for a point inside the circle that is inside the neighbor's polygon
+  // and outside the current constellation's polygon.
+  // hintDx/hintDy: direction from circle centre toward the neighbor (bias).
+  // nVisPts: visible projected boundary points of the neighbor (for PIP).
+  function findInNeighbor(nVisPts, hintDx, hintDy) {
+    const canNPIP = nVisPts.length >= 3;
+    const canCPIP = curVisPts.length >= 3;
+    function valid(tx, ty) {
+      const dx = tx - cirCx, dy = ty - cirCy;
+      if (dx * dx + dy * dy > R * R) return false;
+      if (canNPIP && !pointInPoly2D(tx, ty, nVisPts)) return false;
+      if (canCPIP &&  pointInPoly2D(tx, ty, curVisPts)) return false;
+      return true;
+    }
+    // Primary: march from circle centre outward along hint direction.
+    const hl = Math.sqrt(hintDx * hintDx + hintDy * hintDy);
+    if (hl > 1) {
+      for (let t = 0.08; t <= 0.94; t += 0.03) {
+        const tx = cirCx + (hintDx / hl) * R * t;
+        const ty = cirCy + (hintDy / hl) * R * t;
+        if (valid(tx, ty)) return { x: tx, y: ty };
       }
     }
-    // Fallback: sweep 16 angles × 4 radii
-    for (let ri = 3; ri >= 1; ri--) {
-      const r = R * 0.9 * ri / 3.5;
+    // Fallback: sweep 16 angles × 5 radii (outer to inner).
+    for (let ri = 5; ri >= 1; ri--) {
+      const r = R * 0.9 * ri / 5;
       for (let ai = 0; ai < 16; ai++) {
-        const a = ai * Math.PI / 8;
-        const tx = cirCx + Math.cos(a) * r, ty = cirCy + Math.sin(a) * r;
-        if (curVisPts.length < 3 || !pointInPoly2D(tx, ty, curVisPts)) return { x: tx, y: ty };
+        const tx = cirCx + Math.cos(ai * Math.PI / 8) * r;
+        const ty = cirCy + Math.sin(ai * Math.PI / 8) * r;
+        if (valid(tx, ty)) return { x: tx, y: ty };
       }
     }
     return null;
@@ -418,25 +428,23 @@ function redrawReveal(con) {
       const neighbor = C.find(c => c.abbr === abbr);
       if (!neighbor) continue;
 
-      // Centroid of the boundary/intersection points gives the direction toward
-      // the neighbor in the circle (even if the point itself is on the shared border).
-      let lx, ly;
-      if (intPts.length > 0) {
-        lx = intPts.reduce((s, p) => s + p.x, 0) / intPts.length;
-        ly = intPts.reduce((s, p) => s + p.y, 0) / intPts.length;
-      } else {
-        lx = cirCx; ly = cirCy; // surrounds case: start from center
-      }
+      // Centroid of intersection points gives the direction in which the neighbor
+      // is visible — use it as a hint, even if the centroid itself is on the border.
+      const hintX = intPts.length > 0
+        ? intPts.reduce((s, p) => s + p.x, 0) / intPts.length
+        : cirCx;
+      const hintY = intPts.length > 0
+        ? intPts.reduce((s, p) => s + p.y, 0) / intPts.length
+        : cirCy;
 
-      // The centroid may lie on or inside the current constellation (shared border).
-      // Push radially outward until we cross into the neighbor's territory.
-      if (curVisPts.length >= 3 && pointInPoly2D(lx, ly, curVisPts)) {
-        const pt = findOutsideCur(lx - cirCx, ly - cirCy);
-        if (!pt) continue;
-        lx = pt.x; ly = pt.y;
-      }
+      // Find a point that is confirmed inside the neighbor's polygon and
+      // outside the current constellation's polygon.
+      const nVisPts = projRings.flatMap(pts => pts.filter(p => p.d > 0));
+      const pt = findInNeighbor(nVisPts, hintX - cirCx, hintY - cirCy);
+      if (!pt) continue;
 
       // Clamp to stay inside the circle with margin.
+      let lx = pt.x, ly = pt.y;
       const ddx = lx - cirCx, ddy = ly - cirCy;
       const dist = Math.sqrt(ddx * ddx + ddy * ddy);
       if (dist + margin > R) {
