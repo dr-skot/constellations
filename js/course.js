@@ -123,6 +123,8 @@ function renderCourseMap() {
 function startCourseStage(idx) {
   const stage = STAGES[idx];
   if (stage.type === 'find') { startFindCourseStage(idx); return; }
+  session.viewMode = false;
+  document.getElementById('screen-quiz').classList.remove('viewer-mode');
   settings.mode = stage.mode;
   session.pool = stagePool(stage).sort(() => Math.random() - 0.5);
   session.idx = 0;

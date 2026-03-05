@@ -43,6 +43,8 @@ function tryResumeStage(idx) {
     session.pool = pool; session.idx = d.idx; session.correct = d.correct;
     session.history = d.history || []; session.courseStageIdx = idx;
     session.answered = false;
+    session.viewMode = false;
+    document.getElementById('screen-quiz').classList.remove('viewer-mode');
     showScreen('quiz'); showQuestion(); return true;
   } catch { return false; }
 }
