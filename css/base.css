@@ -1,0 +1,130 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box
+}
+
+:root {
+  --bg: #05060f;
+  --card: #0c0f1e;
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #5b8af5;
+  --accent2: #a456f7;
+  --text: #d8e2ff;
+  --dim: #5a6480;
+  --ok: #22c55e;
+  --err: #ef4444;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif
+}
+
+#app {
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1
+}
+
+.screen.active {
+  display: flex
+}
+
+.logo {
+  text-align: center;
+  padding: 12px 0 4px
+}
+
+.logo h1 {
+  font-size: 1.7rem;
+  font-weight: 300;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: #a8bfff
+}
+
+.logo p {
+  margin-top: 6px;
+  color: var(--dim);
+  font-size: .8rem;
+  letter-spacing: .12em
+}
+
+.sec-label {
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 8px
+}
+
+.pill-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap
+}
+
+.pill {
+  flex: 1;
+  min-width: 90px;
+  padding: 10px 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--dim);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .88rem;
+  text-align: center;
+  transition: all .18s;
+  line-height: 1.3
+}
+
+.pill:hover {
+  border-color: var(--accent);
+  color: var(--text)
+}
+
+.pill.on {
+  border-color: var(--accent);
+  background: rgba(91, 138, 245, .14);
+  color: #b0ccff
+}
+
+.pill small {
+  display: block;
+  font-size: .68rem;
+  margin-top: 3px;
+  opacity: .7
+}
+
+.btn-go {
+  align-self: center;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: .06em;
+  transition: opacity .2s
+}
+
+.btn-go:hover {
+  opacity: .85
+}
+

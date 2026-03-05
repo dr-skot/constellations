@@ -1,0 +1,319 @@
+/* quiz */
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .82rem;
+  color: var(--dim)
+}
+
+.hud-score {
+  color: #a8bfff;
+  font-weight: 500
+}
+
+#btn-quit {
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .75rem;
+  transition: all .18s
+}
+
+#btn-quit:hover {
+  border-color: var(--err);
+  color: #fca5a5
+}
+
+.prog-wrap {
+  height: 3px;
+  background: rgba(255, 255, 255, .08);
+  border-radius: 2px;
+  margin-top: 6px
+}
+
+.prog-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width .35s
+}
+
+#canvas-area {
+  position: relative;
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  width: 80%;
+  align-self: center;
+}
+#canvas-wrap {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #010208;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%
+}
+
+#photo-box {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: #010208;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px
+}
+
+#photo-box.show {
+  display: flex
+}
+
+#photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  border-radius: inherit
+}
+
+#photo-img.show {
+  display: block
+}
+
+#photo-msg {
+  color: var(--dim);
+  font-size: .82rem;
+  text-align: center;
+  padding: 0 20px
+}
+
+.q-label {
+  text-align: center;
+  color: var(--dim);
+  font-size: .8rem;
+  letter-spacing: .1em
+}
+
+.ans-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px
+}
+
+.ans-btn {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .88rem;
+  text-align: center;
+  transition: all .18s
+}
+
+.ans-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(91, 138, 245, .1)
+}
+
+.ans-btn:disabled {
+  cursor: default
+}
+
+.ans-btn.ok {
+  border-color: var(--ok) !important;
+  background: rgba(34, 197, 94, .14) !important;
+  color: #86efac !important
+}
+
+.ans-btn.err {
+  border-color: var(--err) !important;
+  background: rgba(239, 68, 68, .14) !important;
+  color: #fca5a5 !important
+}
+
+#feedback {
+  text-align: center;
+  min-height: 22px;
+  font-size: .88rem;
+  color: var(--dim)
+}
+
+#feedback a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px
+}
+
+#feedback a:hover {
+  color: var(--text)
+}
+
+.btn-next {
+  align-self: center;
+  padding: 8px 28px;
+  border: 1px solid var(--accent);
+  background: rgba(91, 138, 245, .12);
+  color: #b0ccff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: all .18s;
+  display: none
+}
+
+.btn-next.show {
+  display: block
+}
+
+.btn-next:hover {
+  background: rgba(91, 138, 245, .22)
+}
+
+.nav-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center
+}
+
+.btn-prev {
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: all .18s;
+  display: none
+}
+
+.btn-prev.show {
+  display: block
+}
+
+.btn-prev:hover {
+  border-color: var(--dim);
+  color: var(--text)
+}
+
+#reveal-controls {
+  display: none;
+  flex-direction: row;
+  gap: 18px;
+  align-items: center;
+  justify-content: center
+}
+
+#reveal-controls.show {
+  display: flex
+}
+
+.rev-chk {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .82rem;
+  color: var(--dim);
+  cursor: pointer;
+  user-select: none
+}
+
+.rev-chk input {
+  accent-color: var(--accent);
+  cursor: pointer;
+  width: 13px;
+  height: 13px
+}
+
+/* results */
+.result-wrap {
+  text-align: center;
+  padding: 20px 0
+}
+
+.result-num {
+  font-size: 3.5rem;
+  font-weight: 200;
+  color: #a8bfff;
+  letter-spacing: .04em
+}
+
+.result-sub {
+  color: var(--dim);
+  margin-top: 4px
+}
+
+.result-grade {
+  font-size: 1.3rem;
+  margin-top: 16px;
+  letter-spacing: .06em
+}
+
+.result-stars {
+  font-size: 2rem;
+  margin-top: 8px;
+  letter-spacing: .15em
+}
+
+.btn-again {
+  align-self: center;
+  padding: 13px 32px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: opacity .2s
+}
+
+.btn-again:hover {
+  opacity: .85
+}
+
+.btn-settings {
+  align-self: center;
+  padding: 12px 28px;
+  border: 1px solid var(--accent);
+  background: rgba(91, 138, 245, .1);
+  color: #b0ccff;
+  border-radius: 12px;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: all .18s
+}
+
+.btn-settings:hover {
+  background: rgba(91, 138, 245, .2)
+}
+
+.btn-explore {
+  align-self: center;
+  padding: 10px 32px;
+  border: 1px solid var(--accent);
+  background: rgba(91, 138, 245, .1);
+  color: #b0ccff;
+  border-radius: 12px;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: all .18s
+}
+
+.btn-explore:hover {
+  background: rgba(91, 138, 245, .2)
+}

@@ -1,0 +1,359 @@
+// ═══════════════════════════════════════════════════════════
+// EXPLORE MODE
+// ═══════════════════════════════════════════════════════════
+const explorePhotoCache = {};
+let explore = { ra: 80, dec: 5, fov: 60, drag: null, quiz: null };
+let exploreDragMoved = false;
+
+function saveExploreState() {
+  sessionStorage.setItem('explore-state',
+    JSON.stringify({ ra: explore.ra, dec: explore.dec, fov: explore.fov }));
+}
+
+function restoreExploreState() {
+  try {
+    const d = JSON.parse(sessionStorage.getItem('explore-state'));
+    if (d) { explore.ra = d.ra; explore.dec = d.dec; explore.fov = d.fov; }
+  } catch {}
+}
+
+function exploreVisibleCons() {
+  return C.filter(con =>
+    angularDist(explore.ra, explore.dec, con.ra, con.dec) < explore.fov / 2 + con.fov / 2 + 8
+  );
+}
+
+function loadExplorePhoto(con) {
+  if (explorePhotoCache[con.abbr]) return;
+  explorePhotoCache[con.abbr] = 'loading';
+  const img = new Image();
+  img.onload = () => {
+    explorePhotoCache[con.abbr] = img;
+    if (document.getElementById('screen-explore').classList.contains('active')) drawExplore();
+  };
+  img.onerror = () => { explorePhotoCache[con.abbr] = 'error'; };
+  img.src = photoUrl(con);
+}
+
+// Draw one triangle of a source image at a destination triangle, using affine + clip.
+function drawImageTriangle(ctx, img, src, dst) {
+  const cross = (dst[1][0] - dst[0][0]) * (dst[2][1] - dst[0][1])
+              - (dst[1][1] - dst[0][1]) * (dst[2][0] - dst[0][0]);
+  if (Math.abs(cross) < 0.5) return; // degenerate
+  const xform = solveAffine(src, dst);
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(dst[0][0], dst[0][1]);
+  ctx.lineTo(dst[1][0], dst[1][1]);
+  ctx.lineTo(dst[2][0], dst[2][1]);
+  ctx.closePath();
+  ctx.clip();
+  ctx.setTransform(...xform);
+  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
+  ctx.restore();
+}
+
+function drawExplorePhotoLayer(ctx, con, viewCon, W, H) {
+  const img = explorePhotoCache[con.abbr];
+  if (!(img instanceof HTMLImageElement)) { loadExplorePhoto(con); return; }
+
+  // Subdivide the photo into a GRID×GRID mesh. For each vertex compute the
+  // exact sky position (via TAN inverse of the photo projection) then re-project
+  // into the explore canvas. Each cell is drawn as 2 affine-warped triangles.
+  const GRID = 8, IW = 640, IH = 640;
+  const gw = GRID + 1;
+  const verts = new Array(gw * gw);
+  for (let gy = 0; gy <= GRID; gy++) {
+    for (let gx = 0; gx <= GRID; gx++) {
+      const px = gx / GRID * IW, py = gy / GRID * IH;
+      const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
+      const ep = projectStarsTAN([[rd.ra, rd.dec, 0]], viewCon, W, H)[0];
+      verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
+    }
+  }
+  for (let gy = 0; gy < GRID; gy++) {
+    for (let gx = 0; gx < GRID; gx++) {
+      const p00 = verts[gy * gw + gx];
+      const p10 = verts[gy * gw + gx + 1];
+      const p01 = verts[(gy + 1) * gw + gx];
+      const p11 = verts[(gy + 1) * gw + gx + 1];
+      if (p00 && p10 && p01)
+        drawImageTriangle(ctx, img,
+          [[p00[0], p00[1]], [p10[0], p10[1]], [p01[0], p01[1]]],
+          [[p00[2], p00[3]], [p10[2], p10[3]], [p01[2], p01[3]]]);
+      if (p10 && p11 && p01)
+        drawImageTriangle(ctx, img,
+          [[p10[0], p10[1]], [p11[0], p11[1]], [p01[0], p01[1]]],
+          [[p10[2], p10[3]], [p11[2], p11[3]], [p01[2], p01[3]]]);
+    }
+  }
+}
+
+function drawExploreArtLayer(ctx, con, viewCon, W, H) {
+  const art = ART[con.abbr];
+  if (!art || art.anchors.length < 3) return;
+  if (!artCache[con.abbr]) {
+    artCache[con.abbr] = 'loading';
+    const img = new Image();
+    img.onload = () => {
+      artCache[con.abbr] = img;
+      if (document.getElementById('screen-explore').classList.contains('active')) drawExplore();
+    };
+    img.onerror = () => { artCache[con.abbr] = 'error'; };
+    img.src = art.url;
+  }
+  const img = artCache[con.abbr];
+  if (!(img instanceof HTMLImageElement)) return;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+
+  // Map art pixels through the constellation's own fixed TAN projection
+  // (ref canvas) as a stable intermediate, then invert to RA/Dec and
+  // re-project into the explore view. This matches each pixel to the same
+  // sky position regardless of where the explore view is pointing.
+  const REF = 1000;
+  const refPts = projectStarsTAN(art.anchors.map(a => [a.ra, a.dec, 0]), con, REF, REF);
+  const artToRef = solveAffine(
+    art.anchors.map(a => [a.px * iw, a.py * ih]),
+    refPts.map(p => [p.x, p.y])
+  );
+
+  const GRID = 8, gw = GRID + 1;
+  const verts = new Array(gw * gw);
+  for (let gy = 0; gy <= GRID; gy++) {
+    for (let gx = 0; gx <= GRID; gx++) {
+      const px = gx / GRID * iw, py = gy / GRID * ih;
+      const qx = artToRef[0] * px + artToRef[2] * py + artToRef[4];
+      const qy = artToRef[1] * px + artToRef[3] * py + artToRef[5];
+      const rd = pixelToRADec(qx, qy, con.ra, con.dec, con.fov, REF, REF);
+      const ep = projectStarsTAN([[rd.ra, rd.dec, 0]], viewCon, W, H)[0];
+      verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
+    }
+  }
+
+  ctx.save();
+  ctx.globalAlpha = 0.5;
+  ctx.globalCompositeOperation = 'screen';
+  for (let gy = 0; gy < GRID; gy++) {
+    for (let gx = 0; gx < GRID; gx++) {
+      const p00 = verts[gy * gw + gx];
+      const p10 = verts[gy * gw + gx + 1];
+      const p01 = verts[(gy + 1) * gw + gx];
+      const p11 = verts[(gy + 1) * gw + gx + 1];
+      if (p00 && p10 && p01)
+        drawImageTriangle(ctx, img,
+          [[p00[0], p00[1]], [p10[0], p10[1]], [p01[0], p01[1]]],
+          [[p00[2], p00[3]], [p10[2], p10[3]], [p01[2], p01[3]]]);
+      if (p10 && p11 && p01)
+        drawImageTriangle(ctx, img,
+          [[p10[0], p10[1]], [p11[0], p11[1]], [p01[0], p01[1]]],
+          [[p10[2], p10[3]], [p11[2], p11[3]], [p01[2], p01[3]]]);
+    }
+  }
+  ctx.restore();
+}
+
+function drawExplore() {
+  const canvas = document.getElementById('explore-canvas');
+  if (!canvas) return;
+  const wrap = document.getElementById('explore-wrap');
+  const dpr = window.devicePixelRatio || 1;
+  const sz = wrap.offsetWidth;
+  const need = Math.round(sz * dpr);
+  if (canvas.width !== need) canvas.width = canvas.height = need;
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const viewCon = { ra: explore.ra, dec: explore.dec, fov: explore.fov };
+
+  ctx.fillStyle = '#010208';
+  ctx.fillRect(0, 0, W, H);
+
+  const visible = exploreVisibleCons();
+  const q = explore.quiz;
+  const cm = q?.stageMode;  // course mode active?
+  const showPhoto      = cm ? cm === 'photo'   : document.getElementById('chk-ex-photo').checked;
+  const showDiag       = cm ? cm !== 'photo'   : document.getElementById('chk-ex-diagram').checked;
+  const showLines      = cm ? cm === 'diagram' : true;
+  const showBounds     = cm ? !!q.bounds       : document.getElementById('chk-ex-bounds').checked;
+  const showArt        = cm ? false            : document.getElementById('chk-ex-art').checked;
+  const showStarLabels = cm ? false            : document.getElementById('chk-ex-starlabels').checked;
+  const showConNames   = cm ? false            : document.getElementById('chk-ex-connames').checked;
+  const showEquator    = cm ? false            : document.getElementById('chk-ex-equator').checked;
+
+  // Photo layer
+  if (showPhoto) {
+    for (const con of visible) {
+      try { drawExplorePhotoLayer(ctx, con, viewCon, W, H); } catch (e) { }
+    }
+  }
+
+  // Celestial equator
+  if (showEquator) {
+    const eqPts = [];
+    for (let ra = 0; ra <= 360; ra += 0.5) eqPts.push([ra, 0, 0]);
+    const pts = projectStarsTAN(eqPts, viewCon, W, H);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(220,180,80,0.55)';
+    ctx.lineWidth = Math.max(1, W / 640);
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath();
+    let penDown = false;
+    for (const p of pts) {
+      if (p.d <= 0) { penDown = false; continue; }
+      if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+      else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Boundaries
+  if (showBounds) {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(120,200,120,0.45)';
+    ctx.lineWidth = Math.max(1, W / 640);
+    for (const con of visible) {
+      const rings = BOUNDS[con.abbr];
+      if (!rings) continue;
+      for (const ring of rings) {
+        const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+        ctx.beginPath();
+        let penDown = false;
+        for (const p of pts) {
+          if (p.d <= 0) { penDown = false; continue; }
+          if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  // Diagram: stars + lines + constellation labels
+  if (showDiag) {
+    for (const con of visible) {
+      const proj = projectStarsTAN(con.stars, viewCon, W, H)
+        .map((p, i) => ({ ...p, _orig: con.stars[i] }))
+        .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
+      if (con.lines && showLines) {
+        const fullProj = projectStarsTAN(con.stars, viewCon, W, H)
+          .map(p => p.d > 0 ? p : null);
+        drawLines(ctx, fullProj, con);
+      }
+      drawStars(ctx, proj);
+      if (showStarLabels) drawLabels(ctx, proj, W);
+      // Constellation name label near center
+      if (showConNames) {
+        const cp = projectStarsTAN([[con.ra, con.dec, 99]], viewCon, W, H)[0];
+        if (cp.x > 0 && cp.x < W && cp.y > 0 && cp.y < H) {
+          const fs = Math.max(9, Math.round(W * 0.02));
+          ctx.save();
+          ctx.font = `${fs}px system-ui,sans-serif`;
+          ctx.fillStyle = 'rgba(160,185,255,0.6)';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(con.name, cp.x, cp.y);
+          ctx.restore();
+        }
+      }
+    }
+  }
+
+  // Artwork layer
+  const exploreCredit = document.getElementById('explore-art-credit');
+  if (showArt) {
+    let hasArt = false;
+    for (const con of visible) {
+      if (ART[con.abbr]) { hasArt = true; try { drawExploreArtLayer(ctx, con, viewCon, W, H); } catch (e) { } }
+    }
+    if (exploreCredit) exploreCredit.textContent = hasArt ? 'Art: Johan Meuris / Free Art Licence' : '';
+  } else {
+    if (exploreCredit) exploreCredit.textContent = '';
+  }
+
+  // Quiz: highlight boundaries after answering
+  if (explore.quiz && explore.quiz.answered) {
+    const { target, clicked } = explore.quiz;
+    const lw = Math.max(2, W / 320);
+    const drawBoundary = (con, color) => {
+      if (!BOUNDS[con.abbr]) return;
+      // Must skip off-screen constellations. TAN projection maps points behind the
+      // projection plane to extreme-but-finite coordinates that can fall within the
+      // 2*W pen-up threshold, producing phantom outlines on the wrong side of the sky.
+      if (angularDist(explore.ra, explore.dec, con.ra, con.dec) > explore.fov / 2 + con.fov / 2 + 10) return;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lw;
+      for (const ring of BOUNDS[con.abbr]) {
+        const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+        ctx.beginPath();
+        let penDown = false;
+        for (const p of pts) {
+          if (p.d <= 0) { penDown = false; continue; }
+          if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+    };
+    if (clicked && clicked.abbr !== target.abbr) drawBoundary(clicked, 'rgba(255,80,80,0.9)');
+    drawBoundary(target, 'rgba(100,255,100,0.9)');
+  }
+}
+
+function startExploreQuiz() {
+  const pool = C.filter(c => BOUNDS[c.abbr]).sort(() => Math.random() - 0.5);
+  explore.quiz = { pool, idx: 0, score: 0, total: 0, target: null, answered: false };
+  document.getElementById('explore-quiz-bar').style.display = 'flex';
+  document.getElementById('chk-ex-bounds').checked = true;
+  localStorage.setItem('chk-ex-bounds', '1');
+  nextExploreQuestion();
+}
+
+function stopExploreQuiz() {
+  explore.quiz = null;
+  document.getElementById('explore-quiz-bar').style.display = 'none';
+  document.querySelector('.explore-layers').style.display = '';
+  drawExplore();
+}
+
+function nextExploreQuestion() {
+  const q = explore.quiz;
+  if (q.idx >= q.pool.length) {
+    if (q.courseStageIdx != null) { endFindCourseStage(); return; }
+    q.pool.sort(() => Math.random() - 0.5);
+    q.idx = 0;
+  }
+  q.target = q.pool[q.idx++];
+  q.answered = false;
+  document.getElementById('eq-target-name').textContent = q.target.name;
+  document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
+  document.getElementById('eq-feedback').textContent = '';
+  document.getElementById('eq-feedback').className = 'eq-feedback';
+  document.getElementById('eq-next').style.display = 'none';
+  drawExplore();
+}
+
+function handleExploreClick(px, py) {
+  const q = explore.quiz;
+  if (!q || q.answered) return;
+  const canvas = document.getElementById('explore-canvas');
+  const W = canvas.width, H = canvas.height;
+  const coords = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, W, H);
+  // Pre-filter by angular distance before pointInPolygon — see comment there.
+  const clicked = C.find(c => BOUNDS[c.abbr] &&
+    angularDist(coords.ra, coords.dec, c.ra, c.dec) < 60 &&
+    BOUNDS[c.abbr].some(ring => pointInPolygon(coords.ra, coords.dec, ring))) || null;
+  const correct = clicked && clicked.abbr === q.target.abbr;
+  q.answered = true;
+  q.clicked = clicked;
+  q.total++;
+  if (correct) q.score++;
+  const fb = document.getElementById('eq-feedback');
+  fb.textContent = correct ? '✓ Correct!' : clicked ? `✗ Nope, that's ${clicked.name}` : '✗ Missed';
+  fb.className = 'eq-feedback ' + (correct ? 'correct' : 'wrong');
+  document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
+  document.getElementById('eq-next').style.display = '';
+  drawExplore();
+}
