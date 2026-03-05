@@ -206,16 +206,36 @@ function drawExplore() {
     ctx.restore();
   }
 
+  // Pre-project boundaries for all visible constellations (reused for drawing, edge
+  // collection, and label polygon PIP — avoids redundant projection passes).
+  const projBounds = {};
+  for (const con of visible) {
+    const rings = BOUNDS[con.abbr];
+    if (!rings) continue;
+    projBounds[con.abbr] = rings.map(ring =>
+      projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H)
+    );
+  }
+  // Collect all visible boundary edges for label collision detection.
+  const allBoundEdges = [];
+  for (const pRings of Object.values(projBounds)) {
+    for (const pts of pRings) {
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[i], b = pts[(i + 1) % pts.length];
+        if (a.d > 0 && b.d > 0) allBoundEdges.push([a, b]);
+      }
+    }
+  }
+
   // Boundaries
   if (showBounds) {
     ctx.save();
     ctx.strokeStyle = 'rgba(120,200,120,0.45)';
     ctx.lineWidth = Math.max(1, W / 640);
     for (const con of visible) {
-      const rings = BOUNDS[con.abbr];
-      if (!rings) continue;
-      for (const ring of rings) {
-        const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+      const pRings = projBounds[con.abbr];
+      if (!pRings) continue;
+      for (const pts of pRings) {
         ctx.beginPath();
         let penDown = false;
         for (const p of pts) {
@@ -229,7 +249,7 @@ function drawExplore() {
     ctx.restore();
   }
 
-  // Diagram: stars + lines + constellation labels
+  // Diagram: stars + lines + star labels
   if (showDiag) {
     for (const con of visible) {
       const proj = projectStarsTAN(con.stars, viewCon, W, H)
@@ -242,21 +262,52 @@ function drawExplore() {
       }
       drawStars(ctx, proj);
       if (showStarLabels) drawLabels(ctx, proj, W);
-      // Constellation name label near center
-      if (showConNames) {
-        const cp = projectStarsTAN([[con.ra, con.dec, 99]], viewCon, W, H)[0];
-        if (cp.x > 0 && cp.x < W && cp.y > 0 && cp.y < H) {
-          const fs = Math.max(9, Math.round(W * 0.02));
-          ctx.save();
-          ctx.font = `${fs}px system-ui,sans-serif`;
-          ctx.fillStyle = 'rgba(160,185,255,0.6)';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(con.name, cp.x, cp.y);
-          ctx.restore();
-        }
-      }
     }
+  }
+
+  // Constellation name labels — placed inside boundary polygon, avoiding boundary edges.
+  if (showConNames) {
+    const fs = Math.max(9, Math.round(W * 0.02));
+    ctx.save();
+    ctx.font = `${fs}px system-ui,sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(160,185,255,0.6)';
+    for (const con of visible) {
+      const cp = projectStarsTAN([[con.ra, con.dec, 99]], viewCon, W, H)[0];
+      if (!cp || cp.d <= 0) continue;
+      const name = con.name;
+      const tw = ctx.measureText(name).width;
+      const hw = tw / 2 + 2, hh = fs * 0.65;
+      const pRings = projBounds[con.abbr];
+      const polyPts = pRings ? pRings.flatMap(pts => pts.filter(p => p.d > 0)) : null;
+      const canPIP = polyPts && polyPts.length >= 3;
+      const valid = (tx, ty) => {
+        if (tx < hw || tx > W - hw || ty < hh || ty > H - hh) return false;
+        const x1 = tx - hw, x2 = tx + hw, y1 = ty - hh, y2 = ty + hh;
+        if (canPIP) {
+          for (const [px, py] of [[tx,ty],[x1,y1],[x2,y1],[x1,y2],[x2,y2]])
+            if (!pointInPoly2D(px, py, polyPts)) return false;
+        }
+        if (showBounds && allBoundEdges.length && edgesHitRect(allBoundEdges, x1, y1, x2, y2)) return false;
+        return true;
+      };
+      let lx = cp.x, ly = cp.y;
+      if (!valid(lx, ly)) {
+        let found = false;
+        const step = Math.max(hw, fs);
+        for (let r = step; r < W * 0.7 && !found; r += step) {
+          for (let ai = 0; ai < 16 && !found; ai++) {
+            const tx = cp.x + Math.cos(ai * Math.PI / 8) * r;
+            const ty = cp.y + Math.sin(ai * Math.PI / 8) * r;
+            if (valid(tx, ty)) { lx = tx; ly = ty; found = true; }
+          }
+        }
+        if (!found) continue;
+      }
+      ctx.fillText(name, lx, ly);
+    }
+    ctx.restore();
   }
 
   // Artwork layer
