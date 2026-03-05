@@ -335,23 +335,32 @@ function redrawReveal(con) {
     .flatMap(ring => projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H))
     .filter(p => p.d > 0);
 
-  // Search for a point inside the circle where the full label bounding box
-  // (hw × hh half-extents) lies inside the neighbor's polygon and outside
-  // the current constellation's polygon.
-  // hintDx/hintDy: direction from circle centre toward the neighbor (bias).
-  // nVisPts: visible projected boundary points of the neighbor (for PIP).
+  // Search (in canvas space) for a label centre where the full label bounding box,
+  // drawn horizontally in SCREEN space, lies inside the neighbor's polygon and
+  // outside the current constellation's polygon (both in canvas space via PIP).
+  //
+  // The label is rendered after the rotation transform is removed, so its corners
+  // are at (screenX ± hw, screenY ± hh). We rotate those back to canvas space
+  // before each PIP test so the geometry is consistent.
   function findInNeighbor(nVisPts, hintDx, hintDy, hw, hh) {
     const canNPIP = nVisPts.length >= 3;
     const canCPIP = curVisPts.length >= 3;
-    // Four corners of the label bounding box relative to its centre.
-    const offsets = [[-hw, -hh], [hw, -hh], [-hw, hh], [hw, hh]];
+    const cosA = Math.cos(angle), sinA = Math.sin(angle);
+    // Screen-space label corners relative to the label centre.
+    const scrOff = [[-hw, -hh], [hw, -hh], [-hw, hh], [hw, hh]];
+
     function valid(tx, ty) {
-      // Centre must be inside the circle with room for the label.
+      // Centre must be inside the circle with enough margin for the label.
       const dx = tx - cirCx, dy = ty - cirCy;
       if (dx * dx + dy * dy > (R - hw) * (R - hw)) return false;
-      // All four corners must satisfy both PIP constraints.
-      for (const [ox, oy] of offsets) {
-        const px = tx + ox, py = ty + oy;
+      // Canvas → screen for the candidate centre.
+      const sx = cirCx + dx * cosA - dy * sinA;
+      const sy = cirCy + dx * sinA + dy * cosA;
+      // For each screen-space corner, rotate back to canvas space and PIP-test.
+      for (const [ox, oy] of scrOff) {
+        const scx = sx + ox - cirCx, scy = sy + oy - cirCy;
+        const px = cirCx + scx * cosA + scy * sinA;
+        const py = cirCy - scx * sinA + scy * cosA;
         if (canNPIP && !pointInPoly2D(px, py, nVisPts)) return false;
         if (canCPIP &&  pointInPoly2D(px, py, curVisPts)) return false;
       }
