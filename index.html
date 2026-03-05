@@ -561,6 +561,15 @@
     .viewer-mode #lbl-rev-photo { display:inline-flex; }
     #viewer-select-row { display:none; justify-content:center; margin-top:10px; }
     .viewer-mode #viewer-select-row { display:flex; }
+    #viewer-tweak { display:none; padding:8px 16px; }
+    .viewer-mode #viewer-tweak { display:block; }
+    .tweak-row { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:.8rem; }
+    .tweak-row label { width:80px; flex-shrink:0; }
+    .tweak-val { color:var(--accent); }
+    .tweak-row input[type=range] { flex:1; }
+    #btn-copy-framing { padding:6px 16px; border:1px solid var(--border); background:transparent;
+                        color:var(--text); border-radius:8px; cursor:pointer; font-size:.82rem; }
+    #btn-copy-framing:hover { border-color:var(--accent); color:var(--accent); }
     #con-select-viewer { background:var(--bg); color:var(--text); border:1px solid var(--border);
                          border-radius:8px; padding:6px 10px; font-size:.85rem; }
   </style>
@@ -608,6 +617,23 @@
         <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
       </div>
       <div id="viewer-select-row"><select id="con-select-viewer"></select></div>
+      <div id="viewer-tweak">
+        <div class="tweak-row">
+          <label>Scale <span class="tweak-val" id="tweak-scale-val">1.00×</span></label>
+          <input type="range" id="tweak-scale" min="25" max="400" value="100" step="1">
+        </div>
+        <div class="tweak-row">
+          <label>X <span class="tweak-val" id="tweak-dx-val">0.0°</span></label>
+          <input type="range" id="tweak-dx" min="-45" max="45" value="0" step="0.5">
+        </div>
+        <div class="tweak-row">
+          <label>Y <span class="tweak-val" id="tweak-dy-val">0.0°</span></label>
+          <input type="range" id="tweak-dy" min="-45" max="45" value="0" step="0.5">
+        </div>
+        <div style="text-align:center;margin-top:6px">
+          <button id="btn-copy-framing">Copy ra/dec/fov</button>
+        </div>
+      </div>
       <div class="nav-row">
         <button class="btn-prev" id="btn-prev">← Prev</button>
         <button class="btn-next" id="btn-next">Next →</button>
@@ -702,7 +728,7 @@
       },
 
       {
-        name: "Cassiopeia", abbr: "Cas", hem: "N", diff: 1, ra: 14.5, dec: 60.5, fov: 16.8,
+        name: "Cassiopeia", abbr: "Cas", hem: "N", diff: 1, ra: 13.0, dec: 60.0, fov: 21.7,
         stars: [[2.293305, 59.14978, 2.3, null, 'Caph'], [10.126740000000002, 56.537331, 2.2, 'o', 'Schedar'], [14.177145, 60.71674, 2.1, 'b', 'Cih'], [21.453239999999997, 60.235283, 2.7], [28.598760000000002, 63.670101, 3.4, 'b']],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
       },
@@ -756,7 +782,7 @@
       },
 
       {
-        name: "Ursa Minor", abbr: "UMi", hem: "N", diff: 1, meaning: "the little bear", ra: 229.7, dec: 81.1, fov: 23.4,
+        name: "Ursa Minor", abbr: "UMi", hem: "N", diff: 1, meaning: "the little bear", ra: 229.7, dec: 81.1, fov: 25.6,
         stars: [[37.94625, 89.264109, 2.0, null, 'Polaris'], [263.05377, 86.58646, 4.3], [251.49238499999998, 82.037262, 4.2], [236.014485, 77.794493, 4.3], [244.376865, 75.75533, 5.0], [230.182245, 71.834016, 3.0], [222.676575, 74.155505, 2.1, 'r', 'Kochab']],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]]
       },
@@ -774,7 +800,7 @@
       },
 
       {
-        name: "Aries", abbr: "Ari", hem: "N", diff: 2, meaning: "the ram", ra: 35.3, dec: 23.5, fov: 17.5,
+        name: "Aries", abbr: "Ari", hem: "N", diff: 2, meaning: "the ram", ra: 35.8, dec: 22.0, fov: 21.3,
         stars: [[28.38255, 19.293852, 3.9], [28.66002, 20.808035, 2.6], [31.793325000000003, 23.462423, 2.0, 'o', 'Hamal'], [42.495945, 27.260507, 3.6, 'b']],
         lines: [[0, 1], [1, 2], [2, 3]]
       },
@@ -798,7 +824,7 @@
       },
 
       {
-        name: "Canis Minor", abbr: "CMi", hem: "N", diff: 2, meaning: "the lesser dog", ra: 114.2, dec: 8.0, fov: 8.4,
+        name: "Canis Minor", abbr: "CMi", hem: "N", diff: 2, meaning: "the lesser dog", ra: 114.2, dec: 8.0, fov: 14.2,
         stars: [[114.825495, 5.224993, 0.4, null, 'Procyon'], [111.78768, 8.289315, 2.9, 'b'], [116.567505, 10.768252, 5.25]],
         lines: [[0, 1]]
       },
@@ -834,7 +860,7 @@
       },
 
       {
-        name: "Delphinus", abbr: "Del", hem: "N", diff: 2, meaning: "the dolphin", ra: 310.0, dec: 13.7, fov: 6.7,
+        name: "Delphinus", abbr: "Del", hem: "N", diff: 2, meaning: "the dolphin", ra: 310.0, dec: 13.7, fov: 8.9,
         stars: [[308.303205, 11.303263, 4.0], [309.38724, 14.595087, 3.6], [309.909525, 15.912072, 3.8, 'b'], [311.6646, 16.124296, 4.3], [310.864725, 15.074581, 4.4]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 1]]
       },
@@ -876,13 +902,13 @@
       },
 
       {
-        name: "Lyra", abbr: "Lyr", hem: "N", diff: 2, meaning: "the lyre", ra: 282.1, dec: 36.2, fov: 9.5,
+        name: "Lyra", abbr: "Lyr", hem: "N", diff: 2, meaning: "the lyre", ra: 283.1, dec: 35.7, fov: 11.9,
         stars: [[279.2346, 38.783692, 0.0, 'b', 'Vega'], [281.08475999999996, 39.670123, 4.7], [281.193135, 37.605115, 4.3], [283.62618, 36.898613, 4.2], [284.735925, 32.689557, 3.2], [282.51997500000004, 33.362667, 3.5]],
         lines: [[0, 1], [1, 2], [2, 0], [0, 2], [2, 3], [3, 4], [4, 5], [5, 2]]
       },
 
       {
-        name: "Ophiuchus", abbr: "Oph", hem: "B", diff: 2, meaning: "the serpent bearer", ra: 256.7, dec: -8.7, fov: 55.2,
+        name: "Ophiuchus", abbr: "Oph", hem: "B", diff: 2, meaning: "the serpent bearer", ra: 255.2, dec: -2.2, fov: 60.9,
         stars: [[263.733615, 12.560035, 2.1, 'b', 'Rasalhague'], [254.417085, 9.375033, 3.2, 'o'], [247.72843500000002, 1.983923, 3.8], [243.58641000000003, -3.694323, 2.7, 'r'], [244.58036999999996, -4.692511, 3.2, 'o'], [246.950775, -8.371731, 4.6], [249.28974000000002, -10.56709, 2.5], [257.59452, -15.72491, 2.4, 'b', 'Sabik'], [265.868145, 4.567303, 2.8, 'o'], [266.973165, 2.707276, 3.8], [269.75662500000004, -9.773632, 3.3, 'o'], [260.502405, -24.999545, 3.3, 'b'], [261.83863499999995, -29.867033, 4.3], [247.784865, -16.612733, 4.3], [246.755985, -18.456251, 4.2], [246.02577, -20.037327, 4.5], [246.39632999999998, -23.447178, 4.6]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 5], [5, 4], [4, 3], [3, 2], [2, 1], [1, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 9], [9, 8], [8, 0], [7, 11], [11, 12], [6, 13], [13, 14], [14, 15], [15, 16]]
       },
@@ -942,13 +968,13 @@
       },
 
       {
-        name: "Antlia", abbr: "Ant", hem: "S", diff: 3, meaning: "the air pump", ra: 153.2, dec: -34.3, fov: 21.5,
+        name: "Antlia", abbr: "Ant", hem: "S", diff: 3, meaning: "the air pump", ra: 150.7, dec: -30.8, fov: 32.6,
         stars: [[164.179335, -37.137765, 4.6], [156.78795, -31.067779, 4.3], [142.311345, -35.951335, 4.5]],
         lines: [[0, 1], [1, 2]]
       },
 
       {
-        name: "Apus", abbr: "Aps", hem: "S", diff: 3, meaning: "the bird of paradise", ra: 237.3, dec: -78.6, fov: 6.9,
+        name: "Apus", abbr: "Aps", hem: "S", diff: 3, meaning: "the bird of paradise", ra: 235.3, dec: -78.6, fov: 14.6,
         stars: [[221.965515, -79.044751, 3.8, 'r'], [248.36413499999998, -78.897148, 3.9], [245.086785, -78.695745, 4.7], [250.77189, -77.517435, 4.2]],
         lines: [[0, 1], [2, 3], [3, 1]]
       },
@@ -966,13 +992,13 @@
       },
 
       {
-        name: "Camelopardalis", abbr: "Cam", hem: "N", diff: 3, meaning: "the giraffe", ra: 69.5, dec: 66.3, fov: 35.4,
+        name: "Camelopardalis", abbr: "Cam", hem: "N", diff: 3, meaning: "the giraffe", ra: 69.5, dec: 69.8, fov: 37.9,
         stars: [[74.3217, 53.752101, 4.4], [75.85454999999999, 60.442245, 4.0], [73.51254, 66.342678, 4.3], [94.711575, 69.319787, 4.8], [105.016215, 76.977408, 4.5], [57.589529999999996, 71.332266, 4.6], [57.380355, 65.525972, 4.4], [52.26723, 59.94033, 4.2]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 3], [3, 2], [2, 5], [5, 6], [6, 7]]
       },
 
       {
-        name: "Canes Venatici", abbr: "CVn", hem: "N", diff: 3, meaning: "the hunting dogs", ra: 192.4, dec: 37.3, fov: 12.1,
+        name: "Canes Venatici", abbr: "CVn", hem: "N", diff: 3, meaning: "the hunting dogs", ra: 193.9, dec: 37.3, fov: 18.5,
         stars: [[194.007105, 38.31838, 2.9, 'b'], [188.43616500000002, 41.35748, 4.2], [196.43517, 35.798899, 5.195, 'b'], [188.41215, 33.247584, 5.38, 'o']],
         lines: [[0, 1]]
       },
@@ -1008,7 +1034,7 @@
       },
 
       {
-        name: "Coma Berenices", abbr: "Com", hem: "N", diff: 3, meaning: "Berenice's hair", ra: 192.4, dec: 23.0, fov: 16.9,
+        name: "Coma Berenices", abbr: "Com", hem: "N", diff: 3, meaning: "Berenice's hair", ra: 190.4, dec: 24.0, fov: 20.1,
         stars: [[197.49703499999998, 17.529431, 4.3], [197.96856, 27.878183, 4.2], [186.73449, 28.268423, 4.3]],
         lines: [[0, 1], [1, 2]]
       },
@@ -1026,19 +1052,19 @@
       },
 
       {
-        name: "Dorado", abbr: "Dor", hem: "S", diff: 3, meaning: "the dolphinfish", ra: 74.1, dec: -59.1, fov: 22.1,
+        name: "Dorado", abbr: "Dor", hem: "S", diff: 3, meaning: "the dolphinfish", ra: 72.1, dec: -58.6, fov: 22.1,
         stars: [[64.00645499999999, -51.486648, 4.3], [68.49897, -55.044975, 3.3, 'b'], [76.377795, -57.472704, 4.7], [83.40631499999999, -62.489825, 3.8], [86.193345, -65.735526, 4.3], [88.52487, -63.089627, 4.7]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 1], [1, 3], [3, 4], [4, 5], [5, 3]]
       },
 
       {
-        name: "Equuleus", abbr: "Equ", hem: "N", diff: 3, meaning: "the little horse", ra: 318.3, dec: 7.7, fov: 5.8,
+        name: "Equuleus", abbr: "Equ", hem: "N", diff: 3, meaning: "the little horse", ra: 319.8, dec: 7.2, fov: 8.3,
         stars: [[318.955965, 5.247845, 3.9], [318.62005500000004, 10.006981, 4.5], [317.58541499999995, 10.131579, 4.7]],
         lines: [[0, 1], [1, 2]]
       },
 
       {
-        name: "Fornax", abbr: "For", hem: "S", diff: 3, meaning: "the furnace", ra: 39.6, dec: -30.8, fov: 17.4,
+        name: "Fornax", abbr: "For", hem: "S", diff: 3, meaning: "the furnace", ra: 41.1, dec: -30.8, fov: 18.7,
         stars: [[48.018735, -28.987618, 3.8], [42.272535000000005, -32.405898, 4.5], [31.122660000000003, -29.296819, 4.7]],
         lines: [[0, 1], [1, 2]]
       },
@@ -1074,31 +1100,31 @@
       },
 
       {
-        name: "Leo Minor", abbr: "LMi", hem: "N", diff: 3, meaning: "the little lion", ra: 153.6, dec: 35.3, fov: 18.8,
+        name: "Leo Minor", abbr: "LMi", hem: "N", diff: 3, meaning: "the little lion", ra: 150.6, dec: 35.3, fov: 23.1,
         stars: [[143.55576000000002, 36.397558, 4.5], [151.857315, 35.244693, 4.5], [156.970905, 36.707212, 4.2], [163.32789, 34.214871, 3.8, 'o'], [156.47842500000002, 33.79612, 4.7]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 1]]
       },
 
       {
-        name: "Lupus", abbr: "Lup", hem: "S", diff: 3, meaning: "the wolf", ra: 231.0, dec: -43.0, fov: 26.4,
+        name: "Lupus", abbr: "Lup", hem: "S", diff: 3, meaning: "the wolf", ra: 229.0, dec: -44.0, fov: 28.9,
         stars: [[220.482345, -47.3882, 2.3, 'b'], [228.0714, -52.099247, 3.4], [230.67031500000002, -44.689622, 3.4, 'b'], [233.785215, -41.166757, 2.8, 'b'], [230.343015, -40.647518, 3.2, 'b'], [224.63305499999998, -43.13396, 2.7, 'b'], [240.03054, -38.396706, 3.4, 'b'], [230.4516, -36.261376, 3.6, 'r'], [237.73974, -33.627165, 4.0]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 4], [4, 3], [3, 6], [6, 7], [7, 8], [8, 6], [6, 1]]
       },
 
       {
-        name: "Lynx", abbr: "Lyn", hem: "N", diff: 3, meaning: "the lynx", ra: 122.9, dec: 49.0, fov: 44.2,
+        name: "Lynx", abbr: "Lyn", hem: "N", diff: 3, meaning: "the lynx", ra: 122.9, dec: 49.0, fov: 45.9,
         stars: [[140.263875, 34.392562, 3.1, 'r'], [139.711035, 36.802597, 3.8], [136.632375, 38.452215, 4.6], [135.160275, 41.782911, 4.0], [125.70881999999999, 43.188131, 4.2], [111.67855499999999, 49.211527, 4.6], [104.31918, 58.422759, 4.3], [94.90578000000001, 59.010964, 4.4]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]]
       },
 
       {
-        name: "Mensa", abbr: "Men", hem: "S", diff: 3, meaning: "the table mountain", ra: 82.0, dec: -72.7, fov: 11.8,
+        name: "Mensa", abbr: "Men", hem: "S", diff: 3, meaning: "the table mountain", ra: 82.0, dec: -72.7, fov: 19.5,
         stars: [[92.55948000000001, -74.753045, 5.1], [75.679185, -71.3143, 5.3], [70.76646, -70.931027, 5.511, 'b'], [82.96977, -76.340964, 5.2, 'o'], [92.18465, -68.843409, 5.038, 'b']],
         lines: [[0, 1], [0, 3], [3, 1], [1, 2], [4, 0]]
       },
 
       {
-        name: "Microscopium", abbr: "Mic", hem: "S", diff: 3, meaning: "the microscope", ra: 316.0, dec: -33.0, fov: 7.0,
+        name: "Microscopium", abbr: "Mic", hem: "S", diff: 3, meaning: "the microscope", ra: 315.5, dec: -30.5, fov: 10.0,
         stars: [[312.49199999999996, -33.779722, 4.9], [312.99483, -33.177974, 6.1], [315.322755, -32.257767, 4.67], [319.48449, -32.172539, 4.82]],
         lines: [[0, 1], [1, 2], [2, 3]]
       },
@@ -1110,13 +1136,13 @@
       },
 
       {
-        name: "Musca", abbr: "Mus", hem: "S", diff: 3, meaning: "the fly", ra: 184.9, dec: -69.6, fov: 9.8,
+        name: "Musca", abbr: "Mus", hem: "S", diff: 3, meaning: "the fly", ra: 184.9, dec: -68.6, fov: 9.8,
         stars: [[176.402115, -66.728763, 3.6], [184.393755, -67.960736, 4.1], [189.29608499999998, -69.135564, 2.7, 'b'], [191.57019, -68.108119, 3.0, 'b'], [195.566385, -71.548855, 3.6, 'o'], [188.11701, -72.132988, 3.8, 'b']],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 2]]
       },
 
       {
-        name: "Norma", abbr: "Nor", hem: "S", diff: 3, meaning: "the carpenter's square", ra: 243.9, dec: -49.9, fov: 11.8,
+        name: "Norma", abbr: "Nor", hem: "S", diff: 3, meaning: "the carpenter's square", ra: 243.9, dec: -50.9, fov: 12.3,
         stars: [[240.80368499999997, -49.229695, 4.7], [244.960305, -50.155508, 4.0], [246.796005, -47.554786, 4.5], [241.62264, -45.173185, 4.7], [243.36972, -54.630467, 4.94, 'o']],
         lines: [[0, 1], [1, 2], [2, 3], [3, 0], [4, 0], [4, 1]]
       },
@@ -1140,7 +1166,7 @@
       },
 
       {
-        name: "Pictor", abbr: "Pic", hem: "S", diff: 3, meaning: "the painter's easel", ra: 93.3, dec: -56.7, fov: 15.7,
+        name: "Pictor", abbr: "Pic", hem: "S", diff: 3, meaning: "the painter's easel", ra: 90.3, dec: -56.7, fov: 15.7,
         stars: [[102.04791, -61.941391, 3.2], [87.456765, -56.166663, 4.5], [86.821185, -51.066514, 3.9]],
         lines: [[0, 1], [1, 2]]
       },
@@ -1170,43 +1196,43 @@
       },
 
       {
-        name: "Scutum", abbr: "Sct", hem: "S", diff: 3, meaning: "the shield", ra: 279.6, dec: -9.7, fov: 12.4,
+        name: "Scutum", abbr: "Sct", hem: "S", diff: 3, meaning: "the shield", ra: 280.1, dec: -11.2, fov: 17.2,
         stars: [[281.79363, -4.747867, 4.2], [278.80177499999996, -8.244073, 3.9, 'o'], [277.29939, -14.565813, 4.7], [280.568445, -9.052549, 4.7]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 0]]
       },
 
       {
-        name: "Sextans", abbr: "Sex", hem: "B", diff: 3, meaning: "the sextant", ra: 152.9, dec: -4.3, fov: 14.0,
+        name: "Sextans", abbr: "Sex", hem: "B", diff: 3, meaning: "the sextant", ra: 153.4, dec: -2.3, fov: 16.4,
         stars: [[148.126815, -8.10503, 5.1], [151.98450000000003, -0.371637, 4.5], [157.572825, -0.637026, 5.1], [157.36959, -2.739078, 5.2]],
         lines: [[0, 1], [1, 2], [2, 3]]
       },
 
       {
-        name: "Telescopium", abbr: "Tel", hem: "S", diff: 3, meaning: "the telescope", ra: 276.5, dec: -47.5, fov: 6.8,
+        name: "Telescopium", abbr: "Tel", hem: "S", diff: 3, meaning: "the telescope", ra: 276.5, dec: -47.5, fov: 7.2,
         stars: [[272.807355, -45.954418, 4.5], [276.74341499999997, -45.968459, 3.5, 'b'], [277.207575, -49.070588, 4.1], [280.182855, -47.027246, 6.81]],
         lines: [[0, 1], [1, 2], [3, 1]]
       },
 
       {
-        name: "Triangulum", abbr: "Tri", hem: "N", diff: 3, meaning: "the triangle", ra: 31.2, dec: 32.3, fov: 8.6,
+        name: "Triangulum", abbr: "Tri", hem: "N", diff: 3, meaning: "the triangle", ra: 30.2, dec: 32.3, fov: 10.7,
         stars: [[28.27044, 29.578829, 3.4], [32.38587, 34.987297, 3.0], [34.328595, 33.847194, 4.0]],
         lines: [[0, 1], [1, 2], [2, 0]]
       },
 
       {
-        name: "Triangulum Australe", abbr: "TrA", hem: "S", diff: 3, meaning: "the southern triangle", ra: 240.6, dec: -66.5, fov: 11.7,
+        name: "Triangulum Australe", abbr: "TrA", hem: "S", diff: 3, meaning: "the southern triangle", ra: 240.6, dec: -66.5, fov: 13.4,
         stars: [[252.166155, -69.027715, 1.9, 'r', 'Atria'], [238.786245, -63.430727, 2.8], [234.18, -66.317037, 4.1], [229.72771500000002, -68.679545, 2.9]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 0]]
       },
 
       {
-        name: "Tucana", abbr: "Tuc", hem: "S", diff: 3, meaning: "the toucan", ra: 350.5, dec: -62.0, fov: 19.9,
+        name: "Tucana", abbr: "Tuc", hem: "S", diff: 3, meaning: "the toucan", ra: 352.5, dec: -62.0, fov: 22.3,
         stars: [[7.885875, -62.958218, 4.4], [5.01213, -64.874791, 4.2], [359.97891, -65.577132, 4.5], [336.832965, -64.966354, 4.5], [334.625565, -60.259587, 2.9, 'r'], [349.35747, -58.235734, 4.0]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]]
       },
 
       {
-        name: "Volans", abbr: "Vol", hem: "S", diff: 3, meaning: "the flying fish", ra: 122.7, dec: -68.6, fov: 13.2,
+        name: "Volans", abbr: "Vol", hem: "S", diff: 3, meaning: "the flying fish", ra: 121.7, dec: -68.6, fov: 15.3,
         stars: [[135.611655, -66.396076, 4.0], [126.434265, -66.13689, 3.8, 'o'], [121.982595, -68.617062, 4.3], [109.20762, -67.957152, 4.0], [107.18682, -70.498932, 3.8, 'o']],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 2], [2, 0]]
       },
@@ -2094,13 +2120,15 @@
     }
 
     function redrawReveal(con) {
+      const origAbbr = con.abbr;
+      if (session.viewMode) con = tweakedCon(con);
       const showBound = document.getElementById('chk-rev-boundary').checked;
       const showDiag = document.getElementById('chk-rev-diagram').checked;
       const showArt = document.getElementById('chk-rev-artwork').checked;
       const canvas = document.getElementById('quiz-canvas');
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height;
-      const artImg = artCache[con.abbr] instanceof HTMLImageElement ? artCache[con.abbr] : null;
+      const artImg = artCache[origAbbr] instanceof HTMLImageElement ? artCache[origAbbr] : null;
 
       const angle = session.rotation || 0;
       if (angle) {
@@ -2127,11 +2155,11 @@
       if (settings.mode !== 'photo' || showDiag) drawStars(ctx, revealProj);
 
       // Boundary overlay (still within rotation transform for photo mode)
-      if (showBound && BOUNDS[con.abbr]) {
+      if (showBound && BOUNDS[origAbbr]) {
         ctx.save();
         ctx.strokeStyle = 'rgba(120,200,120,0.55)';
         ctx.lineWidth = 1.5;
-        for (const ring of BOUNDS[con.abbr]) {
+        for (const ring of BOUNDS[origAbbr]) {
           const boundPts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H);
           ctx.beginPath();
           let first = true;
@@ -2196,6 +2224,23 @@
     // ═══════════════════════════════════════════════════════════
     let settings = { mode: 'diagram', diff: '1', hem: 'B' };
     let session = { pool: [], idx: 0, correct: 0, answered: false, history: [], choices: [], viewMode: false };
+    let viewerTweak = { scale: 1, dx: 0, dy: 0 };
+
+    function tweakedCon(con) {
+      const { scale, dx, dy } = viewerTweak;
+      const newFov = 2 * Math.atan(Math.tan(con.fov * Math.PI / 360) / scale) * 180 / Math.PI;
+      return { ...con, ra: ((con.ra + dx) % 360 + 360) % 360, dec: con.dec + dy, fov: newFov };
+    }
+
+    function resetViewerTweak() {
+      viewerTweak = { scale: 1, dx: 0, dy: 0 };
+      document.getElementById('tweak-scale').value = 100;
+      document.getElementById('tweak-dx').value = 0;
+      document.getElementById('tweak-dy').value = 0;
+      document.getElementById('tweak-scale-val').textContent = '1.00×';
+      document.getElementById('tweak-dx-val').textContent = '0.0°';
+      document.getElementById('tweak-dy-val').textContent = '0.0°';
+    }
     let debugLabels = false;
     let debugAnchors = false;
 
@@ -2252,6 +2297,7 @@
     function viewConstellation(con) {
       settings.mode = 'diagram';
       document.getElementById('chk-rev-photo').checked = false;
+      resetViewerTweak();
       session.pool = [con];
       session.idx = 0;
       session.answered = true;
@@ -2617,6 +2663,32 @@
       document.getElementById('con-select-viewer').addEventListener('change', () => {
         const con = C.find(c => c.abbr === document.getElementById('con-select-viewer').value);
         if (con) viewConstellation(con);
+      });
+
+      // Viewer tweak sliders
+      function onTweakChange() {
+        viewerTweak.scale = document.getElementById('tweak-scale').value / 100;
+        viewerTweak.dx    = parseFloat(document.getElementById('tweak-dx').value);
+        viewerTweak.dy    = parseFloat(document.getElementById('tweak-dy').value);
+        document.getElementById('tweak-scale-val').textContent = viewerTweak.scale.toFixed(2) + '×';
+        document.getElementById('tweak-dx-val').textContent    = viewerTweak.dx.toFixed(1) + '°';
+        document.getElementById('tweak-dy-val').textContent    = viewerTweak.dy.toFixed(1) + '°';
+        const con = session.pool[session.idx];
+        if (con && session.viewMode) redrawReveal(con);
+      }
+      ['tweak-scale','tweak-dx','tweak-dy'].forEach(id =>
+        document.getElementById(id).addEventListener('input', onTweakChange));
+
+      document.getElementById('btn-copy-framing').addEventListener('click', () => {
+        const con = session.pool[session.idx];
+        if (!con) return;
+        const tc = tweakedCon(con);
+        const text = `ra: ${tc.ra.toFixed(1)}, dec: ${tc.dec.toFixed(1)}, fov: ${tc.fov.toFixed(1)}`;
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.getElementById('btn-copy-framing');
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy ra/dec/fov'; }, 1500);
+        });
       });
 
       document.getElementById('btn-next').addEventListener('click', nextQuestion);
