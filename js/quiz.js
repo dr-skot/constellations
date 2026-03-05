@@ -44,6 +44,7 @@ function tryResumeStage(idx) {
     session.history = d.history || []; session.courseStageIdx = idx;
     session.answered = false;
     session.viewMode = false;
+    settings.mode = STAGES[idx].mode;
     document.getElementById('screen-quiz').classList.remove('viewer-mode');
     showScreen('quiz'); showQuestion(); return true;
   } catch { return false; }
