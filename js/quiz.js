@@ -71,6 +71,7 @@ function showQuestion() {
   document.getElementById('prog-fill').style.width = `${(session.idx / total) * 100}%`;
 
   document.getElementById('feedback').textContent = '';
+  document.getElementById('art-credit').innerHTML = '';
   document.getElementById('reveal-controls').classList.remove('show');
   document.getElementById('btn-next').classList.remove('show');
 
