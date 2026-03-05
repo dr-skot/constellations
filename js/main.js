@@ -154,9 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const val = document.getElementById('explore-search-input').value.trim();
     const con = C.find(c => c.name.toLowerCase() === val.toLowerCase());
     if (!con) return;
-    explore.ra = con.ra;
-    explore.dec = con.dec;
-    drawExplore();
+    animateGoTo(con.ra, con.dec);
     document.getElementById('explore-search-input').blur();
   }
   document.getElementById('explore-search-go').addEventListener('click', goToConstellation);
@@ -189,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { px: (cx - rect.left) * dpr, py: (cy - rect.top) * dpr };
   }
   function expDragStart(cx, cy) {
+    if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
     const { px, py } = expClientToCanvas(cx, cy);
     const anchor = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, ec.width, ec.height);
     explore.drag = { anchor, startRa: explore.ra, startDec: explore.dec, startPx: px, startPy: py };

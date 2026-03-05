@@ -2,8 +2,43 @@
 // EXPLORE MODE
 // ═══════════════════════════════════════════════════════════
 const explorePhotoCache = {};
-let explore = { ra: 80, dec: 5, fov: 60, drag: null, quiz: null };
+let explore = { ra: 80, dec: 5, fov: 60, drag: null, quiz: null, animFrame: null };
 let exploreDragMoved = false;
+
+function animateGoTo(targetRa, targetDec) {
+  if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
+  const v1 = raDecToVec(explore.ra, explore.dec);
+  const v2 = raDecToVec(targetRa, targetDec);
+  const dot = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
+  const angle = Math.acos(dot);
+  if (angle < 0.001) return;
+  const sinA = Math.sin(angle);
+  // Duration proportional to arc length: 400ms–2000ms
+  const duration = Math.max(400, Math.min(2000, angle / Math.PI * 2000));
+  const startTime = performance.now();
+  function step(now) {
+    const raw = Math.min(1, (now - startTime) / duration);
+    // Ease in-out cubic
+    const t = raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2;
+    const f1 = Math.sin((1 - t) * angle) / sinA;
+    const f2 = Math.sin(t * angle) / sinA;
+    const vt = [f1*v1[0]+f2*v2[0], f1*v1[1]+f2*v2[1], f1*v1[2]+f2*v2[2]];
+    const pos = vecToRaDec(vt);
+    explore.ra = pos.ra;
+    explore.dec = pos.dec;
+    drawExplore();
+    if (raw < 1) {
+      explore.animFrame = requestAnimationFrame(step);
+    } else {
+      explore.ra = targetRa;
+      explore.dec = targetDec;
+      explore.animFrame = null;
+      drawExplore();
+      saveExploreState();
+    }
+  }
+  explore.animFrame = requestAnimationFrame(step);
+}
 
 function saveExploreState() {
   sessionStorage.setItem('explore-state',
