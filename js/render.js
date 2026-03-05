@@ -263,6 +263,31 @@ function showPhotoMode(con, angle = 0) {
   img.style.transform = angle ? `rotate(${angle}rad)` : '';
 }
 
+// Returns true if segments (ax,ay)-(bx,by) and (cx,cy)-(dx,dy) intersect.
+function segSegIntersect(ax, ay, bx, by, cx, cy, dx, dy) {
+  const d1x = bx-ax, d1y = by-ay, d2x = dx-cx, d2y = dy-cy;
+  const denom = d1x*d2y - d1y*d2x;
+  if (Math.abs(denom) < 1e-10) return false;
+  const t = ((cx-ax)*d2y - (cy-ay)*d2x) / denom;
+  const u = ((cx-ax)*d1y - (cy-ay)*d1x) / denom;
+  return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+}
+
+// Returns true if any edge in `edges` (array of [{x,y},{x,y}] pairs) intersects
+// the axis-aligned rectangle [x1,x2]×[y1,y2].
+function edgesHitRect(edges, x1, y1, x2, y2) {
+  for (const [a, b] of edges) {
+    const ax = a.x, ay = a.y, bx = b.x, by = b.y;
+    if (ax>=x1&&ax<=x2&&ay>=y1&&ay<=y2) return true;
+    if (bx>=x1&&bx<=x2&&by>=y1&&by<=y2) return true;
+    if (segSegIntersect(ax,ay,bx,by, x1,y1,x2,y1)) return true;
+    if (segSegIntersect(ax,ay,bx,by, x2,y1,x2,y2)) return true;
+    if (segSegIntersect(ax,ay,bx,by, x2,y2,x1,y2)) return true;
+    if (segSegIntersect(ax,ay,bx,by, x1,y2,x1,y1)) return true;
+  }
+  return false;
+}
+
 // Returns intersection points of segment (x1,y1)→(x2,y2) with circle (cx,cy,R).
 function segCircleIntersections(x1, y1, x2, y2, cx, cy, R) {
   const dx = x2 - x1, dy = y2 - y1;
@@ -328,45 +353,46 @@ function redrawReveal(con) {
 
   // Boundary overlay — draw all visible constellation boundaries and label neighbors.
   const R = W / 2, cirCx = W / 2, cirCy = H / 2;
-  const margin = Math.max(10, W * 0.04);
+  const cosA = Math.cos(angle), sinA = Math.sin(angle);
 
-  // Pre-project the current constellation's boundary for PIP checks.
-  const curVisPts = (BOUNDS[origAbbr] || [])
-    .flatMap(ring => projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H))
-    .filter(p => p.d > 0);
+  // Canvas → screen conversion (rotation around canvas centre).
+  function ptToScr(p) {
+    const dx = p.x - cirCx, dy = p.y - cirCy;
+    return { x: cirCx + dx * cosA - dy * sinA, y: cirCy + dx * sinA + dy * cosA };
+  }
 
-  // Search (in canvas space) for a label centre where the full label bounding box,
-  // drawn horizontally in SCREEN space, lies inside the neighbor's polygon and
-  // outside the current constellation's polygon (both in canvas space via PIP).
-  //
-  // The label is rendered after the rotation transform is removed, so its corners
-  // are at (screenX ± hw, screenY ± hh). We rotate those back to canvas space
-  // before each PIP test so the geometry is consistent.
-  function findInNeighbor(nVisPts, hintDx, hintDy, hw, hh) {
-    const canNPIP = nVisPts.length >= 3;
-    const canCPIP = curVisPts.length >= 3;
-    const cosA = Math.cos(angle), sinA = Math.sin(angle);
-    // Screen-space label corners relative to the label centre.
-    const scrOff = [[-hw, -hh], [hw, -hh], [-hw, hh], [hw, hh]];
+  // Pre-project the current constellation's boundary for PIP + edge checks.
+  const curProjRings = (BOUNDS[origAbbr] || []).map(ring =>
+    projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H));
+  const curVisPts  = curProjRings.flat().filter(p => p.d > 0);
+  const curScrPts  = curVisPts.map(ptToScr);
+
+  // Search in canvas space for a label centre where:
+  //   • the label bounding box (hw × hh, horizontal in SCREEN space) lies inside
+  //     the neighbor's polygon and outside the current constellation's polygon,
+  //   • AND no visible boundary edge from ANY constellation crosses the label rect.
+  // allScrEdges is built during the drawing pass below and passed in.
+  function findInNeighbor(nScrPts, allScrEdges, hintDx, hintDy, hw, hh) {
+    const canNPIP = nScrPts.length >= 3;
+    const canCPIP = curScrPts.length >= 3;
 
     function valid(tx, ty) {
-      // Centre must be inside the circle with enough margin for the label.
       const dx = tx - cirCx, dy = ty - cirCy;
       if (dx * dx + dy * dy > (R - hw) * (R - hw)) return false;
-      // Canvas → screen for the candidate centre.
+      // Convert candidate centre to screen space.
       const sx = cirCx + dx * cosA - dy * sinA;
       const sy = cirCy + dx * sinA + dy * cosA;
-      // For each screen-space corner, rotate back to canvas space and PIP-test.
-      for (const [ox, oy] of scrOff) {
-        const scx = sx + ox - cirCx, scy = sy + oy - cirCy;
-        const px = cirCx + scx * cosA + scy * sinA;
-        const py = cirCy - scx * sinA + scy * cosA;
-        if (canNPIP && !pointInPoly2D(px, py, nVisPts)) return false;
-        if (canCPIP &&  pointInPoly2D(px, py, curVisPts)) return false;
+      const x1 = sx - hw, x2 = sx + hw, y1 = sy - hh, y2 = sy + hh;
+      // All 5 sample points (screen space) must pass PIP constraints.
+      for (const [px, py] of [[sx,sy],[x1,y1],[x2,y1],[x1,y2],[x2,y2]]) {
+        if (canNPIP && !pointInPoly2D(px, py, nScrPts)) return false;
+        if (canCPIP &&  pointInPoly2D(px, py, curScrPts)) return false;
       }
+      // No boundary edge (from any constellation) may cross the label rectangle.
+      if (edgesHitRect(allScrEdges, x1, y1, x2, y2)) return false;
       return true;
     }
-    // Primary: march from circle centre outward along hint direction.
+
     const hl = Math.sqrt(hintDx * hintDx + hintDy * hintDy);
     if (hl > 1) {
       for (let t = 0.08; t <= 0.93; t += 0.03) {
@@ -375,7 +401,6 @@ function redrawReveal(con) {
         if (valid(tx, ty)) return { x: tx, y: ty };
       }
     }
-    // Fallback: sweep 16 angles × 5 radii (outer to inner).
     for (let ri = 5; ri >= 1; ri--) {
       const r = R * 0.88 * ri / 5;
       for (let ai = 0; ai < 16; ai++) {
@@ -386,6 +411,10 @@ function redrawReveal(con) {
     }
     return null;
   }
+
+  // ── Pass 1: draw boundaries, collect all screen-space edges + label candidates ──
+  const allScrEdges = [];     // every visible boundary edge in screen coords
+  const labelCandidates = []; // deferred label placement data
 
   const neighborLabelPts = [];
   if (showBound) {
@@ -398,9 +427,11 @@ function redrawReveal(con) {
       const projRings = rings.map(ring =>
         projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H));
 
-      // Draw boundary segments (only where d>0).
       for (const pts of projRings) {
-        if (pts.reduce((n, p) => n + (p.d > 0 ? 1 : 0), 0) < 2) continue;
+        const visCount = pts.reduce((n, p) => n + (p.d > 0 ? 1 : 0), 0);
+        if (visCount < 2) continue;
+
+        // Draw.
         ctx.beginPath();
         let prevVis = false;
         for (const p of pts) {
@@ -411,15 +442,18 @@ function redrawReveal(con) {
         }
         if (pts[0].d > 0 && pts[pts.length - 1].d > 0) ctx.closePath();
         ctx.stroke();
+
+        // Collect screen-space edges for label collision checking.
+        for (let i = 0; i < pts.length; i++) {
+          const a = pts[i], b = pts[(i + 1) % pts.length];
+          if (a.d > 0 && b.d > 0) allScrEdges.push([ptToScr(a), ptToScr(b)]);
+        }
       }
 
       if (isCurrent) continue;
 
-      // Collect points on the boundary of the neighbor that are inside the circle,
-      // plus exact crossing points where the boundary meets the circle edge.
-      // These are all on the neighbor's boundary — i.e. on the border between the
-      // current constellation and this neighbor. Their centroid is the best estimate
-      // of WHERE in the circle this neighbor is visible.
+      // Determine hint direction: centroid of boundary points inside the circle
+      // + circle-edge crossings (i.e. where this neighbor is visible).
       const intPts = [];
       for (const pts of projRings) {
         for (let i = 0; i < pts.length; i++) {
@@ -434,56 +468,48 @@ function redrawReveal(con) {
         }
       }
 
-      // Surrounds fallback: neighbor encloses the view, boundary outside the circle.
-      const surrounds = intPts.length === 0 &&
-        projRings.some(pts => {
-          const vp = pts.filter(p => p.d > 0);
-          return vp.length >= 3 && pointInPoly2D(cirCx, cirCy, vp);
-        });
+      const surrounds = intPts.length === 0 && projRings.some(pts => {
+        const vp = pts.filter(p => p.d > 0);
+        return vp.length >= 3 && pointInPoly2D(cirCx, cirCy, vp);
+      });
       if (intPts.length === 0 && !surrounds) continue;
 
       const neighbor = C.find(c => c.abbr === abbr);
       if (!neighbor) continue;
 
-      // Centroid of intersection points gives the direction in which the neighbor
-      // is visible — use it as a hint, even if the centroid itself is on the border.
-      const hintX = intPts.length > 0
-        ? intPts.reduce((s, p) => s + p.x, 0) / intPts.length
-        : cirCx;
-      const hintY = intPts.length > 0
-        ? intPts.reduce((s, p) => s + p.y, 0) / intPts.length
-        : cirCy;
+      const hintX = intPts.length > 0 ? intPts.reduce((s, p) => s + p.x, 0) / intPts.length : cirCx;
+      const hintY = intPts.length > 0 ? intPts.reduce((s, p) => s + p.y, 0) / intPts.length : cirCy;
 
-      // Estimate label bounding box half-extents in canvas pixels.
       const fs = Math.max(9, Math.round(W * 0.026));
-      const hw = neighbor.name.length * fs * 0.32; // ~0.55 char width / 2, slight pad
-      const hh = fs * 0.65;
-
-      // Find a point where the full label box is inside the neighbor's polygon
-      // and outside the current constellation's polygon.
-      const nVisPts = projRings.flatMap(pts => pts.filter(p => p.d > 0));
-      const pt = findInNeighbor(nVisPts, hintX - cirCx, hintY - cirCy, hw, hh);
-      if (!pt) continue;
-
-      neighborLabelPts.push({ name: neighbor.name, x: pt.x, y: pt.y });
+      const nScrPts = projRings.flat().filter(p => p.d > 0).map(ptToScr);
+      labelCandidates.push({
+        name: neighbor.name, nScrPts,
+        hintDx: hintX - cirCx, hintDy: hintY - cirCy,
+        hw: neighbor.name.length * fs * 0.32, hh: fs * 0.65,
+      });
     }
     ctx.restore();
+
+    // ── Pass 2: place labels now that allScrEdges is complete ──
+    for (const cand of labelCandidates) {
+      const pt = findInNeighbor(cand.nScrPts, allScrEdges, cand.hintDx, cand.hintDy, cand.hw, cand.hh);
+      if (pt) neighborLabelPts.push({ name: cand.name, x: pt.x, y: pt.y });
+    }
   }
 
   if (angle) ctx.restore();
 
-  // Star labels after rotation restore so text stays upright
+  // Star labels after rotation restore so text stays upright.
   if (showDiag && revealProj) drawLabels(ctx, rotateProj(revealProj, angle, W, H), W);
 
-  // Neighbor constellation labels (after rotation restore, text stays upright).
-  // Convert canvas-space label positions to screen space via rotation.
+  // Neighbor labels — already in canvas space; convert to screen for drawing.
   if (neighborLabelPts.length > 0) {
     const fs = Math.max(9, Math.round(W * 0.026));
     ctx.save();
     ctx.font = `${fs}px system-ui,-apple-system,sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(140,210,140,0.75)';
+    ctx.fillStyle = 'rgba(140,210,140,0.5)';
     for (const lbl of neighborLabelPts) {
       const sp = rotateProj([lbl], angle, W, H)[0];
       ctx.fillText(lbl.name, sp.x, sp.y);
