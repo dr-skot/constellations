@@ -300,29 +300,80 @@ function redrawReveal(con) {
   if (showDiag) drawLines(ctx, revealProj, con);
   if (settings.mode !== 'photo' || showDiag) drawStars(ctx, revealProj);
 
-  // Boundary overlay (still within rotation transform for photo mode)
-  if (showBound && BOUNDS[origAbbr]) {
+  // Boundary overlay — draw all visible constellation boundaries
+  const neighborLabelPts = [];
+  if (showBound) {
     ctx.save();
-    ctx.strokeStyle = 'rgba(120,200,120,0.55)';
-    ctx.lineWidth = 1.5;
-    for (const ring of BOUNDS[origAbbr]) {
-      const boundPts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H);
-      ctx.beginPath();
-      let first = true;
-      for (const p of boundPts) {
-        if (first) { ctx.moveTo(p.x, p.y); first = false; }
-        else ctx.lineTo(p.x, p.y);
+    for (const [abbr, rings] of Object.entries(BOUNDS)) {
+      const isCurrent = abbr === origAbbr;
+      ctx.strokeStyle = isCurrent ? 'rgba(120,200,120,0.65)' : 'rgba(120,200,120,0.28)';
+      ctx.lineWidth = isCurrent ? 1.5 : 1;
+
+      let anyVisible = false;
+      for (const ring of rings) {
+        const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H);
+        const visCount = pts.reduce((n, p) => n + (p.d > 0 ? 1 : 0), 0);
+        if (visCount < 2) continue;
+        anyVisible = true;
+        ctx.beginPath();
+        let prevVis = false;
+        for (const p of pts) {
+          if (p.d > 0) {
+            if (!prevVis) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+            prevVis = true;
+          } else {
+            prevVis = false;
+          }
+        }
+        if (pts[0].d > 0 && pts[pts.length - 1].d > 0) ctx.closePath();
+        ctx.stroke();
       }
-      ctx.closePath();
-      ctx.stroke();
+
+      if (!isCurrent && anyVisible) {
+        const neighbor = C.find(c => c.abbr === abbr);
+        if (neighbor) {
+          const [cp] = projectStarsTAN([[neighbor.ra, neighbor.dec, 0]], con, W, H);
+          if (cp && cp.d > 0) {
+            neighborLabelPts.push({ name: neighbor.name, x: cp.x, y: cp.y });
+          } else {
+            // Fall back to centroid of visible boundary points
+            let sx = 0, sy = 0, n = 0;
+            for (const ring of rings) {
+              for (const p of projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H)) {
+                if (p.d > 0) { sx += p.x; sy += p.y; n++; }
+              }
+            }
+            if (n > 0) neighborLabelPts.push({ name: neighbor.name, x: sx / n, y: sy / n });
+          }
+        }
+      }
     }
     ctx.restore();
   }
 
   if (angle) ctx.restore();
 
-  // Labels drawn after rotation restore so text stays upright
+  // Star labels after rotation restore so text stays upright
   if (showDiag && revealProj) drawLabels(ctx, rotateProj(revealProj, angle, W, H), W);
+
+  // Neighbor constellation labels (drawn after rotation restore, text stays upright)
+  if (neighborLabelPts.length > 0) {
+    const pad = 10;
+    const fs = Math.max(9, Math.round(W * 0.026));
+    ctx.save();
+    ctx.font = `${fs}px system-ui,-apple-system,sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(140,210,140,0.75)';
+    for (const lbl of neighborLabelPts) {
+      const sp = rotateProj([lbl], angle, W, H)[0];
+      const tw = ctx.measureText(lbl.name).width;
+      const sx = Math.max(pad + tw / 2, Math.min(W - pad - tw / 2, sp.x));
+      const sy = Math.max(pad + fs / 2, Math.min(H - pad - fs / 2, sp.y));
+      ctx.fillText(lbl.name, sx, sy);
+    }
+    ctx.restore();
+  }
 }
 
 function ensureArtLoaded(con) {
