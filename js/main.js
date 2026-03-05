@@ -266,6 +266,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ── Constellation info modal ──
+  const conModal = document.getElementById('con-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody = document.getElementById('modal-body');
+  const modalWikiLink = document.getElementById('modal-wiki-link');
+  const modalExploreBtn = document.getElementById('modal-explore-btn');
+  let modalAbbrCurrent = null;
+
+  function openConModal(con) {
+    modalAbbrCurrent = con.abbr;
+    modalTitle.textContent = con.name;
+    modalBody.textContent = 'Loading…';
+    const wikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(con.name)}_(constellation)`;
+    modalWikiLink.href = wikiUrl;
+    conModal.style.display = 'flex';
+    fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(con.name)}_(constellation)`)
+      .then(r => r.json())
+      .then(d => {
+        if (modalAbbrCurrent !== con.abbr) return;
+        modalBody.textContent = d.extract || 'No summary available.';
+      })
+      .catch(() => {
+        if (modalAbbrCurrent !== con.abbr) return;
+        modalBody.textContent = 'Could not load description.';
+      });
+  }
+
+  function closeConModal() {
+    conModal.style.display = 'none';
+    modalAbbrCurrent = null;
+  }
+
+  document.getElementById('modal-close').addEventListener('click', closeConModal);
+  conModal.addEventListener('click', e => { if (e.target === conModal) closeConModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeConModal(); });
+
+  modalExploreBtn.addEventListener('click', () => {
+    const abbr = modalAbbrCurrent;
+    closeConModal();
+    navigate('explore/' + abbr);
+  });
+
+  // Delegated handler for .con-info-link clicks (generated dynamically by conLabel)
+  document.addEventListener('click', e => {
+    const link = e.target.closest('.con-info-link');
+    if (!link) return;
+    e.preventDefault();
+    const con = C.find(c => c.abbr === link.dataset.abbr);
+    if (con) openConModal(con);
+  });
+
   // Entry point — route based on current URL hash
   handleRoute(location.hash.slice(1) || 'course');
 });

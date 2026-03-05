@@ -361,7 +361,6 @@ function startReveal(con) {
 function conLabel(con) {
   const hem = con.hem === 'N' ? 'northern' : con.hem === 'S' ? 'southern' : 'equatorial';
   const meaning = con.meaning ? `, ${con.meaning}` : '';
-  const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(con.name)}_(constellation)`;
-  const link = `<a href="${url}" target="_blank" rel="noopener">${con.name}</a>`;
+  const link = `<a href="#" class="con-info-link" data-abbr="${con.abbr}">${con.name}</a>`;
   return `${link}${meaning} (${hem})`;
 }
