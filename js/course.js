@@ -139,7 +139,7 @@ function startCourseStage(idx) {
 
 function endCourseStage() {
   const n = session.pool.length, c = session.correct;
-  const mastered = (c === n);
+  const mastered = (n > 0 && c / n >= 0.8);
   if (mastered) { const a = loadMastered(); a[session.courseStageIdx] = true; saveMastered(a); }
   document.getElementById('res-score').textContent = `${c} / ${n}`;
   document.getElementById('res-grade').textContent = mastered ? '⭐ Mastered!' : 'Not quite — try again';
@@ -186,7 +186,7 @@ function startFindCourseStage(idx) {
 function endFindCourseStage() {
   const q = explore.quiz;
   const n = q.total, c = q.score;
-  const mastered = (c === n && n > 0);
+  const mastered = (n > 0 && c / n >= 0.8);
   if (mastered) { const a = loadMastered(); a[q.courseStageIdx] = true; saveMastered(a); }
   document.getElementById('res-score').textContent = `${c} / ${n}`;
   document.getElementById('res-grade').textContent = mastered ? '⭐ Mastered!' : 'Not quite — try again';
