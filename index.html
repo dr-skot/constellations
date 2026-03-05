@@ -316,6 +316,34 @@
       background: rgba(91, 138, 245, .22)
     }
 
+    .nav-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center
+    }
+
+    .btn-prev {
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--dim);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: all .18s;
+      display: none
+    }
+
+    .btn-prev.show {
+      display: block
+    }
+
+    .btn-prev:hover {
+      border-color: var(--dim);
+      color: var(--text)
+    }
+
     #reveal-controls {
       display: none;
       flex-direction: row;
@@ -521,6 +549,20 @@
     .stage-btn.locked { opacity:0.5; cursor:default; pointer-events:none; }
     .stage-check { margin-left:5px; }
     #canvas-wrap.quiz-circle { border-radius: 50%; }
+    .viewer-row { display:flex; gap:8px; justify-content:center; margin-top:10px; }
+    #con-select { background:var(--bg); color:var(--text); border:1px solid var(--border);
+                  border-radius:8px; padding:6px 10px; font-size:.85rem; }
+    #btn-view { padding:6px 14px; border:1px solid var(--accent); color:var(--accent);
+                background:transparent; border-radius:8px; cursor:pointer; font-size:.85rem; }
+    #btn-view:hover { background:var(--accent); color:#000; }
+    .viewer-mode .hud, .viewer-mode .prog-wrap, .viewer-mode .q-label,
+    .viewer-mode .ans-grid, .viewer-mode .nav-row { display:none !important; }
+    #lbl-rev-photo { display:none; }
+    .viewer-mode #lbl-rev-photo { display:inline-flex; }
+    #viewer-select-row { display:none; justify-content:center; margin-top:10px; }
+    .viewer-mode #viewer-select-row { display:flex; }
+    #con-select-viewer { background:var(--bg); color:var(--text); border:1px solid var(--border);
+                         border-radius:8px; padding:6px 10px; font-size:.85rem; }
   </style>
 </head>
 
@@ -528,7 +570,13 @@
   <div id="app">
 
     <div id="screen-start" class="screen active">
-      <div class="course-header"><h1>✦ Constellation Mastery</h1></div>
+      <div class="course-header">
+        <h1>✦ Constellation Mastery</h1>
+        <div class="viewer-row">
+          <select id="con-select"></select>
+          <button id="btn-view">View ›</button>
+        </div>
+      </div>
       <div id="course-map"></div>
     </div>
 
@@ -554,11 +602,16 @@
       <div class="ans-grid" id="ans-grid"></div>
       <div id="feedback"></div>
       <div id="reveal-controls">
+        <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo"> Photo</label>
         <label class="rev-chk"><input type="checkbox" id="chk-rev-boundary" checked> Boundary</label>
         <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
         <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
       </div>
-      <button class="btn-next" id="btn-next">Next →</button>
+      <div id="viewer-select-row"><select id="con-select-viewer"></select></div>
+      <div class="nav-row">
+        <button class="btn-prev" id="btn-prev">← Prev</button>
+        <button class="btn-next" id="btn-next">Next →</button>
+      </div>
     </div>
 
     <div id="screen-explore" class="screen">
@@ -601,8 +654,12 @@
   <script>
     // ═══════════════════════════════════════════════════════════
     // BOUNDS — IAU constellation boundary polygons
-    // Loaded from d3-celestial GeoJSON; keyed by IAU abbr
-    // Each entry: array of [ra_deg, dec_deg] pairs
+    // Loaded from d3-celestial GeoJSON; keyed by IAU abbr.
+    // Each entry is an ARRAY OF RINGS (arrays of [ra_deg, dec_deg] pairs).
+    // Most constellations have one ring, but split constellations like Serpens
+    // (Serpens Caput + Serpens Cauda) appear as two separate GeoJSON features
+    // with the same id — so we accumulate into an array rather than overwriting.
+    // All boundary draw and hit-test code must iterate over all rings.
     // ═══════════════════════════════════════════════════════════
     let BOUNDS = {};
 
@@ -614,10 +671,10 @@
           const abbr = feat.id;
           const coords = feat.geometry.coordinates[0];
           // GeoJSON lon = RA stored in [-180, 180]; convert back to [0, 360]
-          BOUNDS[abbr] = coords.map(([lon, lat]) => {
-            const ra = lon >= 0 ? lon : lon + 360;
-            return [ra, lat];
-          });
+          const ring = coords.map(([lon, lat]) => [lon >= 0 ? lon : lon + 360, lat]);
+          // Use push (not assign) so split constellations accumulate both rings
+          if (!BOUNDS[abbr]) BOUNDS[abbr] = [];
+          BOUNDS[abbr].push(ring);
         }
       } catch (e) {
         console.warn('Could not load constellation boundaries:', e);
@@ -801,7 +858,7 @@
       },
 
       {
-        name: "Hydra", abbr: "Hya", hem: "B", diff: 2, meaning: "the water snake", ra: 189.2, dec: -21.7, fov: 135.3,
+        name: "Hydra", abbr: "Hya", hem: "B", diff: 2, meaning: "the water snake", ra: 164.9, dec: -18.3, fov: 101.2,
         stars: [[132.10821, 5.837812, 4.3], [130.80615, 3.398662, 4.3], [129.689325, 3.341435, 4.5], [129.41403, 5.703782, 4.1], [131.693805, 6.418809, 3.4], [133.84845, 5.945563, 3.1, 'o'], [138.591075, 2.31428, 3.9, 'b'], [144.96400500000001, -1.14281, 3.9, 'o'], [141.89685, -8.658603, 2.0, 'r', 'Alphard'], [147.86955, -14.846603, 4.1], [151.28112, -13.064626, 4.6], [152.647005, -12.354083, 3.6, 'o'], [156.52263, -16.83629, 3.8, 'r'], [162.406185, -16.193648, 3.1, 'o'], [164.94366000000002, -18.298783, 4.1], [167.91453, -22.825847, 4.5], [173.25057, -31.857625, 3.5], [178.227195, -33.908124, 4.3], [199.730385, -23.171512, 3.0], [211.592895, -26.682361, 3.2, 'o'], [222.572205, -27.960371, 4.4]],
         lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 13], [13, 14], [15, 16], [16, 17], [17, 18], [18, 19], [19, 20]]
       },
@@ -1473,17 +1530,19 @@
         ctx.strokeStyle = 'rgba(120,200,120,0.45)';
         ctx.lineWidth = Math.max(1, W / 640);
         for (const con of visible) {
-          const poly = BOUNDS[con.abbr];
-          if (!poly) continue;
-          const pts = projectStarsTAN(poly.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
-          ctx.beginPath();
-          let penDown = false;
-          for (const p of pts) {
-            if (p.d <= 0) { penDown = false; continue; }
-            if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-            else ctx.lineTo(p.x, p.y);
+          const rings = BOUNDS[con.abbr];
+          if (!rings) continue;
+          for (const ring of rings) {
+            const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+            ctx.beginPath();
+            let penDown = false;
+            for (const p of pts) {
+              if (p.d <= 0) { penDown = false; continue; }
+              if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+              else ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
           }
-          ctx.stroke();
         }
         ctx.restore();
       }
@@ -1530,24 +1589,25 @@
         const { target, clicked } = explore.quiz;
         const lw = Math.max(2, W / 320);
         const drawBoundary = (con, color) => {
-          const poly = BOUNDS[con.abbr];
-          if (!poly) return;
+          if (!BOUNDS[con.abbr]) return;
           // Must skip off-screen constellations. TAN projection maps points behind the
           // projection plane to extreme-but-finite coordinates that can fall within the
           // 2*W pen-up threshold, producing phantom outlines on the wrong side of the sky.
           if (angularDist(explore.ra, explore.dec, con.ra, con.dec) > explore.fov / 2 + con.fov / 2 + 10) return;
-          const pts = projectStarsTAN(poly.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
           ctx.save();
           ctx.strokeStyle = color;
           ctx.lineWidth = lw;
-          ctx.beginPath();
-          let penDown = false;
-          for (const p of pts) {
-            if (p.d <= 0) { penDown = false; continue; }
-            if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-            else ctx.lineTo(p.x, p.y);
+          for (const ring of BOUNDS[con.abbr]) {
+            const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+            ctx.beginPath();
+            let penDown = false;
+            for (const p of pts) {
+              if (p.d <= 0) { penDown = false; continue; }
+              if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+              else ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
           }
-          ctx.stroke();
           ctx.restore();
         };
         if (clicked && clicked.abbr !== target.abbr) drawBoundary(clicked, 'rgba(255,80,80,0.9)');
@@ -1627,7 +1687,7 @@
       // Pre-filter by angular distance before pointInPolygon — see comment there.
       const clicked = C.find(c => BOUNDS[c.abbr] &&
         angularDist(coords.ra, coords.dec, c.ra, c.dec) < 60 &&
-        pointInPolygon(coords.ra, coords.dec, BOUNDS[c.abbr])) || null;
+        BOUNDS[c.abbr].some(ring => pointInPolygon(coords.ra, coords.dec, ring))) || null;
       const correct = clicked && clicked.abbr === q.target.abbr;
       q.answered = true;
       q.clicked = clicked;
@@ -1996,6 +2056,27 @@
       ctx.textAlign = 'right';
       ctx.fillText('Art: Johan Meuris / Free Art Licence', W - 8, H - 8);
       ctx.restore();
+
+      if (debugAnchors) {
+        const r = Math.max(6, W * 0.012);
+        const fs = Math.max(10, Math.round(W * 0.03));
+        // Use identity transform — dstPts are already in screen pixel coords
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        dstPts.forEach(([x, y], i) => {
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.strokeStyle = '#ff0';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          ctx.fillStyle = '#ff0';
+          ctx.font = `bold ${fs}px system-ui,sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(String(i + 1), x, y);
+        });
+        ctx.restore();
+      }
     }
 
     function showPhotoMode(con, angle = 0) {
@@ -2021,7 +2102,7 @@
       const W = canvas.width, H = canvas.height;
       const artImg = artCache[con.abbr] instanceof HTMLImageElement ? artCache[con.abbr] : null;
 
-      const angle = settings.mode === 'photo' ? (session.rotation || 0) : 0;
+      const angle = session.rotation || 0;
       if (angle) {
         ctx.save();
         ctx.translate(W/2, H/2);
@@ -2030,38 +2111,37 @@
       }
 
       let revealProj = null;
+      // Background
       if (settings.mode === 'photo') {
         ctx.drawImage(document.getElementById('photo-img'), 0, 0, W, H);
-        if (showArt && artImg) drawArtwork(canvas, con, artImg, false, angle);
-        if (showDiag) {
-          revealProj = projectStarsTAN(con.stars, con, W, H);
-          drawLines(ctx, revealProj, con);
-          drawStars(ctx, revealProj);
-        }
       } else {
         drawBackground(ctx, W, H, con, settings.mode === 'stars');
-        if (showArt && artImg) drawArtwork(canvas, con, artImg, false);
-        revealProj = projectStarsTAN(con.stars, con, W, H);
-        if (showDiag) drawLines(ctx, revealProj, con);
-        drawStars(ctx, revealProj);
       }
+
+      // Artwork overlay — same for all modes
+      if (showArt && artImg) drawArtwork(canvas, con, artImg, false, angle);
+
+      // Lines and stars
+      revealProj = projectStarsTAN(con.stars, con, W, H);
+      if (showDiag) drawLines(ctx, revealProj, con);
+      if (settings.mode !== 'photo' || showDiag) drawStars(ctx, revealProj);
 
       // Boundary overlay (still within rotation transform for photo mode)
       if (showBound && BOUNDS[con.abbr]) {
-        const boundPts = projectStarsTAN(
-          BOUNDS[con.abbr].map(([ra, dec]) => [ra, dec, 0]), con, W, H
-        );
         ctx.save();
-        ctx.beginPath();
-        let first = true;
-        for (const p of boundPts) {
-          if (first) { ctx.moveTo(p.x, p.y); first = false; }
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.closePath();
         ctx.strokeStyle = 'rgba(120,200,120,0.55)';
         ctx.lineWidth = 1.5;
-        ctx.stroke();
+        for (const ring of BOUNDS[con.abbr]) {
+          const boundPts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H);
+          ctx.beginPath();
+          let first = true;
+          for (const p of boundPts) {
+            if (first) { ctx.moveTo(p.x, p.y); first = false; }
+            else ctx.lineTo(p.x, p.y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        }
         ctx.restore();
       }
 
@@ -2085,9 +2165,6 @@
     }
 
     function startReveal(con) {
-      if (settings.mode !== 'photo') {
-        document.getElementById('canvas-wrap').classList.remove('quiz-circle');
-      }
       // For photo mode, swap photo-box → canvas
       if (settings.mode === 'photo') {
         document.getElementById('photo-box').classList.remove('show');
@@ -2107,19 +2184,20 @@
     }
 
     function conLabel(con) {
-      const hem = con.hem === 'N' ? 'Northern' : con.hem === 'S' ? 'Southern' : 'Both hemispheres';
-      const tr = con.meaning ? `, "${con.meaning}"` : '';
+      const hem = con.hem === 'N' ? 'northern' : con.hem === 'S' ? 'southern' : 'equatorial';
+      const meaning = con.meaning ? `, ${con.meaning}` : '';
       const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(con.name)}_(constellation)`;
       const link = `<a href="${url}" target="_blank" rel="noopener">${con.name}</a>`;
-      return `${link} (${con.abbr})${tr} — ${hem}`;
+      return `${link}${meaning} (${hem})`;
     }
 
     // ═══════════════════════════════════════════════════════════
     // QUIZ STATE
     // ═══════════════════════════════════════════════════════════
     let settings = { mode: 'diagram', diff: '1', hem: 'B' };
-    let session = { pool: [], idx: 0, correct: 0, answered: false };
+    let session = { pool: [], idx: 0, correct: 0, answered: false, history: [], choices: [], viewMode: false };
     let debugLabels = false;
+    let debugAnchors = false;
 
     // ═══════════════════════════════════════════════════════════
     // COURSE — 21-stage mastery curriculum
@@ -2171,6 +2249,30 @@
     }
     function saveMastered(a) { localStorage.setItem('course-mastered', JSON.stringify(a)); }
 
+    function viewConstellation(con) {
+      settings.mode = 'diagram';
+      document.getElementById('chk-rev-photo').checked = false;
+      session.pool = [con];
+      session.idx = 0;
+      session.answered = true;
+      session.rotation = 0;
+      session.courseStageIdx = null;
+      session.viewMode = true;
+      const quizScreen = document.getElementById('screen-quiz');
+      quizScreen.classList.add('viewer-mode');
+      document.getElementById('canvas-wrap').classList.add('quiz-circle');
+      document.getElementById('con-select-viewer').value = con.abbr;
+      document.getElementById('feedback').innerHTML = conLabel(con);
+      showScreen('quiz');
+      const canvas = document.getElementById('quiz-canvas');
+      const sz = document.getElementById('canvas-wrap').offsetWidth;
+      canvas.width = canvas.height = sz * (window.devicePixelRatio || 1);
+      canvas.style.display = 'block';
+      document.getElementById('photo-box').classList.remove('show');
+      document.getElementById('photo-img').classList.remove('show');
+      startReveal(con);
+    }
+
     function isPhaseUnlocked(ph) {
       if (ph === 0) return true;
       const m = loadMastered();
@@ -2213,7 +2315,7 @@
           btn.className = 'stage-btn' + (mastered[i] ? ' mastered' : '') + (!unlocked ? ' locked' : '');
           btn.textContent = stageModeLabel(s);
           if (mastered[i]) btn.innerHTML += '<span class="stage-check">✓</span>';
-          if (unlocked && !mastered[i]) {
+          if (unlocked) {
             btn.addEventListener('click', () => startCourseStage(i));
           }
           row.appendChild(btn);
@@ -2231,6 +2333,8 @@
       session.idx = 0;
       session.correct = 0;
       session.answered = false;
+      session.history = [];
+      session.choices = [];
       session.courseStageIdx = idx;
       showScreen('quiz');
       showQuestion();
@@ -2321,6 +2425,8 @@
       session.idx = 0;
       session.correct = 0;
       session.answered = false;
+      session.history = [];
+      session.choices = [];
       if (session.pool.length === 0) {
         alert('No constellations match those settings. Try broader options.');
         return;
@@ -2329,9 +2435,14 @@
       showQuestion();
     }
 
+    function updatePrevBtn() {
+      const canGoPrev = session.idx > 0 && session.history[session.idx - 1];
+      document.getElementById('btn-prev').classList.toggle('show', !!canGoPrev);
+    }
+
     function showQuestion() {
       const con = session.pool[session.idx];
-      session.answered = false;
+      const hist = session.history[session.idx];
 
       const total = session.pool.length;
       document.getElementById('hud-progress').textContent = `${session.idx + 1} / ${total}`;
@@ -2348,7 +2459,14 @@
       document.getElementById('photo-img').classList.remove('show');
       canvas.style.display = 'block';
       document.getElementById('canvas-wrap').classList.add('quiz-circle');
-      session.rotation = Math.random() * Math.PI * 2;
+
+      if (hist) {
+        session.answered = true;
+        session.rotation = hist.rotation;
+      } else {
+        session.answered = false;
+        session.rotation = Math.random() * Math.PI * 2;
+      }
 
       const sz = document.getElementById('canvas-wrap').offsetWidth;
       canvas.width = canvas.height = sz * (window.devicePixelRatio || 1);
@@ -2359,22 +2477,47 @@
         renderCanvas(canvas, con, settings.mode, false, session.rotation);
       }
 
-      const wrongs = getDistractors(con, session.pool);
-      const choices = [con, ...wrongs].sort(() => Math.random() - .5);
       const grid = document.getElementById('ans-grid');
       grid.innerHTML = '';
-      choices.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'ans-btn';
-        btn.textContent = c.name;
-        btn.addEventListener('click', () => handleAnswer(c, con));
-        grid.appendChild(btn);
-      });
+      if (hist) {
+        // Replay previously answered state
+        hist.choices.forEach(c => {
+          const btn = document.createElement('button');
+          btn.className = 'ans-btn';
+          btn.textContent = c.name;
+          btn.disabled = true;
+          if (c === con) btn.classList.add('ok');
+          else if (c === hist.chosen && hist.chosen !== con) btn.classList.add('err');
+          grid.appendChild(btn);
+        });
+        document.getElementById('feedback').innerHTML = hist.wasCorrect
+          ? `✓ Correct! — ${conLabel(con)}`
+          : `✗ That was ${conLabel(con)}`;
+        startReveal(con);
+        document.getElementById('btn-next').classList.add('show');
+      } else {
+        const wrongs = getDistractors(con, session.pool);
+        session.choices = [con, ...wrongs].sort(() => Math.random() - .5);
+        session.choices.forEach(c => {
+          const btn = document.createElement('button');
+          btn.className = 'ans-btn';
+          btn.textContent = c.name;
+          btn.addEventListener('click', () => handleAnswer(c, con));
+          grid.appendChild(btn);
+        });
+      }
+
+      updatePrevBtn();
     }
 
     function handleAnswer(chosen, correct) {
       if (session.answered) return;
       session.answered = true;
+
+      session.history[session.idx] = {
+        chosen, wasCorrect: chosen === correct,
+        rotation: session.rotation, choices: session.choices,
+      };
 
       document.querySelectorAll('.ans-btn').forEach(b => {
         b.disabled = true;
@@ -2393,6 +2536,7 @@
       startReveal(correct);
 
       document.getElementById('btn-next').classList.add('show');
+      updatePrevBtn();
     }
 
     function nextQuestion() {
@@ -2456,10 +2600,57 @@
       loadBounds();
       renderCourseMap();
 
+      // Populate constellation viewer select
+      const sorted = [...C].sort((a, b) => a.name.localeCompare(b.name));
+      [document.getElementById('con-select'), document.getElementById('con-select-viewer')].forEach(sel => {
+        sorted.forEach(con => {
+          const opt = document.createElement('option');
+          opt.value = con.abbr;
+          opt.textContent = con.name;
+          sel.appendChild(opt);
+        });
+      });
+      document.getElementById('btn-view').addEventListener('click', () => {
+        const con = C.find(c => c.abbr === document.getElementById('con-select').value);
+        if (con) viewConstellation(con);
+      });
+      document.getElementById('con-select-viewer').addEventListener('change', () => {
+        const con = C.find(c => c.abbr === document.getElementById('con-select-viewer').value);
+        if (con) viewConstellation(con);
+      });
+
       document.getElementById('btn-next').addEventListener('click', nextQuestion);
+      document.getElementById('btn-prev').addEventListener('click', () => {
+        if (session.idx > 0 && session.history[session.idx - 1]) {
+          session.idx--;
+          showQuestion();
+        }
+      });
       document.getElementById('btn-quit').addEventListener('click', () => {
+        if (session.viewMode) {
+          session.viewMode = false;
+          document.getElementById('screen-quiz').classList.remove('viewer-mode');
+          showScreen('start');
+          renderCourseMap();
+          return;
+        }
         const answered = session.idx + (session.answered ? 1 : 0);
         showResults(answered);
+      });
+
+      document.getElementById('chk-rev-photo').addEventListener('change', () => {
+        const con = session.pool[session.idx];
+        if (!con || !session.answered) return;
+        const checked = document.getElementById('chk-rev-photo').checked;
+        settings.mode = checked ? 'photo' : 'diagram';
+        if (checked) {
+          const img = document.getElementById('photo-img');
+          img.src = photoUrl(con);
+          if (img.complete) { redrawReveal(con); }
+          else { img.onload = () => redrawReveal(con); }
+        } else {
+          redrawReveal(con);
+        }
       });
 
       document.getElementById('chk-rev-boundary').addEventListener('change', () => {
@@ -2570,6 +2761,11 @@
           document.getElementById('btn-next').click();
         if (e.key === 'd' || e.key === 'D') {
           debugLabels = !debugLabels;
+          const con = session.pool[session.idx];
+          if (con && session.answered) redrawReveal(con);
+        }
+        if (e.key === 'a' || e.key === 'A') {
+          debugAnchors = !debugAnchors;
           const con = session.pool[session.idx];
           if (con && session.answered) redrawReveal(con);
         }
