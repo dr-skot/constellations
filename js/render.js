@@ -335,24 +335,32 @@ function redrawReveal(con) {
     .flatMap(ring => projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H))
     .filter(p => p.d > 0);
 
-  // Search for a point inside the circle that is inside the neighbor's polygon
-  // and outside the current constellation's polygon.
+  // Search for a point inside the circle where the full label bounding box
+  // (hw × hh half-extents) lies inside the neighbor's polygon and outside
+  // the current constellation's polygon.
   // hintDx/hintDy: direction from circle centre toward the neighbor (bias).
   // nVisPts: visible projected boundary points of the neighbor (for PIP).
-  function findInNeighbor(nVisPts, hintDx, hintDy) {
+  function findInNeighbor(nVisPts, hintDx, hintDy, hw, hh) {
     const canNPIP = nVisPts.length >= 3;
     const canCPIP = curVisPts.length >= 3;
+    // Four corners of the label bounding box relative to its centre.
+    const offsets = [[-hw, -hh], [hw, -hh], [-hw, hh], [hw, hh]];
     function valid(tx, ty) {
+      // Centre must be inside the circle with room for the label.
       const dx = tx - cirCx, dy = ty - cirCy;
-      if (dx * dx + dy * dy > R * R) return false;
-      if (canNPIP && !pointInPoly2D(tx, ty, nVisPts)) return false;
-      if (canCPIP &&  pointInPoly2D(tx, ty, curVisPts)) return false;
+      if (dx * dx + dy * dy > (R - hw) * (R - hw)) return false;
+      // All four corners must satisfy both PIP constraints.
+      for (const [ox, oy] of offsets) {
+        const px = tx + ox, py = ty + oy;
+        if (canNPIP && !pointInPoly2D(px, py, nVisPts)) return false;
+        if (canCPIP &&  pointInPoly2D(px, py, curVisPts)) return false;
+      }
       return true;
     }
     // Primary: march from circle centre outward along hint direction.
     const hl = Math.sqrt(hintDx * hintDx + hintDy * hintDy);
     if (hl > 1) {
-      for (let t = 0.08; t <= 0.94; t += 0.03) {
+      for (let t = 0.08; t <= 0.93; t += 0.03) {
         const tx = cirCx + (hintDx / hl) * R * t;
         const ty = cirCy + (hintDy / hl) * R * t;
         if (valid(tx, ty)) return { x: tx, y: ty };
@@ -360,7 +368,7 @@ function redrawReveal(con) {
     }
     // Fallback: sweep 16 angles × 5 radii (outer to inner).
     for (let ri = 5; ri >= 1; ri--) {
-      const r = R * 0.9 * ri / 5;
+      const r = R * 0.88 * ri / 5;
       for (let ai = 0; ai < 16; ai++) {
         const tx = cirCx + Math.cos(ai * Math.PI / 8) * r;
         const ty = cirCy + Math.sin(ai * Math.PI / 8) * r;
@@ -437,23 +445,18 @@ function redrawReveal(con) {
         ? intPts.reduce((s, p) => s + p.y, 0) / intPts.length
         : cirCy;
 
-      // Find a point that is confirmed inside the neighbor's polygon and
-      // outside the current constellation's polygon.
+      // Estimate label bounding box half-extents in canvas pixels.
+      const fs = Math.max(9, Math.round(W * 0.026));
+      const hw = neighbor.name.length * fs * 0.32; // ~0.55 char width / 2, slight pad
+      const hh = fs * 0.65;
+
+      // Find a point where the full label box is inside the neighbor's polygon
+      // and outside the current constellation's polygon.
       const nVisPts = projRings.flatMap(pts => pts.filter(p => p.d > 0));
-      const pt = findInNeighbor(nVisPts, hintX - cirCx, hintY - cirCy);
+      const pt = findInNeighbor(nVisPts, hintX - cirCx, hintY - cirCy, hw, hh);
       if (!pt) continue;
 
-      // Clamp to stay inside the circle with margin.
-      let lx = pt.x, ly = pt.y;
-      const ddx = lx - cirCx, ddy = ly - cirCy;
-      const dist = Math.sqrt(ddx * ddx + ddy * ddy);
-      if (dist + margin > R) {
-        const scale = (R - margin) / Math.max(dist, 1);
-        lx = cirCx + ddx * scale;
-        ly = cirCy + ddy * scale;
-      }
-
-      neighborLabelPts.push({ name: neighbor.name, x: lx, y: ly });
+      neighborLabelPts.push({ name: neighbor.name, x: pt.x, y: pt.y });
     }
     ctx.restore();
   }
