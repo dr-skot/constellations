@@ -263,6 +263,32 @@ function showPhotoMode(con, angle = 0) {
   img.style.transform = angle ? `rotate(${angle}rad)` : '';
 }
 
+// Returns intersection points of segment (x1,y1)→(x2,y2) with circle (cx,cy,R).
+function segCircleIntersections(x1, y1, x2, y2, cx, cy, R) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const fx = x1 - cx, fy = y1 - cy;
+  const a = dx * dx + dy * dy;
+  const b = 2 * (fx * dx + fy * dy);
+  const c = fx * fx + fy * fy - R * R;
+  const disc = b * b - 4 * a * c;
+  if (disc < 0 || a < 1e-10) return [];
+  const sq = Math.sqrt(disc);
+  return [(-b - sq) / (2 * a), (-b + sq) / (2 * a)]
+    .filter(t => t >= 0 && t <= 1)
+    .map(t => ({ x: x1 + t * dx, y: y1 + t * dy }));
+}
+
+// 2-D ray-cast point-in-polygon using projected canvas points.
+function pointInPoly2D(px, py, pts) {
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const xi = pts[i].x, yi = pts[i].y, xj = pts[j].x, yj = pts[j].y;
+    if ((yi > py) !== (yj > py) && px < (xj - xi) * (py - yi) / (yj - yi) + xi)
+      inside = !inside;
+  }
+  return inside;
+}
+
 function redrawReveal(con) {
   const origAbbr = con.abbr;
   if (session.viewMode) con = tweakedCon(con);
@@ -301,6 +327,10 @@ function redrawReveal(con) {
   if (settings.mode !== 'photo' || showDiag) drawStars(ctx, revealProj);
 
   // Boundary overlay — draw all visible constellation boundaries
+  // Also collect label positions for visible neighbors.
+  // A neighbor is "visible" only if its area actually intersects the circle:
+  // we gather boundary points inside the circle plus circle-edge intersections.
+  const R = W / 2, cirCx = W / 2, cirCy = H / 2;
   const neighborLabelPts = [];
   if (showBound) {
     ctx.save();
@@ -309,12 +339,16 @@ function redrawReveal(con) {
       ctx.strokeStyle = isCurrent ? 'rgba(120,200,120,0.65)' : 'rgba(120,200,120,0.28)';
       ctx.lineWidth = isCurrent ? 1.5 : 1;
 
-      let anyVisible = false;
-      for (const ring of rings) {
-        const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H);
+      // Project all rings once; also collect per-ring visible-point arrays for PIP fallback.
+      const projRings = rings.map(ring =>
+        projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H));
+
+      // Draw boundary segments (only where d>0).
+      let anySegVisible = false;
+      for (const pts of projRings) {
         const visCount = pts.reduce((n, p) => n + (p.d > 0 ? 1 : 0), 0);
         if (visCount < 2) continue;
-        anyVisible = true;
+        anySegVisible = true;
         ctx.beginPath();
         let prevVis = false;
         for (const p of pts) {
@@ -329,24 +363,58 @@ function redrawReveal(con) {
         ctx.stroke();
       }
 
-      if (!isCurrent && anyVisible) {
-        const neighbor = C.find(c => c.abbr === abbr);
-        if (neighbor) {
-          const [cp] = projectStarsTAN([[neighbor.ra, neighbor.dec, 0]], con, W, H);
-          if (cp && cp.d > 0) {
-            neighborLabelPts.push({ name: neighbor.name, x: cp.x, y: cp.y });
-          } else {
-            // Fall back to centroid of visible boundary points
-            let sx = 0, sy = 0, n = 0;
-            for (const ring of rings) {
-              for (const p of projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H)) {
-                if (p.d > 0) { sx += p.x; sy += p.y; n++; }
-              }
-            }
-            if (n > 0) neighborLabelPts.push({ name: neighbor.name, x: sx / n, y: sy / n });
+      if (isCurrent) continue;
+
+      // Collect points that define the visible intersection with the circle:
+      // boundary points inside the circle + where edges cross the circle edge.
+      const intPts = [];
+      for (const pts of projRings) {
+        for (let i = 0; i < pts.length; i++) {
+          const p = pts[i];
+          const q = pts[(i + 1) % pts.length];
+          if (p.d > 0) {
+            const dx = p.x - cirCx, dy = p.y - cirCy;
+            if (dx * dx + dy * dy <= R * R) intPts.push({ x: p.x, y: p.y });
+          }
+          if (p.d > 0 && q.d > 0) {
+            for (const ip of segCircleIntersections(p.x, p.y, q.x, q.y, cirCx, cirCy, R))
+              intPts.push(ip);
           }
         }
       }
+
+      // Fallback: constellation surrounds the view — circle center is inside its boundary.
+      if (intPts.length === 0) {
+        for (const pts of projRings) {
+          const visPts = pts.filter(p => p.d > 0);
+          if (visPts.length >= 3 && pointInPoly2D(cirCx, cirCy, visPts)) {
+            // Push several points spread around the circle interior to get a
+            // centroid near the ring's visible centroid (not the canvas center).
+            let sx = 0, sy = 0;
+            for (const p of visPts) { sx += p.x; sy += p.y; }
+            intPts.push({ x: sx / visPts.length, y: sy / visPts.length });
+            break;
+          }
+        }
+      }
+
+      if (intPts.length === 0) continue;
+
+      const neighbor = C.find(c => c.abbr === abbr);
+      if (!neighbor) continue;
+
+      // Label position: centroid of intersection points, clamped inside the circle.
+      let lx = intPts.reduce((s, p) => s + p.x, 0) / intPts.length;
+      let ly = intPts.reduce((s, p) => s + p.y, 0) / intPts.length;
+      const ddx = lx - cirCx, ddy = ly - cirCy;
+      const dist = Math.sqrt(ddx * ddx + ddy * ddy);
+      const margin = Math.max(10, W * 0.04); // keep label inside circle by this much
+      if (dist + margin > R) {
+        const scale = (R - margin) / Math.max(dist, 1);
+        lx = cirCx + ddx * scale;
+        ly = cirCy + ddy * scale;
+      }
+      neighborLabelPts.push({ name: neighbor.name, x: lx, y: ly });
     }
     ctx.restore();
   }
@@ -356,9 +424,9 @@ function redrawReveal(con) {
   // Star labels after rotation restore so text stays upright
   if (showDiag && revealProj) drawLabels(ctx, rotateProj(revealProj, angle, W, H), W);
 
-  // Neighbor constellation labels (drawn after rotation restore, text stays upright)
+  // Neighbor constellation labels (after rotation restore, text stays upright).
+  // Convert canvas-space label positions to screen space via rotation.
   if (neighborLabelPts.length > 0) {
-    const pad = 10;
     const fs = Math.max(9, Math.round(W * 0.026));
     ctx.save();
     ctx.font = `${fs}px system-ui,-apple-system,sans-serif`;
@@ -367,10 +435,7 @@ function redrawReveal(con) {
     ctx.fillStyle = 'rgba(140,210,140,0.75)';
     for (const lbl of neighborLabelPts) {
       const sp = rotateProj([lbl], angle, W, H)[0];
-      const tw = ctx.measureText(lbl.name).width;
-      const sx = Math.max(pad + tw / 2, Math.min(W - pad - tw / 2, sp.x));
-      const sy = Math.max(pad + fs / 2, Math.min(H - pad - fs / 2, sp.y));
-      ctx.fillText(lbl.name, sx, sy);
+      ctx.fillText(lbl.name, sp.x, sp.y);
     }
     ctx.restore();
   }
