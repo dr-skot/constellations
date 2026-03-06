@@ -58,6 +58,10 @@
   font-size: .8rem
 }
 .btn-eq-next:hover { background: var(--accent); color: #000 }
+.find-breadcrumb { font-size: .8rem; color: var(--dim) }
+.find-breadcrumb a { color: var(--accent); text-decoration: none }
+.find-breadcrumb a:hover { text-decoration: underline }
+.find-breadcrumb span { color: var(--text) }
 #explore-search { display:flex; gap:4px; align-items:center; }
 #explore-search-input { background:var(--bg); color:var(--text); border:1px solid var(--border);
                         border-radius:8px; padding:5px 8px; font-size:.8rem; width:150px; }

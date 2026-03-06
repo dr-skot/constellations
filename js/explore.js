@@ -241,6 +241,30 @@ function drawExplore() {
     ctx.restore();
   }
 
+  // Milky Way (galactic plane) — shown in diagram/stars quiz modes for orientation
+  if (cm === 'diagram' || cm === 'stars') {
+    const mwPts = [];
+    for (let l = 0; l <= 360; l += 0.5) {
+      const { ra, dec } = galToRaDec(l, 0);
+      mwPts.push([ra, dec, 0]);
+    }
+    const pts = projectStarsTAN(mwPts, viewCon, W, H);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(180,200,255,0.22)';
+    ctx.lineWidth = Math.max(24, W / 13);
+    ctx.shadowColor = 'rgba(180,200,255,0.16)';
+    ctx.shadowBlur = W / 40;
+    ctx.beginPath();
+    let penDown = false;
+    for (const p of pts) {
+      if (p.d <= 0) { penDown = false; continue; }
+      if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+      else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
   // Pre-project boundaries for all visible constellations (reused for drawing, edge
   // collection, and label polygon PIP — avoids redundant projection passes).
   const projBounds = {};
@@ -400,6 +424,8 @@ function startExploreQuiz() {
 function stopExploreQuiz() {
   explore.quiz = null;
   document.getElementById('explore-quiz-bar').style.display = 'none';
+  document.getElementById('find-quiz-hdr').style.display = 'none';
+  document.getElementById('explore-free-hdr').style.display = '';
   document.querySelector('.explore-layers').style.display = '';
   drawExplore();
 }

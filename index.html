@@ -81,13 +81,18 @@
     </div>
 
     <div id="screen-explore" class="screen">
-      <div class="explore-hdr">
+      <div class="explore-hdr" id="explore-free-hdr">
         <span style="color:var(--dim);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase">Sky Explorer</span>
         <div id="explore-search">
           <input type="text" id="explore-search-input" list="explore-con-list" placeholder="Find constellation…" autocomplete="off">
           <datalist id="explore-con-list"></datalist>
           <button id="explore-search-go">Go</button>
         </div>
+      </div>
+      <div class="explore-hdr" id="find-quiz-hdr" style="display:none">
+        <nav class="find-breadcrumb">
+          <a href="#" id="breadcrumb-course">Course</a> › <span id="breadcrumb-stage"></span>
+        </nav>
       </div>
       <div id="explore-quiz-bar" style="display:none">
         <div class="eq-prompt">Click on: <strong id="eq-target-name"></strong></div>

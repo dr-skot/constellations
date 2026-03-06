@@ -136,7 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Explore mode
-document.getElementById('eq-next').addEventListener('click', nextExploreQuestion);
+  document.getElementById('eq-next').addEventListener('click', nextExploreQuestion);
+  document.getElementById('breadcrumb-course').addEventListener('click', e => {
+    e.preventDefault(); navigate('course');
+  });
 
   // Populate explore search datalist
   const exploreList = document.getElementById('explore-con-list');

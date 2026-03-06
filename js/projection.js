@@ -51,6 +51,22 @@ function pixelToRADec(px, py, ra0, dec0, fov, W, H) {
   return { ra: ((ra_r * 180 / Math.PI) + 360) % 360, dec: dec_r * 180 / Math.PI };
 }
 
+// Convert galactic coordinates (l, b) in degrees to equatorial (RA, Dec) J2000.
+function galToRaDec(l, b) {
+  const NGP_RA  = 192.859508 * Math.PI / 180;
+  const NGP_DEC = 27.128336  * Math.PI / 180;
+  const L_NCP   = 122.931918 * Math.PI / 180;
+  const lr = l * Math.PI / 180, br = b * Math.PI / 180;
+  const sinDec = Math.sin(br) * Math.sin(NGP_DEC) +
+                 Math.cos(br) * Math.cos(NGP_DEC) * Math.cos(lr - L_NCP);
+  const dec = Math.asin(Math.max(-1, Math.min(1, sinDec)));
+  const ra  = Math.atan2(
+    Math.cos(br) * Math.sin(lr - L_NCP),
+    Math.sin(br) * Math.cos(NGP_DEC) - Math.cos(br) * Math.sin(NGP_DEC) * Math.cos(lr - L_NCP)
+  ) + NGP_RA;
+  return { ra: ((ra * 180 / Math.PI) + 360) % 360, dec: dec * 180 / Math.PI };
+}
+
 function raDecToVec(ra, dec) {
   const r = ra * Math.PI / 180, d = dec * Math.PI / 180;
   return [Math.cos(d) * Math.cos(r), Math.cos(d) * Math.sin(r), Math.sin(d)];

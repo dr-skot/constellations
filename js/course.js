@@ -173,13 +173,20 @@ function tryResumeFindStage(idx) {
       courseStageIdx: idx, stageMode: stage.mode, bounds: stage.bounds,
     };
     explore.ra = 180; explore.dec = 30; explore.fov = 90;
+    showFindQuizHdr(stage);
     document.getElementById('explore-quiz-bar').style.display = 'flex';
-    document.querySelector('.explore-layers').style.display = 'none';
     showScreen('explore');
     nextExploreQuestion();
     drawExplore();
     return true;
   } catch { return false; }
+}
+
+function showFindQuizHdr(stage) {
+  document.getElementById('explore-free-hdr').style.display = 'none';
+  document.querySelector('.explore-layers').style.display = 'none';
+  document.getElementById('breadcrumb-stage').textContent = PHASE_LABELS[stage.phase];
+  document.getElementById('find-quiz-hdr').style.display = 'flex';
 }
 
 function startFindCourseStage(idx) {
@@ -192,8 +199,8 @@ function startFindCourseStage(idx) {
     bounds: stage.bounds,
   };
   explore.ra = 180; explore.dec = 30; explore.fov = 90;
+  showFindQuizHdr(stage);
   document.getElementById('explore-quiz-bar').style.display = 'flex';
-  document.querySelector('.explore-layers').style.display = 'none';
   showScreen('explore');
   nextExploreQuestion();
   drawExplore();
