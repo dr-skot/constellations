@@ -35,6 +35,8 @@ function viewConstellation(con) {
   session.rotation = 0;
   session.courseStageIdx = null;
   session.viewMode = true;
+  document.getElementById('quiz-breadcrumb-stage').textContent = con.name;
+  document.getElementById('quiz-breadcrumb').style.display = '';
   const quizScreen = document.getElementById('screen-quiz');
   quizScreen.classList.add('viewer-mode');
   document.getElementById('canvas-wrap').classList.add('quiz-circle');
@@ -102,6 +104,11 @@ function renderCourseMap() {
   });
 }
 
+function showQuizBreadcrumb(idx) {
+  document.getElementById('quiz-breadcrumb-stage').textContent = PHASE_LABELS[STAGES[idx].phase];
+  document.getElementById('quiz-breadcrumb').style.display = '';
+}
+
 function startCourseStage(idx) {
   const stage = STAGES[idx];
   if (stage.type === 'find') { startFindCourseStage(idx); return; }
@@ -115,11 +122,13 @@ function startCourseStage(idx) {
   session.history = [];
   session.choices = [];
   session.courseStageIdx = idx;
+  showQuizBreadcrumb(idx);
   showScreen('quiz');
   showQuestion();
 }
 
 function endCourseStage() {
+  document.getElementById('quiz-breadcrumb').style.display = 'none';
   const n = session.pool.length, c = session.correct;
   const mastered = (n > 0 && c / n >= 0.8);
   if (mastered) { const a = loadMastered(); a[session.courseStageIdx] = true; saveMastered(a); }

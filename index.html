@@ -28,6 +28,9 @@
 
     <div id="screen-quiz" class="screen">
       <div>
+        <div id="quiz-breadcrumb" style="display:none">
+          <a href="#" id="quiz-breadcrumb-course">Course</a> › <span id="quiz-breadcrumb-stage"></span>
+        </div>
         <div class="hud">
           <span id="hud-progress">1 / 10</span>
           <span class="hud-score" id="hud-score">0 correct</span>
@@ -82,7 +85,9 @@
 
     <div id="screen-explore" class="screen">
       <div class="explore-hdr" id="explore-free-hdr">
-        <span style="color:var(--dim);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase">Sky Explorer</span>
+        <nav class="find-breadcrumb">
+          <a href="#" id="explore-breadcrumb-course">Course</a> › <span>Sky Explorer</span>
+        </nav>
         <div id="explore-search">
           <input type="text" id="explore-search-input" list="explore-con-list" placeholder="Find constellation…" autocomplete="off">
           <datalist id="explore-con-list"></datalist>

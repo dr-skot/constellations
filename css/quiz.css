@@ -1,4 +1,9 @@
 /* quiz */
+#quiz-breadcrumb { font-size: .8rem; color: var(--dim); padding: 2px 0 6px }
+#quiz-breadcrumb a { color: var(--accent); text-decoration: none }
+#quiz-breadcrumb a:hover { text-decoration: underline }
+#quiz-breadcrumb span { color: var(--text) }
+
 .hud {
   display: flex;
   justify-content: space-between;

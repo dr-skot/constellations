@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Constellation Framing</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box }
+body { background:#05060f; color:#d8e2ff; font:14px system-ui,sans-serif;
+       display:flex; flex-direction:column; align-items:center;
+       min-height:100vh; padding:16px; gap:12px }
+h1 { font-size:1rem; color:#5b8af5; letter-spacing:.08em; text-transform:uppercase }
+#top { display:flex; align-items:center; gap:12px; flex-wrap:wrap }
+select { background:#0c0f1e; color:#d8e2ff; border:1px solid rgba(255,255,255,.15);
+         border-radius:6px; padding:5px 10px; font-size:.9rem; cursor:pointer }
+canvas { border:1px solid rgba(255,255,255,.08); border-radius:8px; display:block }
+#controls { width:600px; max-width:100%; display:grid;
+            grid-template-columns:90px 1fr 80px; gap:6px 10px; align-items:center }
+.lbl { text-align:right; color:#5a6480; font-size:.82rem }
+input[type=range] { width:100%; accent-color:#5b8af5 }
+.val { font-size:.82rem; color:#b0ccff; text-align:left; font-variant-numeric:tabular-nums }
+button { background:rgba(91,138,245,.15); border:1px solid rgba(91,138,245,.4);
+         color:#b0ccff; border-radius:6px; padding:5px 14px; cursor:pointer; font-size:.85rem }
+button:hover { background:rgba(91,138,245,.28) }
+#output { font-size:.82rem; color:#6f8; font-family:monospace; letter-spacing:.04em }
+label { display:flex; align-items:center; gap:5px; cursor:pointer; font-size:.85rem; color:#5a6480 }
+</style>
+</head>
+<body>
+<h1>Constellation Framing</h1>
+<div id="top">
+  <select id="con-sel"></select>
+  <label><input type="checkbox" id="chk-photo"> Photo</label>
+  <label><input type="checkbox" id="chk-diagram" checked> Diagram</label>
+  <button id="btn-reset">Reset</button>
+  <button id="btn-copy">Copy ra/dec/fov</button>
+</div>
+<canvas id="canvas" width="600" height="600"></canvas>
+<div id="controls">
+  <span class="lbl">Scale</span>
+  <input type="range" id="sl-scale" min="25" max="400" value="100" step="1">
+  <span class="val" id="vl-scale">1.00×</span>
+
+  <span class="lbl">RA offset</span>
+  <input type="range" id="sl-dx" min="-45" max="45" value="0" step="0.5">
+  <span class="val" id="vl-dx">0.0°</span>
+
+  <span class="lbl">Dec offset</span>
+  <input type="range" id="sl-dy" min="-45" max="45" value="0" step="0.5">
+  <span class="val" id="vl-dy">0.0°</span>
+</div>
+<div id="output">—</div>
+
+<script src="js/data.js"></script>
+<script src="js/projection.js"></script>
+<script>
+const W = 600, H = 600;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const photoCache = {};
+let currentCon = null;
+let photoImg = null;
+
+// Populate select
+const sorted = [...C].sort((a, b) => a.name.localeCompare(b.name));
+const sel = document.getElementById('con-sel');
+sorted.forEach(con => {
+  const opt = document.createElement('option');
+  opt.value = con.abbr;
+  opt.textContent = con.name;
+  sel.appendChild(opt);
+});
+
+function tweakedCon(con) {
+  const scale = parseFloat(document.getElementById('sl-scale').value) / 100;
+  const dx    = parseFloat(document.getElementById('sl-dx').value);
+  const dy    = parseFloat(document.getElementById('sl-dy').value);
+  const newFov = 2 * Math.atan(Math.tan(con.fov * Math.PI / 360) / scale) * 180 / Math.PI;
+  return { ...con, ra: ((con.ra + dx) % 360 + 360) % 360, dec: con.dec + dy, fov: newFov };
+}
+
+function magToR(m) {
+  return m <= -1 ? 7 : m < 0 ? 6 : m < 1 ? 5 : m < 2 ? 3.8 : m < 3 ? 2.8 : m < 4 ? 2.0 : m < 5 ? 1.4 : 1.0;
+}
+function starCol(h) {
+  return h === 'r' ? '#ff7060' : h === 'o' ? '#ffb860' : h === 'b' ? '#90c8ff' : '#f5eedc';
+}
+
+function drawLines(proj, con) {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(80,145,230,0.6)';
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = 'rgba(100,160,255,0.4)';
+  ctx.shadowBlur = 5;
+  for (const [i, j] of con.lines) {
+    const a = proj[i], b = proj[j];
+    if (!a || !b || !a.d || !b.d) continue;
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawStars(proj) {
+  for (const p of proj) {
+    if (p.d <= 0) continue;
+    const r = magToR(p.mag), col = starCol(p.hint);
+    ctx.save();
+    ctx.shadowColor = col;
+    ctx.shadowBlur = p.mag < 2 ? 8 : p.mag < 3 ? 4 : 2;
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+}
+
+function updateOutput(tc) {
+  document.getElementById('output').textContent =
+    `ra: ${tc.ra.toFixed(1)}, dec: ${tc.dec.toFixed(1)}, fov: ${tc.fov.toFixed(1)}`;
+}
+
+function draw() {
+  const con = currentCon;
+  if (!con) return;
+  const tc = tweakedCon(con);
+
+  ctx.fillStyle = '#010208';
+  ctx.fillRect(0, 0, W, H);
+
+  const showPhoto   = document.getElementById('chk-photo').checked;
+  const showDiagram = document.getElementById('chk-diagram').checked;
+
+  if (showPhoto && photoImg) {
+    ctx.drawImage(photoImg, 0, 0, W, H);
+  }
+
+  if (showDiagram) {
+    const proj = projectStarsTAN(con.stars, tc, W, H);
+    drawLines(proj, con);
+    drawStars(proj);
+  }
+
+  updateOutput(tc);
+}
+
+function loadPhoto(con) {
+  photoImg = null;
+  if (photoCache[con.abbr] instanceof HTMLImageElement) {
+    photoImg = photoCache[con.abbr]; draw(); return;
+  }
+  const img = new Image();
+  img.onload = () => { photoCache[con.abbr] = img; photoImg = img; draw(); };
+  img.onerror = () => { photoCache[con.abbr] = null; };
+  img.src = `img/${con.abbr}.jpg`;
+}
+
+function selectCon(abbr) {
+  currentCon = C.find(c => c.abbr === abbr);
+  if (!currentCon) return;
+  // Reset tweaks
+  document.getElementById('sl-scale').value = 100;
+  document.getElementById('sl-dx').value = 0;
+  document.getElementById('sl-dy').value = 0;
+  document.getElementById('vl-scale').textContent = '1.00×';
+  document.getElementById('vl-dx').textContent = '0.0°';
+  document.getElementById('vl-dy').textContent = '0.0°';
+  loadPhoto(currentCon);
+  draw();
+}
+
+function onSlider() {
+  const scale = parseFloat(document.getElementById('sl-scale').value) / 100;
+  const dx    = parseFloat(document.getElementById('sl-dx').value);
+  const dy    = parseFloat(document.getElementById('sl-dy').value);
+  document.getElementById('vl-scale').textContent = scale.toFixed(2) + '×';
+  document.getElementById('vl-dx').textContent    = dx.toFixed(1) + '°';
+  document.getElementById('vl-dy').textContent    = dy.toFixed(1) + '°';
+  draw();
+}
+
+sel.addEventListener('change', () => selectCon(sel.value));
+['sl-scale','sl-dx','sl-dy'].forEach(id =>
+  document.getElementById(id).addEventListener('input', onSlider));
+['chk-photo','chk-diagram'].forEach(id =>
+  document.getElementById(id).addEventListener('change', draw));
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  if (currentCon) selectCon(currentCon.abbr);
+});
+
+document.getElementById('btn-copy').addEventListener('click', () => {
+  if (!currentCon) return;
+  const tc = tweakedCon(currentCon);
+  const text = `ra: ${tc.ra.toFixed(1)}, dec: ${tc.dec.toFixed(1)}, fov: ${tc.fov.toFixed(1)}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy ra/dec/fov'; }, 1500);
+  });
+});
+
+// Start with first constellation
+selectCon(sorted[0].abbr);
+sel.value = sorted[0].abbr;
+</script>
+</body>
+</html>

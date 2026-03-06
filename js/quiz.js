@@ -46,6 +46,7 @@ function tryResumeStage(idx) {
     session.viewMode = false;
     settings.mode = STAGES[idx].mode;
     document.getElementById('screen-quiz').classList.remove('viewer-mode');
+    showQuizBreadcrumb(idx);
     showScreen('quiz'); showQuestion(); return true;
   } catch { return false; }
 }

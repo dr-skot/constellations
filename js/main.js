@@ -140,6 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
+  document.getElementById('explore-breadcrumb-course').addEventListener('click', e => {
+    e.preventDefault(); navigate('course');
+  });
+  document.getElementById('quiz-breadcrumb-course').addEventListener('click', e => {
+    e.preventDefault(); navigate('course');
+  });
 
   // Populate explore search datalist
   const exploreList = document.getElementById('explore-con-list');
