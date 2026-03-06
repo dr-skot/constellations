@@ -410,14 +410,22 @@ function drawExplore() {
     if (clicked && clicked.abbr !== target.abbr) drawBoundary(clicked, 'rgba(255,80,80,0.9)');
     drawBoundary(target, 'rgba(100,255,100,0.9)');
 
-    // In photo mode, overlay the diagram for target and wrong guess on reveal.
-    if (cm === 'photo') {
+    // In photo/stars mode, overlay diagram for target and wrong guess on reveal.
+    if (cm === 'photo' || cm === 'stars') {
       const revealCons = [target];
       if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
       for (const con of revealCons) {
         const fullProj = projectStarsTAN(con.stars, viewCon, W, H).map(p => p.d > 0 ? p : null);
         drawLines(ctx, fullProj, con);
         drawStars(ctx, fullProj.filter(Boolean));
+      }
+    }
+    // In diagram mode, overlay artwork for target and wrong guess on reveal.
+    if (cm === 'diagram') {
+      const revealCons = [target];
+      if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
+      for (const con of revealCons) {
+        try { drawExploreArtLayer(ctx, con, viewCon, W, H); } catch (e) {}
       }
     }
   }
