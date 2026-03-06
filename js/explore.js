@@ -413,6 +413,7 @@ function nextExploreQuestion() {
   }
   q.target = q.pool[q.idx++];
   q.answered = false;
+  if (q.courseStageIdx != null) saveFindSession();
   document.getElementById('eq-target-name').textContent = q.target.name;
   document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
   document.getElementById('eq-feedback').textContent = '';
@@ -426,11 +427,19 @@ function handleExploreClick(px, py) {
   if (!q || q.answered) return;
   const canvas = document.getElementById('explore-canvas');
   const W = canvas.width, H = canvas.height;
-  const coords = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, W, H);
-  // Pre-filter by angular distance before pointInPolygon — see comment there.
-  const clicked = C.find(c => BOUNDS[c.abbr] &&
-    angularDist(coords.ra, coords.dec, c.ra, c.dec) < 60 &&
-    BOUNDS[c.abbr].some(ring => pointInPolygon(coords.ra, coords.dec, ring))) || null;
+  const viewCon = { ra: explore.ra, dec: explore.dec, fov: explore.fov };
+  // Hit-test in canvas pixel space — avoids RA/Dec wrapping artifacts and TAN
+  // projection distortion that cause mismatches between what the user sees and
+  // what a sky-coordinate PIP would identify.
+  const clicked = C.find(c => {
+    if (!BOUNDS[c.abbr]) return false;
+    if (angularDist(explore.ra, explore.dec, c.ra, c.dec) > explore.fov / 2 + c.fov / 2 + 8) return false;
+    return BOUNDS[c.abbr].some(ring => {
+      const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H)
+        .filter(p => p.d > 0);
+      return pts.length >= 3 && pointInPoly2D(px, py, pts);
+    });
+  }) || null;
   const correct = clicked && clicked.abbr === q.target.abbr;
   q.answered = true;
   q.clicked = clicked;

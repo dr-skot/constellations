@@ -24,7 +24,7 @@ function handleRoute(hash) {
     const idx = parseInt(hash.slice(6));
     const stage = STAGES[idx];
     if (!stage || !isPhaseUnlocked(stage.phase)) { navigate('course'); return; }
-    if (stage.type === 'find') startFindCourseStage(idx);
+    if (stage.type === 'find') { if (!tryResumeFindStage(idx)) startFindCourseStage(idx); }
     else if (!tryResumeStage(idx)) startCourseStage(idx);
   } else {
     navigate('course');

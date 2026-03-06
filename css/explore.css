@@ -42,10 +42,10 @@
   flex-wrap: wrap;
   min-height: 36px
 }
-.eq-prompt { flex: 1; font-size: .95rem; color: var(--text) }
+.eq-prompt { white-space: nowrap; font-size: .95rem; color: var(--text) }
 .eq-prompt strong { color: #a8d4ff }
+.eq-feedback { flex: 1; font-size: .9rem; text-align: center }
 .eq-score { color: var(--dim); font-size: .85rem; white-space: nowrap }
-.eq-feedback { font-size: .9rem }
 .eq-feedback.correct { color: #6f8 }
 .eq-feedback.wrong { color: #f88 }
 .btn-eq-next {

@@ -7,25 +7,7 @@
 // with the same id — so we accumulate into an array rather than overwriting.
 // All boundary draw and hit-test code must iterate over all rings.
 // ═══════════════════════════════════════════════════════════
-let BOUNDS = {};
-
-async function loadBounds() {
-  try {
-    const resp = await fetch('https://cdn.jsdelivr.net/gh/ofrohn/d3-celestial@master/data/constellations.bounds.json');
-    const data = await resp.json();
-    for (const feat of data.features) {
-      const abbr = feat.id;
-      const coords = feat.geometry.coordinates[0];
-      // GeoJSON lon = RA stored in [-180, 180]; convert back to [0, 360]
-      const ring = coords.map(([lon, lat]) => [lon >= 0 ? lon : lon + 360, lat]);
-      // Use push (not assign) so split constellations accumulate both rings
-      if (!BOUNDS[abbr]) BOUNDS[abbr] = [];
-      BOUNDS[abbr].push(ring);
-    }
-  } catch (e) {
-    console.warn('Could not load constellation boundaries:', e);
-  }
-}
+function loadBounds() {} // BOUNDS is now inlined in data.js
 
 // ═══════════════════════════════════════════════════════════
 // COURSE — 21-stage mastery curriculum
@@ -69,7 +51,7 @@ function viewConstellation(con) {
 }
 
 function isPhaseUnlocked(ph) {
-  if (ph === 0) return true;
+  if (ph === 0 || ph === 3) return true;  // both tracks start unlocked
   const m = loadMastered();
   return STAGES.every((s, i) => s.phase !== ph - 1 || m[i]);
 }
@@ -166,6 +148,40 @@ function renderResultButtons() {
   }
 }
 
+function saveFindSession() {
+  const q = explore.quiz;
+  if (!q || q.courseStageIdx == null) return;
+  sessionStorage.setItem('find-session', JSON.stringify({
+    stageIdx: q.courseStageIdx,
+    pool: q.pool.map(c => c.abbr),
+    idx: q.idx,
+    score: q.score,
+    total: q.total,
+  }));
+}
+
+function tryResumeFindStage(idx) {
+  try {
+    const d = JSON.parse(sessionStorage.getItem('find-session'));
+    if (!d || d.stageIdx !== idx) return false;
+    const pool = d.pool.map(abbr => C.find(c => c.abbr === abbr)).filter(Boolean);
+    if (pool.length !== d.pool.length) return false;
+    const stage = STAGES[idx];
+    explore.quiz = {
+      pool, idx: d.idx, score: d.score, total: d.total,
+      target: null, answered: false,
+      courseStageIdx: idx, stageMode: stage.mode, bounds: stage.bounds,
+    };
+    explore.ra = 180; explore.dec = 30; explore.fov = 90;
+    document.getElementById('explore-quiz-bar').style.display = 'flex';
+    document.querySelector('.explore-layers').style.display = 'none';
+    showScreen('explore');
+    nextExploreQuestion();
+    drawExplore();
+    return true;
+  } catch { return false; }
+}
+
 function startFindCourseStage(idx) {
   const stage = STAGES[idx];
   explore.quiz = {
@@ -184,6 +200,7 @@ function startFindCourseStage(idx) {
 }
 
 function endFindCourseStage() {
+  sessionStorage.removeItem('find-session');
   const q = explore.quiz;
   const n = q.total, c = q.score;
   const mastered = (n > 0 && c / n >= 0.8);
