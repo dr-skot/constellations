@@ -12,22 +12,6 @@
   flex-wrap: wrap
 }
 
-.btn-back-explore {
-  padding: 4px 12px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--dim);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: .78rem;
-  transition: all .18s
-}
-
-.btn-back-explore:hover {
-  border-color: var(--accent);
-  color: var(--text)
-}
-
 #explore-area {
   position: relative;
   aspect-ratio: 1;

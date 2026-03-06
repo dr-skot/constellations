@@ -136,11 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Explore mode
-  document.getElementById('btn-explore-back').addEventListener('click', () => {
-    stopExploreQuiz();
-    navigate('course');
-  });
-  document.getElementById('eq-next').addEventListener('click', nextExploreQuestion);
+document.getElementById('eq-next').addEventListener('click', nextExploreQuestion);
 
   // Populate explore search datalist
   const exploreList = document.getElementById('explore-con-list');
