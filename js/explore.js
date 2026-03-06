@@ -212,7 +212,7 @@ function drawExplore() {
   const showArt        = cm ? false            : document.getElementById('chk-ex-art').checked;
   const showStarLabels = cm ? false            : document.getElementById('chk-ex-starlabels').checked;
   const showConNames   = cm ? false            : document.getElementById('chk-ex-connames').checked;
-  const showEquator    = cm ? false            : document.getElementById('chk-ex-equator').checked;
+  const showEquator    = cm ? true             : document.getElementById('chk-ex-equator').checked;
 
   // Photo layer
   if (showPhoto) {
