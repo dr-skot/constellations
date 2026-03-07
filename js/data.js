@@ -361,7 +361,7 @@ const C = [
   },
 
   {
-    name: "Grus", abbr: "Gru", hem: "S", diff: 3, meaning: "the crane", ra: 335.7, dec: -45.4, fov: 22.2,
+    name: "Grus", abbr: "Gru", hem: "S", diff: 3, meaning: "the crane", ra: 336.2, dec: -43.9, fov: 22.6,
     stars: [[328.48212, -37.364852, 3.0, 'b'], [331.52871, -39.543353, 4.5], [337.317375, -43.495565, 4.0, 'o'], [332.058135, -46.960975, 1.7, 'b', 'Alnair'], [340.666725, -46.884577, 2.1, 'r', 'Tiaki'], [342.13858500000003, -51.316864, 3.5], [345.220155, -52.754137, 4.1]],
     lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 2], [2, 4], [4, 5], [5, 6]]
   },
@@ -457,7 +457,7 @@ const C = [
   },
 
   {
-    name: "Pictor", abbr: "Pic", hem: "S", diff: 3, meaning: "the painter's easel", ra: 90.3, dec: -56.7, fov: 15.7,
+    name: "Pictor", abbr: "Pic", hem: "S", diff: 3, meaning: "the painter's easel", ra: 91.8, dec: -56.2, fov: 16.2,
     stars: [[102.04791, -61.941391, 3.2], [87.456765, -56.166663, 4.5], [86.821185, -51.066514, 3.9]],
     lines: [[0, 1], [1, 2]]
   },
