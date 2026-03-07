@@ -40,7 +40,7 @@ function viewConstellation(con) {
   const quizScreen = document.getElementById('screen-quiz');
   quizScreen.classList.add('viewer-mode');
   document.getElementById('canvas-wrap').classList.add('quiz-circle');
-  document.getElementById('con-select-viewer').value = con.abbr;
+  document.getElementById('con-select-viewer-input').value = con.name;
   document.getElementById('feedback').innerHTML = conLabel(con);
   showScreen('quiz');
   const canvas = document.getElementById('quiz-canvas');

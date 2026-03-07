@@ -19,8 +19,9 @@
               color:rgba(255,255,255,0.35); pointer-events:none;
               text-align:right; line-height:1.4; }
 .viewer-row { display:flex; gap:8px; justify-content:center; margin-top:10px; }
-#con-select { background:var(--bg); color:var(--text); border:1px solid var(--border);
-              border-radius:8px; padding:6px 10px; font-size:.85rem; }
+#viewer-search { display:flex; gap:4px; align-items:center; }
+#con-search-input { background:var(--bg); color:var(--text); border:1px solid var(--border);
+                    border-radius:8px; padding:5px 10px; font-size:.85rem; width:180px; }
 #btn-view { padding:6px 14px; border:1px solid var(--accent); color:var(--accent);
             background:transparent; border-radius:8px; cursor:pointer; font-size:.85rem; }
 #btn-view:hover { background:var(--accent); color:#000; }
@@ -31,7 +32,8 @@
 .viewer-mode .ans-grid, .viewer-mode .nav-row { display:none !important; }
 #lbl-rev-photo { display:none; }
 .viewer-mode #lbl-rev-photo { display:inline-flex; }
-#viewer-select-row { display:none; justify-content:center; margin-top:10px; }
+#quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
+#viewer-select-row { display:none; }
 .viewer-mode #viewer-select-row { display:flex; }
 #viewer-tweak { display:none; padding:8px 16px; }
 /* .viewer-mode #viewer-tweak { display:block; } */
@@ -42,5 +44,9 @@
 #btn-copy-framing { padding:6px 16px; border:1px solid var(--border); background:transparent;
                     color:var(--text); border-radius:8px; cursor:pointer; font-size:.82rem; }
 #btn-copy-framing:hover { border-color:var(--accent); color:var(--accent); }
-#con-select-viewer { background:var(--bg); color:var(--text); border:1px solid var(--border);
-                     border-radius:8px; padding:6px 10px; font-size:.85rem; }
+#viewer-search-inline { display:flex; gap:4px; align-items:center; }
+#con-select-viewer-input { background:var(--bg); color:var(--text); border:1px solid var(--border);
+                           border-radius:8px; padding:5px 10px; font-size:.85rem; width:200px; }
+#btn-viewer-go { padding:6px 14px; border:1px solid var(--accent); color:var(--accent);
+                 background:transparent; border-radius:8px; cursor:pointer; font-size:.85rem; }
+#btn-viewer-go:hover { background:var(--accent); color:#000; }

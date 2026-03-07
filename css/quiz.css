@@ -221,7 +221,8 @@ canvas {
   flex-direction: row;
   gap: 18px;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  margin-bottom: 6px;
 }
 
 #reveal-controls.show {

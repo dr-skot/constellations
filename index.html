@@ -18,8 +18,11 @@
       <div class="course-header">
         <h1>✦ Constellate</h1>
         <div class="viewer-row">
-          <select id="con-select"></select>
-          <button id="btn-view">View ›</button>
+          <div id="viewer-search">
+            <input type="text" id="con-search-input" list="con-search-list" placeholder="Find constellation…" autocomplete="off">
+            <datalist id="con-search-list"></datalist>
+            <button id="btn-view">View ›</button>
+          </div>
           <button id="btn-explore-free">Sky Explorer ›</button>
         </div>
       </div>
@@ -28,8 +31,16 @@
 
     <div id="screen-quiz" class="screen">
       <div>
-        <div id="quiz-breadcrumb" style="display:none">
-          <a href="#" id="quiz-breadcrumb-course">Course</a> › <span id="quiz-breadcrumb-stage"></span>
+        <div id="quiz-hdr-row">
+          <div id="quiz-breadcrumb" style="display:none">
+            <a href="#" id="quiz-breadcrumb-course">Course</a> › <span id="quiz-breadcrumb-stage"></span>
+          </div>
+          <div id="viewer-select-row">
+            <div id="viewer-search-inline">
+              <input type="text" id="con-select-viewer-input" list="con-search-list" placeholder="Find constellation…" autocomplete="off">
+              <button id="btn-viewer-go">View ›</button>
+            </div>
+          </div>
         </div>
         <div class="hud">
           <span id="hud-progress">1 / 10</span>
@@ -39,6 +50,12 @@
         <div class="prog-wrap">
           <div class="prog-fill" id="prog-fill" style="width:0%"></div>
         </div>
+      </div>
+      <div id="reveal-controls">
+        <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo"> Photo</label>
+        <label class="rev-chk"><input type="checkbox" id="chk-rev-boundary" checked> Boundary</label>
+        <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
+        <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
       </div>
       <div id="canvas-area">
         <div id="canvas-wrap">
@@ -53,13 +70,6 @@
       <p class="q-label">What constellation is this?</p>
       <div class="ans-grid" id="ans-grid"></div>
       <div id="feedback"></div>
-      <div id="reveal-controls">
-        <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo"> Photo</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-rev-boundary" checked> Boundary</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
-      </div>
-      <div id="viewer-select-row"><select id="con-select-viewer"></select></div>
       <div id="viewer-tweak">
         <div class="tweak-row">
           <label>Scale <span class="tweak-val" id="tweak-scale-val">1.00×</span></label>

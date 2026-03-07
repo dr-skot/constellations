@@ -40,27 +40,35 @@ window.addEventListener('popstate', () => handleRoute(location.hash.slice(1) || 
 document.addEventListener('DOMContentLoaded', () => {
   loadBounds();
 
-  // Populate constellation viewer select
+  // Populate constellation viewer search datalist and viewer select
   const sorted = [...C].sort((a, b) => a.name.localeCompare(b.name));
-  [document.getElementById('con-select'), document.getElementById('con-select-viewer')].forEach(sel => {
-    sorted.forEach(con => {
-      const opt = document.createElement('option');
-      opt.value = con.abbr;
-      opt.textContent = con.name;
-      sel.appendChild(opt);
-    });
+  const viewerList = document.getElementById('con-search-list');
+  sorted.forEach(con => {
+    const opt = document.createElement('option');
+    opt.value = con.name;
+    viewerList.appendChild(opt);
   });
 
-  document.getElementById('btn-view').addEventListener('click', () => {
-    const abbr = document.getElementById('con-select').value;
-    if (abbr) navigate('view/' + abbr);
+  function goToViewer() {
+    const val = document.getElementById('con-search-input').value.trim();
+    const con = C.find(c => c.name.toLowerCase() === val.toLowerCase());
+    if (con) navigate('view/' + con.abbr);
+  }
+  document.getElementById('btn-view').addEventListener('click', goToViewer);
+  document.getElementById('con-search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') goToViewer();
   });
   document.getElementById('btn-explore-free').addEventListener('click', () => {
     navigate('explore');
   });
-  document.getElementById('con-select-viewer').addEventListener('change', () => {
-    const abbr = document.getElementById('con-select-viewer').value;
-    if (abbr) navigate('view/' + abbr);
+  function goToViewerInline() {
+    const val = document.getElementById('con-select-viewer-input').value.trim();
+    const con = C.find(c => c.name.toLowerCase() === val.toLowerCase());
+    if (con) navigate('view/' + con.abbr);
+  }
+  document.getElementById('btn-viewer-go').addEventListener('click', goToViewerInline);
+  document.getElementById('con-select-viewer-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') goToViewerInline();
   });
 
   // Viewer tweak sliders
