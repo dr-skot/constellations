@@ -254,7 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Scroll to zoom
   ec.addEventListener('wheel', e => {
     e.preventDefault();
-    explore.fov = Math.max(10, Math.min(110, explore.fov * (e.deltaY > 0 ? 1.1 : 0.9)));
+    const factor = e.ctrlKey ? Math.pow(1.03, e.deltaY) : (e.deltaY > 0 ? 1.1 : 0.9);
+    explore.fov = Math.max(10, Math.min(110, explore.fov * factor));
     drawExplore();
     clearTimeout(exploreWheelTimer);
     exploreWheelTimer = setTimeout(saveExploreState, 300);
