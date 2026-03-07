@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveExploreState();
   }
 
+  ec.addEventListener('contextmenu', e => e.preventDefault());
   ec.addEventListener('mousedown', e => expDragStart(e.clientX, e.clientY));
   window.addEventListener('mousemove', e => expDragMove(e.clientX, e.clientY));
   window.addEventListener('mouseup', expDragEnd);
