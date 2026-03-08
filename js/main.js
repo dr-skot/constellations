@@ -240,9 +240,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const { px, py } = expClientToCanvas(e.clientX, e.clientY);
     handleExploreClick(px, py);
   });
-  ec.addEventListener('touchstart', e => { e.preventDefault(); expDragStart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
-  ec.addEventListener('touchmove', e => { e.preventDefault(); expDragMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+  let pinchStartDist = null, pinchStartFov = null;
+
+  function touchDist(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  ec.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      expDragEnd();
+      pinchStartDist = touchDist(e.touches);
+      pinchStartFov = explore.fov;
+    } else {
+      pinchStartDist = null;
+      expDragStart(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: false });
+
+  ec.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (e.touches.length === 2 && pinchStartDist) {
+      const dist = touchDist(e.touches);
+      explore.fov = Math.max(10, Math.min(110, pinchStartFov * pinchStartDist / dist));
+      drawExplore();
+    } else if (e.touches.length === 1) {
+      expDragMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: false });
+
   ec.addEventListener('touchend', e => {
+    if (pinchStartDist && e.touches.length < 2) {
+      pinchStartDist = null;
+      saveExploreState();
+      return;
+    }
     expDragEnd();
     if (explore.quiz && !explore.quiz.answered && !exploreDragMoved && e.changedTouches.length) {
       const t = e.changedTouches[0];
