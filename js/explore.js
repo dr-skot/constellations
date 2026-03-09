@@ -431,15 +431,20 @@ function drawExplore() {
     }
   }
 
-  // Crosshair at center
-  const cx = W / 2, cy = H / 2, arm = W * 0.025;
+  // Crosshairs at celestial poles
+  const arm = W * 0.025;
   ctx.save();
-  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.strokeStyle = 'rgba(220,180,80,0.55)';
   ctx.lineWidth = Math.max(1, W / 640);
-  ctx.beginPath();
-  ctx.moveTo(cx - arm, cy); ctx.lineTo(cx + arm, cy);
-  ctx.moveTo(cx, cy - arm); ctx.lineTo(cx, cy + arm);
-  ctx.stroke();
+  ctx.setLineDash([6, 5]);
+  for (const pole of [[0, 0, 1], [0, 0, -1]]) {
+    const p = vecToPixel(pole, camP, camUp, explore.fov, W, H);
+    if (!p) continue;
+    ctx.beginPath();
+    ctx.moveTo(p.x - arm, p.y); ctx.lineTo(p.x + arm, p.y);
+    ctx.moveTo(p.x, p.y - arm); ctx.lineTo(p.x, p.y + arm);
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
