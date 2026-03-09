@@ -15,7 +15,7 @@ function handleRoute(hash) {
     stopExploreQuiz(); showScreen('explore'); drawExplore();
   } else if (hash.startsWith('explore/')) {
     const con = C.find(c => c.abbr === hash.slice(8));
-    if (con) { explore.ra = con.ra; explore.dec = con.dec; }
+    if (con) { explore.P = raDecToVec(con.ra, con.dec); explore.R = 0; }
     stopExploreQuiz(); showScreen('explore'); drawExplore();
   } else if (hash.startsWith('view/')) {
     const con = C.find(c => c.abbr === hash.slice(5));
@@ -74,15 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Viewer tweak sliders
   function onTweakChange() {
     viewerTweak.scale = document.getElementById('tweak-scale').value / 100;
-    viewerTweak.dx    = parseFloat(document.getElementById('tweak-dx').value);
-    viewerTweak.dy    = parseFloat(document.getElementById('tweak-dy').value);
+    viewerTweak.dx = parseFloat(document.getElementById('tweak-dx').value);
+    viewerTweak.dy = parseFloat(document.getElementById('tweak-dy').value);
     document.getElementById('tweak-scale-val').textContent = viewerTweak.scale.toFixed(2) + '×';
-    document.getElementById('tweak-dx-val').textContent    = viewerTweak.dx.toFixed(1) + '°';
-    document.getElementById('tweak-dy-val').textContent    = viewerTweak.dy.toFixed(1) + '°';
+    document.getElementById('tweak-dx-val').textContent = viewerTweak.dx.toFixed(1) + '°';
+    document.getElementById('tweak-dy-val').textContent = viewerTweak.dy.toFixed(1) + '°';
     const con = session.pool[session.idx];
     if (con && session.viewMode) redrawReveal(con);
   }
-  ['tweak-scale','tweak-dx','tweak-dy'].forEach(id =>
+  ['tweak-scale', 'tweak-dx', 'tweak-dy'].forEach(id =>
     document.getElementById(id).addEventListener('input', onTweakChange));
 
   document.getElementById('btn-copy-framing').addEventListener('click', () => {
@@ -202,27 +202,52 @@ document.addEventListener('DOMContentLoaded', () => {
   function expDragStart(cx, cy) {
     if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
     const { px, py } = expClientToCanvas(cx, cy);
-    const anchor = pixelToRADec(px, py, explore.ra, explore.dec, explore.fov, ec.width, ec.height);
-    explore.drag = { anchor, startRa: explore.ra, startDec: explore.dec, startPx: px, startPy: py };
+    const up0 = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+    const vStart = pixelToVec(px, py, explore.P, up0, explore.fov, ec.width, ec.height);
+    explore.drag = {
+      startPx: px, startPy: py, prevPx: px, prevPy: py, vStart,
+      P0: explore.P.slice(), R0: explore.R, up0
+    };
     exploreDragMoved = false;
     ew.classList.add('dragging');
   }
   function expDragMove(cx, cy) {
     if (!explore.drag) return;
     const { px, py } = expClientToCanvas(cx, cy);
-    const dx = px - explore.drag.startPx, dy = py - explore.drag.startPy;
-    if (!exploreDragMoved && Math.sqrt(dx * dx + dy * dy) < 5) return;
-    exploreDragMoved = true;
-    const W = ec.width, H = ec.height;
-    const { anchor, startRa, startDec } = explore.drag;
-    const v_anchor = raDecToVec(anchor.ra, anchor.dec);
-    const v_start = raDecToVec(startRa, startDec);
-    const cur = pixelToRADec(px, py, startRa, startDec, explore.fov, W, H);
-    const v_cur = raDecToVec(cur.ra, cur.dec);
-    const v_new = rotateByFromTo(v_start, v_cur, v_anchor);
-    const newPos = vecToRaDec(v_new);
-    explore.ra = newPos.ra;
-    explore.dec = newPos.dec;
+    if (!exploreDragMoved) {
+      const dx = px - explore.drag.startPx, dy = py - explore.drag.startPy;
+      if (Math.sqrt(dx * dx + dy * dy) < 5) return;
+      exploreDragMoved = true;
+    }
+    // Always apply from original P0/R0 — no incremental accumulation
+    const { P0, R0, up0, vStart } = explore.drag;
+    const S1 = vStart;
+    const S2 = pixelToVec(px, py, P0, up0, explore.fov, ec.width, ec.height);
+
+    const P1 = rotateByFromTo(P0, S2, S1);
+
+    // Compute R1 via reference point method
+    const ax = S1[1] * S2[2] - S1[2] * S2[1];
+    const ay = S1[2] * S2[0] - S1[0] * S2[2];
+    const az = S1[0] * S2[1] - S1[1] * S2[0];
+    const crossLen = Math.sqrt(ax * ax + ay * ay + az * az);
+    let R1;
+    if (crossLen < 1e-10) {
+      R1 = R0;
+    } else {
+      const A = [ax / crossLen, ay / crossLen, az / crossLen];
+      const theta = Math.acos(Math.max(-1, Math.min(1, S1[0] * S2[0] + S1[1] * S2[1] + S1[2] * S2[2])));
+      const Q_up = cameraReverse(P1, 0, [0, 1, 0]);
+      const step1 = cameraForward(A, theta, Q_up);
+      const step2 = cameraReverse(A, 0, step1);
+      const step3 = cameraForward(P0, R0, step2);
+      R1 = Math.atan2(-step3[0], step3[1]);
+    }
+
+    explore.P = P1;
+    explore.R = R1;
+    explore.drag.prevPx = px;
+    explore.drag.prevPy = py;
     drawExplore();
   }
   function expDragEnd() {

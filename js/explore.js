@@ -2,15 +2,15 @@
 // EXPLORE MODE
 // ═══════════════════════════════════════════════════════════
 const explorePhotoCache = {};
-let explore = { ra: 80, dec: 5, fov: 60, drag: null, quiz: null, animFrame: null };
+let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null, animFrame: null };
 let exploreDragMoved = false;
 
 function animateGoTo(targetRa, targetDec) {
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
-  const v1 = raDecToVec(explore.ra, explore.dec);
+  const v1 = explore.P.slice();
   const v2 = raDecToVec(targetRa, targetDec);
-  const dot = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
-  const angle = Math.acos(dot);
+  const dotP = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
+  const angle = Math.acos(dotP);
   if (angle < 0.001) return;
   const sinA = Math.sin(angle);
   // Duration proportional to arc length: 400ms–2000ms
@@ -22,16 +22,12 @@ function animateGoTo(targetRa, targetDec) {
     const t = raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2;
     const f1 = Math.sin((1 - t) * angle) / sinA;
     const f2 = Math.sin(t * angle) / sinA;
-    const vt = [f1*v1[0]+f2*v2[0], f1*v1[1]+f2*v2[1], f1*v1[2]+f2*v2[2]];
-    const pos = vecToRaDec(vt);
-    explore.ra = pos.ra;
-    explore.dec = pos.dec;
+    explore.P = [f1*v1[0]+f2*v2[0], f1*v1[1]+f2*v2[1], f1*v1[2]+f2*v2[2]];
     drawExplore();
     if (raw < 1) {
       explore.animFrame = requestAnimationFrame(step);
     } else {
-      explore.ra = targetRa;
-      explore.dec = targetDec;
+      explore.P = v2;
       explore.animFrame = null;
       drawExplore();
       saveExploreState();
@@ -41,20 +37,22 @@ function animateGoTo(targetRa, targetDec) {
 }
 
 function saveExploreState() {
+  const pos = vecToRaDec(explore.P);
   sessionStorage.setItem('explore-state',
-    JSON.stringify({ ra: explore.ra, dec: explore.dec, fov: explore.fov }));
+    JSON.stringify({ ra: pos.ra, dec: pos.dec, fov: explore.fov, R: explore.R }));
 }
 
 function restoreExploreState() {
   try {
     const d = JSON.parse(sessionStorage.getItem('explore-state'));
-    if (d) { explore.ra = d.ra; explore.dec = d.dec; explore.fov = d.fov; }
+    if (d) { explore.P = raDecToVec(d.ra, d.dec); explore.fov = d.fov; explore.R = d.R || 0; }
   } catch {}
 }
 
 function exploreVisibleCons() {
+  const { ra, dec } = vecToRaDec(explore.P);
   return C.filter(con =>
-    angularDist(explore.ra, explore.dec, con.ra, con.dec) < explore.fov / 2 + con.fov / 2 + 8
+    angularDist(ra, dec, con.ra, con.dec) < explore.fov / 2 + con.fov / 2 + 8
   );
 }
 
@@ -88,7 +86,7 @@ function drawImageTriangle(ctx, img, src, dst) {
   ctx.restore();
 }
 
-function drawExplorePhotoLayer(ctx, con, viewCon, W, H) {
+function drawExplorePhotoLayer(ctx, con, camP, camUp, fov, W, H) {
   const img = explorePhotoCache[con.abbr];
   if (!(img instanceof HTMLImageElement)) { loadExplorePhoto(con); return; }
 
@@ -102,7 +100,7 @@ function drawExplorePhotoLayer(ctx, con, viewCon, W, H) {
     for (let gx = 0; gx <= GRID; gx++) {
       const px = gx / GRID * IW, py = gy / GRID * IH;
       const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
-      const ep = projectStarsTAN([[rd.ra, rd.dec, 0]], viewCon, W, H)[0];
+      const ep = projectStarsCamera([[rd.ra, rd.dec, 0]], camP, camUp, fov, W, H)[0];
       verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
     }
   }
@@ -124,7 +122,7 @@ function drawExplorePhotoLayer(ctx, con, viewCon, W, H) {
   }
 }
 
-function drawExploreArtLayer(ctx, con, viewCon, W, H) {
+function drawExploreArtLayer(ctx, con, camP, camUp, fov, W, H) {
   const art = ART[con.abbr];
   if (!art || art.anchors.length < 3) return;
   if (!artCache[con.abbr]) {
@@ -160,7 +158,7 @@ function drawExploreArtLayer(ctx, con, viewCon, W, H) {
       const qx = artToRef[0] * px + artToRef[2] * py + artToRef[4];
       const qy = artToRef[1] * px + artToRef[3] * py + artToRef[5];
       const rd = pixelToRADec(qx, qy, con.ra, con.dec, con.fov, REF, REF);
-      const ep = projectStarsTAN([[rd.ra, rd.dec, 0]], viewCon, W, H)[0];
+      const ep = projectStarsCamera([[rd.ra, rd.dec, 0]], camP, camUp, fov, W, H)[0];
       verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
     }
   }
@@ -197,7 +195,10 @@ function drawExplore() {
   if (canvas.width !== need) canvas.width = canvas.height = need;
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
-  const viewCon = { ra: explore.ra, dec: explore.dec, fov: explore.fov };
+  const { ra, dec } = vecToRaDec(explore.P);
+  const viewCon = { ra, dec, fov: explore.fov }; // used for photo/art ref projection only
+  const camP = explore.P;
+  const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
 
   ctx.fillStyle = '#010208';
   ctx.fillRect(0, 0, W, H);
@@ -217,7 +218,7 @@ function drawExplore() {
   // Photo layer
   if (showPhoto) {
     for (const con of visible) {
-      try { drawExplorePhotoLayer(ctx, con, viewCon, W, H); } catch (e) { }
+      try { drawExplorePhotoLayer(ctx, con, camP, camUp, explore.fov, W, H); } catch (e) { }
     }
   }
 
@@ -225,7 +226,7 @@ function drawExplore() {
   if (showEquator) {
     const eqPts = [];
     for (let ra = 0; ra <= 360; ra += 0.5) eqPts.push([ra, 0, 0]);
-    const pts = projectStarsTAN(eqPts, viewCon, W, H);
+    const pts = projectStarsCamera(eqPts, camP, camUp, explore.fov, W, H);
     ctx.save();
     ctx.strokeStyle = 'rgba(220,180,80,0.55)';
     ctx.lineWidth = Math.max(1, W / 640);
@@ -248,7 +249,7 @@ function drawExplore() {
       const { ra, dec } = galToRaDec(l, 0);
       mwPts.push([ra, dec, 0]);
     }
-    const pts = projectStarsTAN(mwPts, viewCon, W, H);
+    const pts = projectStarsCamera(mwPts, camP, camUp, explore.fov, W, H);
     ctx.save();
     ctx.strokeStyle = 'rgba(180,200,255,0.22)';
     ctx.lineWidth = Math.max(24, W / 13);
@@ -272,7 +273,7 @@ function drawExplore() {
     const rings = BOUNDS[con.abbr];
     if (!rings) continue;
     projBounds[con.abbr] = rings.map(ring =>
-      projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H)
+      projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, explore.fov, W, H)
     );
   }
   // Collect all visible boundary edges for label collision detection.
@@ -311,11 +312,11 @@ function drawExplore() {
   // Diagram: stars + lines + star labels
   if (showDiag) {
     for (const con of visible) {
-      const proj = projectStarsTAN(con.stars, viewCon, W, H)
+      const proj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
         .map((p, i) => ({ ...p, _orig: con.stars[i] }))
         .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
       if (con.lines && showLines) {
-        const fullProj = projectStarsTAN(con.stars, viewCon, W, H)
+        const fullProj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
           .map(p => p.d > 0 ? p : null);
         drawLines(ctx, fullProj, con);
       }
@@ -333,7 +334,7 @@ function drawExplore() {
     ctx.textBaseline = 'middle';
     ctx.fillStyle = 'rgba(160,185,255,0.6)';
     for (const con of visible) {
-      const cp = projectStarsTAN([[con.ra, con.dec, 99]], viewCon, W, H)[0];
+      const cp = projectStarsCamera([[con.ra, con.dec, 99]], camP, camUp, explore.fov, W, H)[0];
       if (!cp || cp.d <= 0) continue;
       const name = con.name;
       const tw = ctx.measureText(name).width;
@@ -374,7 +375,7 @@ function drawExplore() {
   if (showArt) {
     let hasArt = false;
     for (const con of visible) {
-      if (ART[con.abbr]) { hasArt = true; try { drawExploreArtLayer(ctx, con, viewCon, W, H); } catch (e) { } }
+      if (ART[con.abbr]) { hasArt = true; try { drawExploreArtLayer(ctx, con, camP, camUp, explore.fov, W, H); } catch (e) { } }
     }
     if (exploreCredit) exploreCredit.textContent = hasArt ? 'Art: Johan Meuris / Free Art Licence' : '';
   } else {
@@ -390,12 +391,12 @@ function drawExplore() {
       // Must skip off-screen constellations. TAN projection maps points behind the
       // projection plane to extreme-but-finite coordinates that can fall within the
       // 2*W pen-up threshold, producing phantom outlines on the wrong side of the sky.
-      if (angularDist(explore.ra, explore.dec, con.ra, con.dec) > explore.fov / 2 + con.fov / 2 + 10) return;
+      if (angularDist(ra, dec, con.ra, con.dec) > explore.fov / 2 + con.fov / 2 + 10) return;
       ctx.save();
       ctx.strokeStyle = color;
       ctx.lineWidth = lw;
       for (const ring of BOUNDS[con.abbr]) {
-        const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H);
+        const pts = projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, explore.fov, W, H);
         ctx.beginPath();
         let penDown = false;
         for (const p of pts) {
@@ -415,7 +416,7 @@ function drawExplore() {
       const revealCons = [target];
       if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
       for (const con of revealCons) {
-        const fullProj = projectStarsTAN(con.stars, viewCon, W, H).map(p => p.d > 0 ? p : null);
+        const fullProj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H).map(p => p.d > 0 ? p : null);
         drawLines(ctx, fullProj, con);
         drawStars(ctx, fullProj.filter(Boolean));
       }
@@ -425,10 +426,21 @@ function drawExplore() {
       const revealCons = [target];
       if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
       for (const con of revealCons) {
-        try { drawExploreArtLayer(ctx, con, viewCon, W, H); } catch (e) {}
+        try { drawExploreArtLayer(ctx, con, camP, camUp, explore.fov, W, H); } catch (e) {}
       }
     }
   }
+
+  // Crosshair at center
+  const cx = W / 2, cy = H / 2, arm = W * 0.025;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = Math.max(1, W / 640);
+  ctx.beginPath();
+  ctx.moveTo(cx - arm, cy); ctx.lineTo(cx + arm, cy);
+  ctx.moveTo(cx, cy - arm); ctx.lineTo(cx, cy + arm);
+  ctx.stroke();
+  ctx.restore();
 }
 
 function startExploreQuiz() {
@@ -472,15 +484,17 @@ function handleExploreClick(px, py) {
   if (!q || q.answered) return;
   const canvas = document.getElementById('explore-canvas');
   const W = canvas.width, H = canvas.height;
-  const viewCon = { ra: explore.ra, dec: explore.dec, fov: explore.fov };
+  const { ra, dec } = vecToRaDec(explore.P);
+  const camP = explore.P;
+  const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   // Hit-test in canvas pixel space — avoids RA/Dec wrapping artifacts and TAN
   // projection distortion that cause mismatches between what the user sees and
   // what a sky-coordinate PIP would identify.
   const clicked = C.find(c => {
     if (!BOUNDS[c.abbr]) return false;
-    if (angularDist(explore.ra, explore.dec, c.ra, c.dec) > explore.fov / 2 + c.fov / 2 + 8) return false;
+    if (angularDist(ra, dec, c.ra, c.dec) > explore.fov / 2 + c.fov / 2 + 8) return false;
     return BOUNDS[c.abbr].some(ring => {
-      const pts = projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), viewCon, W, H)
+      const pts = projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, explore.fov, W, H)
         .filter(p => p.d > 0);
       return pts.length >= 3 && pointInPoly2D(px, py, pts);
     });
