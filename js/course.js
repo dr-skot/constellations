@@ -181,7 +181,7 @@ function tryResumeFindStage(idx) {
       target: null, answered: false,
       courseStageIdx: idx, stageMode: stage.mode, bounds: stage.bounds,
     };
-    explore.ra = 180; explore.dec = 30; explore.fov = 90;
+    explore.P = raDecToVec(180, 30); explore.fov = 90;
     showFindQuizHdr(stage);
     document.getElementById('explore-quiz-bar').style.display = 'flex';
     showScreen('explore');
@@ -207,7 +207,7 @@ function startFindCourseStage(idx) {
     stageMode: stage.mode,
     bounds: stage.bounds,
   };
-  explore.ra = 180; explore.dec = 30; explore.fov = 90;
+  explore.P = raDecToVec(180, 30); explore.fov = 90;
   showFindQuizHdr(stage);
   document.getElementById('explore-quiz-bar').style.display = 'flex';
   showScreen('explore');

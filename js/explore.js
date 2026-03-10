@@ -193,15 +193,21 @@ function drawExplore() {
   const sz = wrap.offsetWidth;
   const need = Math.round(sz * dpr);
   if (canvas.width !== need) canvas.width = canvas.height = need;
+  const glCanvas = document.getElementById('explore-gl-canvas');
+  if (glCanvas && glCanvas.width !== need) glCanvas.width = glCanvas.height = need;
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
   const { ra, dec } = vecToRaDec(explore.P);
-  const viewCon = { ra, dec, fov: explore.fov }; // used for photo/art ref projection only
   const camP = explore.P;
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
 
-  ctx.fillStyle = '#010208';
-  ctx.fillRect(0, 0, W, H);
+  if (gl) {
+    glClear(W, H);
+    ctx.clearRect(0, 0, W, H);
+  } else {
+    ctx.fillStyle = '#010208';
+    ctx.fillRect(0, 0, W, H);
+  }
 
   const visible = exploreVisibleCons();
   const q = explore.quiz;
@@ -215,10 +221,10 @@ function drawExplore() {
   const showConNames   = cm ? false            : document.getElementById('chk-ex-connames').checked;
   const showEquator    = cm ? true             : document.getElementById('chk-ex-equator').checked;
 
-  // Photo layer
+  // Photo layer (WebGL)
   if (showPhoto) {
     for (const con of visible) {
-      try { drawExplorePhotoLayer(ctx, con, camP, camUp, explore.fov, W, H); } catch (e) { }
+      drawExplorePhotoLayerGL(con, camP, camUp, explore.fov);
     }
   }
 
@@ -370,12 +376,12 @@ function drawExplore() {
     ctx.restore();
   }
 
-  // Artwork layer
+  // Artwork layer (WebGL)
   const exploreCredit = document.getElementById('explore-art-credit');
   if (showArt) {
     let hasArt = false;
     for (const con of visible) {
-      if (ART[con.abbr]) { hasArt = true; try { drawExploreArtLayer(ctx, con, camP, camUp, explore.fov, W, H); } catch (e) { } }
+      if (ART[con.abbr]) { hasArt = true; drawExploreArtLayerGL(con, camP, camUp, explore.fov); }
     }
     if (exploreCredit) exploreCredit.textContent = hasArt ? 'Art: Johan Meuris / Free Art Licence' : '';
   } else {
@@ -426,7 +432,7 @@ function drawExplore() {
       const revealCons = [target];
       if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
       for (const con of revealCons) {
-        try { drawExploreArtLayer(ctx, con, camP, camUp, explore.fov, W, H); } catch (e) {}
+        drawExploreArtLayerGL(con, camP, camUp, explore.fov);
       }
     }
   }

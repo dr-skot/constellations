@@ -39,6 +39,7 @@ window.addEventListener('popstate', () => handleRoute(location.hash.slice(1) || 
 // ═══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   loadBounds();
+  try { initExploreGL(document.getElementById('explore-gl-canvas')); } catch(e) { console.error('GL init failed:', e); }
 
   // Populate constellation viewer search datalist and viewer select
   const sorted = [...C].sort((a, b) => a.name.localeCompare(b.name));
