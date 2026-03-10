@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head><style>
+body { background: #010208; margin: 0; display: flex; gap: 16px; padding: 16px; }
+.wrap { position: relative; width: 500px; height: 500px; }
+canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+pre { color: #8f8; font-size: 12px; margin: 0; padding: 16px; }
+</style></head>
+<body>
+<div style="color:#fff;padding:16px;font:12px monospace;display:flex;flex-direction:column;gap:6px">
+  <label>Constellation <select id="con-sel"></select></label>
+  <label><input type="checkbox" id="chk" checked> Show diagram</label>
+  <label>Rotate <input type="range" id="rot" min="-180" max="180" value="0" step="0.1"> <span id="rot-v">0</span>°</label>
+  <label>Scale  <input type="range" id="scl" min="50" max="150" value="100" step="0.1"> <span id="scl-v">1.00</span>×</label>
+  <label>X off  <input type="range" id="xof" min="-20" max="20" value="0" step="0.05"> <span id="xof-v">0</span>°</label>
+  <label>Y off  <input type="range" id="yof" min="-20" max="20" value="0" step="0.05"> <span id="yof-v">0</span>°</label>
+</div>
+<div class="wrap">
+  <canvas id="gl"></canvas>
+  <canvas id="d2"></canvas>
+</div>
+<pre id="out"></pre>
+<script src="js/data.js"></script>
+<script src="js/projection.js"></script>
+<script src="js/explore-gl.js?v=2"></script>
+<script>
+const out = document.getElementById('out');
+const log = s => { out.textContent += s + '\n'; console.log(s); };
+
+const W = 500, H = 500;
+const glc = document.getElementById('gl');
+const d2c = document.getElementById('d2');
+glc.width = glc.height = d2c.width = d2c.height = W;
+
+// Init GL
+initExploreGL(glc);
+log(gl ? 'OK: GL' : 'FAIL: no GL');
+
+// Andromeda
+let con = C.find(c => c.abbr === 'Sco');
+const fov = con.fov;
+const camP = raDecToVec(con.ra, con.dec);
+const camUp = cameraReverse(camP, 0, [0, 1, 0]);
+log('camera P: ' + camP.map(x=>x.toFixed(3)));
+log('camera up: ' + camUp.map(x=>x.toFixed(3)));
+
+function getPhotoCamera() {
+  const rot = parseFloat(document.getElementById('rot').value) * Math.PI / 180;
+  const scl = parseFloat(document.getElementById('scl').value) / 100;
+  const xof = parseFloat(document.getElementById('xof').value);
+  const yof = parseFloat(document.getElementById('yof').value);
+  const pc = raDecToVec(con.ra + xof, con.dec + yof);
+  const pu = cameraReverse(pc, rot + Math.PI, [0, 1, 0]);
+  return { pc, pu, fov: con.fov * scl };
+}
+
+function redraw() {
+  const { ra, dec } = vecToRaDec(camP);
+  document.getElementById('rot-v').textContent = document.getElementById('rot').value;
+  document.getElementById('scl-v').textContent = (parseFloat(document.getElementById('scl').value)/100).toFixed(2);
+  document.getElementById('xof-v').textContent = document.getElementById('xof').value;
+  document.getElementById('yof-v').textContent = document.getElementById('yof').value;
+  glClear(W, H);
+  const { pc, pu, fov: pfov } = getPhotoCamera();
+  glSetCamera(pc, pu, pfov);
+  glDrawMesh(mesh, tex, 1.0, false);
+}
+
+['rot','scl','xof','yof'].forEach(id =>
+  document.getElementById(id).addEventListener('input', redraw));
+
+// Draw photo via GL
+// Populate dropdown
+const sel = document.getElementById('con-sel');
+[...C].sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
+  const o = document.createElement('option');
+  o.value = c.abbr; o.textContent = c.name;
+  if (c.abbr === con.abbr) o.selected = true;
+  sel.appendChild(o);
+});
+sel.addEventListener('change', () => {
+  con = C.find(c => c.abbr === sel.value);
+  loadCon();
+});
+
+let mesh, tex;
+function loadCon() {
+  const img = new Image();
+  img.onload = () => {
+    mesh = glBuildPhotoMesh(con);
+    tex  = glUploadTex(img);
+    redraw();
+    drawDiagram();
+  };
+  img.onerror = () => log('FAIL: ' + con.abbr);
+  img.src = `img/${con.abbr}.jpg`;
+}
+loadCon();
+
+// Draw stars + lines on 2D canvas
+document.getElementById('chk').addEventListener('change', e => {
+  d2c.style.display = e.target.checked ? '' : 'none';
+});
+
+function drawDiagram() {
+  const camP = raDecToVec(con.ra, con.dec);
+  const camUp = cameraReverse(camP, 0, [0, 1, 0]);
+  const fov = con.fov;
+  const ctx = d2c.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  const proj = projectStarsCamera(con.stars, camP, camUp, fov, W, H);
+
+  // Lines
+  ctx.strokeStyle = 'rgba(120,160,255,0.8)';
+  ctx.lineWidth = 1.5;
+  for (const [a, b] of con.lines) {
+    const pa = proj[a], pb = proj[b];
+    if (!pa || !pb || pa.d <= 0 || pb.d <= 0) continue;
+    ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
+  }
+
+  // Stars + labels
+  ctx.font = '11px sans-serif';
+  for (let i = 0; i < proj.length; i++) {
+    const p = proj[i];
+    if (!p || p.d <= 0) continue;
+    const mag = con.stars[i][2];
+    const r = Math.max(1.5, 4 - mag * 0.7);
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = 'white'; ctx.fill();
+    const label = con.stars[i][4];
+    if (label) { ctx.fillStyle = 'rgba(255,255,180,0.9)'; ctx.fillText(label, p.x + 6, p.y - 4); }
+  }
+  log('diagram drawn');
+}
+</script>
+</body>
+</html>

@@ -176,9 +176,24 @@ function glUploadTex(img) {
 }
 
 // ── Draw one mesh ─────────────────────────────────────────
-function glDrawMesh(mesh, tex, alpha, additive) {
+function glDrawMesh(mesh, tex, alpha, additive, camP) {
   if (!mesh || !tex) return;
   const { sv, tc, ix } = mesh;
+
+  // Filter triangles where any vertex is behind the camera (d <= 0)
+  const [cx, cy, cz] = camP;
+  const n = sv.length / 3;
+  const d = new Float32Array(n);
+  for (let i = 0; i < n; i++)
+    d[i] = sv[i*3]*cx + sv[i*3+1]*cy + sv[i*3+2]*cz;
+
+  const filteredIx = new Uint16Array(ix.length);
+  let k = 0;
+  for (let i = 0; i < ix.length; i += 3) {
+    if (d[ix[i]] > 0 && d[ix[i+1]] > 0 && d[ix[i+2]] > 0) {
+      filteredIx[k++] = ix[i]; filteredIx[k++] = ix[i+1]; filteredIx[k++] = ix[i+2];
+    }
+  }
 
   const svBuf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, svBuf);
@@ -194,14 +209,14 @@ function glDrawMesh(mesh, tex, alpha, additive) {
 
   const ixBuf = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ixBuf);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, ix, gl.STATIC_DRAW);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, filteredIx.subarray(0, k), gl.STATIC_DRAW);
 
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.uniform1i(glLoc.tex, 0);
   gl.uniform1f(glLoc.alpha, alpha);
   gl.blendFunc(gl.SRC_ALPHA, additive ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
-  gl.drawElements(gl.TRIANGLES, ix.length, gl.UNSIGNED_SHORT, 0);
+  gl.drawElements(gl.TRIANGLES, k, gl.UNSIGNED_SHORT, 0);
 
   gl.deleteBuffer(svBuf);
   gl.deleteBuffer(tcBuf);
@@ -216,7 +231,7 @@ function drawExplorePhotoLayerGL(con, camP, camUp, fov) {
   if (!glPhotoTex[con.abbr]) glPhotoTex[con.abbr] = glUploadTex(img);
   if (!glPhotoMesh[con.abbr]) glPhotoMesh[con.abbr] = glBuildPhotoMesh(con);
   glSetCamera(camP, camUp, fov);
-  glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false);
+  glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false, camP);
 }
 
 // ── Public: draw art layer ─────────────────────────────────
@@ -244,5 +259,5 @@ function drawExploreArtLayerGL(con, camP, camUp, fov) {
 
   glSetCamera(camP, camUp, fov);
   // Additive blend ≈ screen blend on near-black background
-  glDrawMesh(glArtMesh[con.abbr], glArtTex[con.abbr], 0.5, true);
+  glDrawMesh(glArtMesh[con.abbr], glArtTex[con.abbr], 0.5, true, camP);
 }
