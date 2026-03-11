@@ -1,3 +1,14 @@
+/* Course hero */
+#course-hero { text-align:center; padding:8px 0 20px; }
+#btn-continue { padding:13px 40px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+                color:#fff; border:none; border-radius:12px; font-size:1rem; cursor:pointer; }
+#btn-continue:hover { opacity:.9; }
+#course-progress-wrap { height:4px; background:var(--border); border-radius:2px;
+                        margin:10px auto 4px; max-width:220px; }
+#course-progress-bar { height:100%; background:var(--accent); border-radius:2px;
+                       transition:width .4s; }
+#course-progress-label { font-size:.78rem; color:var(--dim); }
+
 /* Course map */
 .course-header { text-align:center; padding:20px 0 8px; }
 .course-header h1 { font-size:1.4rem; }
@@ -28,22 +39,13 @@
 #btn-explore-free { padding:6px 14px; border:1px solid var(--border); color:var(--dim);
                     background:transparent; border-radius:8px; cursor:pointer; font-size:.85rem; }
 #btn-explore-free:hover { border-color:var(--dim); color:var(--text); }
-.viewer-mode .hud, .viewer-mode .prog-wrap, .viewer-mode .q-label,
+.viewer-mode .hud, .viewer-mode .prog-wrap, .viewer-mode #quiz-label-area,
 .viewer-mode .ans-grid, .viewer-mode .nav-row { display:none !important; }
 #lbl-rev-photo { display:none; }
 .viewer-mode #lbl-rev-photo { display:inline-flex; }
 #quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
 #viewer-select-row { display:none; }
 .viewer-mode #viewer-select-row { display:flex; }
-#viewer-tweak { display:none; padding:8px 16px; }
-/* .viewer-mode #viewer-tweak { display:block; } */
-.tweak-row { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:.8rem; }
-.tweak-row label { width:80px; flex-shrink:0; }
-.tweak-val { color:var(--accent); }
-.tweak-row input[type=range] { flex:1; }
-#btn-copy-framing { padding:6px 16px; border:1px solid var(--border); background:transparent;
-                    color:var(--text); border-radius:8px; cursor:pointer; font-size:.82rem; }
-#btn-copy-framing:hover { border-color:var(--accent); color:var(--accent); }
 #viewer-search-inline { display:flex; gap:4px; align-items:center; }
 #con-select-viewer-input { background:var(--bg); color:var(--text); border:1px solid var(--border);
                            border-radius:8px; padding:5px 10px; font-size:.85rem; width:200px; }

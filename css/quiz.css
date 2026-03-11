@@ -17,7 +17,7 @@
   font-weight: 500
 }
 
-#btn-quit {
+.btn-quit {
   padding: 3px 10px;
   border: 1px solid var(--border);
   background: transparent;
@@ -28,7 +28,7 @@
   transition: all .18s
 }
 
-#btn-quit:hover {
+.btn-quit:hover {
   border-color: var(--err);
   color: #fca5a5
 }
@@ -49,10 +49,11 @@
 
 #canvas-area {
   position: relative;
-  aspect-ratio: 1;
-  flex-shrink: 0;
-  width: 80%;
-  align-self: center;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #canvas-wrap {
   border-radius: 14px;
@@ -60,8 +61,9 @@
   border: 1px solid var(--border);
   background: #010208;
   position: relative;
-  width: 100%;
   height: 100%;
+  aspect-ratio: 1;
+  max-width: 100%;
 }
 
 canvas {
@@ -104,11 +106,29 @@ canvas {
   padding: 0 20px
 }
 
+/* q-label and reveal-controls share the same slot; no layout shift on reveal */
+#quiz-label-area {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  padding: 5px 0
+}
+
+#quiz-label-area > * {
+  grid-column: 1;
+  grid-row: 1
+}
+
 .q-label {
+  margin: 0;
   text-align: center;
   color: var(--dim);
   font-size: .8rem;
   letter-spacing: .1em
+}
+
+#quiz-label-area:has(#reveal-controls.show) .q-label {
+  visibility: hidden
 }
 
 .ans-grid {
@@ -217,16 +237,18 @@ canvas {
 }
 
 #reveal-controls {
-  display: none;
+  display: flex;
   flex-direction: row;
   gap: 18px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 6px;
+  visibility: hidden;
+  pointer-events: none
 }
 
 #reveal-controls.show {
-  display: flex
+  visibility: visible;
+  pointer-events: auto
 }
 
 .rev-chk {
@@ -245,6 +267,10 @@ canvas {
   width: 13px;
   height: 13px
 }
+
+/* mastered result state */
+.result-wrap.mastered .result-grade { color:#ffd700; font-size:1.6rem; }
+.result-wrap.mastered .result-stars { letter-spacing:.25em; }
 
 /* results */
 .result-wrap {

@@ -457,7 +457,7 @@ function drawExplore() {
 function startExploreQuiz() {
   const pool = C.filter(c => BOUNDS[c.abbr]).sort(() => Math.random() - 0.5);
   explore.quiz = { pool, idx: 0, score: 0, total: 0, target: null, answered: false };
-  document.getElementById('explore-quiz-bar').style.display = 'flex';
+  document.getElementById('explore-quiz-bar').style.display = '';
   document.getElementById('chk-ex-bounds').checked = true;
   localStorage.setItem('chk-ex-bounds', '1');
   nextExploreQuestion();
@@ -467,6 +467,7 @@ function stopExploreQuiz() {
   explore.quiz = null;
   document.getElementById('explore-quiz-bar').style.display = 'none';
   document.getElementById('find-quiz-hdr').style.display = 'none';
+  document.getElementById('find-nav-row').style.display = 'none';
   document.getElementById('explore-free-hdr').style.display = '';
   document.querySelector('.explore-layers').style.display = '';
   drawExplore();
@@ -475,18 +476,17 @@ function stopExploreQuiz() {
 function nextExploreQuestion() {
   const q = explore.quiz;
   if (q.idx >= q.pool.length) {
-    if (q.courseStageIdx != null) { endFindCourseStage(); return; }
     q.pool.sort(() => Math.random() - 0.5);
     q.idx = 0;
   }
   q.target = q.pool[q.idx++];
   q.answered = false;
-  if (q.courseStageIdx != null) saveFindSession();
   document.getElementById('eq-target-name').textContent = q.target.name;
   document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
   document.getElementById('eq-feedback').textContent = '';
-  document.getElementById('eq-feedback').className = 'eq-feedback';
-  document.getElementById('eq-next').style.display = 'none';
+  document.getElementById('eq-feedback').className = '';
+  document.getElementById('eq-label-area').classList.remove('answered');
+  document.getElementById('eq-next').classList.remove('show');
   drawExplore();
 }
 
@@ -515,10 +515,19 @@ function handleExploreClick(px, py) {
   q.clicked = clicked;
   q.total++;
   if (correct) q.score++;
+  if (correct && q.lessonMode) {
+    session.correct++;
+    recordCorrect(q.target.abbr, 'find', q.stageMode);
+  }
+  if (q.lessonMode) {
+    document.getElementById('find-hud-score').textContent = `${session.correct} correct`;
+  }
   const fb = document.getElementById('eq-feedback');
-  fb.textContent = correct ? '✓ Correct!' : clicked ? `✗ Nope, that's ${clicked.name}` : '✗ Missed';
-  fb.className = 'eq-feedback ' + (correct ? 'correct' : 'wrong');
-  document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
-  document.getElementById('eq-next').style.display = '';
+  fb.innerHTML = correct
+    ? `✓ Correct! — ${conLabel(q.target)}`
+    : `✗ That was ${conLabel(q.target)}`;
+  fb.className = correct ? 'correct' : 'wrong';
+  document.getElementById('eq-label-area').classList.add('answered');
+  document.getElementById('eq-next').classList.add('show');
   drawExplore();
 }

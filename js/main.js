@@ -20,12 +20,10 @@ function handleRoute(hash) {
   } else if (hash.startsWith('view/')) {
     const con = C.find(c => c.abbr === hash.slice(5));
     con ? viewConstellation(con) : navigate('course');
-  } else if (hash.startsWith('stage/')) {
-    const idx = parseInt(hash.slice(6));
-    const stage = STAGES[idx];
-    if (!stage || !isPhaseUnlocked(stage.phase)) { navigate('course'); return; }
-    if (stage.type === 'find') { if (!tryResumeFindStage(idx)) startFindCourseStage(idx); }
-    else if (!tryResumeStage(idx)) startCourseStage(idx);
+  } else if (hash.startsWith('lesson/')) {
+    const idx = parseInt(hash.slice(7));
+    if (!LESSONS[idx] || !isLessonUnlocked(idx)) { navigate('course'); return; }
+    if (!tryResumeLesson(idx)) startLesson(idx);
   } else {
     navigate('course');
   }
@@ -59,6 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('con-search-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') goToViewer();
   });
+  document.getElementById('btn-reset-progress').addEventListener('click', () => {
+    if (!confirm('Erase all progress?')) return;
+    ['course-mastered', 'last-practiced', 'con-exposure'].forEach(k => localStorage.removeItem(k));
+    sessionStorage.removeItem('lesson-session');
+    renderCourseMap();
+  });
+  document.getElementById('btn-continue').addEventListener('click', () => {
+    navigate('lesson/' + suggestNextLesson());
+  });
   document.getElementById('btn-explore-free').addEventListener('click', () => {
     navigate('explore');
   });
@@ -72,37 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') goToViewerInline();
   });
 
-  // Viewer tweak sliders
-  function onTweakChange() {
-    viewerTweak.scale = document.getElementById('tweak-scale').value / 100;
-    viewerTweak.dx = parseFloat(document.getElementById('tweak-dx').value);
-    viewerTweak.dy = parseFloat(document.getElementById('tweak-dy').value);
-    document.getElementById('tweak-scale-val').textContent = viewerTweak.scale.toFixed(2) + '×';
-    document.getElementById('tweak-dx-val').textContent = viewerTweak.dx.toFixed(1) + '°';
-    document.getElementById('tweak-dy-val').textContent = viewerTweak.dy.toFixed(1) + '°';
-    const con = session.pool[session.idx];
-    if (con && session.viewMode) redrawReveal(con);
-  }
-  ['tweak-scale', 'tweak-dx', 'tweak-dy'].forEach(id =>
-    document.getElementById(id).addEventListener('input', onTweakChange));
-
-  document.getElementById('btn-copy-framing').addEventListener('click', () => {
-    const con = session.pool[session.idx];
-    if (!con) return;
-    const tc = tweakedCon(con);
-    const text = `ra: ${tc.ra.toFixed(1)}, dec: ${tc.dec.toFixed(1)}, fov: ${tc.fov.toFixed(1)}`;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById('btn-copy-framing');
-      btn.textContent = 'Copied!';
-      setTimeout(() => { btn.textContent = 'Copy ra/dec/fov'; }, 1500);
-    });
-  });
-
-  document.getElementById('btn-next').addEventListener('click', nextQuestion);
+  document.getElementById('btn-next').addEventListener('click', nextLessonQuestion);
   document.getElementById('btn-prev').addEventListener('click', () => {
     if (session.idx > 0 && session.history[session.idx - 1]) {
       session.idx--;
-      showQuestion();
+      showLessonQuestion();
+    }
+  });
+  document.getElementById('find-btn-quit').addEventListener('click', () => { endLesson(); });
+  document.getElementById('find-btn-prev').addEventListener('click', () => {
+    if (session.idx > 0 && session.history[session.idx - 1]) {
+      session.idx--;
+      showLessonQuestion();
     }
   });
   document.getElementById('btn-quit').addEventListener('click', () => {
@@ -112,12 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
       navigate('course');
       return;
     }
-    const answered = session.idx + (session.answered ? 1 : 0);
-    showResults(answered);
+    if (session.lessonIdx != null) {
+      endLesson();
+    } else {
+      navigate('course');
+    }
   });
 
   document.getElementById('chk-rev-photo').addEventListener('change', () => {
-    const con = session.pool[session.idx];
+    const con = currentCon();
     if (!con || !session.answered) return;
     const checked = document.getElementById('chk-rev-photo').checked;
     settings.mode = checked ? 'photo' : 'diagram';
@@ -132,20 +123,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('chk-rev-boundary').addEventListener('change', () => {
-    const con = session.pool[session.idx];
+    const con = currentCon();
     if (con && session.answered) redrawReveal(con);
   });
   document.getElementById('chk-rev-diagram').addEventListener('change', () => {
-    const con = session.pool[session.idx];
+    const con = currentCon();
     if (con && session.answered) redrawReveal(con);
   });
   document.getElementById('chk-rev-artwork').addEventListener('change', () => {
-    const con = session.pool[session.idx];
+    const con = currentCon();
     if (con && session.answered) redrawReveal(con);
   });
 
   // Explore mode
-  document.getElementById('eq-next').addEventListener('click', nextExploreQuestion);
+  document.getElementById('eq-next').addEventListener('click', () => {
+    if (explore.quiz?.onNext) explore.quiz.onNext();
+    else nextExploreQuestion();
+  });
   document.getElementById('breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
@@ -240,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const { px, py } = expClientToCanvas(cx, cy);
     if (!exploreDragMoved) {
       const dx = px - explore.drag.startPx, dy = py - explore.drag.startPy;
-      if (Math.sqrt(dx * dx + dy * dy) < 5) return;
+      if (Math.sqrt(dx * dx + dy * dy) < 2) return;
       exploreDragMoved = true;
     }
     // Always apply from original P0/R0 — no incremental accumulation
@@ -353,12 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('btn-next').click();
     if (e.key === 'd' || e.key === 'D') {
       debugLabels = !debugLabels;
-      const con = session.pool[session.idx];
+      const con = currentCon();
       if (con && session.answered) redrawReveal(con);
     }
     if (e.key === 'a' || e.key === 'A') {
       debugAnchors = !debugAnchors;
-      const con = session.pool[session.idx];
+      const con = currentCon();
       if (con && session.answered) redrawReveal(con);
     }
   });

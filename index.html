@@ -15,22 +15,32 @@
   <div id="app">
 
     <div id="screen-start" class="screen active">
-      <div class="course-header">
-        <h1>✦ Constellate</h1>
-        <div class="viewer-row">
-          <div id="viewer-search">
-            <input type="text" id="con-search-input" list="con-search-list" placeholder="Find constellation…" autocomplete="off">
-            <datalist id="con-search-list"></datalist>
-            <button id="btn-view">View ›</button>
+      <div class="screen-body">
+        <div class="course-header">
+          <h1>✦ Constellate</h1>
+          <div class="viewer-row">
+            <div id="viewer-search">
+              <input type="text" id="con-search-input" list="con-search-list" placeholder="Find constellation…" autocomplete="off">
+              <datalist id="con-search-list"></datalist>
+              <button id="btn-view">View ›</button>
+            </div>
+            <button id="btn-explore-free">Sky Explorer ›</button>
           </div>
-          <button id="btn-explore-free">Sky Explorer ›</button>
+        </div>
+        <div id="course-hero">
+          <button id="btn-continue">Start Learning ›</button>
+          <div id="course-progress-wrap"><div id="course-progress-bar"></div></div>
+          <div id="course-progress-label"></div>
+        </div>
+        <div id="course-map"></div>
+        <div style="text-align:center;padding:16px 0 8px">
+          <button id="btn-reset-progress" style="font-size:.7rem;padding:4px 10px;border:1px solid #555;background:transparent;color:#666;border-radius:6px;cursor:pointer">⚠ Reset all progress</button>
         </div>
       </div>
-      <div id="course-map"></div>
     </div>
 
     <div id="screen-quiz" class="screen">
-      <div>
+      <div id="quiz-hdr">
         <div id="quiz-hdr-row">
           <div id="quiz-breadcrumb" style="display:none">
             <a href="#" id="quiz-breadcrumb-course">Course</a> › <span id="quiz-breadcrumb-stage"></span>
@@ -45,49 +55,36 @@
         <div class="hud">
           <span id="hud-progress">1 / 10</span>
           <span class="hud-score" id="hud-score">0 correct</span>
-          <button id="btn-quit">Quit</button>
+          <button class="btn-quit" id="btn-quit">Quit</button>
         </div>
         <div class="prog-wrap">
           <div class="prog-fill" id="prog-fill" style="width:0%"></div>
         </div>
       </div>
-      <div id="reveal-controls">
-        <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo"> Photo</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-rev-boundary" checked> Boundary</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
-      </div>
-      <div id="canvas-area">
-        <div id="canvas-wrap">
-          <canvas id="quiz-canvas"></canvas>
-          <div id="photo-box">
-            <img id="photo-img" alt="Night sky photograph">
-            <div id="photo-msg">Loading DSS sky photograph…</div>
+      <div class="screen-body">
+        <div id="canvas-area">
+          <div id="canvas-wrap">
+            <canvas id="quiz-canvas"></canvas>
+            <div id="photo-box">
+              <img id="photo-img" alt="Night sky photograph">
+              <div id="photo-msg">Loading DSS sky photograph…</div>
+            </div>
+          </div>
+          <div id="art-credit"></div>
+        </div>
+        <div id="quiz-label-area">
+          <p class="q-label">What constellation is this?</p>
+          <div id="reveal-controls">
+            <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo"> Photo</label>
+            <label class="rev-chk"><input type="checkbox" id="chk-rev-boundary" checked> Boundary</label>
+            <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
+            <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
           </div>
         </div>
-        <div id="art-credit"></div>
+        <div class="ans-grid" id="ans-grid"></div>
+        <div id="feedback"></div>
       </div>
-      <p class="q-label">What constellation is this?</p>
-      <div class="ans-grid" id="ans-grid"></div>
-      <div id="feedback"></div>
-      <div id="viewer-tweak">
-        <div class="tweak-row">
-          <label>Scale <span class="tweak-val" id="tweak-scale-val">1.00×</span></label>
-          <input type="range" id="tweak-scale" min="25" max="400" value="100" step="1">
-        </div>
-        <div class="tweak-row">
-          <label>X <span class="tweak-val" id="tweak-dx-val">0.0°</span></label>
-          <input type="range" id="tweak-dx" min="-45" max="45" value="0" step="0.5">
-        </div>
-        <div class="tweak-row">
-          <label>Y <span class="tweak-val" id="tweak-dy-val">0.0°</span></label>
-          <input type="range" id="tweak-dy" min="-45" max="45" value="0" step="0.5">
-        </div>
-        <div style="text-align:center;margin-top:6px">
-          <button id="btn-copy-framing">Copy ra/dec/fov</button>
-        </div>
-      </div>
-      <div class="nav-row">
+      <div class="nav-row screen-ftr">
         <button class="btn-prev" id="btn-prev">← Prev</button>
         <button class="btn-next" id="btn-next">Next →</button>
       </div>
@@ -104,44 +101,61 @@
           <button id="explore-search-go">Go</button>
         </div>
       </div>
-      <div class="explore-hdr" id="find-quiz-hdr" style="display:none">
-        <nav class="find-breadcrumb">
+      <div id="find-quiz-hdr" style="display:none">
+        <div class="find-breadcrumb" style="padding:2px 0 6px">
           <a href="#" id="breadcrumb-course">Course</a> › <span id="breadcrumb-stage"></span>
-        </nav>
-      </div>
-      <div id="explore-quiz-bar" style="display:none">
-        <div class="eq-prompt">Click on: <strong id="eq-target-name"></strong></div>
-        <div class="eq-feedback" id="eq-feedback"></div>
-        <div class="eq-score" id="eq-score">0 / 0</div>
-        <button class="btn-eq-next" id="eq-next" style="display:none">Next →</button>
-      </div>
-      <div class="explore-layers">
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-photo" checked> Photo</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-diagram" checked> Diagram</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-starlabels" checked> Star names</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-connames" checked> Con. names</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-equator" checked> Equator</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-bounds" checked> Bounds</label>
-        <label class="rev-chk"><input type="checkbox" id="chk-ex-art" checked> Art</label>
-      </div>
-      <div id="explore-area">
-        <div id="explore-wrap">
-          <canvas id="explore-gl-canvas"></canvas>
-          <canvas id="explore-canvas"></canvas>
         </div>
-        <div id="explore-art-credit"></div>
+        <div class="hud">
+          <span id="find-hud-progress">1 / 12</span>
+          <span class="hud-score" id="find-hud-score">0 correct</span>
+          <button class="btn-quit" id="find-btn-quit">Quit</button>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-fill" id="find-prog-fill" style="width:0%"></div>
+        </div>
       </div>
-      <div id="explore-roll-strip" style="padding:8px;text-align:center;font-size:12px;color:#aaa;cursor:ew-resize;user-select:none;letter-spacing:0.05em">Rotate</div>
+      <div class="screen-body">
+        <div class="explore-layers">
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-photo" checked> Photo</label>
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-diagram" checked> Diagram</label>
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-starlabels" checked> Star names</label>
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-connames" checked> Con. names</label>
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-equator" checked> Equator</label>
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-bounds" checked> Bounds</label>
+          <label class="rev-chk"><input type="checkbox" id="chk-ex-art" checked> Art</label>
+        </div>
+        <div id="explore-area">
+          <div id="explore-wrap">
+            <canvas id="explore-gl-canvas"></canvas>
+            <canvas id="explore-canvas"></canvas>
+          </div>
+          <div id="explore-art-credit"></div>
+        </div>
+        <div id="explore-roll-strip" style="padding:8px;text-align:center;font-size:12px;color:#aaa;cursor:ew-resize;user-select:none;letter-spacing:0.05em">Rotate</div>
+        <div id="explore-quiz-bar" style="display:none">
+          <div id="eq-label-area">
+            <p class="q-label" id="eq-prompt">Click on: <strong id="eq-target-name"></strong></p>
+            <div id="eq-feedback"></div>
+          </div>
+          <div id="eq-score" style="display:none"></div>
+        </div>
+      </div>
+      <div class="nav-row screen-ftr" id="find-nav-row" style="display:none">
+        <button class="btn-prev" id="find-btn-prev">← Prev</button>
+        <button class="btn-next" id="eq-next">Next →</button>
+      </div>
     </div>
 
     <div id="screen-result" class="screen">
-      <div class="result-wrap">
-        <div class="result-num" id="res-score">0 / 0</div>
-        <div class="result-sub">constellations identified correctly</div>
-        <div class="result-grade" id="res-grade"></div>
-        <div class="result-stars" id="res-stars"></div>
+      <div class="screen-body">
+        <div class="result-wrap">
+          <div class="result-num" id="res-score">0 / 0</div>
+          <div class="result-sub">constellations identified correctly</div>
+          <div class="result-grade" id="res-grade"></div>
+          <div class="result-stars" id="res-stars"></div>
+        </div>
+        <div id="result-btns" style="display:flex;flex-direction:column;align-items:center;gap:12px"></div>
       </div>
-      <div id="result-btns" style="display:flex;flex-direction:column;align-items:center;gap:12px"></div>
     </div>
 
   </div>

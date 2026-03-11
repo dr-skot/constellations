@@ -181,7 +181,7 @@ function showArtworkMode(canvas, con, showLabels = false) {
   const img = new Image();
   img.onload = () => {
     artCache[src] = img;
-    if (session.pool[session.idx] === con && session.answered)
+    if (currentCon() === con && session.answered)
       drawArtwork(canvas, con, img, showLabels);
   };
   img.onerror = () => { artCache[src] = 'error'; };
@@ -316,7 +316,6 @@ function pointInPoly2D(px, py, pts) {
 
 function redrawReveal(con) {
   const origAbbr = con.abbr;
-  if (session.viewMode) con = tweakedCon(con);
   const showBound = document.getElementById('chk-rev-boundary').checked;
   const showDiag = document.getElementById('chk-rev-diagram').checked;
   const showArt = document.getElementById('chk-rev-artwork').checked;
@@ -526,7 +525,7 @@ function ensureArtLoaded(con) {
   const img = new Image();
   img.onload = () => {
     artCache[src] = img;
-    if (session.pool[session.idx] === con && session.answered) redrawReveal(con);
+    if (currentCon() === con && session.answered) redrawReveal(con);
   };
   img.onerror = () => { artCache[src] = 'error'; };
   img.src = art.url;

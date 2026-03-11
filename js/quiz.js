@@ -2,52 +2,55 @@
 // QUIZ STATE
 // ═══════════════════════════════════════════════════════════
 let settings = { mode: 'diagram', diff: '1', hem: 'B' };
-let session = { pool: [], idx: 0, correct: 0, answered: false, history: [], choices: [], viewMode: false };
-let viewerTweak = { scale: 1, dx: 0, dy: 0 };
-
-function tweakedCon(con) {
-  const { scale, dx, dy } = viewerTweak;
-  const newFov = 2 * Math.atan(Math.tan(con.fov * Math.PI / 360) / scale) * 180 / Math.PI;
-  return { ...con, ra: ((con.ra + dx) % 360 + 360) % 360, dec: con.dec + dy, fov: newFov };
-}
-
-function resetViewerTweak() {
-  viewerTweak = { scale: 1, dx: 0, dy: 0 };
-  document.getElementById('tweak-scale').value = 100;
-  document.getElementById('tweak-dx').value = 0;
-  document.getElementById('tweak-dy').value = 0;
-  document.getElementById('tweak-scale-val').textContent = '1.00×';
-  document.getElementById('tweak-dx-val').textContent = '0.0°';
-  document.getElementById('tweak-dy-val').textContent = '0.0°';
+let session = {
+  questions: [], idx: 0, correct: 0, answered: false,
+  history: [], choices: [], viewMode: false,
+  lessonIdx: null, lastMastered: false
+};
+function currentCon() {
+  const q = session.questions[session.idx];
+  return q ? q.con : null;
 }
 let debugLabels = false;
 let debugAnchors = false;
 
-function saveQuizSession() {
-  if (session.courseStageIdx == null) return;
-  sessionStorage.setItem('quiz-session', JSON.stringify({
-    stageIdx: session.courseStageIdx,
-    pool: session.pool.map(c => c.abbr),
+function saveLessonSession() {
+  if (session.lessonIdx == null) return;
+  sessionStorage.setItem('lesson-session', JSON.stringify({
+    lessonIdx: session.lessonIdx,
+    questions: session.questions.map(q => ({
+      abbr: q.con.abbr, type: q.type, mode: q.mode,
+      ...(q.searchRadius ? { searchRadius: q.searchRadius } : {})
+    })),
     idx: session.idx,
     correct: session.correct,
     history: session.history
   }));
 }
 
-function tryResumeStage(idx) {
+function tryResumeLesson(idx) {
   try {
-    const d = JSON.parse(sessionStorage.getItem('quiz-session'));
-    if (!d || d.stageIdx !== idx) return false;
-    const pool = d.pool.map(abbr => C.find(c => c.abbr === abbr)).filter(Boolean);
-    if (pool.length !== d.pool.length) return false;
-    session.pool = pool; session.idx = d.idx; session.correct = d.correct;
-    session.history = d.history || []; session.courseStageIdx = idx;
+    const d = JSON.parse(sessionStorage.getItem('lesson-session'));
+    if (!d || d.lessonIdx !== idx) return false;
+    const questions = d.questions.map(q => {
+      const con = C.find(c => c.abbr === q.abbr);
+      if (!con) return null;
+      return { con, type: q.type, mode: q.mode,
+               ...(q.searchRadius ? { searchRadius: q.searchRadius } : {}) };
+    }).filter(Boolean);
+    if (questions.length !== d.questions.length) return false;
+    session.questions = questions;
+    session.idx = d.idx;
+    session.correct = d.correct;
+    session.history = d.history || [];
+    session.lessonIdx = idx;
     session.answered = false;
     session.viewMode = false;
-    settings.mode = STAGES[idx].mode;
     document.getElementById('screen-quiz').classList.remove('viewer-mode');
-    showQuizBreadcrumb(idx);
-    showScreen('quiz'); showQuestion(); return true;
+    document.getElementById('quiz-breadcrumb-stage').textContent = `${idx + 1}: ${LESSONS[idx].label}`;
+    document.getElementById('quiz-breadcrumb').style.display = '';
+    showLessonQuestion();
+    return true;
   } catch { return false; }
 }
 
@@ -59,18 +62,29 @@ function getDistractors(correct, pool) {
 }
 
 function updatePrevBtn() {
-  const canGoPrev = session.idx > 0 && session.history[session.idx - 1];
-  document.getElementById('btn-prev').classList.toggle('show', !!canGoPrev);
+  document.getElementById('btn-prev').classList.toggle('show', session.idx > 0);
 }
 
-function showQuestion() {
-  const con = session.pool[session.idx];
-  const hist = session.history[session.idx];
+function showLessonQuestion() {
+  const q = session.questions[session.idx];
+  if (!q) return;
 
-  const total = session.pool.length;
+  const total = session.questions.length;
   document.getElementById('hud-progress').textContent = `${session.idx + 1} / ${total}`;
   document.getElementById('hud-score').textContent = `${session.correct} correct`;
   document.getElementById('prog-fill').style.width = `${(session.idx / total) * 100}%`;
+
+  if (q.type === 'find') {
+    recordSeen(q.con.abbr, q.type, q.mode);
+    startLessonFindQuestion(q);
+    return;
+  }
+
+  showScreen('quiz');
+  settings.mode = q.mode;
+
+  const con = q.con;
+  const hist = session.history[session.idx];
 
   document.getElementById('feedback').textContent = '';
   document.getElementById('art-credit').innerHTML = '';
@@ -90,6 +104,7 @@ function showQuestion() {
   } else {
     session.answered = false;
     session.rotation = Math.random() * Math.PI * 2;
+    recordSeen(q.con.abbr, q.type, q.mode);
   }
 
   const sz = document.getElementById('canvas-wrap').offsetWidth;
@@ -103,8 +118,10 @@ function showQuestion() {
 
   const grid = document.getElementById('ans-grid');
   grid.innerHTML = '';
+  // Use full constellation list as distractor pool for better variety
+  const distractorPool = C.filter(c => c.stars.length > 0);
+
   if (hist) {
-    // Replay previously answered state
     hist.choices.forEach(c => {
       const btn = document.createElement('button');
       btn.className = 'ans-btn';
@@ -120,7 +137,7 @@ function showQuestion() {
     startReveal(con);
     document.getElementById('btn-next').classList.add('show');
   } else {
-    const wrongs = getDistractors(con, session.pool);
+    const wrongs = getDistractors(con, distractorPool);
     session.choices = [con, ...wrongs].sort(() => Math.random() - .5);
     session.choices.forEach(c => {
       const btn = document.createElement('button');
@@ -153,6 +170,8 @@ function handleAnswer(chosen, correct) {
     session.correct++;
     document.getElementById('hud-score').textContent = `${session.correct} correct`;
     document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct)}`;
+    const q = session.questions[session.idx];
+    if (session.lessonIdx != null && q) recordCorrect(q.con.abbr, q.type, q.mode);
   } else {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
@@ -163,30 +182,11 @@ function handleAnswer(chosen, correct) {
   updatePrevBtn();
 }
 
-function nextQuestion() {
+function nextLessonQuestion() {
   session.idx++;
-  saveQuizSession();
-  if (session.idx >= session.pool.length) {
-    if (session.courseStageIdx != null) endCourseStage();
-    else showResults();
-  } else {
-    showQuestion();
-  }
-}
-
-function showResults(total = session.pool.length) {
-  const pct = total > 0 ? session.correct / total : 0;
-  document.getElementById('res-score').textContent = `${session.correct} / ${total}`;
-  let grade, stars;
-  if (pct >= .9) { grade = 'Astronomer'; stars = '★★★'; }
-  else if (pct >= .7) { grade = 'Sky Watcher'; stars = '★★☆'; }
-  else if (pct >= .5) { grade = 'Stargazer'; stars = '★☆☆'; }
-  else { grade = 'Keep Practicing'; stars = '☆☆☆'; }
-  document.getElementById('res-grade').textContent = grade;
-  document.getElementById('res-stars').textContent = stars;
-  session.lastMastered = false;
-  showScreen('result');
-  renderResultButtons();
+  saveLessonSession();
+  if (session.idx >= session.questions.length) endLesson();
+  else showLessonQuestion();
 }
 
 // ═══════════════════════════════════════════════════════════
