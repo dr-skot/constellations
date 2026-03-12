@@ -77,9 +77,7 @@ function drawLabels(ctx, proj, W) {
   // Sort: brightest stars first so their labels get priority placement
   const named = [...proj].filter(p => p.name).sort((a, b) => a.mag - b.mag);
 
-  let order = 0;
   for (const p of named) {
-    order++;
     const col = starCol(p.hint), r = magToR(p.mag), pad = 3;
     const tw = ctx.measureText(p.name).width, th = fs;
     const lw = tw + pad * 2, lh = th + pad * 2;
@@ -97,32 +95,12 @@ function drawLabels(ctx, proj, W) {
       [p.x - lw / 2, p.y + gap],  // below
     ];
 
-    let best = candidates[0], bestIdx = 0, testedCount = 1;
+    let best = candidates[0];
     for (let i = 0; i < candidates.length; i++) {
       const [cx, cy] = candidates[i];
-      if (!overlaps(cx, cy, lw, lh)) { best = candidates[i]; bestIdx = i; break; }
-      testedCount = i + 1; // this one was rejected; keep counting
+      if (!overlaps(cx, cy, lw, lh)) { best = candidates[i]; break; }
     }
 
-    if (debugLabels) {
-      // Draw only tested candidates: green=chosen, red=rejected
-      candidates.slice(0, testedCount).forEach(([cx, cy], i) => {
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = (i === bestIdx) ? '#00ff44' : '#ff3333';
-        ctx.beginPath(); ctx.arc(cx + lw / 2, cy + lh / 2, 5, 0, Math.PI * 2); ctx.fill();
-      });
-      // Draw label bounding box
-      ctx.globalAlpha = 0.25;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(best[0], best[1], lw, lh);
-      // Draw placement order
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = '#ffff00';
-      ctx.font = `bold ${Math.round(fs * 0.7)}px system-ui,sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText(String(order), p.x, p.y - r - 6);
-      ctx.font = `${fs}px system-ui,-apple-system,sans-serif`;
-    }
 
     const [lx, ly] = best;
     placed.push({ x: lx, y: ly, w: lw, h: lh });

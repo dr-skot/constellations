@@ -355,11 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (idx !== undefined && btns[idx] && !btns[idx].disabled) btns[idx].click();
     if ((e.key === 'Enter' || e.key === ' ') && document.getElementById('btn-next').classList.contains('show'))
       document.getElementById('btn-next').click();
-    if (e.key === 'd' || e.key === 'D') {
-      debugLabels = !debugLabels;
-      const con = currentCon();
-      if (con && session.answered) redrawReveal(con);
-    }
   });
 
   // ── Constellation info modal ──

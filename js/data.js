@@ -741,13 +741,15 @@ function generateNextLesson() {
   // New pool: diff:1 first, random within same diff
   const newPool = [...unseen].sort((a, b) => a.diff - b.diff || Math.random() - 0.5);
 
-  // Review pool: weakest first (fewest total correct), random jitter breaks ties
+  // Review pool: weakest first, normalized by diff so famous (diff:1) constellations
+  // aren't crowded out by newer diff:2/3 constellations that simply have fewer
+  // exposures. Dividing by (4 - diff) gives diff:1 a 3× score advantage.
   function totalCorrect(con) {
     const e = exp[con.abbr] || {};
     return Object.values(e).reduce((s, v) => s + (v.correct || 0), 0);
   }
   const reviewPool = [...known]
-    .map(con => ({ con, score: totalCorrect(con) + Math.random() }))
+    .map(con => ({ con, score: totalCorrect(con) / (4 - con.diff) + Math.random() * 0.5 }))
     .sort((a, b) => a.score - b.score)
     .map(x => x.con);
 

@@ -11,7 +11,6 @@ function currentCon() {
   const q = session.questions[session.idx];
   return q ? q.con : null;
 }
-let debugLabels = false;
 
 function saveLessonSession() {
   if (session.lessonIdx == null) return;
