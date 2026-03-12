@@ -66,6 +66,14 @@
   font-size: .88rem;
   color: var(--dim)
 }
+#eq-reveal-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0 2px
+}
 #eq-feedback a { color: inherit; text-decoration: underline; text-underline-offset: 2px }
 #eq-feedback a:hover { color: var(--text) }
 #eq-feedback.correct { color: #6f8 }

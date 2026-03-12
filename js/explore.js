@@ -212,14 +212,15 @@ function drawExplore() {
   const visible = exploreVisibleCons();
   const q = explore.quiz;
   const cm = q?.stageMode;  // course mode active?
-  const showPhoto      = cm ? cm === 'photo'   : document.getElementById('chk-ex-photo').checked;
-  const showDiag       = cm ? cm !== 'photo'   : document.getElementById('chk-ex-diagram').checked;
-  const showLines      = cm ? cm === 'diagram' : true;
-  const showBounds     = cm ? !!q.bounds       : document.getElementById('chk-ex-bounds').checked;
-  const showArt        = cm ? false            : document.getElementById('chk-ex-art').checked;
-  const showStarLabels = cm ? false            : document.getElementById('chk-ex-starlabels').checked;
-  const showConNames   = cm ? false            : document.getElementById('chk-ex-connames').checked;
-  const showEquator    = cm ? true             : document.getElementById('chk-ex-equator').checked;
+  const isAnswered = !!(q?.answered);
+  const showPhoto      = cm ? (isAnswered ? document.getElementById('chk-eq-photo').checked    : cm === 'photo')   : document.getElementById('chk-ex-photo').checked;
+  const showDiag       = cm ? (isAnswered ? document.getElementById('chk-eq-diagram').checked  : cm !== 'photo')   : document.getElementById('chk-ex-diagram').checked;
+  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : true;
+  const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : document.getElementById('chk-ex-bounds').checked;
+  const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : document.getElementById('chk-ex-art').checked;
+  const showStarLabels = cm ? false : document.getElementById('chk-ex-starlabels').checked;
+  const showConNames   = cm ? false : document.getElementById('chk-ex-connames').checked;
+  const showEquator    = cm ? true  : document.getElementById('chk-ex-equator').checked;
 
   // Photo layer (WebGL)
   if (showPhoto) {
@@ -394,9 +395,6 @@ function drawExplore() {
     const lw = Math.max(2, W / 320);
     const drawBoundary = (con, color) => {
       if (!BOUNDS[con.abbr]) return;
-      // Must skip off-screen constellations. TAN projection maps points behind the
-      // projection plane to extreme-but-finite coordinates that can fall within the
-      // 2*W pen-up threshold, producing phantom outlines on the wrong side of the sky.
       if (angularDist(ra, dec, con.ra, con.dec) > explore.fov / 2 + con.fov / 2 + 10) return;
       ctx.save();
       ctx.strokeStyle = color;
@@ -416,25 +414,8 @@ function drawExplore() {
     };
     if (clicked && clicked.abbr !== target.abbr) drawBoundary(clicked, 'rgba(255,80,80,0.9)');
     drawBoundary(target, 'rgba(100,255,100,0.9)');
-
-    // In photo/stars mode, overlay diagram for target and wrong guess on reveal.
-    if (cm === 'photo' || cm === 'stars') {
-      const revealCons = [target];
-      if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
-      for (const con of revealCons) {
-        const fullProj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H).map(p => p.d > 0 ? p : null);
-        drawLines(ctx, fullProj, con);
-        drawStars(ctx, fullProj.filter(Boolean));
-      }
-    }
-    // In diagram mode, overlay artwork for target and wrong guess on reveal.
-    if (cm === 'diagram') {
-      const revealCons = [target];
-      if (clicked && clicked.abbr !== target.abbr) revealCons.push(clicked);
-      for (const con of revealCons) {
-        drawExploreArtLayerGL(con, camP, camUp, explore.fov);
-      }
-    }
+    // Diagram and art for the answered state are now checkbox-controlled via
+    // showDiag / showArt in the main drawing loops above.
   }
 
   // Crosshairs at celestial poles
@@ -487,6 +468,7 @@ function nextExploreQuestion() {
   document.getElementById('eq-feedback').className = '';
   document.getElementById('eq-label-area').classList.remove('answered');
   document.getElementById('eq-next').classList.remove('show');
+  document.getElementById('eq-reveal-controls').style.display = 'none';
   drawExplore();
 }
 
@@ -532,5 +514,11 @@ function handleExploreClick(px, py) {
   fb.className = correct ? 'correct' : 'wrong';
   document.getElementById('eq-label-area').classList.add('answered');
   document.getElementById('eq-next').classList.add('show');
+  // Set reveal checkbox defaults and show controls
+  document.getElementById('chk-eq-photo').checked    = q.stageMode === 'photo';
+  document.getElementById('chk-eq-boundary').checked = true;
+  document.getElementById('chk-eq-diagram').checked  = true;
+  document.getElementById('chk-eq-art').checked      = true;
+  document.getElementById('eq-reveal-controls').style.display = '';
   drawExplore();
 }

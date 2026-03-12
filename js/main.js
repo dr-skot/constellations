@@ -172,6 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('explore-search-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') goToConstellation();
   });
+  ['chk-eq-photo', 'chk-eq-boundary', 'chk-eq-diagram', 'chk-eq-art'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => drawExplore());
+  });
+
   const exploreCheckboxIds = ['chk-ex-photo', 'chk-ex-diagram', 'chk-ex-starlabels', 'chk-ex-connames', 'chk-ex-equator', 'chk-ex-bounds', 'chk-ex-art'];
   // Restore saved checkbox states
   exploreCheckboxIds.forEach(id => {
