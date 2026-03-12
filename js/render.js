@@ -227,26 +227,6 @@ function drawArtwork(canvas, con, img, showLabels = false, angle = 0) {
   const creditEl = document.getElementById('art-credit');
   if (creditEl) creditEl.innerHTML = 'Art: Johan Meuris<br>Free Art Licence';
 
-  if (debugAnchors) {
-    const r = Math.max(6, W * 0.012);
-    const fs = Math.max(10, Math.round(W * 0.03));
-    // Use identity transform — dstPts are already in screen pixel coords
-    ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    dstPts.forEach(([x, y], i) => {
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.strokeStyle = '#ff0';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = '#ff0';
-      ctx.font = `bold ${fs}px system-ui,sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(String(i + 1), x, y);
-    });
-    ctx.restore();
-  }
 }
 
 function showPhotoMode(con, angle = 0) {
@@ -334,10 +314,12 @@ function redrawReveal(con) {
     ctx.translate(-W/2, -H/2);
   }
 
+  const showPhoto = document.getElementById('chk-rev-photo').checked;
   let revealProj = null;
   // Background
-  if (settings.mode === 'photo') {
-    ctx.drawImage(document.getElementById('photo-img'), 0, 0, W, H);
+  const photoImg = document.getElementById('photo-img');
+  if (showPhoto && photoImg.complete && photoImg.naturalWidth > 0) {
+    ctx.drawImage(photoImg, 0, 0, W, H);
   } else {
     drawBackground(ctx, W, H, con, settings.mode === 'stars');
   }
@@ -348,7 +330,7 @@ function redrawReveal(con) {
   // Lines and stars
   revealProj = projectStarsTAN(con.stars, con, W, H);
   if (showDiag) drawLines(ctx, revealProj, con);
-  if (settings.mode !== 'photo' || showDiag) drawStars(ctx, revealProj);
+  if (!showPhoto || showDiag) drawStars(ctx, revealProj);
 
   // Boundary overlay — draw all visible constellation boundaries and label neighbors.
   const R = W / 2, cirCx = W / 2, cirCy = H / 2;
@@ -545,6 +527,13 @@ function startReveal(con) {
   artChk.style.display = ART[artSrc(con.abbr)] ? '' : 'none';
   const boundChk = document.getElementById('chk-rev-boundary').closest('label');
   boundChk.style.display = BOUNDS[con.abbr] ? '' : 'none';
+  document.getElementById('lbl-rev-photo').style.display = '';
+  const photoImg = document.getElementById('photo-img');
+  if (photoImg.dataset.abbr !== con.abbr) {
+    photoImg.dataset.abbr = con.abbr;
+    photoImg.onload = () => { if (currentCon() === con && session.answered) redrawReveal(con); };
+    photoImg.src = photoUrl(con);
+  }
   document.getElementById('reveal-controls').classList.add('show');
   redrawReveal(con);
   ensureArtLoaded(con);

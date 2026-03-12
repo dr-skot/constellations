@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn-next').addEventListener('click', nextLessonQuestion);
   document.getElementById('quiz-autocomplete-input')
-    .addEventListener('keydown', e => { if (e.key === 'Enter') handleAutocompleteAnswer(); });
+    .addEventListener('keydown', e => { if (e.key === 'Enter' && !e.target.disabled) { e.stopPropagation(); handleAutocompleteAnswer(); } });
   document.getElementById('quiz-autocomplete-submit')
     .addEventListener('click', handleAutocompleteAnswer);
   document.getElementById('btn-prev').addEventListener('click', () => {
@@ -112,13 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('chk-rev-photo').addEventListener('change', () => {
     const con = currentCon();
     if (!con || !session.answered) return;
-    const checked = document.getElementById('chk-rev-photo').checked;
-    settings.mode = checked ? 'photo' : 'diagram';
-    if (checked) {
-      const img = document.getElementById('photo-img');
-      img.src = photoUrl(con);
-      if (img.complete) { redrawReveal(con); }
-      else { img.onload = () => redrawReveal(con); }
+    const img = document.getElementById('photo-img');
+    if (!img.complete || img.naturalWidth === 0) {
+      img.onload = () => redrawReveal(con);
     } else {
       redrawReveal(con);
     }
@@ -141,6 +137,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('eq-next').addEventListener('click', () => {
     if (explore.quiz?.onNext) explore.quiz.onNext();
     else nextExploreQuestion();
+  });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('screen-explore').classList.contains('active')) return;
+    if ((e.key === 'Enter' || e.key === ' ') && document.getElementById('eq-next').classList.contains('show'))
+      document.getElementById('eq-next').click();
   });
   document.getElementById('breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
@@ -341,6 +342,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: false });
 
   document.addEventListener('keydown', e => {
+    if (document.getElementById('screen-result').classList.contains('active')) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const next = document.querySelector('#result-btns .btn-again');
+        if (next) { e.preventDefault(); next.click(); }
+      }
+      return;
+    }
     if (!document.getElementById('screen-quiz').classList.contains('active')) return;
     const btns = [...document.querySelectorAll('.ans-btn')];
     const idx = { '1': 0, '2': 1, '3': 2, '4': 3 }[e.key];
@@ -349,11 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('btn-next').click();
     if (e.key === 'd' || e.key === 'D') {
       debugLabels = !debugLabels;
-      const con = currentCon();
-      if (con && session.answered) redrawReveal(con);
-    }
-    if (e.key === 'a' || e.key === 'A') {
-      debugAnchors = !debugAnchors;
       const con = currentCon();
       if (con && session.answered) redrawReveal(con);
     }

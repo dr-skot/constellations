@@ -269,16 +269,16 @@ canvas {
 }
 
 /* autocomplete answer area */
-#autocomplete-area { display:flex; flex-direction:column; gap:8px; }
+#autocomplete-area { display:flex; flex-direction:column; gap:6px; }
+#autocomplete-input-row { display:flex; gap:8px; align-items:center; justify-content:center; }
 #quiz-autocomplete-input {
-  background:var(--bg); color:var(--text); border:1px solid var(--border);
-  border-radius:8px; padding:9px 12px; font-size:.88rem; width:100%;
-  box-sizing:border-box;
+  width:280px; background:var(--bg); color:var(--text); border:1px solid var(--border);
+  border-radius:8px; padding:9px 12px; font-size:.88rem;
 }
 #quiz-autocomplete-input:focus { outline:none; border-color:var(--accent); }
 #autocomplete-msg { font-size:.8rem; color:var(--err); min-height:1.2em; }
 #quiz-autocomplete-submit {
-  align-self:center; padding:9px 24px; border:1px solid var(--accent);
+  flex-shrink:0; padding:9px 18px; border:1px solid var(--accent);
   background:rgba(91,138,245,.12); color:#b0ccff; border-radius:10px;
   cursor:pointer; font-size:.88rem; transition:all .18s;
 }

@@ -75,7 +75,7 @@
         <div id="quiz-label-area">
           <p class="q-label">What constellation is this?</p>
           <div id="reveal-controls">
-            <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo"> Photo</label>
+            <label class="rev-chk" id="lbl-rev-photo"><input type="checkbox" id="chk-rev-photo" checked> Photo</label>
             <label class="rev-chk"><input type="checkbox" id="chk-rev-boundary" checked> Boundary</label>
             <label class="rev-chk"><input type="checkbox" id="chk-rev-diagram" checked> Diagram</label>
             <label class="rev-chk"><input type="checkbox" id="chk-rev-artwork" checked> Artwork</label>
@@ -83,10 +83,12 @@
         </div>
         <div class="ans-grid" id="ans-grid"></div>
         <div id="autocomplete-area" style="display:none">
-          <input type="text" id="quiz-autocomplete-input" list="con-search-list"
-                 placeholder="Type constellation name…" autocomplete="off">
+          <div id="autocomplete-input-row">
+            <input type="text" id="quiz-autocomplete-input" list="con-search-list"
+                   placeholder="Type constellation name…" autocomplete="off">
+            <button id="quiz-autocomplete-submit">Check</button>
+          </div>
           <div id="autocomplete-msg"></div>
-          <button id="quiz-autocomplete-submit">Check</button>
         </div>
         <div id="feedback"></div>
       </div>

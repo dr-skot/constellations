@@ -12,7 +12,6 @@ function currentCon() {
   return q ? q.con : null;
 }
 let debugLabels = false;
-let debugAnchors = false;
 
 function saveLessonSession() {
   if (session.lessonIdx == null) return;
@@ -97,6 +96,7 @@ function showLessonQuestion() {
   document.getElementById('feedback').textContent = '';
   document.getElementById('art-credit').innerHTML = '';
   document.getElementById('reveal-controls').classList.remove('show');
+  document.getElementById('lbl-rev-photo').style.display = 'none';
   document.getElementById('btn-next').classList.remove('show');
 
   const canvas = document.getElementById('quiz-canvas');
@@ -129,9 +129,12 @@ function showLessonQuestion() {
   grid.style.display = isAuto ? 'none' : '';
   autoArea.style.display = isAuto ? '' : 'none';
   if (isAuto) {
-    document.getElementById('quiz-autocomplete-input').value = hist ? (hist.chosen?.name || '') : '';
+    const acInput = document.getElementById('quiz-autocomplete-input');
+    acInput.value = hist ? (hist.chosen?.name || '') : '';
     document.getElementById('autocomplete-msg').textContent = '';
-    document.getElementById('quiz-autocomplete-input').disabled = !!hist;
+    acInput.disabled = !!hist;
+    document.getElementById('quiz-autocomplete-submit').style.display = hist ? 'none' : '';
+    if (!hist) acInput.focus();
   }
 
   // Use full constellation list as distractor pool for better variety
@@ -212,6 +215,7 @@ function handleAutocompleteAnswer() {
   }
   document.getElementById('autocomplete-msg').textContent = '';
   document.getElementById('quiz-autocomplete-input').disabled = true;
+  document.getElementById('quiz-autocomplete-submit').style.display = 'none';
   session.answered = true;
   const q = session.questions[session.idx];
   const correct = q.con;

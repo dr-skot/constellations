@@ -637,78 +637,96 @@ const ART = {
 function questionKey(q) {
   if (q.navigate && q.noBounds) return 'navigate/photo-nb';
   if (q.navigate)               return 'navigate/' + q.mode;
+  if (q.type === 'find' && q.noBounds) return 'find/' + q.mode + '-nb';
   if (q.type === 'find')        return 'find/' + q.mode;
   if (q.answerMode === 'autocomplete') return 'identify/' + q.mode + '-ac';
   return 'identify/' + q.mode;
 }
 
 // DAG of tier prerequisites:
-//   identify/diagram  → find/diagram  (find requires its paired identify only)
-//   identify/diagram  → identify/stars
-//   identify/stars    → find/stars
-//   identify/stars    → identify/photo
-//   identify/photo    → find/photo
+//   identify/diagram  → find/diagram → find/diagram-nb
+//   identify/diagram  → identify/stars → find/stars → find/stars-nb
+//   identify/stars    → identify/photo → find/photo → find/photo-nb
+// find-nb = find the constellation without boundary outline shown.
 // identify chain gates further identify progress; find tiers are leaf nodes.
 function targetSpec(expCon) {
   const e = expCon || {};
   const ok = key => (e[key]?.correct ?? 0) >= 1;
 
-  // Collect all unlocked-but-not-passed tiers
+  if (!ok('identify/diagram')) return { type:'identify', mode:'diagram', answerMode:'choice' };
+
   const unlocked = [];
-  if (!ok('identify/diagram')) {
-    return { type:'identify', mode:'diagram', answerMode:'choice' }; // nothing unlocked yet
-  }
-  if (!ok('find/diagram'))        unlocked.push({ pri:2, spec: { type:'find',     mode:'diagram', searchRadius:70 } });
-  if (!ok('identify/stars'))      unlocked.push({ pri:1, spec: { type:'identify', mode:'stars',   answerMode:'choice' } });
-  if (ok('identify/stars')) {
-    if (!ok('find/stars'))        unlocked.push({ pri:2, spec: { type:'find',     mode:'stars',   searchRadius:65 } });
-    if (!ok('identify/photo'))    unlocked.push({ pri:1, spec: { type:'identify', mode:'photo',   answerMode:'choice' } });
-    if (ok('identify/photo')) {
-      if (!ok('find/photo'))      unlocked.push({ pri:2, spec: { type:'find',     mode:'photo',   searchRadius:60 } });
-      if (!ok('identify/diagram-ac')) unlocked.push({ pri:1, spec: { type:'identify', mode:'diagram', answerMode:'autocomplete' } });
-      if (ok('identify/diagram-ac') && !ok('identify/stars-ac'))
-                                  unlocked.push({ pri:1, spec: { type:'identify', mode:'stars',   answerMode:'autocomplete' } });
-      if (ok('identify/stars-ac') && !ok('identify/photo-ac'))
-                                  unlocked.push({ pri:1, spec: { type:'identify', mode:'photo',   answerMode:'autocomplete' } });
+
+  // find/diagram branch (after iD): bounded first, then no-bounds
+  if (!ok('find/diagram'))          unlocked.push({ type:'find', mode:'diagram', searchRadius:70 });
+  else if (!ok('find/diagram-nb'))  unlocked.push({ type:'find', mode:'diagram', searchRadius:70, noBounds:true });
+
+  // identify/diagram-ac (after iD)
+  if (!ok('identify/diagram-ac'))   unlocked.push({ type:'identify', mode:'diagram', answerMode:'autocomplete' });
+
+  // identify/stars branch (after iD)
+  if (!ok('identify/stars')) {
+    unlocked.push({ type:'identify', mode:'stars', answerMode:'choice' });
+  } else {
+    // find/stars branch (after iS)
+    if (!ok('find/stars'))          unlocked.push({ type:'find', mode:'stars', searchRadius:65 });
+    else if (!ok('find/stars-nb'))  unlocked.push({ type:'find', mode:'stars', searchRadius:65, noBounds:true });
+
+    // identify/stars-ac (after iS)
+    if (!ok('identify/stars-ac'))   unlocked.push({ type:'identify', mode:'stars', answerMode:'autocomplete' });
+
+    // identify/photo branch (after iS)
+    if (!ok('identify/photo')) {
+      unlocked.push({ type:'identify', mode:'photo', answerMode:'choice' });
+    } else {
+      // find/photo branch (after iP)
+      if (!ok('find/photo'))        unlocked.push({ type:'find', mode:'photo', searchRadius:60 });
+      else if (!ok('find/photo-nb')) unlocked.push({ type:'find', mode:'photo', searchRadius:60, noBounds:true });
+
+      // identify/photo-ac (after iP)
+      if (!ok('identify/photo-ac')) unlocked.push({ type:'identify', mode:'photo', answerMode:'autocomplete' });
+
+      // navigate tiers (after iP-ac, sequential chain)
       if (ok('identify/photo-ac')) {
-        if (!ok('navigate/diagram')) unlocked.push({ pri:1, spec: { type:'find', mode:'diagram', searchRadius:55, navigate:true } });
-        if (ok('navigate/diagram') && !ok('navigate/stars'))
-                                  unlocked.push({ pri:1, spec: { type:'find', mode:'stars',   searchRadius:50, navigate:true } });
-        if (ok('navigate/stars') && !ok('navigate/photo'))
-                                  unlocked.push({ pri:1, spec: { type:'find', mode:'photo',   searchRadius:50, navigate:true } });
-        if (ok('navigate/photo')) unlocked.push({ pri:1, spec: { type:'find', mode:'photo',   searchRadius:50, navigate:true, noBounds:true } });
+        if (!ok('navigate/diagram'))       unlocked.push({ type:'find', mode:'diagram', searchRadius:55, navigate:true });
+        else if (!ok('navigate/stars'))    unlocked.push({ type:'find', mode:'stars',   searchRadius:50, navigate:true });
+        else if (!ok('navigate/photo'))    unlocked.push({ type:'find', mode:'photo',   searchRadius:50, navigate:true });
+        else                               unlocked.push({ type:'find', mode:'photo',   searchRadius:50, navigate:true, noBounds:true });
       }
     }
   }
 
   if (unlocked.length === 0) return { type:'find', mode:'photo', searchRadius:50, navigate:true, noBounds:true };
-  // Equal weight between identify and find — pick randomly among unlocked tiers
-  return unlocked[Math.floor(Math.random() * unlocked.length)].spec;
+  return unlocked[Math.floor(Math.random() * unlocked.length)];
 }
 
-// All passed-tier specs in display order, for reviewSpec reinforcement picks
+// All passed-tier specs in display order, for reviewSpec reinforcement picks.
+// find-nb tiers are interleaved after their bounded counterparts so that
+// "highest passed" from this list naturally alternates between identify/find.
 const TIER_SPECS = [
   ['identify/diagram',    { type:'identify', mode:'diagram', answerMode:'choice' }],
   ['find/diagram',        { type:'find',     mode:'diagram', searchRadius:70 }],
+  ['find/diagram-nb',     { type:'find',     mode:'diagram', searchRadius:70, noBounds:true }],
   ['identify/stars',      { type:'identify', mode:'stars',   answerMode:'choice' }],
   ['find/stars',          { type:'find',     mode:'stars',   searchRadius:65 }],
+  ['find/stars-nb',       { type:'find',     mode:'stars',   searchRadius:65, noBounds:true }],
   ['identify/photo',      { type:'identify', mode:'photo',   answerMode:'choice' }],
   ['find/photo',          { type:'find',     mode:'photo',   searchRadius:60 }],
+  ['find/photo-nb',       { type:'find',     mode:'photo',   searchRadius:60, noBounds:true }],
   ['identify/diagram-ac', { type:'identify', mode:'diagram', answerMode:'autocomplete' }],
   ['identify/stars-ac',   { type:'identify', mode:'stars',   answerMode:'autocomplete' }],
   ['identify/photo-ac',   { type:'identify', mode:'photo',   answerMode:'autocomplete' }],
 ];
 
-// For review slots: 40% frontier, 35% highest passed tier, 25% any passed tier.
-// Highest passed tends to be a find tier (since find/diagram follows identify/diagram in
-// TIER_SPECS), so this naturally counteracts the identify-heavy bias.
+// For review slots: 60% frontier (push progression), 25% highest passed, 15% any passed.
+// Higher frontier weight ensures find-nb and other unlocked tiers get surfaced quickly.
 function reviewSpec(expCon) {
   const e = expCon || {};
   const passed = TIER_SPECS.filter(([key]) => (e[key]?.correct ?? 0) >= 1).map(([, spec]) => spec);
   if (passed.length === 0) return targetSpec(e);
   const r = Math.random();
-  if (r < 0.40) return targetSpec(e);                                          // frontier
-  if (r < 0.75) return passed[passed.length - 1];                              // highest passed
+  if (r < 0.60) return targetSpec(e);                                          // frontier
+  if (r < 0.85) return passed[passed.length - 1];                              // highest passed
   return passed[Math.floor(Math.random() * passed.length)];                    // any passed
 }
 
@@ -733,16 +751,15 @@ function generateNextLesson() {
     .sort((a, b) => a.score - b.score)
     .map(x => x.con);
 
-  // Adaptive new slots based on average strength of known constellations.
-  // avgStrength = total correct across all known / number of known.
-  // First lesson: introduce 6 diff:1 constellations to get started.
-  // Subsequently: gate new introductions on how well the user knows what's been introduced.
+  // Adaptive new slots — at most 1 new constellation per lesson.
+  // Gate introductions on average strength of known constellations so the user
+  // consolidates existing knowledge before expanding.
   let maxNew;
   if (known.length === 0) {
-    maxNew = 6;
+    maxNew = 4;
   } else {
     const avgStrength = known.reduce((s, c) => s + totalCorrect(c), 0) / known.length;
-    maxNew = avgStrength < 4 ? 0 : avgStrength < 8 ? 1 : 2;
+    maxNew = avgStrength < 5 ? 0 : 1;
   }
   const actualNew = Math.min(maxNew, newPool.length);
   const reviewNeeded = 12 - actualNew;

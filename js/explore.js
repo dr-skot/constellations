@@ -528,7 +528,7 @@ function handleExploreClick(px, py) {
   const fb = document.getElementById('eq-feedback');
   fb.innerHTML = correct
     ? `✓ Correct! — ${conLabel(q.target)}`
-    : `✗ That was ${conLabel(q.target)}`;
+    : `✗ That was ${conLabel(clicked || q.target)}`;
   fb.className = correct ? 'correct' : 'wrong';
   document.getElementById('eq-label-area').classList.add('answered');
   document.getElementById('eq-next').classList.add('show');

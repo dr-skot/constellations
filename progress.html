@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress — Constellate</title>
+  <style>
+    :root {
+      --bg: #05060f; --card: #0c0f1e; --border: rgba(255,255,255,.08);
+      --accent: #5b8af5; --text: #d8e2ff; --dim: #5a6480;
+      --ok: #22c55e; --warn: #e8a400; --err: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text);
+           font-family: system-ui, -apple-system, sans-serif;
+           padding: 16px; max-width: 900px; margin: 0 auto; }
+
+    header { display: flex; align-items: baseline; gap: 16px;
+             flex-wrap: wrap; margin-bottom: 18px; }
+    header h1 { font-size: 1.4rem; font-weight: 300; letter-spacing: .2em;
+                text-transform: uppercase; color: #a8bfff; }
+    header a { font-size: .8rem; color: var(--accent); text-decoration: none; }
+    header a:hover { text-decoration: underline; }
+
+    .toolbar { display: flex; gap: 10px; align-items: center;
+               margin-bottom: 18px; flex-wrap: wrap; }
+    .btn { padding: 7px 18px; border-radius: 8px; cursor: pointer;
+           font-size: .82rem; border: 1px solid var(--accent);
+           background: rgba(91,138,245,.12); color: #b0ccff; transition: background .15s; }
+    .btn:hover { background: rgba(91,138,245,.22); }
+    .btn.copied { border-color: var(--ok); background: rgba(34,197,94,.12); color: #86efac; }
+
+    /* Summary stats */
+    .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+             gap: 8px; margin-bottom: 22px; }
+    .stat-card { background: var(--card); border: 1px solid var(--border);
+                 border-radius: 8px; padding: 10px 12px; }
+    .stat-val { font-size: 1.5rem; font-weight: 200; color: var(--accent); }
+    .stat-lbl { font-size: .72rem; color: var(--dim); margin-top: 2px; }
+
+    /* Legend */
+    .legend { display: flex; gap: 14px; flex-wrap: wrap;
+              font-size: .75rem; color: var(--dim); margin-bottom: 14px; }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+    .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .dot.passed  { background: var(--ok); }
+    .dot.seen    { background: var(--warn); }
+    .dot.unseen  { background: rgba(255,255,255,.12); }
+
+    /* Tier header labels */
+    .tier-labels { display: flex; gap: 3px; margin-left: 2px; margin-bottom: 4px; }
+    .tier-lbl { width: 10px; font-size: .45rem; color: var(--dim);
+                text-align: center; line-height: 1; }
+
+    /* Constellation grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 6px; }
+    .con-card { background: var(--card); border: 1px solid var(--border);
+                border-radius: 7px; padding: 7px 9px;
+                transition: border-color .15s; }
+    .con-card:hover { border-color: rgba(91,138,245,.4); }
+    .con-card.unseen { opacity: .35; }
+    .con-name { font-size: .8rem; font-weight: 500; white-space: nowrap;
+                overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .con-diff { font-size: .62rem; color: var(--dim); margin-bottom: 5px; }
+    .tiers { display: flex; gap: 3px; }
+    .tier { width: 10px; height: 10px; border-radius: 2px;
+            background: rgba(255,255,255,.1); position: relative; cursor: default; }
+    .tier.seen   { background: var(--warn); }
+    .tier.passed { background: var(--ok); }
+
+    /* Diff section headers */
+    .diff-header { grid-column: 1 / -1; font-size: .68rem; letter-spacing: .18em;
+                   text-transform: uppercase; color: var(--dim);
+                   padding: 10px 0 4px; border-top: 1px solid var(--border); margin-top: 4px; }
+    .diff-header:first-child { border-top: none; margin-top: 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Constellate</h1>
+  <a href="index.html">← Back to app</a>
+</header>
+
+<div class="toolbar">
+  <button class="btn" id="btn-copy">Copy progress data</button>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="legend">
+  <span><span class="dot passed"></span> passed</span>
+  <span><span class="dot seen"></span> seen, not yet passed</span>
+  <span><span class="dot unseen"></span> not seen</span>
+</div>
+
+<div id="grid-wrap"></div>
+
+<script src="js/data.js"></script>
+<script>
+  const TIERS = [
+    { key: 'identify/diagram',    short: 'iD' },
+    { key: 'find/diagram',        short: 'fD' },
+    { key: 'find/diagram-nb',     short: 'nD' },
+    { key: 'identify/stars',      short: 'iS' },
+    { key: 'find/stars',          short: 'fS' },
+    { key: 'find/stars-nb',       short: 'nS' },
+    { key: 'identify/photo',      short: 'iP' },
+    { key: 'find/photo',          short: 'fP' },
+    { key: 'find/photo-nb',       short: 'nP' },
+    { key: 'identify/diagram-ac', short: 'aD' },
+    { key: 'identify/stars-ac',   short: 'aS' },
+    { key: 'identify/photo-ac',   short: 'aP' },
+  ];
+
+  const exp = (() => {
+    try { return JSON.parse(localStorage.getItem('con-exposure')) || {}; } catch { return {}; }
+  })();
+
+  function tierClass(abbr, key) {
+    const t = exp[abbr]?.[key];
+    if (!t) return 'unseen';
+    if (t.correct >= 1) return 'passed';
+    if (t.seen >= 1) return 'seen';
+    return 'unseen';
+  }
+
+  // Stats
+  const total = C.length;
+  const countPassed = key => C.filter(c => (exp[c.abbr]?.[key]?.correct || 0) >= 1).length;
+  const introduced  = C.filter(c => (exp[c.abbr]?.['identify/diagram']?.seen || 0) > 0).length;
+
+  const statsEl = document.getElementById('stats');
+  const statRows = [
+    ['Introduced',        introduced],
+    ['id/diagram',        countPassed('identify/diagram')],
+    ['find/diagram',      countPassed('find/diagram')],
+    ['find/diag no-bnds', countPassed('find/diagram-nb')],
+    ['id/stars',          countPassed('identify/stars')],
+    ['id/photo',          countPassed('identify/photo')],
+    ['find/photo',        countPassed('find/photo')],
+    ['find/photo no-bnds',countPassed('find/photo-nb')],
+  ];
+  statsEl.innerHTML = statRows.map(([lbl, val]) =>
+    `<div class="stat-card"><div class="stat-val">${val}<span style="font-size:.9rem;color:var(--dim)">/${total}</span></div>
+     <div class="stat-lbl">${lbl}</div></div>`
+  ).join('');
+
+  // Grid
+  const wrap = document.getElementById('grid-wrap');
+  const sorted = [...C].sort((a, b) => a.diff - b.diff || a.name.localeCompare(b.name));
+  let currentDiff = null;
+  let gridEl = null;
+
+  // Tier label row
+  const labelRow = document.createElement('div');
+  labelRow.className = 'tier-labels';
+  labelRow.style.marginBottom = '2px';
+  // placeholder alignment (name + diff columns use fixed space)
+  labelRow.innerHTML = TIERS.map(t =>
+    `<span class="tier-lbl" title="${t.key}">${t.short}</span>`
+  ).join('');
+
+  for (const con of sorted) {
+    if (con.diff !== currentDiff) {
+      currentDiff = con.diff;
+      gridEl = document.createElement('div');
+      gridEl.className = 'grid';
+      const hdr = document.createElement('div');
+      hdr.className = 'diff-header';
+      hdr.textContent = con.diff === 1 ? 'Famous' : con.diff === 2 ? 'Familiar' : 'Faint';
+      wrap.appendChild(hdr);
+      wrap.appendChild(gridEl);
+    }
+
+    const unseen = (exp[con.abbr]?.['identify/diagram']?.seen || 0) === 0;
+    const card = document.createElement('div');
+    card.className = 'con-card' + (unseen ? ' unseen' : '');
+
+    const dots = TIERS.map(t => {
+      const cls = tierClass(con.abbr, t.key);
+      const e = exp[con.abbr]?.[t.key];
+      const tip = `${t.key}: seen ${e?.seen||0}, correct ${e?.correct||0}`;
+      return `<div class="tier ${cls}" title="${tip}"></div>`;
+    }).join('');
+
+    card.innerHTML =
+      `<div class="con-name" title="${con.name}">${con.name}</div>` +
+      `<div class="tiers">${dots}</div>`;
+    gridEl.appendChild(card);
+  }
+
+  // Copy button
+  document.getElementById('btn-copy').addEventListener('click', () => {
+    const lines = [];
+    lines.push('CONSTELLATION PROGRESS');
+    lines.push('Generated: ' + new Date().toLocaleString());
+    lines.push('');
+
+    // Summary
+    statRows.forEach(([lbl, val]) => lines.push(`${lbl}: ${val}/${total}`));
+    lines.push('');
+
+    // Per-constellation detail
+    lines.push('DETAIL (tiers: iD fD fD° iS fS fS° iP fP fP° iD-ac iS-ac iP-ac)');
+    lines.push('  ✓=passed  ○=seen  ·=unseen');
+    lines.push('');
+    for (const con of sorted) {
+      const tierStr = TIERS.map(t => {
+        const cls = tierClass(con.abbr, t.key);
+        return cls === 'passed' ? '✓' : cls === 'seen' ? '○' : '·';
+      }).join(' ');
+      const tc = Object.values(exp[con.abbr] || {}).reduce((s, v) => s + (v.correct||0), 0);
+      lines.push(`${con.name.padEnd(20)} [${tierStr}]  ${tc} correct`);
+    }
+
+    lines.push('');
+    lines.push('RAW JSON:');
+    lines.push(JSON.stringify(exp, null, 2));
+
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      const btn = document.getElementById('btn-copy');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy progress data';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+</script>
+</body>
+</html>

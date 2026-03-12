@@ -48,8 +48,6 @@
 }
 .stat-label { color:var(--dim); }
 .stat-val   { color:var(--text); font-weight:500; }
-#lbl-rev-photo { display:none; }
-.viewer-mode #lbl-rev-photo { display:inline-flex; }
 #quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
 #viewer-select-row { display:none; }
 .viewer-mode #viewer-select-row { display:flex; }
