@@ -517,7 +517,10 @@ function handleExploreClick(px, py) {
   if (correct) q.score++;
   if (correct && q.lessonMode) {
     session.correct++;
-    recordCorrect(q.target.abbr, 'find', q.stageMode);
+    recordCorrect(q.target.abbr, questionKey({
+      type: 'find', mode: q.stageMode,
+      navigate: q.navigate, noBounds: q.noBounds
+    }));
   }
   if (q.lessonMode) {
     document.getElementById('find-hud-score').textContent = `${session.correct} correct`;

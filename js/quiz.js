@@ -5,7 +5,7 @@ let settings = { mode: 'diagram', diff: '1', hem: 'B' };
 let session = {
   questions: [], idx: 0, correct: 0, answered: false,
   history: [], choices: [], viewMode: false,
-  lessonIdx: null, lastMastered: false
+  lessonIdx: null, lessonLabel: '', lastMastered: false
 };
 function currentCon() {
   const q = session.questions[session.idx];
@@ -17,10 +17,13 @@ let debugAnchors = false;
 function saveLessonSession() {
   if (session.lessonIdx == null) return;
   sessionStorage.setItem('lesson-session', JSON.stringify({
-    lessonIdx: session.lessonIdx,
+    lessonLabel: session.lessonLabel,
     questions: session.questions.map(q => ({
       abbr: q.con.abbr, type: q.type, mode: q.mode,
-      ...(q.searchRadius ? { searchRadius: q.searchRadius } : {})
+      answerMode: q.answerMode,
+      ...(q.searchRadius ? { searchRadius: q.searchRadius } : {}),
+      ...(q.navigate    ? { navigate: true } : {}),
+      ...(q.noBounds    ? { noBounds: true } : {})
     })),
     idx: session.idx,
     correct: session.correct,
@@ -28,26 +31,30 @@ function saveLessonSession() {
   }));
 }
 
-function tryResumeLesson(idx) {
+function tryResumeLesson() {
   try {
     const d = JSON.parse(sessionStorage.getItem('lesson-session'));
-    if (!d || d.lessonIdx !== idx) return false;
+    if (!d || !d.lessonLabel) return false;
     const questions = d.questions.map(q => {
       const con = C.find(c => c.abbr === q.abbr);
       if (!con) return null;
       return { con, type: q.type, mode: q.mode,
-               ...(q.searchRadius ? { searchRadius: q.searchRadius } : {}) };
+               answerMode: q.answerMode,
+               ...(q.searchRadius ? { searchRadius: q.searchRadius } : {}),
+               ...(q.navigate    ? { navigate: true } : {}),
+               ...(q.noBounds    ? { noBounds: true } : {}) };
     }).filter(Boolean);
     if (questions.length !== d.questions.length) return false;
     session.questions = questions;
     session.idx = d.idx;
     session.correct = d.correct;
     session.history = d.history || [];
-    session.lessonIdx = idx;
+    session.lessonIdx = 0;
+    session.lessonLabel = d.lessonLabel;
     session.answered = false;
     session.viewMode = false;
     document.getElementById('screen-quiz').classList.remove('viewer-mode');
-    document.getElementById('quiz-breadcrumb-stage').textContent = `${idx + 1}: ${LESSONS[idx].label}`;
+    document.getElementById('quiz-breadcrumb-stage').textContent = d.lessonLabel;
     document.getElementById('quiz-breadcrumb').style.display = '';
     showLessonQuestion();
     return true;
@@ -75,7 +82,7 @@ function showLessonQuestion() {
   document.getElementById('prog-fill').style.width = `${(session.idx / total) * 100}%`;
 
   if (q.type === 'find') {
-    recordSeen(q.con.abbr, q.type, q.mode);
+    recordSeen(q.con.abbr, questionKey(q));
     startLessonFindQuestion(q);
     return;
   }
@@ -85,6 +92,7 @@ function showLessonQuestion() {
 
   const con = q.con;
   const hist = session.history[session.idx];
+  const isAuto = q.answerMode === 'autocomplete';
 
   document.getElementById('feedback').textContent = '';
   document.getElementById('art-credit').innerHTML = '';
@@ -104,7 +112,7 @@ function showLessonQuestion() {
   } else {
     session.answered = false;
     session.rotation = Math.random() * Math.PI * 2;
-    recordSeen(q.con.abbr, q.type, q.mode);
+    recordSeen(q.con.abbr, questionKey(q));
   }
 
   const sz = document.getElementById('canvas-wrap').offsetWidth;
@@ -117,26 +125,38 @@ function showLessonQuestion() {
   }
 
   const grid = document.getElementById('ans-grid');
-  grid.innerHTML = '';
+  const autoArea = document.getElementById('autocomplete-area');
+  grid.style.display = isAuto ? 'none' : '';
+  autoArea.style.display = isAuto ? '' : 'none';
+  if (isAuto) {
+    document.getElementById('quiz-autocomplete-input').value = hist ? (hist.chosen?.name || '') : '';
+    document.getElementById('autocomplete-msg').textContent = '';
+    document.getElementById('quiz-autocomplete-input').disabled = !!hist;
+  }
+
   // Use full constellation list as distractor pool for better variety
   const distractorPool = C.filter(c => c.stars.length > 0);
 
   if (hist) {
-    hist.choices.forEach(c => {
-      const btn = document.createElement('button');
-      btn.className = 'ans-btn';
-      btn.textContent = c.name;
-      btn.disabled = true;
-      if (c === con) btn.classList.add('ok');
-      else if (c === hist.chosen && hist.chosen !== con) btn.classList.add('err');
-      grid.appendChild(btn);
-    });
+    if (!isAuto) {
+      grid.innerHTML = '';
+      hist.choices.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'ans-btn';
+        btn.textContent = c.name;
+        btn.disabled = true;
+        if (c === con) btn.classList.add('ok');
+        else if (c === hist.chosen && hist.chosen !== con) btn.classList.add('err');
+        grid.appendChild(btn);
+      });
+    }
     document.getElementById('feedback').innerHTML = hist.wasCorrect
       ? `✓ Correct! — ${conLabel(con)}`
       : `✗ That was ${conLabel(con)}`;
     startReveal(con);
     document.getElementById('btn-next').classList.add('show');
-  } else {
+  } else if (!isAuto) {
+    grid.innerHTML = '';
     const wrongs = getDistractors(con, distractorPool);
     session.choices = [con, ...wrongs].sort(() => Math.random() - .5);
     session.choices.forEach(c => {
@@ -171,13 +191,41 @@ function handleAnswer(chosen, correct) {
     document.getElementById('hud-score').textContent = `${session.correct} correct`;
     document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct)}`;
     const q = session.questions[session.idx];
-    if (session.lessonIdx != null && q) recordCorrect(q.con.abbr, q.type, q.mode);
+    if (q) recordCorrect(q.con.abbr, questionKey(q));
   } else {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
 
   startReveal(correct);
 
+  document.getElementById('btn-next').classList.add('show');
+  updatePrevBtn();
+}
+
+function handleAutocompleteAnswer() {
+  if (session.answered) return;
+  const val    = document.getElementById('quiz-autocomplete-input').value.trim();
+  const chosen = C.find(c => c.name.toLowerCase() === val.toLowerCase());
+  if (!chosen) {
+    document.getElementById('autocomplete-msg').textContent = 'Unknown constellation';
+    return;
+  }
+  document.getElementById('autocomplete-msg').textContent = '';
+  document.getElementById('quiz-autocomplete-input').disabled = true;
+  session.answered = true;
+  const q = session.questions[session.idx];
+  const correct = q.con;
+  const wasCorrect = chosen === correct;
+  session.history[session.idx] = { chosen, wasCorrect, rotation: session.rotation, choices: [] };
+  if (wasCorrect) {
+    session.correct++;
+    document.getElementById('hud-score').textContent = `${session.correct} correct`;
+    document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct)}`;
+    if (q) recordCorrect(q.con.abbr, questionKey(q));
+  } else {
+    document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
+  }
+  startReveal(correct);
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
 }

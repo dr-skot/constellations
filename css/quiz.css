@@ -268,6 +268,22 @@ canvas {
   height: 13px
 }
 
+/* autocomplete answer area */
+#autocomplete-area { display:flex; flex-direction:column; gap:8px; }
+#quiz-autocomplete-input {
+  background:var(--bg); color:var(--text); border:1px solid var(--border);
+  border-radius:8px; padding:9px 12px; font-size:.88rem; width:100%;
+  box-sizing:border-box;
+}
+#quiz-autocomplete-input:focus { outline:none; border-color:var(--accent); }
+#autocomplete-msg { font-size:.8rem; color:var(--err); min-height:1.2em; }
+#quiz-autocomplete-submit {
+  align-self:center; padding:9px 24px; border:1px solid var(--accent);
+  background:rgba(91,138,245,.12); color:#b0ccff; border-radius:10px;
+  cursor:pointer; font-size:.88rem; transition:all .18s;
+}
+#quiz-autocomplete-submit:hover { background:rgba(91,138,245,.22); }
+
 /* mastered result state */
 .result-wrap.mastered .result-grade { color:#ffd700; font-size:1.6rem; }
 .result-wrap.mastered .result-stars { letter-spacing:.25em; }

@@ -20,10 +20,8 @@ function handleRoute(hash) {
   } else if (hash.startsWith('view/')) {
     const con = C.find(c => c.abbr === hash.slice(5));
     con ? viewConstellation(con) : navigate('course');
-  } else if (hash.startsWith('lesson/')) {
-    const idx = parseInt(hash.slice(7));
-    if (!LESSONS[idx] || !isLessonUnlocked(idx)) { navigate('course'); return; }
-    if (!tryResumeLesson(idx)) startLesson(idx);
+  } else if (hash === 'lesson') {
+    if (!tryResumeLesson()) startLesson();
   } else {
     navigate('course');
   }
@@ -59,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btn-reset-progress').addEventListener('click', () => {
     if (!confirm('Erase all progress?')) return;
-    ['course-mastered', 'last-practiced', 'con-exposure'].forEach(k => localStorage.removeItem(k));
+    ['con-exposure', 'lesson-count'].forEach(k => localStorage.removeItem(k));
     sessionStorage.removeItem('lesson-session');
     renderCourseMap();
   });
   document.getElementById('btn-continue').addEventListener('click', () => {
-    navigate('lesson/' + suggestNextLesson());
+    navigate('lesson');
   });
   document.getElementById('btn-explore-free').addEventListener('click', () => {
     navigate('explore');
@@ -80,6 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('btn-next').addEventListener('click', nextLessonQuestion);
+  document.getElementById('quiz-autocomplete-input')
+    .addEventListener('keydown', e => { if (e.key === 'Enter') handleAutocompleteAnswer(); });
+  document.getElementById('quiz-autocomplete-submit')
+    .addEventListener('click', handleAutocompleteAnswer);
   document.getElementById('btn-prev').addEventListener('click', () => {
     if (session.idx > 0 && session.history[session.idx - 1]) {
       session.idx--;

@@ -40,7 +40,14 @@
                     background:transparent; border-radius:8px; cursor:pointer; font-size:.85rem; }
 #btn-explore-free:hover { border-color:var(--dim); color:var(--text); }
 .viewer-mode .hud, .viewer-mode .prog-wrap, .viewer-mode #quiz-label-area,
-.viewer-mode .ans-grid, .viewer-mode .nav-row { display:none !important; }
+.viewer-mode .ans-grid, .viewer-mode #autocomplete-area, .viewer-mode .nav-row { display:none !important; }
+
+.stat-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 0; border-bottom:1px solid var(--border); font-size:.85rem;
+}
+.stat-label { color:var(--dim); }
+.stat-val   { color:var(--text); font-weight:500; }
 #lbl-rev-photo { display:none; }
 .viewer-mode #lbl-rev-photo { display:inline-flex; }
 #quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
