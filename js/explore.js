@@ -249,8 +249,9 @@ function drawExplore() {
     ctx.restore();
   }
 
-  // Milky Way (galactic plane) — shown in diagram/stars quiz modes for orientation
-  if (cm === 'diagram' || cm === 'stars') {
+  // Milky Way (galactic plane) — shown in diagram/stars quiz modes for orientation,
+  // but not when the photo layer is visible (real photo has the real Milky Way).
+  if (!showPhoto && (cm === 'diagram' || cm === 'stars')) {
     const mwPts = [];
     for (let l = 0; l <= 360; l += 0.5) {
       const { ra, dec } = galToRaDec(l, 0);
