@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#010208"/>
+<g stroke="#8ab4f8" stroke-width="1.4" stroke-linecap="round">
+    <!-- Bowl -->
+    <line x1="29.7" y1="8.6"  x2="30.0" y2="15.0"/>  <!-- Dubhe–Merak   -->
+    <line x1="30.0" y1="15.0" x2="21.2" y2="18.2"/>  <!-- Merak–Phecda  -->
+    <line x1="21.2" y1="18.2" x2="17.6" y2="14.2"/>  <!-- Phecda–Megrez -->
+    <line x1="17.6" y1="14.2" x2="29.7" y2="8.6"/>   <!-- Megrez–Dubhe  -->
+    <!-- Handle -->
+    <line x1="17.6" y1="14.2" x2="11.0" y2="15.5"/>  <!-- Megrez–Alioth -->
+    <line x1="11.0" y1="15.5" x2="6.0"  y2="16.7"/>  <!-- Alioth–Mizar  -->
+    <line x1="6.0"  y1="16.7" x2="2.0"  y2="23.4"/>  <!-- Mizar–Alkaid  -->
+  </g>
+  <g fill="#ffffff">
+    <circle cx="29.7" cy="8.6"  r="1.8"/> <!-- Dubhe  mag 1.8 -->
+    <circle cx="30.0" cy="15.0" r="1.5"/> <!-- Merak  mag 2.3 -->
+    <circle cx="21.2" cy="18.2" r="1.5"/> <!-- Phecda mag 2.4 -->
+    <circle cx="17.6" cy="14.2" r="1.1"/> <!-- Megrez mag 3.3 -->
+    <circle cx="11.0" cy="15.5" r="1.8"/> <!-- Alioth mag 1.8 -->
+    <circle cx="6.0"  cy="16.7" r="1.6"/> <!-- Mizar  mag 2.2 -->
+    <circle cx="2.0"  cy="23.4" r="1.7"/> <!-- Alkaid mag 1.9 -->
+  </g>
+</svg>
