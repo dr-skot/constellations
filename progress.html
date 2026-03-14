@@ -73,6 +73,29 @@
                    text-transform: uppercase; color: var(--dim);
                    padding: 10px 0 4px; border-top: 1px solid var(--border); margin-top: 4px; }
     .diff-header:first-child { border-top: none; margin-top: 0; }
+
+    .con-card { cursor: pointer; }
+    .con-card.active { border-color: var(--accent); }
+
+    /* Detail panel */
+    #detail { position: fixed; bottom: 0; left: 0; right: 0;
+              background: var(--card); border-top: 1px solid var(--border);
+              padding: 14px 20px 20px; max-width: 900px; margin: 0 auto;
+              display: none; z-index: 10; box-shadow: 0 -8px 32px rgba(0,0,0,.5); }
+    #detail.show { display: block; }
+    #detail-close { float: right; background: none; border: none; color: var(--dim);
+                    cursor: pointer; font-size: 1.1rem; line-height: 1; padding: 0; }
+    #detail-close:hover { color: var(--text); }
+    #detail h2 { font-size: 1rem; font-weight: 500; margin-bottom: 10px; }
+    .detail-tiers { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                    gap: 5px 16px; }
+    .detail-tier { display: flex; align-items: center; gap: 8px; font-size: .8rem; }
+    .detail-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+    .detail-dot.passed { background: var(--ok); }
+    .detail-dot.seen   { background: var(--warn); }
+    .detail-dot.unseen { background: rgba(255,255,255,.12); }
+    .detail-tier-name { color: var(--dim); flex: 1; }
+    .detail-counts { color: var(--text); white-space: nowrap; font-size: .75rem; }
   </style>
 </head>
 <body>
@@ -96,21 +119,27 @@
 
 <div id="grid-wrap"></div>
 
+<div id="detail">
+  <button id="detail-close">✕</button>
+  <h2 id="detail-name"></h2>
+  <div class="detail-tiers" id="detail-tiers"></div>
+</div>
+
 <script src="js/data.js"></script>
 <script>
   const TIERS = [
-    { key: 'identify/diagram',    short: 'iD' },
-    { key: 'find/diagram',        short: 'fD' },
-    { key: 'find/diagram-nb',     short: 'nD' },
-    { key: 'identify/stars',      short: 'iS' },
-    { key: 'find/stars',          short: 'fS' },
-    { key: 'find/stars-nb',       short: 'nS' },
-    { key: 'identify/photo',      short: 'iP' },
-    { key: 'find/photo',          short: 'fP' },
-    { key: 'find/photo-nb',       short: 'nP' },
-    { key: 'identify/diagram-ac', short: 'aD' },
-    { key: 'identify/stars-ac',   short: 'aS' },
-    { key: 'identify/photo-ac',   short: 'aP' },
+    { key: 'identify/diagram',    short: 'iD', label: 'Identify by diagram' },
+    { key: 'find/diagram',        short: 'fD', label: 'Find by diagram' },
+    { key: 'find/diagram-nb',     short: 'nD', label: 'Find by diagram (no bounds)' },
+    { key: 'identify/stars',      short: 'iS', label: 'Identify by stars' },
+    { key: 'find/stars',          short: 'fS', label: 'Find by stars' },
+    { key: 'find/stars-nb',       short: 'nS', label: 'Find by stars (no bounds)' },
+    { key: 'identify/photo',      short: 'iP', label: 'Identify by photo' },
+    { key: 'find/photo',          short: 'fP', label: 'Find by photo' },
+    { key: 'find/photo-nb',       short: 'nP', label: 'Find by photo (no bounds)' },
+    { key: 'identify/diagram-ac', short: 'aD', label: 'Recall name (diagram)' },
+    { key: 'identify/stars-ac',   short: 'aS', label: 'Recall name (stars)' },
+    { key: 'identify/photo-ac',   short: 'aP', label: 'Recall name (photo)' },
   ];
 
   const exp = (() => {
@@ -187,8 +216,47 @@
     card.innerHTML =
       `<div class="con-name" title="${con.name}">${con.name}</div>` +
       `<div class="tiers">${dots}</div>`;
+    card.addEventListener('click', () => showDetail(con, card));
     gridEl.appendChild(card);
   }
+
+  // Detail panel
+  let activeCard = null;
+  function showDetail(con, card) {
+    if (activeCard) activeCard.classList.remove('active');
+    if (activeCard === card) {
+      activeCard = null;
+      document.getElementById('detail').classList.remove('show');
+      return;
+    }
+    activeCard = card;
+    card.classList.add('active');
+
+    document.getElementById('detail-name').textContent = con.name;
+    const e = exp[con.abbr] || {};
+    document.getElementById('detail-tiers').innerHTML = TIERS.map(t => {
+      const cls = tierClass(con.abbr, t.key);
+      const data = e[t.key];
+      const seen = data?.seen || 0;
+      const correct = data?.correct || 0;
+      return `<div class="detail-tier">
+        <div class="detail-dot ${cls}"></div>
+        <span class="detail-tier-name">${t.label}</span>
+        <span class="detail-counts">${seen} seen · ${correct} correct</span>
+      </div>`;
+    }).join('');
+    document.getElementById('detail').classList.add('show');
+  }
+
+  document.getElementById('detail-close').addEventListener('click', () => {
+    if (activeCard) activeCard.classList.remove('active');
+    activeCard = null;
+    document.getElementById('detail').classList.remove('show');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.getElementById('detail-close').click();
+  });
 
   // Copy button
   document.getElementById('btn-copy').addEventListener('click', () => {
