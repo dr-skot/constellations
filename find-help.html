@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Finding Sagittarius — Constellate</title>
+  <title>Finding … — Constellate</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     :root {
       --bg: #05060f; --card: #0c0f1e; --border: rgba(255,255,255,.08);
       --accent: #5b8af5; --text: #d8e2ff; --dim: #5a6480;
-      --ok: #22c55e; --warn: #e8a400;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -32,24 +31,18 @@
                text-decoration: none; }
     header a:hover { text-decoration: underline; }
 
-    /* ── Sky viewport ─────────────────────────────────────────────── */
     #explore-wrap {
       position: relative; width: 100%; max-width: 600px;
       border-radius: 14px; overflow: hidden;
       border: 1px solid var(--border);
-      background: #010208;
-      flex-shrink: 0;
+      background: #010208; flex-shrink: 0;
     }
     #explore-wrap::after { content: ''; display: block; padding-top: 100%; }
-    #explore-gl-canvas,
-    #explore-canvas,
-    #annotation-canvas {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
+    #explore-gl-canvas, #explore-canvas, #annotation-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
     }
     #annotation-canvas { pointer-events: none; }
 
-    /* ── Step progress dots ───────────────────────────────────────── */
     .step-row {
       width: 100%; max-width: 600px;
       display: flex; align-items: center; justify-content: space-between;
@@ -64,7 +57,6 @@
     .step-dot.active { background: var(--accent); }
     .step-count { font-size: .72rem; color: var(--dim); }
 
-    /* ── Caption card ─────────────────────────────────────────────── */
     .caption-card {
       width: 100%; max-width: 600px;
       background: var(--card); border: 1px solid var(--border);
@@ -75,11 +67,8 @@
       font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
       color: var(--accent); margin-bottom: 7px;
     }
-    .caption-text {
-      font-size: .9rem; line-height: 1.6; color: var(--text);
-    }
+    .caption-text { font-size: .9rem; line-height: 1.6; color: var(--text); }
 
-    /* ── Navigation ───────────────────────────────────────────────── */
     .nav {
       width: 100%; max-width: 600px;
       display: flex; gap: 10px; justify-content: space-between;
@@ -87,10 +76,9 @@
     .btn {
       padding: 9px 22px; border-radius: 8px; cursor: pointer;
       font-size: .85rem; border: 1px solid var(--accent);
-      background: rgba(91,138,245,.12); color: #b0ccff;
-      transition: background .15s;
+      background: rgba(91,138,245,.12); color: #b0ccff; transition: background .15s;
     }
-    .btn:hover  { background: rgba(91,138,245,.22); }
+    .btn:hover    { background: rgba(91,138,245,.22); }
     .btn:disabled { opacity: .28; cursor: default; background: rgba(91,138,245,.06); }
     .btn.primary  { background: rgba(91,138,245,.25); color: #d8eaff; }
     .btn.primary:hover { background: rgba(91,138,245,.38); }
@@ -110,7 +98,7 @@
 
 <header>
   <h1>Constellate</h1>
-  <span class="sub">Finding Sagittarius</span>
+  <span class="sub" id="page-sub">Finding …</span>
   <a href="index.html">← Back</a>
 </header>
 
@@ -142,76 +130,15 @@
 <script src="js/explore-gl.js"></script>
 <script src="js/explore.js"></script>
 <script>
-// ── Init ──────────────────────────────────────────────────────────────────
-initExploreGL(document.getElementById('explore-gl-canvas'));
+// ── Resolve constellation from URL param ──────────────────────────────────
+const params   = new URLSearchParams(location.search);
+const conParam = (params.get('con') || 'Sagittarius').toLowerCase();
+const con = C.find(c => c.abbr.toLowerCase() === conParam ||
+                        c.name.toLowerCase() === conParam)
+         || C.find(c => c.name === 'Sagittarius');
 
-const startRa  = Math.random() * 360;
-const startDec = (Math.random() * 2 - 1) * 60;
-explore.P   = raDecToVec(startRa, startDec);
-explore.fov = 80;
-explore.R   = 0;
-
-// ── Step definitions ──────────────────────────────────────────────────────
-// highlight: array of {ra, dec, label, color, r(px at 400px canvas)}
-const STEPS = [
-  {
-    title: 'Orient yourself',
-    caption: 'You\'re somewhere in the night sky. Tonight we\'ll navigate to Sagittarius, a southern summer constellation best seen in July and August. Click Next to begin.',
-    ra: startRa, dec: startDec, fov: 80,
-    photo: true, diagram: false, names: false, labels: false, bounds: false,
-  },
-  {
-    title: 'Face south in summer',
-    caption: 'Turn to the southern sky on a summer night. The Milky Way arcs through this region — the bright, hazy band is our galaxy seen edge-on. Sagittarius sits right along it, near the galactic core.',
-    ra: 275, dec: -8, fov: 80,
-    photo: true, diagram: false, names: false, labels: false, bounds: false,
-  },
-  {
-    title: 'Find Scorpius first',
-    caption: 'Start with Scorpius — its distinctive fishhook curve is easy to recognise. Antares, the bright orange-red star at its heart, is one of the biggest stars in the sky. From Antares the tail curves down and east to a stinging pair of stars.',
-    ra: 252, dec: -26, fov: 48,
-    photo: true, diagram: true, names: true, labels: false, bounds: false,
-    highlight: [
-      { ra: 247.352, dec: -26.432, label: 'Antares', color: '#ff7060', r: 13 },
-      { ra: 263.402, dec: -37.104, label: 'Shaula (sting)', color: '#c8d8ff', r: 10 },
-    ],
-  },
-  {
-    title: 'Look east of Scorpius',
-    caption: 'Now shift your gaze to the left (east) of Scorpius\'s tail. Sagittarius sits right beside it — the spout of its Teapot asterism aims directly back toward Scorpius. If you can find the scorpion, the teapot is right next door.',
-    ra: 268, dec: -26, fov: 54,
-    photo: true, diagram: true, names: true, labels: false, bounds: false,
-  },
-  {
-    title: 'The Teapot asterism',
-    caption: 'Here\'s the Teapot — eight stars of 2nd and 3rd magnitude forming the outline of a teapot. The spout (three stars, left) points west toward Scorpius. The handle (two stars, right) points east. A triangular lid sits on top.',
-    ra: 282, dec: -27, fov: 34,
-    photo: true, diagram: true, names: true, labels: false, bounds: true,
-    highlight: [
-      { ra: 271.452, dec: -30.424, label: 'spout tip', color: '#8ab4f8', r: 9 },
-    ],
-  },
-  {
-    title: 'Key stars',
-    caption: 'Kaus Australis (ε Sgr, mag 1.8) is the brightest star in Sagittarius — it sits at the bottom of the spout. Nunki (σ Sgr, mag 2.0) marks the top of the handle at upper right. Memorise these two and the rest follows.',
-    ra: 280, dec: -29, fov: 26,
-    photo: true, diagram: true, names: false, labels: false, bounds: false,
-    highlight: [
-      { ra: 276.043, dec: -34.384, label: 'Kaus Australis  ε', color: '#ffe090', r: 14 },
-      { ra: 283.816, dec: -26.297, label: 'Nunki  σ',          color: '#90c8ff', r: 11 },
-    ],
-  },
-  {
-    title: 'Steam from the spout',
-    caption: 'Pull back and look at the big picture. The \'steam\' rising from the Teapot\'s spout is the brightest part of the Milky Way — the galactic core. Now you can find it without any guides.',
-    ra: 278, dec: -18, fov: 62,
-    photo: true, diagram: true, names: true, labels: false, bounds: false,
-    fadeDiagram: true,
-  },
-];
-
-let stepIdx = -1;
-let animating = false;
+document.title = `Finding ${con.name} — Constellate`;
+document.getElementById('page-sub').textContent = `Finding ${con.name}`;
 
 // ── Render helpers ────────────────────────────────────────────────────────
 function drawScene() {
@@ -219,231 +146,182 @@ function drawScene() {
   drawExplore();
 }
 
-// Snapshot current frame (GL + 2D), switch to photo-only, then cross-fade
-// the snapshotted diagram overlay out via the annotation canvas.
-function fadeOutDiagram(onDone) {
-  const glCanvas  = document.getElementById('explore-gl-canvas');
-  const c2d       = document.getElementById('explore-canvas');
-  const ann       = document.getElementById('annotation-canvas');
-  const W = c2d.width, H = c2d.height;
-
-  // Capture full current frame into an offscreen canvas
-  const snap = document.createElement('canvas');
-  snap.width = W; snap.height = H;
-  const sCtx = snap.getContext('2d');
-  sCtx.drawImage(glCanvas, 0, 0, W, H);
-  sCtx.drawImage(c2d,      0, 0, W, H);
-
-  // Switch underlying render to photo-only
-  document.getElementById('chk-ex-diagram'  ).checked = false;
-  document.getElementById('chk-ex-bounds'   ).checked = false;
-  document.getElementById('chk-ex-connames' ).checked = false;
-  drawScene();
-
-  // Fade the snapshotted overlay out on the annotation canvas
-  ann.width = W; ann.height = H;
-  const aCtx = ann.getContext('2d');
-  const duration = 2000;
-  const start    = performance.now();
-
-  function tick(now) {
-    const raw   = Math.min(1, (now - start) / duration);
-    const alpha = 1 - (raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2);
-    aCtx.clearRect(0, 0, W, H);
-    aCtx.globalAlpha = alpha;
-    aCtx.drawImage(snap, 0, 0);
-    aCtx.globalAlpha = 1;
-    if (raw < 1) {
-      requestAnimationFrame(tick);
-    } else {
-      aCtx.clearRect(0, 0, W, H);
-      if (onDone) onDone();
-    }
-  }
-  requestAnimationFrame(tick);
-}
-
 function drawAnnotation(step) {
   const ann = document.getElementById('annotation-canvas');
   const src = document.getElementById('explore-canvas');
   const W = src.width, H = src.height;
-  ann.width  = W;
-  ann.height = H;
+  ann.width = W; ann.height = H;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
   if (!step || !step.highlight || !step.highlight.length) return;
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
-  const dispW = src.offsetWidth || W / dpr;   // CSS pixels
-  const scale = W / dispW;                    // device pixels per CSS pixel ≈ dpr
+  const scale = W / (src.offsetWidth || W / dpr);
 
   ctx.save();
   for (const h of step.highlight) {
     const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
     const p = pts[0];
     if (!p || p.d <= 0) continue;
-
-    const r = h.r * scale;
+    const r  = h.r * scale;
     const fs = Math.round(13 * scale);
-
-    // Glowing circle
     ctx.strokeStyle = h.color;
     ctx.lineWidth   = Math.max(1.5, 1.5 * scale);
     ctx.shadowColor = h.color;
     ctx.shadowBlur  = r * 0.7;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.stroke();
     ctx.shadowBlur = 0;
-
-    // Label with dark outline for readability
     ctx.font = `bold ${fs}px system-ui, sans-serif`;
     ctx.textBaseline = 'middle';
-    const lx = p.x + r + 6 * scale;
-    const ly = p.y;
-    ctx.strokeStyle = '#010208';
-    ctx.lineWidth   = 3 * scale;
-    ctx.lineJoin    = 'round';
+    const lx = p.x + r + 6 * scale, ly = p.y;
+    ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
     ctx.strokeText(h.label, lx, ly);
-    ctx.fillStyle = h.color;
-    ctx.fillText(h.label, lx, ly);
+    ctx.fillStyle = h.color; ctx.fillText(h.label, lx, ly);
   }
   ctx.restore();
 }
 
-// ── Animation: slerp position + lerp FOV ─────────────────────────────────
 function animateTo(step, onDone) {
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
-
   const v1 = explore.P.slice(), f1 = explore.fov;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
-  const dot   = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
-  const angle = Math.acos(dot);
-  const sinA  = Math.sin(angle);
-
-  const dist     = angle / Math.PI;
-  const fovDelta = Math.abs(f2 - f1);
-  const duration = Math.max(700, Math.min(2600, dist * 2600 + fovDelta * 10));
-  const start    = performance.now();
-
+  const dot = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
+  const angle = Math.acos(dot), sinA = Math.sin(angle);
+  const duration = Math.max(700, Math.min(2600, (angle / Math.PI) * 2600 + Math.abs(f2 - f1) * 10));
+  const start = performance.now();
   function tick(now) {
     const raw = Math.min(1, (now - start) / duration);
     const t   = raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2;
     if (angle > 0.001) {
-      const fa = Math.sin((1 - t) * angle) / sinA;
-      const fb = Math.sin(t * angle) / sinA;
+      const fa = Math.sin((1 - t) * angle) / sinA, fb = Math.sin(t * angle) / sinA;
       explore.P = [fa*v1[0]+fb*v2[0], fa*v1[1]+fb*v2[1], fa*v1[2]+fb*v2[2]];
     }
     explore.fov = f1 + (f2 - f1) * t;
     drawScene();
-    drawAnnotation(raw < 1 ? null : step);  // annotations only on final frame
+    drawAnnotation(raw < 1 ? null : step);
     if (raw < 1) {
       explore.animFrame = requestAnimationFrame(tick);
     } else {
-      explore.P   = v2;
-      explore.fov = f2;
-      explore.animFrame = null;
+      explore.P = v2; explore.fov = f2; explore.animFrame = null;
       if (onDone) onDone();
     }
   }
   requestAnimationFrame(tick);
 }
 
-// ── Checkbox state ────────────────────────────────────────────────────────
-function applySettings(step) {
-  document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
-  document.getElementById('chk-ex-diagram'   ).checked = step.diagram !== false;
-  document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
-  document.getElementById('chk-ex-starlabels').checked = !!step.labels;
-  document.getElementById('chk-ex-connames'  ).checked = !!step.names;
-  document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
-}
-
-// ── UI ────────────────────────────────────────────────────────────────────
-function renderUI() {
-  const n = STEPS.length;
-  document.getElementById('step-dots').innerHTML = STEPS.map((_, i) =>
-    `<div class="step-dot ${i < stepIdx ? 'done' : i === stepIdx ? 'active' : ''}"></div>`
-  ).join('');
-  document.getElementById('step-count').textContent = `${stepIdx + 1} / ${n}`;
-  document.getElementById('caption-label').textContent = STEPS[stepIdx].title;
-  document.getElementById('caption-text' ).textContent = STEPS[stepIdx].caption;
-  document.getElementById('btn-prev').disabled = stepIdx === 0 || animating;
-  const isLast = stepIdx === n - 1;
-  const next = document.getElementById('btn-next');
-  next.textContent = isLast ? 'Done ✓' : 'Next →';
-  next.disabled    = animating;
-}
-
-function goTo(i, immediate) {
-  stepIdx   = i;
-  animating = !immediate;
-  const step = STEPS[i];
-  applySettings(step);
-  renderUI();
-
-  if (immediate) {
-    explore.P   = raDecToVec(step.ra, step.dec);
-    explore.fov = step.fov;
-    // For the fade-diagram step shown immediately (e.g. going back then forward),
-    // just show photo-only with no diagram.
-    if (step.fadeDiagram) {
-      document.getElementById('chk-ex-diagram' ).checked = false;
-      document.getElementById('chk-ex-bounds'  ).checked = false;
-      document.getElementById('chk-ex-connames').checked = false;
+// ── Boot ──────────────────────────────────────────────────────────────────
+fetch('js/finding-guides.json')
+  .then(r => r.json())
+  .then(guides => {
+    const guide = guides[con.name];
+    if (!guide || !guide.steps || !guide.steps.length) {
+      document.getElementById('caption-label').textContent = con.name;
+      document.getElementById('caption-text').textContent = 'No finding guide is available for this constellation yet.';
+      document.getElementById('btn-next').disabled = true;
+      document.getElementById('btn-prev').disabled = true;
+      return;
     }
-    drawScene();
-    drawAnnotation(step);
-    animating = false;
+    init(guide);
+  })
+  .catch(() => {
+    document.getElementById('caption-text').textContent = 'Could not load finding guide.';
+  });
+
+function init(guide) {
+  const steps = guide.steps;
+  initExploreGL(document.getElementById('explore-gl-canvas'));
+
+  const startRa  = Math.random() * 360;
+  const startDec = (Math.random() * 2 - 1) * 60;
+  steps.forEach(s => { if (s.random) { s.ra = startRa; s.dec = startDec; } });
+
+  explore.P   = raDecToVec(startRa, startDec);
+  explore.fov = steps[0].fov || 80;
+  explore.R   = guide.rotation || 0;
+
+  let stepIdx   = -1;
+  let animating = false;
+  let diagVisible = !!steps[0].diagram;
+
+  function applySettings(step) {
+    document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
+    document.getElementById('chk-ex-diagram'   ).checked = !!step.diagram;
+    document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
+    document.getElementById('chk-ex-starlabels').checked = false;
+    document.getElementById('chk-ex-connames'  ).checked = !!step.names;
+    document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
+  }
+
+  function renderUI() {
+    const n = steps.length;
+    document.getElementById('step-dots').innerHTML = steps.map((_, i) =>
+      `<div class="step-dot ${i < stepIdx ? 'done' : i === stepIdx ? 'active' : ''}"></div>`
+    ).join('');
+    document.getElementById('step-count').textContent = `${stepIdx + 1} / ${n}`;
+    document.getElementById('caption-label').textContent = steps[stepIdx].title;
+    document.getElementById('caption-text' ).textContent = steps[stepIdx].caption;
+    document.getElementById('btn-prev').disabled = stepIdx === 0 || animating;
+    const isLast = stepIdx === n - 1;
+    const diagBtn2 = document.getElementById('btn-toggle-diag');
+    diagBtn2.style.display = isLast ? '' : 'none';
+    diagBtn2.textContent = diagVisible ? 'Hide Diagrams' : 'Show Diagrams';
+    const next = document.getElementById('btn-next');
+    next.textContent = isLast ? 'Done ✓' : 'Next →';
+    next.disabled    = animating;
+  }
+
+  function goTo(i, immediate) {
+    stepIdx     = i;
+    animating   = !immediate;
+    diagVisible = !!steps[i].diagram;
+    const step  = steps[i];
+    applySettings(step);
     renderUI();
-  } else {
-    animateTo(step, () => {
-      if (step.fadeDiagram) {
-        fadeOutDiagram(() => {
-          animating = false;
-          renderUI();
-          document.getElementById('btn-toggle-diag').style.display = '';
-        });
-        return;
-      }
+
+    if (immediate) {
+      explore.P   = raDecToVec(step.ra, step.dec);
+      explore.fov = step.fov;
+      drawScene();
+      drawAnnotation(step);
       animating = false;
       renderUI();
-    });
+    } else {
+      animateTo(step, () => {
+        animating = false;
+        renderUI();
+      });
+    }
   }
+
+  const diagBtn = document.getElementById('btn-toggle-diag');
+  diagBtn.addEventListener('click', () => {
+    diagVisible = !diagVisible;
+    diagBtn.textContent = diagVisible ? 'Hide Diagrams' : 'Show Diagrams';
+    document.getElementById('chk-ex-diagram' ).checked = diagVisible;
+    document.getElementById('chk-ex-connames').checked = diagVisible;
+    drawScene();
+    drawAnnotation(diagVisible ? steps[stepIdx] : null);
+  });
+
+  document.getElementById('btn-next').addEventListener('click', () => {
+    if (animating) return;
+    if (stepIdx === steps.length - 1) { window.location.href = 'index.html'; return; }
+    goTo(stepIdx + 1);
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    if (animating || stepIdx === 0) return;
+    goTo(stepIdx - 1);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') document.getElementById('btn-next').click();
+    if (e.key === 'ArrowLeft' ) document.getElementById('btn-prev').click();
+  });
+
+  goTo(0, true);
 }
-
-// ── Controls ──────────────────────────────────────────────────────────────
-let diagVisible = false;
-document.getElementById('btn-toggle-diag').addEventListener('click', () => {
-  diagVisible = !diagVisible;
-  document.getElementById('btn-toggle-diag').textContent = diagVisible ? 'Hide Diagrams' : 'Show Diagrams';
-  document.getElementById('chk-ex-diagram' ).checked = diagVisible;
-  document.getElementById('chk-ex-connames').checked = diagVisible;
-  drawScene();
-});
-
-document.getElementById('btn-next').addEventListener('click', () => {
-  if (animating) return;
-  if (stepIdx === STEPS.length - 1) { window.location.href = 'index.html'; return; }
-  goTo(stepIdx + 1);
-});
-
-document.getElementById('btn-prev').addEventListener('click', () => {
-  if (animating || stepIdx === 0) return;
-  diagVisible = false;
-  document.getElementById('btn-toggle-diag').style.display = 'none';
-  document.getElementById('btn-toggle-diag').textContent = 'Show Diagrams';
-  goTo(stepIdx - 1);
-});
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') document.getElementById('btn-next').click();
-  if (e.key === 'ArrowLeft' ) document.getElementById('btn-prev').click();
-});
-
-// ── Boot: start on random position, no animation ─────────────────────────
-goTo(0, true);
 </script>
 </body>
 </html>
