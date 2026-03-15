@@ -367,6 +367,7 @@ function init(guide) {
     ? guide.rotation
     : northUpR(raDecToVec(con.ra, con.dec));
 
+  const stepKey = `find-help-step-${con.abbr}`;
   let stepIdx   = -1;
   let animating = false;
   let diagVisible = !!steps[0].diagram;
@@ -400,6 +401,7 @@ function init(guide) {
 
   function goTo(i, immediate) {
     stepIdx     = i;
+    localStorage.setItem(stepKey, i);
     animating   = !immediate;
     diagVisible = !!steps[i].diagram;
     const step  = steps[i];
@@ -447,7 +449,8 @@ function init(guide) {
     if (e.key === 'ArrowLeft' ) document.getElementById('btn-prev').click();
   });
 
-  goTo(0, true);
+  const saved = parseInt(localStorage.getItem(stepKey), 10);
+  goTo((saved >= 0 && saved < steps.length) ? saved : 0, true);
 }
 </script>
 </body>

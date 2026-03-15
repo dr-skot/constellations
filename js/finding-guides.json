@@ -18,7 +18,7 @@
         "dec": 8,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -131,7 +131,7 @@
         "dec": -8,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -235,7 +235,7 @@
         "dec": 60,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -305,7 +305,7 @@
         "dec": -45,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -410,8 +410,8 @@
             "r": 9
           },
           {
-            "ra": 189.0,
-            "dec": -90.0,
+            "ra": 189,
+            "dec": -90,
             "label": "south pole",
             "color": "#ffffff",
             "r": 12
@@ -459,7 +459,7 @@
         "dec": 23,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -590,7 +590,7 @@
         "dec": 20,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -703,7 +703,7 @@
         "dec": 38,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -800,7 +800,7 @@
         "dec": 12,
         "fov": 82,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -905,7 +905,7 @@
         "dec": 55,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1002,7 +1002,7 @@
         "dec": -15,
         "fov": 82,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1086,7 +1086,7 @@
         "dec": 5,
         "fov": 82,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1206,7 +1206,7 @@
         "dec": -8,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1327,7 +1327,7 @@
         "dec": 42,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1396,10 +1396,69 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          { "ra": 310.358, "dec": 45.280, "label": "Deneb",      "color": "#c8d8ff", "r": 12 },
-          { "ra": 279.235, "dec": 38.784, "label": "Vega",       "color": "#90c8ff", "r": 16 },
-          { "ra": 297.696, "dec": 8.868,  "label": "Altair",     "color": "#ffe8b0", "r": 13 },
-          { "line": [[326.19,54.21],[317.38,48.12],[310.6,45.78],[307.29,37.91],[299.13,35.8],[297.23,25.48],[294.11,23.52],[293.97,20.65],[290,13.02]], "label": "Great Rift", "color": "#555555" }
+          {
+            "ra": 310.358,
+            "dec": 45.28,
+            "label": "Deneb",
+            "color": "#c8d8ff",
+            "r": 12
+          },
+          {
+            "ra": 279.235,
+            "dec": 38.784,
+            "label": "Vega",
+            "color": "#90c8ff",
+            "r": 16
+          },
+          {
+            "ra": 297.696,
+            "dec": 8.868,
+            "label": "Altair",
+            "color": "#ffe8b0",
+            "r": 13
+          },
+          {
+            "line": [
+              [
+                326.19,
+                54.21
+              ],
+              [
+                317.38,
+                48.12
+              ],
+              [
+                310.6,
+                45.78
+              ],
+              [
+                307.29,
+                37.91
+              ],
+              [
+                299.13,
+                35.8
+              ],
+              [
+                297.23,
+                25.48
+              ],
+              [
+                294.11,
+                23.52
+              ],
+              [
+                293.97,
+                20.65
+              ],
+              [
+                290,
+                13.02
+              ]
+            ],
+            "label": "Great Rift",
+            "color": "#555555"
+          }
         ]
       }
     ]
@@ -1423,9 +1482,18 @@
         "dec": 75,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 37.946,
+            "dec": 89.264,
+            "label": "Polaris",
+            "color": "#ffe8b0",
+            "r": 14
+          }
+        ]
       },
       {
         "title": "Use the Big Dipper as a pointer",
@@ -1439,8 +1507,22 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 37.94625,
-            "dec": 89.264109,
+            "ra": 165.460,
+            "dec": 56.382,
+            "label": "Merak",
+            "color": "#90c8ff",
+            "r": 12
+          },
+          {
+            "ra": 165.932,
+            "dec": 61.751,
+            "label": "Dubhe",
+            "color": "#ff9060",
+            "r": 12
+          },
+          {
+            "ra": 37.946,
+            "dec": 89.264,
             "label": "Polaris",
             "color": "#ffe8b0",
             "r": 12
@@ -1459,17 +1541,24 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 37.94625,
-            "dec": 89.264109,
+            "ra": 37.946,
+            "dec": 89.264,
             "label": "Polaris",
             "color": "#ffe8b0",
             "r": 12
           },
           {
-            "ra": 222.676575,
-            "dec": 74.155505,
+            "ra": 222.677,
+            "dec": 74.156,
             "label": "Kochab",
             "color": "#ff7060",
+            "r": 11
+          },
+          {
+            "ra": 230.182,
+            "dec": 71.834,
+            "label": "Pherkad",
+            "color": "#d8e2ff",
             "r": 11
           }
         ]
@@ -1477,13 +1566,29 @@
       {
         "title": "The ancient pole star",
         "caption": "Due to Earth's precession, the celestial pole slowly traces a circle among the stars over 26,000 years. Around 2700 BC, the star Thuban in Draco was the pole star; Polaris will reach its closest approach to the true pole around 2100 AD before slowly drifting away. Polaris is actually a triple star system about 433 light-years distant.",
-        "ra": 100,
-        "dec": 82,
-        "fov": 50,
+        "ra": 180,
+        "dec": 78,
+        "fov": 60,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 211.097,
+            "dec": 64.376,
+            "label": "Thuban",
+            "color": "#d8e2ff",
+            "r": 11
+          },
+          {
+            "ra": 37.946,
+            "dec": 89.264,
+            "label": "Polaris",
+            "color": "#ffe8b0",
+            "r": 12
+          }
+        ]
       }
     ]
   },
@@ -1506,49 +1611,24 @@
         "dec": 35,
         "fov": 80,
         "photo": true,
-        "diagram": false,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Start at the Great Square",
-        "caption": "Alpheratz (mag 2.1), the brightest star of Andromeda, is shared with the Great Square of Pegasus — it marks the Square's northeast corner. Two curving chains of stars extend northeast from Alpheratz: the main chain runs through Mirach (mag 2.1) and Almach (mag 2.1), a beautiful color-contrast double star in a telescope.",
-        "ra": 10,
-        "dec": 34,
-        "fov": 55,
-        "photo": true,
         "diagram": true,
-        "names": true,
+        "names": false,
         "bounds": false,
         "highlight": [
           {
-            "ra": 2.096865,
-            "dec": 29.090432,
+            "ra": 2.097,
+            "dec": 29.09,
             "label": "Alpheratz",
             "color": "#90c8ff",
-            "r": 12
-          },
-          {
-            "ra": 17.43291,
-            "dec": 35.620558,
-            "label": "Mirach",
-            "color": "#ff7060",
-            "r": 12
-          },
-          {
-            "ra": 30.97476,
-            "dec": 42.329725,
-            "label": "Almach",
-            "color": "#ff7060",
-            "r": 12
+            "r": 14
           }
         ]
       },
       {
-        "title": "Andromeda's full arc",
-        "caption": "The constellation arcs northeast from Alpheratz through Mirach to Almach over about 30°. Mirach is a useful guide: two stars hop north from Mirach leads to the position of M31. Under dark skies the Andromeda Galaxy appears as a large fuzzy oval several times the diameter of the full Moon.",
-        "ra": 12,
-        "dec": 37,
+        "title": "Three stars in a chain",
+        "caption": "Andromeda's backbone is a curving chain of three equally bright stars (all magnitude 2.1): Alpheratz at the southwest end, Mirach in the middle, and Almach at the northeast. Almach is a beautiful colour-contrast double — orange and blue-green — easily split in a small telescope.",
+        "ra": 16,
+        "dec": 36,
         "fov": 52,
         "photo": true,
         "diagram": true,
@@ -1556,22 +1636,22 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 2.096865,
-            "dec": 29.090432,
+            "ra": 2.097,
+            "dec": 29.09,
             "label": "Alpheratz",
             "color": "#90c8ff",
             "r": 12
           },
           {
-            "ra": 17.43291,
-            "dec": 35.620558,
+            "ra": 17.433,
+            "dec": 35.621,
             "label": "Mirach",
             "color": "#ff7060",
             "r": 12
           },
           {
-            "ra": 30.97476,
-            "dec": 42.329725,
+            "ra": 30.975,
+            "dec": 42.33,
             "label": "Almach",
             "color": "#ff7060",
             "r": 12
@@ -1580,21 +1660,28 @@
       },
       {
         "title": "The Andromeda Galaxy",
-        "caption": "M31 lies about 11° northwest of Mirach and is the farthest thing most people ever see with unaided eyes. It is a spiral galaxy containing around a trillion stars, roughly twice the mass of the Milky Way, and is approaching us at 110 km/s — it will merge with our galaxy in about 4.5 billion years.",
-        "ra": 10.68,
-        "dec": 41.27,
-        "fov": 22,
+        "caption": "The Andromeda Galaxy is the farthest object most people ever see with unaided eyes — 2.5 million light-years away. To find it, hop two stars north from Mirach. Under dark skies it appears as a large fuzzy oval, several times the diameter of the full Moon. It contains around a trillion stars and is approaching us at 110 km/s, set to merge with the Milky Way in about 4.5 billion years.",
+        "ra": 13,
+        "dec": 38,
+        "fov": 32,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
           {
+            "ra": 17.433,
+            "dec": 35.621,
+            "label": "Mirach",
+            "color": "#ff7060",
+            "r": 12
+          },
+          {
             "ra": 10.68,
             "dec": 41.27,
-            "label": "M31",
+            "label": "Andromeda Galaxy",
             "color": "#ffe8b0",
-            "r": 16
+            "r": 40
           }
         ]
       }
@@ -1619,34 +1706,41 @@
         "dec": -8,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
       {
         "title": "Find the Water Jar",
-        "caption": "The Y-shaped Water Jar asterism, centered on Sadalsud (Beta Aquarii, mag 2.9) — the constellation's brightest star — is the most useful entry point. Sadalsud lies about 45° north of Fomalhaut in Piscis Austrinus. The name Sadalsud means 'luckiest of the lucky' in Arabic, referring to its ancient role as herald of spring rains.",
-        "ra": 322,
-        "dec": -4,
-        "fov": 35,
+        "caption": "The Y-shaped Water Jar asterism sits northeast of Sadalsud, with Zeta Aquarii (a close double star) at its junction. Fomalhaut — the lone first-magnitude star about 30° to the south in Piscis Austrinus — is a useful anchor: from Fomalhaut, sweep north and the Water Jar floats above it.",
+        "ra": 335,
+        "dec": -10,
+        "fov": 48,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
           {
-            "ra": 322.88973,
-            "dec": -5.571172,
+            "ra": 322.89,
+            "dec": -5.571,
             "label": "Sadalsud",
             "color": "#ffd080",
             "r": 12
           },
           {
-            "ra": 331.445985,
-            "dec": -0.319851,
-            "label": "Sadalsuud",
-            "color": "#ffd080",
-            "r": 11
+            "ra": 336.945,
+            "dec": -0.037,
+            "label": "Water Jar",
+            "color": "#c8d8ff",
+            "r": 32
+          },
+          {
+            "ra": 344.413,
+            "dec": -29.622,
+            "label": "Fomalhaut",
+            "color": "#90c8ff",
+            "r": 14
           }
         ]
       },
@@ -1662,18 +1756,18 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 322.88973,
-            "dec": -5.571172,
-            "label": "Sadalsud",
-            "color": "#ffd080",
-            "r": 12
+            "ra": 316.05,
+            "dec": -11.36,
+            "label": "Saturn Nebula",
+            "color": "#a0e0a0",
+            "r": 9
           },
           {
-            "ra": 343.15364999999997,
-            "dec": -7.579599,
-            "label": "Skat",
-            "color": "#ff7060",
-            "r": 9
+            "ra": 337.41,
+            "dec": -20.84,
+            "label": "Helix Nebula",
+            "color": "#a0e0a0",
+            "r": 15
           }
         ]
       }
@@ -1698,7 +1792,7 @@
         "dec": 22,
         "fov": 65,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1784,14 +1878,38 @@
         "dec": 22,
         "fov": 62,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false,
         "highlight": [
-          { "ra": 79.172, "dec": 45.998, "label": "Capella", "color": "#ffe8b0", "r": 14 },
-          { "ra": 83.002, "dec": -0.299, "label": "belt",    "color": "#c8d8ff", "r": 8  },
-          { "ra": 84.053, "dec": -1.202, "label": "",        "color": "#c8d8ff", "r": 8  },
-          { "ra": 85.190, "dec": -1.943, "label": "",        "color": "#c8d8ff", "r": 8  }
+          {
+            "ra": 79.172,
+            "dec": 45.998,
+            "label": "Capella",
+            "color": "#ffe8b0",
+            "r": 14
+          },
+          {
+            "ra": 83.002,
+            "dec": -0.299,
+            "label": "belt",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 84.053,
+            "dec": -1.202,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 85.19,
+            "dec": -1.943,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          }
         ]
       },
       {
@@ -1833,11 +1951,18 @@
             "r": 16
           },
           {
-            "ra": 89.88223500000001,
-            "dec": 44.947433,
+            "ra": 89.882,
+            "dec": 44.947,
             "label": "Menkalinan",
             "color": "#90c8ff",
             "r": 12
+          },
+          {
+            "ra": 75.492,
+            "dec": 43.823,
+            "label": "ε Aur",
+            "color": "#c8d8ff",
+            "r": 8
           }
         ]
       },
@@ -1850,7 +1975,30 @@
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 84.075,
+            "dec": 34.14,
+            "label": "M36",
+            "color": "#ffe8b0",
+            "r": 10
+          },
+          {
+            "ra": 88.075,
+            "dec": 32.55,
+            "label": "M37",
+            "color": "#ffe8b0",
+            "r": 10
+          },
+          {
+            "ra": 82.175,
+            "dec": 35.86,
+            "label": "M38",
+            "color": "#ffe8b0",
+            "r": 10
+          }
+        ]
       }
     ]
   },
@@ -1873,7 +2021,7 @@
         "dec": 30,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -1945,9 +2093,32 @@
         "dec": 18,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 116.329,
+            "dec": 28.026,
+            "label": "Pollux",
+            "color": "#ff9060",
+            "r": 14
+          },
+          {
+            "ra": 113.65,
+            "dec": 31.888,
+            "label": "Castor",
+            "color": "#90c8ff",
+            "r": 14
+          },
+          {
+            "ra": 152.093,
+            "dec": 11.967,
+            "label": "Regulus",
+            "color": "#90c8ff",
+            "r": 14
+          }
+        ]
       },
       {
         "title": "Spot the Beehive Cluster",
@@ -2024,7 +2195,7 @@
         "dec": 8,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2096,7 +2267,7 @@
         "dec": -18,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2175,7 +2346,7 @@
         "dec": -48,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2208,7 +2379,7 @@
       },
       {
         "title": "The full centaur",
-        "caption": "The Centaur's body sprawls over a large area north of Alpha and Beta Centauri, with Menkent (Theta Centauri, mag 2.1) marking the shoulder region. The constellation is the ninth-largest in the sky. Omega Centauri (NGC 5139), near the eastern boundary, is the largest and most massive globular cluster in the Milky Way — nearly 18 million solar masses in a sphere 150 light-years across, visible to the naked eye as a fuzzy star.",
+        "caption": "The Centaur's body sprawls over a large area north of Alpha and Beta Centauri, with Menkent (Theta Centauri, mag 2.1) marking the head region. The constellation is the ninth-largest in the sky. Omega Centauri (NGC 5139), near the northern boundary, is the largest and most massive globular cluster in the Milky Way — nearly 18 million solar masses in a sphere 150 light-years across, visible to the naked eye as a fuzzy star.",
         "ra": 201,
         "dec": -48,
         "fov": 55,
@@ -2237,6 +2408,13 @@
             "label": "Menkent",
             "color": "#ffd080",
             "r": 11
+          },
+          {
+            "ra": 201.697,
+            "dec": -47.48,
+            "label": "Omega Cen",
+            "color": "#ffe8b0",
+            "r": 14
           }
         ]
       }
@@ -2261,7 +2439,7 @@
         "dec": 68,
         "fov": 65,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2340,7 +2518,7 @@
         "dec": 28,
         "fov": 60,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2412,7 +2590,7 @@
         "dec": -19,
         "fov": 55,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2505,7 +2683,7 @@
         "dec": 14,
         "fov": 55,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2598,7 +2776,7 @@
         "dec": 68,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2677,7 +2855,7 @@
         "dec": -20,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2753,7 +2931,7 @@
         "dec": 30,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2846,7 +3024,7 @@
         "dec": -18,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2911,7 +3089,7 @@
         "dec": -12,
         "fov": 55,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -2993,17 +3171,40 @@
       {
         "title": "Look east of Spica in spring",
         "caption": "In May and June evenings, Libra is due south at midnight for northern observers. Start at brilliant blue-white Spica in Virgo and move about 20° east-southeast to find the constellation. Libra has no first-magnitude stars but its two brightest, Zubenelgenubi and Zubeneschamali, are about 7° apart and form an obvious pair.",
-        "ra": 229,
-        "dec": -18,
-        "fov": 60,
+        "ra": 218,
+        "dec": -16,
+        "fov": 65,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 201.298,
+            "dec": -11.161,
+            "label": "Spica",
+            "color": "#90c8ff",
+            "r": 14
+          },
+          {
+            "ra": 222.720,
+            "dec": -16.042,
+            "label": "Zubenelgenubi",
+            "color": "#d8e2ff",
+            "r": 12
+          },
+          {
+            "ra": 229.252,
+            "dec": -9.383,
+            "label": "Zubeneschamali",
+            "color": "#90c8ff",
+            "r": 12
+          }
+        ]
       },
       {
-        "title": "The two crossbeam stars",
-        "caption": "Zubeneschamali (Beta Librae, mag 2.6) is the brightest star in Libra and one of the few stars that has been consistently described as greenish by observers — an unusual color for a naked-eye star. Zubenelgenubi (Alpha Librae, mag 2.8) is 7° to the south and is a wide naked-eye double, easily split with binoculars into a white pair separated by about 5 arcminutes.",
+        "title": "The scorpion's old claws",
+        "caption": "Zubeneschamali is one of the few stars that has been consistently described as greenish by observers — an unusual color for a naked-eye star. Zubenelgenubi is a wide naked-eye double, easily split with binoculars into a white pair separated by about 5 arcminutes. Their Arabic names mean 'the northern claw' and 'the southern claw,' recalling the time when these stars were considered part of Scorpius.",
         "ra": 226,
         "dec": -17,
         "fov": 28,
@@ -3030,7 +3231,7 @@
       },
       {
         "title": "The scales of the zodiac",
-        "caption": "The full constellation outlines a rough balance, with the crossbeam running between Zubeneschamali and Zubenelgenubi, and fainter stars to the south completing the scale pans. Their Arabic names mean 'the northern claw' and 'the southern claw,' recalling the time when these stars were considered part of Scorpius. Libra lies on the ecliptic; planets are frequently found passing through it.",
+        "caption": "The full constellation outlines a rough balance, with fainter stars to the south completing the scale pans. Libra lies on the ecliptic; planets are frequently found passing through it.",
         "ra": 228,
         "dec": -18,
         "fov": 30,
@@ -3038,29 +3239,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "highlight": [
-          {
-            "ra": 229.251735,
-            "dec": -9.382917,
-            "label": "Zubeneschamali",
-            "color": "#90c8ff",
-            "r": 11
-          },
-          {
-            "ra": 222.719655,
-            "dec": -16.041778,
-            "label": "Zubenelgenubi",
-            "color": "#90c8ff",
-            "r": 10
-          },
-          {
-            "ra": 226.017585,
-            "dec": -25.281965,
-            "label": "Brachium",
-            "color": "#ff7060",
-            "r": 9
-          }
-        ]
+        "highlight": []
       }
     ]
   },
@@ -3083,7 +3262,7 @@
         "dec": -3,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3162,7 +3341,7 @@
         "dec": 20,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3255,7 +3434,7 @@
         "dec": 43,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3327,7 +3506,7 @@
         "dec": 14,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3392,7 +3571,7 @@
         "dec": -28,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3457,7 +3636,7 @@
         "dec": -38,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3529,7 +3708,7 @@
         "dec": 8,
         "fov": 75,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3601,7 +3780,7 @@
         "dec": -47,
         "fov": 70,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -3687,7 +3866,7 @@
         "dec": 0,
         "fov": 80,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false
       },
