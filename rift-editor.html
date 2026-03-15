@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Great Rift Editor</title>
+  <style>
+    :root { --bg: #05060f; --card: #0c0f1e; --border: rgba(255,255,255,.08);
+            --accent: #5b8af5; --text: #d8e2ff; --dim: #5a6480; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text);
+           font-family: system-ui, sans-serif;
+           display: flex; height: 100vh; overflow: hidden; }
+    #explore-wrap {
+      position: relative; flex-shrink: 0;
+      width: min(100vh, 70vw); height: min(100vh, 70vw);
+    }
+    #explore-gl-canvas, #explore-canvas, #overlay {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+    }
+    #overlay { cursor: crosshair; }
+
+    #sidebar {
+      flex: 1; padding: 18px 16px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 14px;
+      border-left: 1px solid var(--border);
+    }
+    h2 { font-size: .95rem; font-weight: 500; color: #a8bfff; }
+    p.hint { font-size: .78rem; color: var(--dim); line-height: 1.5; }
+    #pts-list { display: flex; flex-direction: column; gap: 5px; }
+    .pt-row {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .75rem; background: var(--card);
+      border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px;
+    }
+    .pt-idx { color: var(--dim); width: 14px; flex-shrink: 0; }
+    .pt-coords { flex: 1; font-variant-numeric: tabular-nums; }
+    .pt-del {
+      background: none; border: none; color: var(--dim); cursor: pointer;
+      font-size: .85rem; padding: 0 3px; line-height: 1;
+    }
+    .pt-del:hover { color: #ef4444; }
+    .btn {
+      padding: 8px 16px; border-radius: 8px; cursor: pointer;
+      font-size: .82rem; border: 1px solid var(--accent);
+      background: rgba(91,138,245,.12); color: #b0ccff; transition: background .15s;
+    }
+    .btn:hover { background: rgba(91,138,245,.22); }
+    .btn.ok { border-color: #22c55e; background: rgba(34,197,94,.12); color: #86efac; }
+    #json-out {
+      font-family: monospace; font-size: .72rem; color: #a0b8d8;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px; white-space: pre-wrap; word-break: break-all;
+      max-height: 160px; overflow-y: auto;
+    }
+    label { font-size: .78rem; color: var(--dim); display: flex; align-items: center; gap: 8px; }
+    input[type=range] { flex: 1; }
+    .val { min-width: 30px; text-align: right; font-size: .78rem; color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- Hidden checkboxes required by explore rendering stack -->
+<div style="display:none">
+  <div id="screen-explore" class="active"></div>
+  <input type="checkbox" id="chk-ex-photo" checked>
+  <input type="checkbox" id="chk-ex-diagram">
+  <input type="checkbox" id="chk-ex-bounds">
+  <input type="checkbox" id="chk-ex-art">
+  <input type="checkbox" id="chk-ex-starlabels">
+  <input type="checkbox" id="chk-ex-connames">
+  <input type="checkbox" id="chk-ex-equator">
+</div>
+
+<div id="explore-wrap">
+  <canvas id="explore-gl-canvas"></canvas>
+  <canvas id="explore-canvas"></canvas>
+  <canvas id="overlay"></canvas>
+</div> <!-- #explore-wrap -->
+
+<div id="sidebar">
+  <h2>Great Rift Editor</h2>
+  <p class="hint">
+    <b>Click</b> empty sky to add a point.<br>
+    <b>Drag</b> a handle to move it.<br>
+    <b>Double-click</b> a handle to delete it.
+  </p>
+
+  <div>
+    <label>FOV <input type="range" id="sl-fov" min="20" max="120" value="70">
+      <span class="val" id="lbl-fov">70°</span></label>
+  </div>
+  <div>
+    <label>RA center <input type="range" id="sl-ra" min="0" max="360" value="300">
+      <span class="val" id="lbl-ra">300°</span></label>
+  </div>
+  <div>
+    <label>Dec center <input type="range" id="sl-dec" min="-90" max="90" value="30">
+      <span class="val" id="lbl-dec">30°</span></label>
+  </div>
+
+  <div id="pts-list"></div>
+
+  <button class="btn" id="btn-copy">Copy JSON line</button>
+  <div id="json-out"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/projection.js"></script>
+<script src="js/render.js"></script>
+<script src="js/explore-gl.js"></script>
+<script src="js/explore.js"></script>
+<script>
+// ── Initial waypoints (current Great Rift line) ───────────────────────────
+let pts = [
+  [312.5, 44], [308.75, 40], [304.5, 36], [300, 30],
+  [297, 23], [295, 13], [292.5, 6], [286.25, 0]
+];
+
+// ── North-up roll ──────────────────────────────────────────────────────────
+function northUpR(P) {
+  const pz = P[2], cos2 = 1 - pz*pz;
+  if (cos2 < 1e-10) return 0;
+  const s = Math.sqrt(cos2);
+  const nd = [-pz*P[0]/s, -pz*P[1]/s, cos2/s];
+  const q = rotateByFromTo(nd, P, [0, 0, 1]);
+  return Math.atan2(q[0], q[1]);
+}
+
+function vecToRADec(v) {
+  const dec = Math.asin(Math.max(-1, Math.min(1, v[2]))) * 180 / Math.PI;
+  const ra  = (Math.atan2(v[1], v[0]) * 180 / Math.PI + 360) % 360;
+  return [ra, dec];
+}
+
+// ── Camera state ───────────────────────────────────────────────────────────
+let camRA = 300, camDec = 30, camFOV = 70;
+
+function updateCamera() {
+  explore.P   = raDecToVec(camRA, camDec);
+  explore.fov = camFOV;
+  explore.R   = northUpR(explore.P);
+}
+
+// ── Overlay drawing ────────────────────────────────────────────────────────
+const overlay  = document.getElementById('overlay');
+const octx    = overlay.getContext('2d');
+
+function getCanvasSize() {
+  const gl = document.getElementById('explore-gl-canvas');
+  return { W: gl.width, H: gl.height, dpr: window.devicePixelRatio || 1 };
+}
+
+function projectPts() {
+  const { W, H } = getCanvasSize();
+  const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  return pts.map(([ra, dec]) => {
+    const p = projectStarsCamera([[ra, dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
+    return (p && p.d > 0) ? { x: p.x, y: p.y, valid: true } : { x: 0, y: 0, valid: false };
+  });
+}
+
+function drawOverlay() {
+  const { W, H, dpr } = getCanvasSize();
+  overlay.width  = W;
+  overlay.height = H;
+  const scale = W / overlay.offsetWidth;
+  const projected = projectPts();
+
+  octx.clearRect(0, 0, W, H);
+
+  // Dashed line
+  octx.save();
+  octx.strokeStyle = '#888888';
+  octx.lineWidth   = 2 * scale;
+  octx.setLineDash([4 * scale, 5 * scale]);
+  octx.shadowColor = '#888888';
+  octx.shadowBlur  = 4 * scale;
+  octx.beginPath();
+  let started = false;
+  for (const p of projected) {
+    if (!p.valid) { started = false; continue; }
+    if (!started) { octx.moveTo(p.x, p.y); started = true; }
+    else octx.lineTo(p.x, p.y);
+  }
+  octx.stroke();
+  octx.setLineDash([]);
+  octx.restore();
+
+  // Handles
+  const r = 10 * scale;
+  const fs = Math.round(11 * scale);
+  projected.forEach((p, i) => {
+    if (!p.valid) return;
+    octx.save();
+    const isActive = i === dragIdx;
+    octx.fillStyle   = isActive ? '#5b8af5' : 'rgba(91,138,245,.55)';
+    octx.strokeStyle = '#d8e2ff';
+    octx.lineWidth   = 1.5 * scale;
+    octx.shadowColor = '#5b8af5';
+    octx.shadowBlur  = isActive ? 14 * scale : 6 * scale;
+    octx.beginPath(); octx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    octx.fill(); octx.stroke();
+    octx.shadowBlur = 0;
+    octx.fillStyle  = '#fff';
+    octx.font       = `bold ${fs}px system-ui`;
+    octx.textAlign  = 'center'; octx.textBaseline = 'middle';
+    octx.fillText(i + 1, p.x, p.y);
+    octx.restore();
+  });
+}
+
+// ── Sidebar list ───────────────────────────────────────────────────────────
+function renderList() {
+  const list = document.getElementById('pts-list');
+  list.innerHTML = pts.map(([ra, dec], i) =>
+    `<div class="pt-row">
+      <span class="pt-idx">${i+1}</span>
+      <span class="pt-coords">RA ${ra.toFixed(2)}°  Dec ${dec.toFixed(2)}°</span>
+      <button class="pt-del" data-i="${i}">✕</button>
+    </div>`
+  ).join('');
+  list.querySelectorAll('.pt-del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      pts.splice(+btn.dataset.i, 1);
+      refresh();
+    });
+  });
+
+  const json = JSON.stringify(pts.map(([ra, dec]) =>
+    [+ra.toFixed(2), +dec.toFixed(2)]
+  ));
+  document.getElementById('json-out').textContent =
+    `"line": ${json}`;
+}
+
+function refresh() {
+  explore.quiz = null;
+  drawExplore();
+  drawOverlay();
+  renderList();
+}
+
+// ── Drag interaction ───────────────────────────────────────────────────────
+let dragIdx = -1;
+const HANDLE_R_CSS = 14; // px in CSS space
+
+function nearestHandle(ex, ey) {
+  const { W } = getCanvasSize();
+  const scale = W / overlay.offsetWidth;
+  const px = ex * scale, py = ey * scale;
+  const projected = projectPts();
+  const r = HANDLE_R_CSS * scale;
+  for (let i = 0; i < projected.length; i++) {
+    const p = projected[i];
+    if (!p.valid) continue;
+    const dx = px - p.x, dy = py - p.y;
+    if (Math.sqrt(dx*dx + dy*dy) < r) return i;
+  }
+  return -1;
+}
+
+function eventToSkyCoords(ex, ey) {
+  const { W, H } = getCanvasSize();
+  const scale = W / overlay.offsetWidth;
+  const px = ex * scale, py = ey * scale;
+  const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  const v = pixelToVec(px, py, explore.P, camUp, explore.fov, W, H);
+  return vecToRADec(v);
+}
+
+overlay.addEventListener('mousedown', e => {
+  const idx = nearestHandle(e.offsetX, e.offsetY);
+  if (idx >= 0) { dragIdx = idx; }
+  else {
+    // Add new point — insert in order of projected x position
+    const [ra, dec] = eventToSkyCoords(e.offsetX, e.offsetY);
+    pts.push([+ra.toFixed(2), +dec.toFixed(2)]);
+    dragIdx = pts.length - 1;
+    refresh();
+  }
+});
+
+overlay.addEventListener('mousemove', e => {
+  if (dragIdx < 0) return;
+  const [ra, dec] = eventToSkyCoords(e.offsetX, e.offsetY);
+  pts[dragIdx] = [+ra.toFixed(2), +dec.toFixed(2)];
+  refresh();
+});
+
+overlay.addEventListener('mouseup', () => { dragIdx = -1; refresh(); });
+overlay.addEventListener('mouseleave', () => { dragIdx = -1; });
+
+overlay.addEventListener('dblclick', e => {
+  const idx = nearestHandle(e.offsetX, e.offsetY);
+  if (idx >= 0) { pts.splice(idx, 1); dragIdx = -1; refresh(); }
+});
+
+// ── Camera sliders ─────────────────────────────────────────────────────────
+document.getElementById('sl-fov').addEventListener('input', e => {
+  camFOV = +e.target.value;
+  document.getElementById('lbl-fov').textContent = camFOV + '°';
+  updateCamera(); refresh();
+});
+document.getElementById('sl-ra').addEventListener('input', e => {
+  camRA = +e.target.value;
+  document.getElementById('lbl-ra').textContent = camRA + '°';
+  updateCamera(); refresh();
+});
+document.getElementById('sl-dec').addEventListener('input', e => {
+  camDec = +e.target.value;
+  document.getElementById('lbl-dec').textContent = camDec + '°';
+  updateCamera(); refresh();
+});
+
+// ── Copy button ────────────────────────────────────────────────────────────
+document.getElementById('btn-copy').addEventListener('click', () => {
+  const json = JSON.stringify(pts.map(([ra, dec]) => [+ra.toFixed(2), +dec.toFixed(2)]));
+  navigator.clipboard.writeText(json).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = 'Copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy JSON line'; btn.classList.remove('ok'); }, 2000);
+  });
+});
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+initExploreGL(document.getElementById('explore-gl-canvas'));
+updateCamera();
+refresh();
+</script>
+</body>
+</html>

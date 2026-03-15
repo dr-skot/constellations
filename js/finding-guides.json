@@ -4,44 +4,110 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Aquila — the Eagle, a summer constellation whose heart is Altair, the southernmost star of the Summer Triangle.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The summer Milky Way",
         "caption": "Look to the southern sky on a summer evening. Aquila straddles the Milky Way on the celestial equator, visible from both hemispheres. In August it rides highest in the south for northern observers.",
-        "ra": 294, "dec": 8, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 294,
+        "dec": 8,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Three stars in a line",
         "caption": "Altair is easy to identify: a bright star flanked closely by a dimmer star on each side, all three nearly in a straight line. Tarazed (slightly orange, to the north) and Alshain (to the south) give Altair the impression of a bird with spread wings.",
-        "ra": 297, "dec": 9, "fov": 16,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 297,
+        "dec": 9,
+        "fov": 16,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 297.696, "dec": 8.868,  "label": "Altair",  "color": "#ffe8b0", "r": 14 },
-          { "ra": 296.565, "dec": 10.613, "label": "Tarazed", "color": "#ffd080", "r": 9  },
-          { "ra": 298.828, "dec": 6.407,  "label": "Alshain", "color": "#c8d8ff", "r": 7  }
+          {
+            "ra": 297.696,
+            "dec": 8.868,
+            "label": "Altair",
+            "color": "#ffe8b0",
+            "r": 14
+          },
+          {
+            "ra": 296.565,
+            "dec": 10.613,
+            "label": "Tarazed",
+            "color": "#ffd080",
+            "r": 9
+          },
+          {
+            "ra": 298.828,
+            "dec": 6.407,
+            "label": "Alshain",
+            "color": "#c8d8ff",
+            "r": 7
+          }
         ]
       },
       {
         "title": "The Eagle",
         "caption": "Pull back to see the full eagle, wings spread along the Milky Way. Altair sits almost exactly on the celestial equator — it rises nearly due east and sets nearly due west from any location on Earth.",
-        "ra": 294, "dec": 6, "fov": 38,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 294,
+        "dec": 6,
+        "fov": 38,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 297.696, "dec": 8.868, "label": "Altair", "color": "#ffe8b0", "r": 14 }
+          {
+            "ra": 297.696,
+            "dec": 8.868,
+            "label": "Altair",
+            "color": "#ffe8b0",
+            "r": 14
+          }
         ]
       },
       {
         "title": "Summer Triangle",
         "caption": "Altair is the southernmost point of the Summer Triangle. Look northeast to Vega in Lyra, and north to Deneb in Cygnus. The Triangle spans a wide swath of the summer Milky Way and is the most prominent star pattern in the summer evening sky.",
-        "ra": 294, "dec": 22, "fov": 60,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 294,
+        "dec": 22,
+        "fov": 60,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 297.696, "dec": 8.868,  "label": "Altair", "color": "#ffe8b0", "r": 14 },
-          { "ra": 279.235, "dec": 38.784, "label": "Vega",   "color": "#90c8ff", "r": 16 },
-          { "ra": 310.358, "dec": 45.280, "label": "Deneb",  "color": "#c8d8ff", "r": 10 }
+          {
+            "ra": 297.696,
+            "dec": 8.868,
+            "label": "Altair",
+            "color": "#ffe8b0",
+            "r": 14
+          },
+          {
+            "ra": 279.235,
+            "dec": 38.784,
+            "label": "Vega",
+            "color": "#90c8ff",
+            "r": 16
+          },
+          {
+            "ra": 310.358,
+            "dec": 45.28,
+            "label": "Deneb",
+            "color": "#c8d8ff",
+            "r": 10
+          }
         ]
       }
     ]
@@ -51,42 +117,102 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Canis Major — the Great Dog, home of Sirius, the brightest star in the entire night sky.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The winter sky",
         "caption": "Look to the southern sky on a winter evening. Canis Major follows Orion like a faithful hunting dog, sitting south and east of the Hunter. Sirius blazes so brightly it cannot be mistaken for anything else.",
-        "ra": 92, "dec": -8, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 92,
+        "dec": -8,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Follow the Belt",
         "caption": "Take Orion's three belt stars and follow their line southeast about 20°. You will arrive at Sirius — a brilliant blue-white star that outshines everything else in the night sky. At magnitude −1.4 it is nearly twice as bright as the second-brightest star, Canopus.",
-        "ra": 92, "dec": -8, "fov": 42,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 92,
+        "dec": -8,
+        "fov": 42,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 83.002, "dec": -0.299, "label": "belt", "color": "#c8d8ff", "r": 8 },
-          { "ra": 84.053, "dec": -1.202, "label": "",    "color": "#c8d8ff", "r": 8 },
-          { "ra": 85.190, "dec": -1.943, "label": "",    "color": "#c8d8ff", "r": 8 },
-          { "ra": 101.287, "dec": -16.716, "label": "Sirius", "color": "#90c8ff", "r": 18 }
+          {
+            "ra": 83.002,
+            "dec": -0.299,
+            "label": "belt",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 84.053,
+            "dec": -1.202,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 85.19,
+            "dec": -1.943,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 101.287,
+            "dec": -16.716,
+            "label": "Sirius",
+            "color": "#90c8ff",
+            "r": 18
+          }
         ]
       },
       {
         "title": "The Great Dog",
         "caption": "Sirius marks the dog's shoulder. Fainter stars trace the body, hindquarters and legs below. Adhara at the hindquarters is intrinsically far more luminous than Sirius — it simply appears dimmer because it is nearly 30 times further away.",
-        "ra": 103, "dec": -21, "fov": 36,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 103,
+        "dec": -21,
+        "fov": 36,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 101.287, "dec": -16.716, "label": "Sirius",  "color": "#90c8ff", "r": 18 },
-          { "ra": 104.656, "dec": -28.972, "label": "Adhara", "color": "#90c8ff", "r": 10 }
+          {
+            "ra": 101.287,
+            "dec": -16.716,
+            "label": "Sirius",
+            "color": "#90c8ff",
+            "r": 18
+          },
+          {
+            "ra": 104.656,
+            "dec": -28.972,
+            "label": "Adhara",
+            "color": "#90c8ff",
+            "r": 10
+          }
         ]
       },
       {
         "title": "The Dog Star",
         "caption": "Sirius is only 8.6 light-years away — our fifth-closest stellar neighbour — which explains much of its brilliance. The ancient Egyptians timed the annual Nile flood by its first dawn rising and called it Sopdet.",
-        "ra": 100, "dec": -15, "fov": 55,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 100,
+        "dec": -15,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -95,31 +221,68 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Cassiopeia — a brilliant W-shape high in the northern sky, circumpolar and visible year-round from most northern latitudes.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Look north",
         "caption": "Turn to the northern sky. Cassiopeia wheels around the celestial pole without ever setting. When the Big Dipper is low, Cassiopeia is high, and vice versa — they sit on opposite sides of the pole. In autumn evenings it passes nearly overhead.",
-        "ra": 13, "dec": 60, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 13,
+        "dec": 60,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The W shape",
         "caption": "Five second-magnitude stars form an unmistakable W — or M, depending on its orientation as it circles the pole. No other pattern in the northern sky has this zigzag. Schedar (orange) and Caph anchor the outer ends; Cih sits at the sharp central peak.",
-        "ra": 14, "dec": 59, "fov": 28,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 14,
+        "dec": 59,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 10.127, "dec": 56.537, "label": "Schedar", "color": "#ffd080", "r": 10 },
-          { "ra": 2.293,  "dec": 59.150, "label": "Caph",    "color": "#c8d8ff", "r": 9  },
-          { "ra": 14.177, "dec": 60.717, "label": "Cih",     "color": "#c8d8ff", "r": 10 }
+          {
+            "ra": 10.127,
+            "dec": 56.537,
+            "label": "Schedar",
+            "color": "#ffd080",
+            "r": 10
+          },
+          {
+            "ra": 2.293,
+            "dec": 59.15,
+            "label": "Caph",
+            "color": "#c8d8ff",
+            "r": 9
+          },
+          {
+            "ra": 14.177,
+            "dec": 60.717,
+            "label": "Cih",
+            "color": "#c8d8ff",
+            "r": 10
+          }
         ]
       },
       {
         "title": "Rich in the Milky Way",
         "caption": "Cassiopeia sits embedded in the brightest part of the northern Milky Way. The W is an excellent guide to this star-rich region — sweep it with binoculars for open clusters and nebulae. It is one of the most rewarding fields in the northern sky.",
-        "ra": 14, "dec": 59, "fov": 55,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 14,
+        "dec": 59,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -128,56 +291,151 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Crux — the Southern Cross, the smallest constellation in the sky and the most iconic in the southern hemisphere.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Look south",
         "caption": "Crux is only visible from latitudes south of about 25°N — the further south you are, the higher it rides. In the southern hemisphere it is circumpolar, never setting. Look for a bright, compact kite of four stars low in the south from subtropical northern regions.",
-        "ra": 188, "dec": -45, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 188,
+        "dec": -45,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The Southern Cross",
         "caption": "Four bright stars form the cross: Acrux at the southern foot is the brightest, Gacrux at the top glows distinctly red, and Mimosa marks the left arm. The whole cross fits within a circle just 6° wide.",
-        "ra": 188, "dec": -60, "fov": 18,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 188,
+        "dec": -60,
+        "fov": 18,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 186.650, "dec": -63.099, "label": "Acrux",  "color": "#90c8ff", "r": 13 },
-          { "ra": 187.791, "dec": -57.113, "label": "Gacrux", "color": "#ff9060", "r": 10 },
-          { "ra": 191.930, "dec": -59.689, "label": "Mimosa", "color": "#c8d8ff", "r": 11 }
+          {
+            "ra": 186.65,
+            "dec": -63.099,
+            "label": "Acrux",
+            "color": "#90c8ff",
+            "r": 13
+          },
+          {
+            "ra": 187.791,
+            "dec": -57.113,
+            "label": "Gacrux",
+            "color": "#ff9060",
+            "r": 10
+          },
+          {
+            "ra": 191.93,
+            "dec": -59.689,
+            "label": "Mimosa",
+            "color": "#c8d8ff",
+            "r": 11
+          }
         ]
       },
       {
         "title": "Beware the False Cross",
         "caption": "To the northwest lies the False Cross — four stars in Vela and Carina that form a similar pattern but are larger and less symmetrical. If your cross looks large and lopsided, you've found the impostor.",
-        "ra": 161, "dec": -58, "fov": 56,
-        "photo": true, "diagram": true, "names": false, "bounds": false,
+        "ra": 161,
+        "dec": -58,
+        "fov": 56,
+        "photo": true,
+        "diagram": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
-          { "ra": 125.629, "dec": -59.509, "label": "", "color": "#ffd080", "r": 11 },
-          { "ra": 139.273, "dec": -59.275, "label": "", "color": "#90c8ff", "r": 10 },
-          { "ra": 131.176, "dec": -54.709, "label": "", "color": "#90c8ff", "r": 11 },
-          { "ra": 140.528, "dec": -55.011, "label": "", "color": "#90c8ff", "r": 9  }
+          {
+            "ra": 125.629,
+            "dec": -59.509,
+            "label": "",
+            "color": "#ffd080",
+            "r": 11
+          },
+          {
+            "ra": 139.273,
+            "dec": -59.275,
+            "label": "",
+            "color": "#90c8ff",
+            "r": 10
+          },
+          {
+            "ra": 131.176,
+            "dec": -54.709,
+            "label": "",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 140.528,
+            "dec": -55.011,
+            "label": "",
+            "color": "#90c8ff",
+            "r": 9
+          }
         ]
       },
       {
         "title": "Finding south",
         "caption": "The long axis — from Gacrux through Acrux — points toward the south celestial pole. Extend it about 4.5 times its own length beyond Acrux and you arrive near the pole. Unlike the north, there is no bright star marking it.",
-        "ra": 188, "dec": -73, "fov": 38,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 188,
+        "dec": -73,
+        "fov": 38,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 186.650, "dec": -63.099, "label": "Acrux",    "color": "#90c8ff", "r": 11 },
-          { "ra": 187.791, "dec": -57.113, "label": "Gacrux",     "color": "#ff9060", "r": 9  },
-          { "ra": 189.0,   "dec": -90.0,   "label": "south pole", "color": "#ffffff", "r": 12 }
+          {
+            "ra": 186.65,
+            "dec": -63.099,
+            "label": "Acrux",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 187.791,
+            "dec": -57.113,
+            "label": "Gacrux",
+            "color": "#ff9060",
+            "r": 9
+          },
+          {
+            "ra": 189.0,
+            "dec": -90.0,
+            "label": "south pole",
+            "color": "#ffffff",
+            "r": 12
+          }
         ]
       },
       {
         "title": "The Coalsack",
         "caption": "Adjacent to Crux lies the Coalsack — a dark nebula, a patch conspicuously empty of stars where interstellar dust blocks the Milky Way behind it. Indigenous Australians saw it as a celestial emu's head, part of a sky mythology drawn in dark shapes rather than star patterns.",
-        "ra": 188, "dec": -58, "fov": 25,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 188,
+        "dec": -58,
+        "fov": 25,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 192.5, "dec": -62.5, "label": "Coalsack", "color": "#aaaaaa", "r": 55 }
+          {
+            "ra": 192.5,
+            "dec": -62.5,
+            "label": "Coalsack",
+            "color": "#aaaaaa",
+            "r": 55
+          }
         ]
       }
     ]
@@ -187,52 +445,129 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Gemini — the Twins, a winter constellation crowned by the bright pair Castor and Pollux, one of the most recognisable double stars in the sky.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The winter sky",
         "caption": "Turn to the southern sky on a winter evening. Gemini lies northeast of Orion in the same brilliant winter star field, best placed in the south for northern observers in January and February.",
-        "ra": 103, "dec": 23, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 103,
+        "dec": 23,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Two bright stars side by side",
         "caption": "Castor and Pollux are the twin heads — two bright stars sitting just 4.5° apart. From Orion, follow the line from Rigel through Betelgeuse and beyond — you'll arrive between them.",
-        "ra": 97, "dec": 12, "fov": 60,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 97,
+        "dec": 12,
+        "fov": 60,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 78.634,  "dec": -8.202, "label": "Rigel",      "color": "#90c8ff", "r": 14 },
-          { "ra": 88.793,  "dec": 7.407,  "label": "Betelgeuse", "color": "#ff7060", "r": 13 },
-          { "ra": 113.650, "dec": 31.888, "label": "Castor",     "color": "#c8d8ff", "r": 10 },
-          { "ra": 116.329, "dec": 28.026, "label": "Pollux",     "color": "#ffd080", "r": 12 }
+          {
+            "ra": 78.634,
+            "dec": -8.202,
+            "label": "Rigel",
+            "color": "#90c8ff",
+            "r": 14
+          },
+          {
+            "ra": 88.793,
+            "dec": 7.407,
+            "label": "Betelgeuse",
+            "color": "#ff7060",
+            "r": 13
+          },
+          {
+            "ra": 113.65,
+            "dec": 31.888,
+            "label": "Castor",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 116.329,
+            "dec": 28.026,
+            "label": "Pollux",
+            "color": "#ffd080",
+            "r": 12
+          }
         ]
       },
       {
         "title": "The twin figures",
         "caption": "Below each head, a chain of fainter stars stretches south-southwest — the bodies of the twins, lying side by side. The two chains run nearly parallel, making the whole constellation look like two people walking together.",
-        "ra": 107, "dec": 25, "fov": 44,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 107,
+        "dec": 25,
+        "fov": 44,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 113.650, "dec": 31.888, "label": "Castor", "color": "#c8d8ff", "r": 10 },
-          { "ra": 116.329, "dec": 28.026, "label": "Pollux", "color": "#ffd080", "r": 12 }
+          {
+            "ra": 113.65,
+            "dec": 31.888,
+            "label": "Castor",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 116.329,
+            "dec": 28.026,
+            "label": "Pollux",
+            "color": "#ffd080",
+            "r": 12
+          }
         ]
       },
       {
         "title": "The Twins",
         "caption": "Pollux is the nearer twin at just 34 light-years, and its warm orange colour betrays its giant status. Castor, only 4.5° away, is actually six stars — three gravitationally bound pairs — all masquerading as one point of light.",
-        "ra": 115, "dec": 30, "fov": 20,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 115,
+        "dec": 30,
+        "fov": 20,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 113.650, "dec": 31.888, "label": "Castor", "color": "#c8d8ff", "r": 10 },
-          { "ra": 116.329, "dec": 28.026, "label": "Pollux", "color": "#ffd080", "r": 12 }
+          {
+            "ra": 113.65,
+            "dec": 31.888,
+            "label": "Castor",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 116.329,
+            "dec": 28.026,
+            "label": "Pollux",
+            "color": "#ffd080",
+            "r": 12
+          }
         ]
       },
       {
         "title": "The Geminids",
         "caption": "Gemini straddles the Milky Way and hosts the radiant of the Geminid meteor shower every December — the year's most reliable and prolific display, with up to 120 meteors per hour emanating from just above Castor.",
-        "ra": 103, "dec": 25, "fov": 58,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 103,
+        "dec": 25,
+        "fov": 58,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -241,44 +576,110 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Leo — the Lion, a spring constellation with one of the sky's most distinctive head shapes, anchored by bright Regulus.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Look south in spring",
         "caption": "Turn to the southern sky on a spring evening. Leo is the most prominent constellation of the spring sky for northern observers, riding high in the south in March and April.",
-        "ra": 160, "dec": 20, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 160,
+        "dec": 20,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The Sickle",
         "caption": "The lion's head and mane form a backward question mark called the Sickle. Regulus — a hot blue-white star sitting almost exactly on the ecliptic — anchors the base of the hook. It is the brightest star in Leo and impossible to miss once you know the shape.",
-        "ra": 153, "dec": 17, "fov": 28,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 153,
+        "dec": 17,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 152.093, "dec": 11.967, "label": "Regulus", "color": "#90c8ff", "r": 12 },
-          { "ra": 154.993, "dec": 19.841, "label": "Algieba", "color": "#ffd080", "r": 10 }
+          {
+            "ra": 152.093,
+            "dec": 11.967,
+            "label": "Regulus",
+            "color": "#90c8ff",
+            "r": 12
+          },
+          {
+            "ra": 154.993,
+            "dec": 19.841,
+            "label": "Algieba",
+            "color": "#ffd080",
+            "r": 10
+          }
         ]
       },
       {
         "title": "The full Lion",
         "caption": "The Sickle forms Leo's head; a right-angled triangle of stars to the east traces the haunches and tail. Denebola marks the tail tip. The whole figure does evoke a crouching lion facing west, sickle raised like a mane.",
-        "ra": 163, "dec": 17, "fov": 52,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 163,
+        "dec": 17,
+        "fov": 52,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 152.093, "dec": 11.967, "label": "Regulus",  "color": "#90c8ff", "r": 12 },
-          { "ra": 177.265, "dec": 14.572, "label": "Denebola", "color": "#c8d8ff", "r": 10 }
+          {
+            "ra": 152.093,
+            "dec": 11.967,
+            "label": "Regulus",
+            "color": "#90c8ff",
+            "r": 12
+          },
+          {
+            "ra": 177.265,
+            "dec": 14.572,
+            "label": "Denebola",
+            "color": "#c8d8ff",
+            "r": 10
+          }
         ]
       },
       {
         "title": "Found by the Pointers",
         "caption": "A useful trick: extend the Big Dipper's Pointer Stars southward — opposite the direction to Polaris — and you land on Regulus. The same two stars that find the North Star also find the Lion's heart.",
-        "ra": 159, "dec": 36, "fov": 76,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 159,
+        "dec": 36,
+        "fov": 76,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 165.932, "dec": 61.751, "label": "Dubhe",   "color": "#ffd080", "r": 11 },
-          { "ra": 165.460, "dec": 56.382, "label": "Merak",   "color": "#c8d8ff", "r": 9  },
-          { "ra": 152.093, "dec": 11.967, "label": "Regulus", "color": "#90c8ff", "r": 12 }
+          {
+            "ra": 165.932,
+            "dec": 61.751,
+            "label": "Dubhe",
+            "color": "#ffd080",
+            "r": 11
+          },
+          {
+            "ra": 165.46,
+            "dec": 56.382,
+            "label": "Merak",
+            "color": "#c8d8ff",
+            "r": 9
+          },
+          {
+            "ra": 152.093,
+            "dec": 11.967,
+            "label": "Regulus",
+            "color": "#90c8ff",
+            "r": 12
+          }
         ]
       }
     ]
@@ -288,41 +689,95 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Lyra — a small constellation but home to Vega, the fifth-brightest star in the sky and the dominant beacon of summer nights.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The summer sky",
         "caption": "Look overhead on a summer evening. From mid-northern latitudes Vega passes nearly directly overhead in August — impossible to miss. In the southern hemisphere it skims the northern horizon in winter.",
-        "ra": 285, "dec": 38, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 285,
+        "dec": 38,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The Summer Triangle",
         "caption": "Vega is the brightest corner of the Summer Triangle — an asterism formed with Deneb in Cygnus and Altair in Aquila. Vega blazes brilliant blue-white at magnitude 0.0; astronomers have historically used it as the calibration standard for the entire magnitude scale.",
-        "ra": 296, "dec": 30, "fov": 56,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 296,
+        "dec": 30,
+        "fov": 56,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 279.235, "dec": 38.784, "label": "Vega",   "color": "#90c8ff", "r": 16 },
-          { "ra": 310.358, "dec": 45.280, "label": "Deneb",  "color": "#c8d8ff", "r": 10 },
-          { "ra": 297.696, "dec": 8.868,  "label": "Altair", "color": "#ffe8b0", "r": 13 }
+          {
+            "ra": 279.235,
+            "dec": 38.784,
+            "label": "Vega",
+            "color": "#90c8ff",
+            "r": 16
+          },
+          {
+            "ra": 310.358,
+            "dec": 45.28,
+            "label": "Deneb",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 297.696,
+            "dec": 8.868,
+            "label": "Altair",
+            "color": "#ffe8b0",
+            "r": 13
+          }
         ]
       },
       {
         "title": "The Lyre",
         "caption": "Just south of Vega, four fainter stars form a small parallelogram — the frame of the lyre. The Ring Nebula (M57), a planetary nebula easily found in a small telescope, lies between the two southern stars of the parallelogram.",
-        "ra": 281, "dec": 36, "fov": 18,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 281,
+        "dec": 36,
+        "fov": 18,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 279.235, "dec": 38.784, "label": "Vega",        "color": "#90c8ff", "r": 16 },
-          { "ra": 283.396, "dec": 33.029, "label": "Ring Nebula", "color": "#aaddff", "r": 8  }
+          {
+            "ra": 279.235,
+            "dec": 38.784,
+            "label": "Vega",
+            "color": "#90c8ff",
+            "r": 16
+          },
+          {
+            "ra": 283.396,
+            "dec": 33.029,
+            "label": "Ring Nebula",
+            "color": "#aaddff",
+            "r": 8
+          }
         ]
       },
       {
         "title": "Brightest of summer",
         "caption": "Vega served as the north pole star around 12,000 BCE and will again around 13,700 CE, as Earth's axis slowly precesses. For now it is simply the queen of summer nights — brilliant, blue-white, and unmistakable overhead.",
-        "ra": 283, "dec": 37, "fov": 40,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 283,
+        "dec": 37,
+        "fov": 40,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -331,42 +786,102 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Taurus — the Bull, a winter constellation anchored by brilliant orange-red Aldebaran and the iconic Pleiades star cluster.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The winter sky",
         "caption": "Turn to the southern sky on a winter evening. Taurus lies northwest of Orion in the same brilliant winter star field, prominent from November through February and visible from both hemispheres.",
-        "ra": 75, "dec": 12, "fov": 82,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 75,
+        "dec": 12,
+        "fov": 82,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Follow the Belt",
         "caption": "If you can find Orion's Belt, Aldebaran is easy: follow the three belt stars northwest about 20° and you run straight into it. Aldebaran's distinctly orange-red colour makes it unmistakable — it is the angry eye of the charging bull.",
-        "ra": 76, "dec": 8, "fov": 42,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 76,
+        "dec": 8,
+        "fov": 42,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 83.002, "dec": -0.299, "label": "belt", "color": "#c8d8ff", "r": 8 },
-          { "ra": 84.053, "dec": -1.202, "label": "",    "color": "#c8d8ff", "r": 8 },
-          { "ra": 85.190, "dec": -1.943, "label": "",    "color": "#c8d8ff", "r": 8 },
-          { "ra": 68.980, "dec": 16.509, "label": "Aldebaran", "color": "#ff9060", "r": 14 }
+          {
+            "ra": 83.002,
+            "dec": -0.299,
+            "label": "belt",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 84.053,
+            "dec": -1.202,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 85.19,
+            "dec": -1.943,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 68.98,
+            "dec": 16.509,
+            "label": "Aldebaran",
+            "color": "#ff9060",
+            "r": 14
+          }
         ]
       },
       {
         "title": "The V-face and the Pleiades",
         "caption": "Aldebaran sits at the tip of the V-shaped Hyades cluster — the bull's face. Although it looks like part of the V, Aldebaran is a foreground star at just 65 light-years, while the Hyades lie 150 light-years away. The Pleiades jewel-box glitters to the northwest, marking the bull's shoulder.",
-        "ra": 64, "dec": 20, "fov": 44,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 64,
+        "dec": 20,
+        "fov": 44,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 68.980, "dec": 16.509, "label": "Aldebaran", "color": "#ff9060", "r": 14 },
-          { "ra": 56.75,  "dec": 24.12,  "label": "Pleiades",  "color": "#c8d8ff", "r": 13 }
+          {
+            "ra": 68.98,
+            "dec": 16.509,
+            "label": "Aldebaran",
+            "color": "#ff9060",
+            "r": 14
+          },
+          {
+            "ra": 56.75,
+            "dec": 24.12,
+            "label": "Pleiades",
+            "color": "#c8d8ff",
+            "r": 13
+          }
         ]
       },
       {
         "title": "The Bull",
         "caption": "Taurus rewards slow looking: the Hyades V, orange Aldebaran, the Pleiades jewel-box, and the long horns extending northeast. On a clear night, count how many Pleiades you can see unaided — most people spot six or seven, though sharp eyes find more.",
-        "ra": 67, "dec": 18, "fov": 60,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 67,
+        "dec": 18,
+        "fov": 60,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -376,41 +891,95 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Ursa Major — home of the Big Dipper, one of the most recognisable star patterns in the northern sky.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Look north",
         "caption": "Turn to the northern sky. Ursa Major is circumpolar for most northern hemisphere observers — it never sets, wheeling around the pole through the night and seasons. In spring it rides highest overhead.",
-        "ra": 170, "dec": 55, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 170,
+        "dec": 55,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "The Big Dipper",
         "caption": "The Big Dipper is unmistakable: four stars form the bowl, three arc away to form the handle. The two stars on the outer edge of the bowl — Dubhe and Merak — are the Pointer Stars, your most useful navigational tool in the northern sky.",
-        "ra": 186, "dec": 56, "fov": 40,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 186,
+        "dec": 56,
+        "fov": 40,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 165.932, "dec": 61.751, "label": "Dubhe",  "color": "#ffd080", "r": 11 },
-          { "ra": 165.460, "dec": 56.382, "label": "Merak",  "color": "#c8d8ff", "r": 9  }
+          {
+            "ra": 165.932,
+            "dec": 61.751,
+            "label": "Dubhe",
+            "color": "#ffd080",
+            "r": 11
+          },
+          {
+            "ra": 165.46,
+            "dec": 56.382,
+            "label": "Merak",
+            "color": "#c8d8ff",
+            "r": 9
+          }
         ]
       },
       {
         "title": "Follow the Pointers",
         "caption": "Draw a line from Merak through Dubhe and keep going about 29° — five times the gap between them — and you land on Polaris, the North Star. Polaris marks the celestial north pole and barely moves all night while every other star circles around it.",
-        "ra": 164, "dec": 76, "fov": 44,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 164,
+        "dec": 76,
+        "fov": 44,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 165.932, "dec": 61.751, "label": "Dubhe",   "color": "#ffd080", "r": 11 },
-          { "ra": 165.460, "dec": 56.382, "label": "Merak",   "color": "#c8d8ff", "r": 9  },
-          { "ra": 37.946,  "dec": 89.264, "label": "Polaris", "color": "#ffe8b0", "r": 10 }
+          {
+            "ra": 165.932,
+            "dec": 61.751,
+            "label": "Dubhe",
+            "color": "#ffd080",
+            "r": 11
+          },
+          {
+            "ra": 165.46,
+            "dec": 56.382,
+            "label": "Merak",
+            "color": "#c8d8ff",
+            "r": 9
+          },
+          {
+            "ra": 37.946,
+            "dec": 89.264,
+            "label": "Polaris",
+            "color": "#ffe8b0",
+            "r": 10
+          }
         ]
       },
       {
         "title": "The Great Bear",
         "caption": "The Big Dipper is just the back and tail of Ursa Major — the Great Bear. Fainter stars extend outward to trace the head, shoulders and paws. It is the third-largest constellation in the sky and one of the oldest recognised star figures in human history.",
-        "ra": 170, "dec": 52, "fov": 70,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 170,
+        "dec": 52,
+        "fov": 70,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -419,39 +988,81 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Scorpius — one of the most magnificent constellations, shaped unmistakably like a scorpion curling through the summer Milky Way.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Look south in summer",
         "caption": "Look low to the southern sky on a summer evening. In July, Scorpius hugs the southern horizon for northern observers. In the southern hemisphere it rides high overhead, fully revealing its spectacular curved tail.",
-        "ra": 252, "dec": -15, "fov": 82,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 252,
+        "dec": -15,
+        "fov": 82,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Find Antares",
         "caption": "The easiest entry point is Antares — a brilliant red-orange supergiant marking the scorpion's heart. It is one of the largest stars visible to the naked eye, and its distinctly reddish colour is obvious at a glance.",
-        "ra": 248, "dec": -26, "fov": 30,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 248,
+        "dec": -26,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 247.352, "dec": -26.432, "label": "Antares", "color": "#ff7060", "r": 14 }
+          {
+            "ra": 247.352,
+            "dec": -26.432,
+            "label": "Antares",
+            "color": "#ff7060",
+            "r": 14
+          }
         ]
       },
       {
         "title": "The scorpion's curve",
         "caption": "Stars arc north of Antares to form the head and claws, while the tail sweeps south and east, curling back on itself through the Milky Way. Shaula marks the tip of the sting — best seen from latitudes below about 35°N where the tail clears the horizon.",
-        "ra": 253, "dec": -31, "fov": 52,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 253,
+        "dec": -31,
+        "fov": 52,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 247.352, "dec": -26.432, "label": "Antares",        "color": "#ff7060", "r": 14 },
-          { "ra": 263.402, "dec": -37.104, "label": "Shaula (sting)", "color": "#c8d8ff", "r": 10 }
+          {
+            "ra": 247.352,
+            "dec": -26.432,
+            "label": "Antares",
+            "color": "#ff7060",
+            "r": 14
+          },
+          {
+            "ra": 263.402,
+            "dec": -37.104,
+            "label": "Shaula (sting)",
+            "color": "#c8d8ff",
+            "r": 10
+          }
         ]
       },
       {
         "title": "Hunter and scorpion",
         "caption": "Scorpius rides the Milky Way with the galactic core glowing just to its east in Sagittarius. Ancient myth says Scorpius and Orion the Hunter chase each other across the sky — when one rises in the east, the other sets in the west.",
-        "ra": 252, "dec": -22, "fov": 65,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 252,
+        "dec": -22,
+        "fov": 65,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       }
     ]
   },
@@ -461,45 +1072,117 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll find Orion — arguably the most recognizable constellation in the sky, visible from every inhabited place on Earth.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Face south in winter",
         "caption": "Look to the southern sky on a winter evening. In the northern hemisphere Orion rides high in the south; in the southern hemisphere he's high in the north. Best seen January through March.",
-        "ra": 83, "dec": 5, "fov": 82,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 83,
+        "dec": 5,
+        "fov": 82,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Three stars in a row",
         "caption": "The Belt is unmistakable — three bright stars of nearly equal magnitude in a perfectly straight row. Nothing else in the sky looks quite like it. Alnitak, Alnilam and Mintaka span just three degrees, yet stand out from dozens of degrees away.",
-        "ra": 84, "dec": -1, "fov": 22,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 84,
+        "dec": -1,
+        "fov": 22,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 83.002, "dec": -0.299, "label": "Mintaka  δ",  "color": "#c8d8ff", "r": 9  },
-          { "ra": 84.053, "dec": -1.202, "label": "Alnilam  ε",  "color": "#c8d8ff", "r": 10 },
-          { "ra": 85.190, "dec": -1.943, "label": "Alnitak  ζ",  "color": "#c8d8ff", "r": 10 }
+          {
+            "ra": 83.002,
+            "dec": -0.299,
+            "label": "Mintaka  δ",
+            "color": "#c8d8ff",
+            "r": 9
+          },
+          {
+            "ra": 84.053,
+            "dec": -1.202,
+            "label": "Alnilam  ε",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 85.19,
+            "dec": -1.943,
+            "label": "Alnitak  ζ",
+            "color": "#c8d8ff",
+            "r": 10
+          }
         ]
       },
       {
         "title": "The Hunter",
         "caption": "With the Belt found, the rest of the Hunter falls into place. At the upper-left shoulder glows Betelgeuse (α Ori, mag 0.4) — a red supergiant nearing the end of its life. At the lower-right foot blazes Rigel (β Ori, mag 0.1) — brilliant blue-white, one of the most luminous stars in the galaxy. The colour contrast is visible to the naked eye.",
-        "ra": 84, "dec": -1, "fov": 48,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 84,
+        "dec": -1,
+        "fov": 48,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 88.793, "dec": 7.407,  "label": "Betelgeuse  α", "color": "#ff7060", "r": 14 },
-          { "ra": 78.634, "dec": -8.202, "label": "Rigel  β",      "color": "#90c8ff", "r": 16 }
+          {
+            "ra": 88.793,
+            "dec": 7.407,
+            "label": "Betelgeuse  α",
+            "color": "#ff7060",
+            "r": 14
+          },
+          {
+            "ra": 78.634,
+            "dec": -8.202,
+            "label": "Rigel  β",
+            "color": "#90c8ff",
+            "r": 16
+          }
         ]
       },
       {
         "title": "A compass for winter",
         "caption": "The Belt is the most useful signpost in the winter sky. Follow it to the right (northwest) and you reach the Pleiades and Aldebaran, the red eye of Taurus. Follow it to the left (southeast) and you reach Sirius — the brightest star in the entire night sky.",
-        "ra": 83, "dec": 2, "fov": 68,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 83,
+        "dec": 2,
+        "fov": 68,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 101.287, "dec": -16.716, "label": "Sirius",    "color": "#90c8ff", "r": 16 },
-          { "ra": 68.980,  "dec": 16.509,  "label": "Aldebaran", "color": "#ff7060", "r": 12 },
-          { "ra": 56.75,   "dec": 24.12,   "label": "Pleiades",  "color": "#c8d8ff", "r": 14 }
+          {
+            "ra": 101.287,
+            "dec": -16.716,
+            "label": "Sirius",
+            "color": "#90c8ff",
+            "r": 16
+          },
+          {
+            "ra": 68.98,
+            "dec": 16.509,
+            "label": "Aldebaran",
+            "color": "#ff7060",
+            "r": 12
+          },
+          {
+            "ra": 56.75,
+            "dec": 24.12,
+            "label": "Pleiades",
+            "color": "#c8d8ff",
+            "r": 14
+          }
         ]
       }
     ]
@@ -509,55 +1192,2558 @@
       {
         "title": "Orient yourself",
         "caption": "You're somewhere in the night sky. Tonight we'll navigate to Sagittarius, a southern summer constellation best seen in July and August. Click Next to begin.",
-        "random": true, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Face south in summer",
         "caption": "Turn to the southern sky on a summer night. The Milky Way arcs through this region — the bright, hazy band is our galaxy seen edge-on. Sagittarius sits right along it, near the galactic core.",
-        "ra": 275, "dec": -8, "fov": 80,
-        "photo": true, "diagram": false, "names": false, "bounds": false
+        "ra": 275,
+        "dec": -8,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
       },
       {
         "title": "Find Scorpius first",
         "caption": "Start with Scorpius — its distinctive fishhook curve is easy to recognise. Antares, the bright orange-red star at its heart, is one of the biggest stars in the sky. From Antares the tail curves down and east to a stinging pair of stars.",
-        "ra": 252, "dec": -26, "fov": 48,
-        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "ra": 252,
+        "dec": -26,
+        "fov": 48,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
-          { "ra": 247.352, "dec": -26.432, "label": "Antares",       "color": "#ff7060", "r": 13 },
-          { "ra": 263.402, "dec": -37.104, "label": "Shaula (sting)","color": "#c8d8ff", "r": 10 }
+          {
+            "ra": 247.352,
+            "dec": -26.432,
+            "label": "Antares",
+            "color": "#ff7060",
+            "r": 13
+          },
+          {
+            "ra": 263.402,
+            "dec": -37.104,
+            "label": "Shaula (sting)",
+            "color": "#c8d8ff",
+            "r": 10
+          }
         ]
       },
       {
         "title": "Look east of Scorpius",
         "caption": "Now shift your gaze to the left (east) of Scorpius's tail. Sagittarius sits right beside it — the spout of its Teapot asterism aims directly back toward Scorpius. If you can find the scorpion, the teapot is right next door.",
-        "ra": 268, "dec": -26, "fov": 54,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 268,
+        "dec": -26,
+        "fov": 54,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
       },
       {
         "title": "The Teapot asterism",
         "caption": "Here's the Teapot — eight stars of 2nd and 3rd magnitude forming the outline of a teapot. The spout (three stars, left) points west toward Scorpius. The handle (two stars, right) points east. A triangular lid sits on top.",
-        "ra": 282, "dec": -27, "fov": 34,
-        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "ra": 282,
+        "dec": -27,
+        "fov": 34,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
         "highlight": [
-          { "ra": 271.452, "dec": -30.424, "label": "spout tip", "color": "#8ab4f8", "r": 9 }
+          {
+            "ra": 271.452,
+            "dec": -30.424,
+            "label": "spout tip",
+            "color": "#8ab4f8",
+            "r": 9
+          }
         ]
       },
       {
         "title": "Key stars",
         "caption": "Kaus Australis (ε Sgr, mag 1.8) is the brightest star in Sagittarius — it sits at the bottom of the spout. Nunki (σ Sgr, mag 2.0) marks the top of the handle at upper right. Memorise these two and the rest follows.",
-        "ra": 280, "dec": -29, "fov": 26,
-        "photo": true, "diagram": true, "names": false, "bounds": false,
+        "ra": 280,
+        "dec": -29,
+        "fov": 26,
+        "photo": true,
+        "diagram": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
-          { "ra": 276.043, "dec": -34.384, "label": "Kaus Australis  ε", "color": "#ffe090", "r": 14 },
-          { "ra": 283.816, "dec": -26.297, "label": "Nunki  σ",          "color": "#90c8ff", "r": 11 }
+          {
+            "ra": 276.043,
+            "dec": -34.384,
+            "label": "Kaus Australis  ε",
+            "color": "#ffe090",
+            "r": 14
+          },
+          {
+            "ra": 283.816,
+            "dec": -26.297,
+            "label": "Nunki  σ",
+            "color": "#90c8ff",
+            "r": 11
+          }
         ]
       },
       {
         "title": "Steam from the spout",
         "caption": "Pull back and look at the big picture. The 'steam' rising from the Teapot's spout is the brightest part of the Milky Way — the galactic core. Now you can find it without any guides.",
-        "ra": 278, "dec": -18, "fov": 62,
-        "photo": true, "diagram": true, "names": true, "bounds": false
+        "ra": 278,
+        "dec": -18,
+        "fov": 62,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
+      }
+    ]
+  },
+  "Cygnus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Cygnus — the Swan, whose stars form the unmistakable Northern Cross, one of the most striking asterisms of the summer Milky Way.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look overhead in summer",
+        "caption": "On a summer evening, look nearly overhead from mid-northern latitudes. Cygnus rides high through the Milky Way in August and September, with the Northern Cross oriented nearly vertical in the sky. From the southern hemisphere the cross appears low in the northern sky.",
+        "ra": 305,
+        "dec": 42,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Deneb and the Northern Cross",
+        "caption": "The brightest star, Deneb (mag 1.2), anchors the top of the Northern Cross and marks the swan's tail. Despite appearing similar in brightness to nearby stars, Deneb is actually a distant supergiant — roughly 2,600 light-years away — making it one of the intrinsically most luminous stars in the sky.",
+        "ra": 308,
+        "dec": 43,
+        "fov": 42,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 310.35798,
+            "dec": 45.280338,
+            "label": "Deneb",
+            "color": "#90c8ff",
+            "r": 14
+          }
+        ]
+      },
+      {
+        "title": "The swan in flight",
+        "caption": "Sadr (mag 2.2) sits at the center of the cross — the swan's chest — while Albireo (mag 3.0) marks the beak at the southern tip, one of the most celebrated double stars, appearing gold and blue in a small telescope. The wings of the swan stretch east and west along the Milky Way band.",
+        "ra": 303,
+        "dec": 39,
+        "fov": 48,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 310.35798,
+            "dec": 45.280338,
+            "label": "Deneb",
+            "color": "#90c8ff",
+            "r": 14
+          },
+          {
+            "ra": 305.557095,
+            "dec": 40.256679,
+            "label": "Sadr",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 292.680345,
+            "dec": 27.959681,
+            "label": "Albireo",
+            "color": "#ffd080",
+            "r": 9
+          }
+        ]
+      },
+      {
+        "title": "Part of the Summer Triangle",
+        "caption": "Deneb forms the Summer Triangle with Vega (in Lyra, 24° to the west-southwest) and Altair (in Aquila, about 38° to the south). The Milky Way runs directly through Cygnus, making it one of the richest binocular regions in the sky. From a dark site the Great Rift — a dark lane of dust — bisects the constellation lengthwise.",
+        "ra": 300,
+        "dec": 30,
+        "fov": 70,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          { "ra": 310.358, "dec": 45.280, "label": "Deneb",      "color": "#c8d8ff", "r": 12 },
+          { "ra": 279.235, "dec": 38.784, "label": "Vega",       "color": "#90c8ff", "r": 16 },
+          { "ra": 297.696, "dec": 8.868,  "label": "Altair",     "color": "#ffe8b0", "r": 13 },
+          { "line": [[326.19,54.21],[317.38,48.12],[310.6,45.78],[307.29,37.91],[299.13,35.8],[297.23,25.48],[294.11,23.52],[293.97,20.65],[290,13.02]], "label": "Great Rift", "color": "#555555" }
+        ]
+      }
+    ]
+  },
+  "Ursa Minor": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Ursa Minor — the Little Bear, whose tail-tip star Polaris marks the north celestial pole and has guided navigators for centuries.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look north, any night of the year",
+        "caption": "Face north from anywhere in the northern hemisphere and you can find Polaris, which sits within 1° of the true celestial pole and barely moves throughout the night. The Little Dipper is circumpolar and always above the horizon at any northern latitude, though its faint stars require reasonably dark skies.",
+        "ra": 100,
+        "dec": 75,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Use the Big Dipper as a pointer",
+        "caption": "The two 'Pointer Stars' at the outer edge of the Big Dipper's bowl — Merak (mag 2.4) and Dubhe (mag 1.8) — point directly to Polaris. Extend the line from Merak through Dubhe about five times the distance between them and you land on Polaris (mag 2.0). Polaris is not the brightest star, so many beginners are surprised by how modest it looks.",
+        "ra": 120,
+        "dec": 68,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 37.94625,
+            "dec": 89.264109,
+            "label": "Polaris",
+            "color": "#ffe8b0",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "The Little Dipper",
+        "caption": "Polaris marks the tip of the Little Dipper's handle. The bowl opens toward Kochab (mag 2.1) and Pherkad (mag 3.0), the two brightest bowl stars and the most visible parts of the Little Bear in suburban skies. The handle curves from Polaris back toward a dim arc of stars.",
+        "ra": 200,
+        "dec": 80,
+        "fov": 32,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 37.94625,
+            "dec": 89.264109,
+            "label": "Polaris",
+            "color": "#ffe8b0",
+            "r": 12
+          },
+          {
+            "ra": 222.676575,
+            "dec": 74.155505,
+            "label": "Kochab",
+            "color": "#ff7060",
+            "r": 11
+          }
+        ]
+      },
+      {
+        "title": "The ancient pole star",
+        "caption": "Due to Earth's precession, the celestial pole slowly traces a circle among the stars over 26,000 years. Around 2700 BC, the star Thuban in Draco was the pole star; Polaris will reach its closest approach to the true pole around 2100 AD before slowly drifting away. Polaris is actually a triple star system about 433 light-years distant.",
+        "ra": 100,
+        "dec": 82,
+        "fov": 50,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
+      }
+    ]
+  },
+  "Andromeda": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Andromeda — home of the Andromeda Galaxy, the most distant object visible to the naked eye at 2.5 million light-years.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look high in the autumn sky",
+        "caption": "In October and November, Andromeda rides high overhead for northern observers. The Great Square of Pegasus is the key landmark — Andromeda attaches to the northeast corner of the Square at the star Alpheratz. From southern latitudes below about 40°S the constellation is not well seen.",
+        "ra": 15,
+        "dec": 35,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Start at the Great Square",
+        "caption": "Alpheratz (mag 2.1), the brightest star of Andromeda, is shared with the Great Square of Pegasus — it marks the Square's northeast corner. Two curving chains of stars extend northeast from Alpheratz: the main chain runs through Mirach (mag 2.1) and Almach (mag 2.1), a beautiful color-contrast double star in a telescope.",
+        "ra": 10,
+        "dec": 34,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 2.096865,
+            "dec": 29.090432,
+            "label": "Alpheratz",
+            "color": "#90c8ff",
+            "r": 12
+          },
+          {
+            "ra": 17.43291,
+            "dec": 35.620558,
+            "label": "Mirach",
+            "color": "#ff7060",
+            "r": 12
+          },
+          {
+            "ra": 30.97476,
+            "dec": 42.329725,
+            "label": "Almach",
+            "color": "#ff7060",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "Andromeda's full arc",
+        "caption": "The constellation arcs northeast from Alpheratz through Mirach to Almach over about 30°. Mirach is a useful guide: two stars hop north from Mirach leads to the position of M31. Under dark skies the Andromeda Galaxy appears as a large fuzzy oval several times the diameter of the full Moon.",
+        "ra": 12,
+        "dec": 37,
+        "fov": 52,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 2.096865,
+            "dec": 29.090432,
+            "label": "Alpheratz",
+            "color": "#90c8ff",
+            "r": 12
+          },
+          {
+            "ra": 17.43291,
+            "dec": 35.620558,
+            "label": "Mirach",
+            "color": "#ff7060",
+            "r": 12
+          },
+          {
+            "ra": 30.97476,
+            "dec": 42.329725,
+            "label": "Almach",
+            "color": "#ff7060",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "The Andromeda Galaxy",
+        "caption": "M31 lies about 11° northwest of Mirach and is the farthest thing most people ever see with unaided eyes. It is a spiral galaxy containing around a trillion stars, roughly twice the mass of the Milky Way, and is approaching us at 110 km/s — it will merge with our galaxy in about 4.5 billion years.",
+        "ra": 10.68,
+        "dec": 41.27,
+        "fov": 22,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 10.68,
+            "dec": 41.27,
+            "label": "M31",
+            "color": "#ffe8b0",
+            "r": 16
+          }
+        ]
+      }
+    ]
+  },
+  "Aquarius": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Aquarius — the Water Bearer, a sprawling but faint zodiacal constellation best known for its Y-shaped Water Jar asterism.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south in autumn",
+        "caption": "In September and October, Aquarius crosses the southern meridian during the evening hours for northern observers, sitting between about 0° and -25° declination. It is an expansive but faint constellation — no stars brighter than magnitude 2.9 — so dark skies help considerably.",
+        "ra": 332,
+        "dec": -8,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find the Water Jar",
+        "caption": "The Y-shaped Water Jar asterism, centered on Sadalsud (Beta Aquarii, mag 2.9) — the constellation's brightest star — is the most useful entry point. Sadalsud lies about 45° north of Fomalhaut in Piscis Austrinus. The name Sadalsud means 'luckiest of the lucky' in Arabic, referring to its ancient role as herald of spring rains.",
+        "ra": 322,
+        "dec": -4,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 322.88973,
+            "dec": -5.571172,
+            "label": "Sadalsud",
+            "color": "#ffd080",
+            "r": 12
+          },
+          {
+            "ra": 331.445985,
+            "dec": -0.319851,
+            "label": "Sadalsuud",
+            "color": "#ffd080",
+            "r": 11
+          }
+        ]
+      },
+      {
+        "title": "The water bearer's full extent",
+        "caption": "The constellation sprawls south and east of the Water Jar, with streams of stars representing water pouring from the jar toward Fomalhaut in Piscis Austrinus to the south. The Saturn Nebula (NGC 7009) near Nu Aquarii is a fine planetary nebula in small telescopes, and the Helix Nebula (NGC 7293) nearby is the closest planetary nebula to Earth at about 650 light-years.",
+        "ra": 335,
+        "dec": -12,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 322.88973,
+            "dec": -5.571172,
+            "label": "Sadalsud",
+            "color": "#ffd080",
+            "r": 12
+          },
+          {
+            "ra": 343.15364999999997,
+            "dec": -7.579599,
+            "label": "Skat",
+            "color": "#ff7060",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Aries": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Aries — the Ram, a small but historically important zodiacal constellation that was once the location of the vernal equinox.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look west of the Pleiades",
+        "caption": "In November and December evenings, Aries is well-placed high in the southern sky for northern observers. The Pleiades star cluster (in Taurus) is the easiest landmark: look about 20° west of the Pleiades to find the small curved arc of Aries. The constellation has just a handful of notable stars.",
+        "ra": 38,
+        "dec": 22,
+        "fov": 65,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Hamal and Sheratan",
+        "caption": "Hamal (Alpha Arietis, mag 2.0) is the constellation's brightest star — an orange giant about 66 light-years away. Sheratan (Beta Arietis, mag 2.6), just 4° west of Hamal, forms an obvious pair with it. The two stars curve slightly together, pointing westward. A third fainter star, Mesarthim (mag 3.9), extends the arc.",
+        "ra": 33,
+        "dec": 22,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 31.793325,
+            "dec": 23.462423,
+            "label": "Hamal",
+            "color": "#ffd080",
+            "r": 13
+          },
+          {
+            "ra": 28.66002,
+            "dec": 20.808035,
+            "label": "Sheratan",
+            "color": "#c8d8ff",
+            "r": 10
+          }
+        ]
+      },
+      {
+        "title": "The First Point of Aries",
+        "caption": "Though Aries is small and modest, it was the most important constellation in ancient astronomy: the vernal equinox, where the Sun crosses the celestial equator each March, was once located here. Due to precession it has since moved into Pisces, but 'First Point of Aries' remains the term for the vernal equinox direction. Aries is best seen from mid-northern latitudes in November.",
+        "ra": 35,
+        "dec": 22,
+        "fov": 24,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 31.793325,
+            "dec": 23.462423,
+            "label": "Hamal",
+            "color": "#ffd080",
+            "r": 13
+          },
+          {
+            "ra": 28.66002,
+            "dec": 20.808035,
+            "label": "Sheratan",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 42.495945,
+            "dec": 27.260507,
+            "label": "Botein",
+            "color": "#90c8ff",
+            "r": 8
+          }
+        ]
+      }
+    ]
+  },
+  "Auriga": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Auriga — the Charioteer, anchored by brilliant Capella, the sixth-brightest star in the sky and a golden-yellow beacon of the winter sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look high in the winter sky",
+        "caption": "In January and February, Capella passes nearly overhead at mid-northern latitudes, making it one of the most prominent winter stars. From Orion's belt, move north and slightly west for about 45° to reach Capella. Capella is circumpolar for observers north of about 44°N — it never sets from those latitudes.",
+        "ra": 81,
+        "dec": 22,
+        "fov": 62,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false,
+        "highlight": [
+          { "ra": 79.172, "dec": 45.998, "label": "Capella", "color": "#ffe8b0", "r": 14 },
+          { "ra": 83.002, "dec": -0.299, "label": "belt",    "color": "#c8d8ff", "r": 8  },
+          { "ra": 84.053, "dec": -1.202, "label": "",        "color": "#c8d8ff", "r": 8  },
+          { "ra": 85.190, "dec": -1.943, "label": "",        "color": "#c8d8ff", "r": 8  }
+        ]
+      },
+      {
+        "title": "Find Capella",
+        "caption": "Capella (mag 0.1) appears as a single golden-yellow star but is actually two giant G-type stars orbiting each other every 104 days, about 43 light-years away. It is very similar in color to the Sun but far more luminous. Look for a prominent pentagon of stars with Capella at the top — that is Auriga.",
+        "ra": 82,
+        "dec": 42,
+        "fov": 38,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 79.17225,
+            "dec": 45.997991,
+            "label": "Capella",
+            "color": "#ffe8b0",
+            "r": 16
+          }
+        ]
+      },
+      {
+        "title": "The pentagon and the Kids",
+        "caption": "Menkalinan (Beta Aurigae, mag 1.9) marks the opposite corner of the pentagon from Capella. Three faint stars called the Kids — Epsilon, Zeta, and Eta Aurigae — cluster just southwest of Capella. Epsilon Aurigae is a remarkable eclipsing system: a supergiant star eclipsed every 27 years by a vast disk of unknown material.",
+        "ra": 82,
+        "dec": 42,
+        "fov": 36,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 79.17225,
+            "dec": 45.997991,
+            "label": "Capella",
+            "color": "#ffe8b0",
+            "r": 16
+          },
+          {
+            "ra": 89.88223500000001,
+            "dec": 44.947433,
+            "label": "Menkalinan",
+            "color": "#90c8ff",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "Rich in star clusters",
+        "caption": "The Milky Way passes through Auriga, and the constellation contains three fine Messier open clusters: M36, M37 (the richest, containing about 500 stars), and M38. All three are visible as hazy patches in binoculars and resolve into lovely star fields in a small telescope. They lie roughly along a line in the southern part of the pentagon.",
+        "ra": 83,
+        "dec": 37,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false
+      }
+    ]
+  },
+  "Boötes": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Boötes — the Herdsman, home to Arcturus, the brightest star north of the celestial equator and a brilliant orange beacon of the spring sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Arc to Arcturus",
+        "caption": "In April and May evenings, Boötes is high in the southeast sky. The classic mnemonic 'Arc to Arcturus' guides you straight there: follow the curved arc of the Big Dipper's handle outward for about 30° and you land on Arcturus. This is one of the most reliable star-hops in astronomy.",
+        "ra": 216,
+        "dec": 30,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Arcturus",
+        "caption": "Arcturus (mag -0.1) is unmistakably orange — an evolved K-type giant, about 37 light-years away, and the fourth-brightest star in the night sky. It is moving through space at an unusually high velocity relative to the Sun and belongs to the thick disk of the Milky Way, older stars with a different orbital history.",
+        "ra": 215,
+        "dec": 22,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 213.91545,
+            "dec": 19.18241,
+            "label": "Arcturus",
+            "color": "#ff9060",
+            "r": 16
+          }
+        ]
+      },
+      {
+        "title": "The kite shape of Boötes",
+        "caption": "Boötes forms a kite or ice cream cone shape with Arcturus at its tip (southernmost point). Izar (Epsilon Boötis, mag 2.4) marks one side of the kite — it is a stunning orange-and-blue double star in a small telescope, nicknamed Pulcherrima ('most beautiful') by astronomers. The kite widens north from Arcturus toward a line of four stars.",
+        "ra": 217,
+        "dec": 31,
+        "fov": 52,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 213.91545,
+            "dec": 19.18241,
+            "label": "Arcturus",
+            "color": "#ff9060",
+            "r": 16
+          },
+          {
+            "ra": 221.24676,
+            "dec": 27.074222,
+            "label": "Izar",
+            "color": "#ff9060",
+            "r": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Cancer": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Cancer — the Crab, the faintest of the zodiacal constellations, but home to the beautiful Beehive Cluster, a naked-eye star cluster known since antiquity.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look between Gemini and Leo",
+        "caption": "In February and March evenings, Cancer is due south at midnight. It lies between the unmistakable twin stars of Gemini (Pollux and Castor) to the west and bright Regulus in Leo to the east — draw a line between them and Cancer occupies the middle third. Its stars are all below magnitude 3.5, so this region will look conspicuously sparse.",
+        "ra": 130,
+        "dec": 18,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Spot the Beehive Cluster",
+        "caption": "The Beehive (M44, Praesepe) is a naked-eye fuzzy patch at the center of Cancer, visible as a smear of light under dark skies and resolving in binoculars into dozens of stars. It is one of the nearest open clusters at about 610 light-years. The faint Y-shape of Cancer's main stars surrounds the cluster on four sides.",
+        "ra": 130,
+        "dec": 19,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 130.1,
+            "dec": 19.67,
+            "label": "Beehive (M44)",
+            "color": "#ffe8b0",
+            "r": 14
+          }
+        ]
+      },
+      {
+        "title": "Cancer's main stars",
+        "caption": "Acubens (Alpha Cancri, mag 4.3) and Asellus Australis (Delta Cancri, mag 3.9) are the most identifiable stars, flanking the Beehive. Asellus Australis and Asellus Borealis are the Southern and Northern Donkeys of ancient lore, watching over the Beehive manger. Cancer's inconspicuous stars make it an ideal dark-sky test: if you can see the individual Beehive stars naked-eye, conditions are excellent.",
+        "ra": 129,
+        "dec": 19,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 130.1,
+            "dec": 19.67,
+            "label": "Beehive (M44)",
+            "color": "#ffe8b0",
+            "r": 14
+          },
+          {
+            "ra": 131.17125,
+            "dec": 18.154309,
+            "label": "Asellus Australis",
+            "color": "#ffd080",
+            "r": 9
+          },
+          {
+            "ra": 124.12884,
+            "dec": 9.185545,
+            "label": "Acubens",
+            "color": "#ff7060",
+            "r": 8
+          }
+        ]
+      }
+    ]
+  },
+  "Canis Minor": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Canis Minor — the Lesser Dog, a tiny constellation defined almost entirely by one brilliant star: Procyon, the eighth-brightest star in the night sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look east of Orion in winter",
+        "caption": "In January and February, Procyon is bright and obvious in the southeast after Orion rises. From Betelgeuse at Orion's shoulder, move east-northeast about 25° and you will land directly on Procyon. The constellation is best seen January through March from both hemispheres.",
+        "ra": 115,
+        "dec": 8,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Procyon",
+        "caption": "Procyon (mag 0.4) is a white star about 11.5 light-years away — one of the Sun's closest neighbors. Like Sirius, it has a white dwarf companion (Procyon B) detectable only with large telescopes. Procyon forms the Winter Triangle with Sirius (Canis Major) and Betelgeuse (Orion) — a large asterism spanning about 25° per side.",
+        "ra": 114,
+        "dec": 7,
+        "fov": 18,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 114.825495,
+            "dec": 5.224993,
+            "label": "Procyon",
+            "color": "#c8d8ff",
+            "r": 15
+          }
+        ]
+      },
+      {
+        "title": "The two-star constellation",
+        "caption": "Canis Minor contains only two stars bright enough to see without effort: Procyon and Gomeisa (Beta CMi, mag 2.9), a blue-white star about 3° to the northwest. The 'dog body' is largely imaginary — there is little else to see. The simplicity of Canis Minor makes it a useful pointer: it marks the midpoint between Gemini's Pollux and Sirius in Canis Major.",
+        "ra": 113,
+        "dec": 7,
+        "fov": 16,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 114.825495,
+            "dec": 5.224993,
+            "label": "Procyon",
+            "color": "#c8d8ff",
+            "r": 15
+          },
+          {
+            "ra": 111.78768,
+            "dec": 8.289315,
+            "label": "Gomeisa",
+            "color": "#90c8ff",
+            "r": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Capricornus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Capricornus — the Sea Goat, a faint but distinctively shaped zodiacal constellation resembling an arrowhead or a bikini top in the southern autumn sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south in autumn",
+        "caption": "In September and October evenings, Capricornus sits due south for northern observers at a declination around -20°, making it always relatively low in the sky from mid-northern latitudes. Start at Altair in Aquila and drop south about 17° — Capricornus lies in the relatively starless region between Sagittarius to the west and Aquarius to the east.",
+        "ra": 316,
+        "dec": -18,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Algedi and Dabih",
+        "caption": "The western tip of the arrowhead is marked by Algedi (Alpha Capricorni, mag 3.6) and Dabih (Beta Capricorni, mag 3.0), a pair of stars about 1° apart that form an optical double visible to the naked eye. Dabih is a genuine multiple star system. Together they define the 'head' end of the sea goat's triangular shape.",
+        "ra": 307,
+        "dec": -14,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 304.51356,
+            "dec": -12.544852,
+            "label": "Algedi",
+            "color": "#ffe8b0",
+            "r": 9
+          },
+          {
+            "ra": 305.25280499999997,
+            "dec": -14.781367,
+            "label": "Dabih",
+            "color": "#ffd080",
+            "r": 10
+          }
+        ]
+      },
+      {
+        "title": "The sea goat's outline",
+        "caption": "Deneb Algedi (Delta Capricorni, mag 2.9) at the eastern tip is the constellation's brightest star — an eclipsing binary that dims slightly every 24.5 hours. The full arrowhead outline contains about eight to nine stars visible to the naked eye. Neptune was discovered in Capricornus in 1846.",
+        "ra": 315,
+        "dec": -20,
+        "fov": 33,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 304.51356,
+            "dec": -12.544852,
+            "label": "Algedi",
+            "color": "#ffe8b0",
+            "r": 9
+          },
+          {
+            "ra": 326.760165,
+            "dec": -16.127286,
+            "label": "Deneb Algedi",
+            "color": "#c8d8ff",
+            "r": 11
+          }
+        ]
+      }
+    ]
+  },
+  "Centaurus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Centaurus — the Centaur, a spectacular southern constellation containing the two nearest star systems to Earth: Alpha Centauri and Proxima Centauri.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south in the southern hemisphere",
+        "caption": "Centaurus is best seen from the southern hemisphere in April and May, when it culminates nearly overhead from latitudes around -35°. From northern latitudes above 25°N, only the northern edge is visible. Look for two unmistakably brilliant stars, Alpha and Beta Centauri, low in the south from subtropical northern locations.",
+        "ra": 202,
+        "dec": -48,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "The Southern Pointers",
+        "caption": "Rigil Kentaurus (Alpha Centauri, mag -0.0) is the third-brightest star in the night sky and the nearest star system to the Sun at 4.24 light-years — it is actually a triple system including dim Proxima Centauri, the closest individual star. Hadar (Beta Centauri, mag 0.6) is 4° away. Together they are called the Southern Pointers because they point directly to the Southern Cross (Crux).",
+        "ra": 213,
+        "dec": -57,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 219.911475,
+            "dec": -60.833976,
+            "label": "Rigil Kentaurus",
+            "color": "#ffe8b0",
+            "r": 16
+          },
+          {
+            "ra": 210.955935,
+            "dec": -60.373039,
+            "label": "Hadar",
+            "color": "#90c8ff",
+            "r": 14
+          }
+        ]
+      },
+      {
+        "title": "The full centaur",
+        "caption": "The Centaur's body sprawls over a large area north of Alpha and Beta Centauri, with Menkent (Theta Centauri, mag 2.1) marking the shoulder region. The constellation is the ninth-largest in the sky. Omega Centauri (NGC 5139), near the eastern boundary, is the largest and most massive globular cluster in the Milky Way — nearly 18 million solar masses in a sphere 150 light-years across, visible to the naked eye as a fuzzy star.",
+        "ra": 201,
+        "dec": -48,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 219.911475,
+            "dec": -60.833976,
+            "label": "Rigil Kentaurus",
+            "color": "#ffe8b0",
+            "r": 16
+          },
+          {
+            "ra": 210.955935,
+            "dec": -60.373039,
+            "label": "Hadar",
+            "color": "#90c8ff",
+            "r": 14
+          },
+          {
+            "ra": 211.670925,
+            "dec": -36.369954,
+            "label": "Menkent",
+            "color": "#ffd080",
+            "r": 11
+          }
+        ]
+      }
+    ]
+  },
+  "Cepheus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Cepheus — the King, a circumpolar northern constellation shaped like a child's drawing of a house, sitting between Cassiopeia and Polaris.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look near the north celestial pole",
+        "caption": "Cepheus is circumpolar for observers north of about 35°N and is best positioned on autumn evenings when it rides high overhead near the zenith. Find Cassiopeia's distinctive W shape first, then look on its northern side — Cepheus forms a blunt pentagon between Cassiopeia and Polaris.",
+        "ra": 335,
+        "dec": 68,
+        "fov": 65,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "The house-shaped asterism",
+        "caption": "The bright star Alderamin (Alpha Cephei, mag 2.5) marks one corner of the house's base. The triangular 'roof' points north toward Polaris. Although no star stands out dramatically, the house shape — once learned — is easy to recognize in a circumpolar sweep.",
+        "ra": 332,
+        "dec": 68,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 319.64445,
+            "dec": 62.585573,
+            "label": "Alderamin",
+            "color": "#c8d8ff",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "Garnet Star and Delta Cephei",
+        "caption": "Mu Cephei, the Garnet Star (not in the main line set), is one of the largest and reddest stars visible to the naked eye — a red supergiant. Delta Cephei (mag 3.5–4.4) is the prototype Cepheid variable, pulsating with a 5.4-day period that is perfectly predictable. Astronomers use Cepheids like Delta Cephei as 'standard candles' to measure cosmic distances.",
+        "ra": 333,
+        "dec": 67,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 319.64445,
+            "dec": 62.585573,
+            "label": "Alderamin",
+            "color": "#c8d8ff",
+            "r": 12
+          },
+          {
+            "ra": 337.292745,
+            "dec": 58.415198,
+            "label": "Zeta Cep",
+            "color": "#ffe8b0",
+            "r": 9
+          },
+          {
+            "ra": 333.75816,
+            "dec": 57.043587,
+            "label": "Delta Cep",
+            "color": "#ffe8b0",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Corona Borealis": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Corona Borealis — the Northern Crown, one of the most charming small constellations: a perfect semicircle of stars resembling a jeweled crown or laurel wreath.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look east of Boötes in spring",
+        "caption": "In May, June, and July, Corona Borealis is well-placed high in the east or overhead for northern observers. Find brilliant orange Arcturus in Boötes, then look about 22° to the east-northeast. The crown's semicircle sits in a region otherwise lacking bright stars, making it stand out despite the stars being only magnitude 2–4.",
+        "ra": 238,
+        "dec": 28,
+        "fov": 60,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Alphecca — the gem in the crown",
+        "caption": "Alphecca (Alpha CrB, also called Gemma, mag 2.2) is the brightest star in the crown and marks its center. It is a spectroscopic binary about 75 light-years away. The full arc of seven stars spans only about 10° and is one of the tightest, most recognizable small patterns in the sky — no other similar curved arc exists nearby.",
+        "ra": 236,
+        "dec": 28,
+        "fov": 18,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 233.67192,
+            "dec": 26.714693,
+            "label": "Alphecca",
+            "color": "#90c8ff",
+            "r": 13
+          }
+        ]
+      },
+      {
+        "title": "A crown of seven stars",
+        "caption": "The seven stars of the crown arc from northwest to southeast, with Alphecca as the brightest 'gem.' T Coronae Borealis (the Blaze Star) is a recurrent nova lurking in the crown — it is normally at magnitude 10 but erupts to naked-eye brightness (mag ~2) about every 80 years. The next eruption was predicted for around 2024–2025, so it may be visible as an extra bright star in this arc.",
+        "ra": 236,
+        "dec": 28,
+        "fov": 14,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 233.67192,
+            "dec": 26.714693,
+            "label": "Alphecca",
+            "color": "#90c8ff",
+            "r": 13
+          },
+          {
+            "ra": 239.39691,
+            "dec": 26.87788,
+            "label": "Nusakan",
+            "color": "#c8d8ff",
+            "r": 8
+          }
+        ]
+      }
+    ]
+  },
+  "Corvus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Corvus — the Crow, a compact, easy-to-recognize quadrilateral of four second-magnitude stars in the southern spring sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look southwest of Spica",
+        "caption": "In April and May evenings, Corvus is well-placed in the southern sky. Follow the classic pointer: 'Arc to Arcturus, speed on to Spica' — the mnemonic for following the Big Dipper's handle. Once you find brilliant blue-white Spica in Virgo, look about 15° to the southwest and you will see the compact tilted quadrilateral of Corvus.",
+        "ra": 185,
+        "dec": -19,
+        "fov": 55,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "The compact crow",
+        "caption": "The four main stars — Gienah (Gamma Corvi, mag 2.6), Kraz (Beta Corvi, mag 2.6), Algorab (Delta Corvi, mag 2.9), and Minkar (Epsilon Corvi, mag 3.0) — form a tight quadrilateral about 6° across. Gienah, the brightest, is a blue-white giant about 165 light-years away. A fifth star, Alchiba (Alpha Corvi, mag 4.0), sits off one corner.",
+        "ra": 185,
+        "dec": -20,
+        "fov": 18,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 187.466085,
+            "dec": -16.515432,
+            "label": "Gienah",
+            "color": "#c8d8ff",
+            "r": 11
+          },
+          {
+            "ra": 188.596815,
+            "dec": -23.396759,
+            "label": "Kraz",
+            "color": "#c8d8ff",
+            "r": 11
+          }
+        ]
+      },
+      {
+        "title": "The crow and the cup",
+        "caption": "Corvus and the neighboring constellation Crater (the Cup) both sit on the back of Hydra the Water Snake, which stretches across this part of the sky. The compactness and uniform brightness of Corvus's four main stars make it easy to identify once you know where to look — scan the area southwest of Spica and the neat quadrilateral jumps out.",
+        "ra": 185,
+        "dec": -20,
+        "fov": 14,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 187.466085,
+            "dec": -16.515432,
+            "label": "Gienah",
+            "color": "#c8d8ff",
+            "r": 11
+          },
+          {
+            "ra": 183.95155499999998,
+            "dec": -17.541929,
+            "label": "Algorab",
+            "color": "#90c8ff",
+            "r": 10
+          },
+          {
+            "ra": 182.53119,
+            "dec": -22.619766,
+            "label": "Minkar",
+            "color": "#ffd080",
+            "r": 10
+          },
+          {
+            "ra": 188.596815,
+            "dec": -23.396759,
+            "label": "Kraz",
+            "color": "#c8d8ff",
+            "r": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Delphinus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Delphinus — the Dolphin, one of the most charming small constellations, a tiny diamond of stars that genuinely resembles a leaping dolphin.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look east of Aquila in summer",
+        "caption": "In August and September evenings, Delphinus is well-placed in the southern sky for northern observers, sitting about 10° east-northeast of Altair in Aquila. The Summer Triangle's Altair (mag 0.8) is easy to spot; from there, the compact diamond of Delphinus is visible about two fist-widths to the northeast.",
+        "ra": 310,
+        "dec": 14,
+        "fov": 55,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Job's Coffin",
+        "caption": "The four-star diamond asterism is sometimes called 'Job's Coffin.' All four stars are close in brightness (magnitudes 3.6–4.3), making the diamond quite uniform. The fifth star, Rotanev (Beta Delphini, mag 3.6), forms the dolphin's tail beneath the diamond. The constellation's compact size — fitting within a 5° circle — makes it easy to see in a single binocular field.",
+        "ra": 310,
+        "dec": 14,
+        "fov": 14,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 309.38724,
+            "dec": 14.595087,
+            "label": "Rotanev",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 309.909525,
+            "dec": 15.912072,
+            "label": "Sualocin",
+            "color": "#90c8ff",
+            "r": 9
+          }
+        ]
+      },
+      {
+        "title": "The reversed names",
+        "caption": "Sualocin (Alpha Delphini) and Rotanev (Beta Delphini) have an unusual origin: they are the reversed Latin spelling of 'Nicolaus Venator' — Niccolò Cacciatore, an assistant at Palermo Observatory who covertly named the stars after himself in the 1814 star catalog. The dolphin's empty surroundings in this otherwise star-poor region make it stand out despite its faintness.",
+        "ra": 310,
+        "dec": 14,
+        "fov": 11,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 309.909525,
+            "dec": 15.912072,
+            "label": "Sualocin",
+            "color": "#90c8ff",
+            "r": 9
+          },
+          {
+            "ra": 309.38724,
+            "dec": 14.595087,
+            "label": "Rotanev",
+            "color": "#c8d8ff",
+            "r": 10
+          },
+          {
+            "ra": 311.6646,
+            "dec": 16.124296,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          },
+          {
+            "ra": 310.864725,
+            "dec": 15.074581,
+            "label": "",
+            "color": "#c8d8ff",
+            "r": 8
+          }
+        ]
+      }
+    ]
+  },
+  "Draco": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Draco — the Dragon, a long winding constellation that coils around the north celestial pole between Ursa Major and Ursa Minor.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look circumpolar in the north",
+        "caption": "Draco is circumpolar for observers north of about 20°N and winds around Ursa Minor through the entire northern sky. The best seasons to trace its full length are spring and summer evenings. The most recognizable feature is the Dragon's Head — a quadrilateral of four stars about 25° north-northwest of Vega.",
+        "ra": 250,
+        "dec": 68,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find the Dragon's Head",
+        "caption": "The Dragon's Head is a compact trapezoid of four stars with Eltanin (Gamma Draconis, mag 2.2) as its brightest corner — a reddish-orange giant about 148 light-years away. From Vega, move about 25° to the north-northwest to find Eltanin. The head quadrilateral spans about 6° and is the most distinctive feature of this otherwise winding constellation.",
+        "ra": 268,
+        "dec": 57,
+        "fov": 25,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 269.151555,
+            "dec": 51.488895,
+            "label": "Eltanin",
+            "color": "#ff7060",
+            "r": 13
+          },
+          {
+            "ra": 262.608195,
+            "dec": 52.301387,
+            "label": "Rastaban",
+            "color": "#ffd080",
+            "r": 10
+          }
+        ]
+      },
+      {
+        "title": "The dragon's long body",
+        "caption": "From the head, the Dragon's body snakes north then west, curving around Ursa Minor for roughly 50° before ending at Thuban. Thuban (Alpha Draconis), deep in the body near star index 0 in the data, was the pole star around 2700 BC when the pyramids were being built. The full dragon spans about 60° of sky from head to tail.",
+        "ra": 230,
+        "dec": 69,
+        "fov": 60,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 269.151555,
+            "dec": 51.488895,
+            "label": "Eltanin",
+            "color": "#ff7060",
+            "r": 13
+          },
+          {
+            "ra": 245.99790000000002,
+            "dec": 61.514213,
+            "label": "Aldhibah",
+            "color": "#90c8ff",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Eridanus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Eridanus — the River, a vast winding constellation stretching from near Orion all the way to the brilliant star Achernar deep in the southern sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Start near Orion",
+        "caption": "The northern end of Eridanus begins at Cursa (Beta Eridani, mag 2.8), just north of Rigel in Orion. In winter evenings, trace the river southward — it meanders west then curls back southeast, becoming progressively fainter. Achernar, the river's end at declination -57°, is only visible south of about 33°N latitude.",
+        "ra": 55,
+        "dec": -20,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find the river's source at Cursa",
+        "caption": "Cursa (Beta Eridani, mag 2.8) sits about 3° north-northwest of Rigel and marks where the river 'pours' from Orion's foot. The northern section of Eridanus consists of a chain of 4th-magnitude stars that meander west and south through a relatively barren region of sky. Follow the chain star by star as it winds away from Orion.",
+        "ra": 68,
+        "dec": -10,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 76.962435,
+            "dec": -5.086446,
+            "label": "Cursa",
+            "color": "#c8d8ff",
+            "r": 11
+          }
+        ]
+      },
+      {
+        "title": "Achernar — end of the river",
+        "caption": "Achernar (Alpha Eridani, mag 0.5) is the ninth-brightest star in the sky and the brightest star visible from mid-southern latitudes that has no bright rival nearby. It is a rapidly rotating blue-white star spinning so fast it bulges at its equator. From the southern hemisphere Achernar is a prominent circumpolar beacon; from latitudes above 33°N it never rises.",
+        "ra": 25,
+        "dec": -55,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 24.42834,
+            "dec": -57.236757,
+            "label": "Achernar",
+            "color": "#90c8ff",
+            "r": 15
+          }
+        ]
+      },
+      {
+        "title": "The full river",
+        "caption": "Eridanus is the sixth-largest constellation, spanning over 60° from declination -5° to -58°. Its length means it is not possible to see the whole constellation at once from any single latitude. From mid-southern latitudes the complete river arches dramatically across the sky in summer (southern) evenings — one of the grandest sweeps any constellation makes.",
+        "ra": 45,
+        "dec": -35,
+        "fov": 80,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true
+      }
+    ]
+  },
+  "Hercules": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Hercules — the Hero, a large summer constellation identified by the distinctive Keystone asterism and home to the finest globular cluster visible from the northern hemisphere.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look between Vega and Arcturus",
+        "caption": "In June and July, Hercules passes high overhead for mid-northern observers. Draw an imaginary line from Vega (in Lyra) to Arcturus (in Boötes) — the Keystone of Hercules lies about one-third of the way from Vega. Hercules is a large constellation with no particularly bright stars (the brightest is only magnitude 2.8), so the Keystone is the key to finding it.",
+        "ra": 256,
+        "dec": 30,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find the Keystone",
+        "caption": "The Keystone is a quadrilateral of four stars — Kornephoros (Beta Her, mag 2.8), Zeta Her (mag 2.8), Eta Her (mag 3.5), and Pi Her (mag 3.2) — forming the body of the kneeling hero. Once identified, the Keystone is easy to return to. The Great Globular Cluster M13 sits on the western edge of the Keystone, visible to the naked eye under dark skies as a faint fuzzy star.",
+        "ra": 256,
+        "dec": 30,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 258.661905,
+            "dec": 14.390333,
+            "label": "Kornephoros",
+            "color": "#ffd080",
+            "r": 11
+          },
+          {
+            "ra": 250.32169500000003,
+            "dec": 31.602726,
+            "label": "Zeta Her",
+            "color": "#ffe8b0",
+            "r": 11
+          }
+        ]
+      },
+      {
+        "title": "M13 — the Great Globular",
+        "caption": "M13 (mag 5.8) sits between Zeta and Eta Herculis on the western edge of the Keystone, about one-third of the way from Eta to Zeta. In binoculars it appears as a fuzzy star; a small telescope begins to resolve its outer edges into individual stars. It contains roughly 300,000 stars packed into a sphere about 145 light-years across, about 22,000 light-years away.",
+        "ra": 252,
+        "dec": 28,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 258.661905,
+            "dec": 14.390333,
+            "label": "Kornephoros",
+            "color": "#ffd080",
+            "r": 11
+          },
+          {
+            "ra": 247.55502,
+            "dec": 21.489613,
+            "label": "Rasalgethi",
+            "color": "#ff7060",
+            "r": 10
+          },
+          {
+            "ra": 250.32169500000003,
+            "dec": 31.602726,
+            "label": "Zeta Her",
+            "color": "#ffe8b0",
+            "r": 10
+          },
+          {
+            "ra": 250.7239949999999,
+            "dec": 38.922254,
+            "label": "Eta Her",
+            "color": "#ffe8b0",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Hydra": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Hydra — the Water Snake, the largest constellation in area, winding across a vast stretch of the spring sky anchored by the bright lone star Alphard.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south in spring",
+        "caption": "Hydra sprawls across the southern sky in March and April, stretching from just east of Canis Minor to south of Virgo — a span of over 100°. Its brightest star Alphard is the easiest entry point. From Procyon (in Canis Minor), drop about 20° south to find orange Alphard glowing alone in an otherwise starless region.",
+        "ra": 163,
+        "dec": -18,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Alphard",
+        "caption": "Alphard (Alpha Hydrae, mag 2.0) is so conspicuously alone in its part of the sky that its name means 'the solitary one' in Arabic. It is an orange giant about 177 light-years away. An alternative hop: extend a line from Castor through Pollux in Gemini southward about 40° and you land near Alphard.",
+        "ra": 142,
+        "dec": -10,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 141.89685,
+            "dec": -8.658603,
+            "label": "Alphard",
+            "color": "#ff9060",
+            "r": 13
+          }
+        ]
+      },
+      {
+        "title": "The head and the long tail",
+        "caption": "West of Alphard, a ring of six faint stars (magnitudes 3.4–4.5) forms Hydra's head. East of Alphard, the snake's body continues for another 60° under Virgo and Corvus, ending near the border of Libra. Corvus the Crow and Crater the Cup both sit on Hydra's back, a mythological arrangement reflected in the stars' positions.",
+        "ra": 160,
+        "dec": -18,
+        "fov": 80,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 141.89685,
+            "dec": -8.658603,
+            "label": "Alphard",
+            "color": "#ff9060",
+            "r": 13
+          }
+        ]
+      }
+    ]
+  },
+  "Lepus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Lepus — the Hare, a small constellation that crouches directly beneath Orion's feet in the winter sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look below Orion",
+        "caption": "In January and February evenings, Orion dominates the southern sky for northern observers. Lepus lies directly south of Orion — below Rigel and Saiph, the two southern foot stars. This makes Lepus one of the easiest secondary constellations to find: just look under Orion's feet.",
+        "ra": 83,
+        "dec": -12,
+        "fov": 55,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Arneb and the main quad",
+        "caption": "Arneb (Alpha Leporis, mag 2.6) is a luminous white supergiant — the brightest star of the Hare. The constellation's main body is a compact quadrilateral of four stars (Arneb, Nihal, Mu, and Epsilon Leporis) spanning about 5° near the center. Nihal (Beta Leporis, mag 2.8) is an orange giant paired with Arneb to form the most obvious two-star anchor.",
+        "ra": 83,
+        "dec": -19,
+        "fov": 26,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 83.18256,
+            "dec": -17.822289,
+            "label": "Arneb",
+            "color": "#c8d8ff",
+            "r": 13
+          },
+          {
+            "ra": 82.06134,
+            "dec": -20.759441,
+            "label": "Nihal",
+            "color": "#ff9060",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "The crouching hare",
+        "caption": "The four main stars trace a quadrilateral representing the hare's body, with additional stars forming the head and ears to the north toward Orion. Hind's Crimson Star (R Leporis) is a famous Mira variable near the northwestern boundary — when near maximum brightness it is one of the deepest red stars visible to the naked eye, appearing in the field west-northwest of Mu Leporis.",
+        "ra": 84,
+        "dec": -18,
+        "fov": 22,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 83.18256,
+            "dec": -17.822289,
+            "label": "Arneb",
+            "color": "#c8d8ff",
+            "r": 13
+          },
+          {
+            "ra": 82.06134,
+            "dec": -20.759441,
+            "label": "Nihal",
+            "color": "#ff9060",
+            "r": 12
+          },
+          {
+            "ra": 76.36527,
+            "dec": -22.371032,
+            "label": "Mu Lep",
+            "color": "#ff7060",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Libra": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Libra — the Scales, the only zodiacal constellation representing an inanimate object, sandwiched between Virgo and Scorpius along the ecliptic.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look east of Spica in spring",
+        "caption": "In May and June evenings, Libra is due south at midnight for northern observers. Start at brilliant blue-white Spica in Virgo and move about 20° east-southeast to find the constellation. Libra has no first-magnitude stars but its two brightest, Zubenelgenubi and Zubeneschamali, are about 7° apart and form an obvious pair.",
+        "ra": 229,
+        "dec": -18,
+        "fov": 60,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "The two crossbeam stars",
+        "caption": "Zubeneschamali (Beta Librae, mag 2.6) is the brightest star in Libra and one of the few stars that has been consistently described as greenish by observers — an unusual color for a naked-eye star. Zubenelgenubi (Alpha Librae, mag 2.8) is 7° to the south and is a wide naked-eye double, easily split with binoculars into a white pair separated by about 5 arcminutes.",
+        "ra": 226,
+        "dec": -17,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 229.251735,
+            "dec": -9.382917,
+            "label": "Zubeneschamali",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 222.719655,
+            "dec": -16.041778,
+            "label": "Zubenelgenubi",
+            "color": "#90c8ff",
+            "r": 10
+          }
+        ]
+      },
+      {
+        "title": "The scales of the zodiac",
+        "caption": "The full constellation outlines a rough balance, with the crossbeam running between Zubeneschamali and Zubenelgenubi, and fainter stars to the south completing the scale pans. Their Arabic names mean 'the northern claw' and 'the southern claw,' recalling the time when these stars were considered part of Scorpius. Libra lies on the ecliptic; planets are frequently found passing through it.",
+        "ra": 228,
+        "dec": -18,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 229.251735,
+            "dec": -9.382917,
+            "label": "Zubeneschamali",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 222.719655,
+            "dec": -16.041778,
+            "label": "Zubenelgenubi",
+            "color": "#90c8ff",
+            "r": 10
+          },
+          {
+            "ra": 226.017585,
+            "dec": -25.281965,
+            "label": "Brachium",
+            "color": "#ff7060",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Ophiuchus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Ophiuchus — the Serpent Bearer, a large summer constellation that straddles the celestial equator between Scorpius and Hercules, and notably through which the ecliptic also passes.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look north of Scorpius in summer",
+        "caption": "In June and July, Ophiuchus is due south at midnight for northern observers. Start at brilliant red Antares in Scorpius and move north about 23°. Rasalhague, Ophiuchus's brightest star, is a clear beacon at that point. The large hexagonal outline of the constellation spans about 20° from side to side.",
+        "ra": 258,
+        "dec": -3,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Rasalhague",
+        "caption": "Rasalhague (Alpha Ophiuchi, mag 2.1) marks the serpent bearer's head — a blue-white star about 47 light-years away. It is easy to spot as the brightest star in the region north of Scorpius and south of the Keystone of Hercules. Rasalhague means 'head of the serpent collector' in Arabic.",
+        "ra": 263,
+        "dec": 10,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 263.733615,
+            "dec": 12.560035,
+            "label": "Rasalhague",
+            "color": "#90c8ff",
+            "r": 13
+          }
+        ]
+      },
+      {
+        "title": "The serpent bearer's extent",
+        "caption": "The constellation's hexagonal outline encloses a large area, with Sabik (Eta Ophiuchi, mag 2.4) marking the lower center of the figure. The ecliptic passes through the southern part of Ophiuchus — more so than through Scorpius — making it technically the 'thirteenth zodiac constellation.' The star fields along the Ophiuchus-Scorpius border are rich with globular clusters and nebulae.",
+        "ra": 257,
+        "dec": -4,
+        "fov": 58,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 263.733615,
+            "dec": 12.560035,
+            "label": "Rasalhague",
+            "color": "#90c8ff",
+            "r": 13
+          },
+          {
+            "ra": 257.59452,
+            "dec": -15.72491,
+            "label": "Sabik",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 243.58641,
+            "dec": -3.694323,
+            "label": "Yed Prior",
+            "color": "#ff7060",
+            "r": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Pegasus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Pegasus — the Winged Horse, whose four bright stars form the Great Square of Pegasus, one of the most recognizable asterisms of the autumn sky.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look high in the autumn sky",
+        "caption": "In September and October, the Great Square of Pegasus passes nearly overhead at midnight for mid-northern observers. Each side of the Square is about 15° long, and the interior is strikingly empty of stars — this very emptiness makes it a sky transparency test. From the Summer Triangle's Altair, move north-northeast about 50° to find the Square.",
+        "ra": 345,
+        "dec": 20,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "The Great Square",
+        "caption": "The four corners of the Square are Markab (Alpha Peg, mag 2.5), Scheat (Beta Peg, mag 2.4), Algenib (Gamma Peg, mag 2.8), and Alpheratz (shared with Andromeda, mag 2.1). Scheat is a red giant variable, fluctuating between magnitudes 2.4 and 2.8. The northeast corner (Alpheratz) is technically the starting point of Andromeda.",
+        "ra": 344,
+        "dec": 22,
+        "fov": 38,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 345.943515,
+            "dec": 28.082789,
+            "label": "Scheat",
+            "color": "#ff7060",
+            "r": 12
+          },
+          {
+            "ra": 346.19022,
+            "dec": 15.205264,
+            "label": "Markab",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 2.096865,
+            "dec": 29.090432,
+            "label": "Alpheratz",
+            "color": "#90c8ff",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "Pegasus beyond the Square",
+        "caption": "South and west of the Square, fainter stars trace the horse's neck and head, ending at Enif (Epsilon Pegasi, mag 2.4), a bright orange supergiant about 690 light-years away. The Great Square is also used as a pointer: extend the western side southward about 45° and you land on Fomalhaut, the lonely bright star of Piscis Austrinus.",
+        "ra": 341,
+        "dec": 18,
+        "fov": 58,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 345.943515,
+            "dec": 28.082789,
+            "label": "Scheat",
+            "color": "#ff7060",
+            "r": 12
+          },
+          {
+            "ra": 346.19022,
+            "dec": 15.205264,
+            "label": "Markab",
+            "color": "#90c8ff",
+            "r": 11
+          },
+          {
+            "ra": 326.04649500000005,
+            "dec": 9.875011,
+            "label": "Enif",
+            "color": "#ff9060",
+            "r": 12
+          }
+        ]
+      }
+    ]
+  },
+  "Perseus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Perseus — the Hero, sitting in the winter Milky Way between Cassiopeia and Taurus, home to the famous variable star Algol and a spectacular double star cluster.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south of Cassiopeia in autumn",
+        "caption": "In November and December, Perseus is high overhead for northern observers, sitting directly below the W of Cassiopeia. Star-hop from Cassiopeia's brightest star southward about 25° to reach Mirfak. Perseus stretches between Cassiopeia above and Taurus below, rich in Milky Way star fields.",
+        "ra": 46,
+        "dec": 43,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Mirfak",
+        "caption": "Mirfak (Alpha Persei, mag 1.8) is the brightest star and sits at the center of a loose association of young stars — the Alpha Persei Cluster (Melotte 20) — visible in binoculars as a beautiful spread of blue-white stars. Mirfak is a yellow-white supergiant about 510 light-years away, intrinsically over 5,000 times more luminous than the Sun.",
+        "ra": 50,
+        "dec": 48,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 51.08067,
+            "dec": 49.86118,
+            "label": "Mirfak",
+            "color": "#ffe8b0",
+            "r": 13
+          }
+        ]
+      },
+      {
+        "title": "Algol and the Double Cluster",
+        "caption": "Algol (Beta Persei, mag normally 2.1) is the 'Demon Star' — an eclipsing binary that dims to magnitude 3.4 for about 10 hours every 2.87 days when its fainter companion passes in front. The famous Double Cluster (NGC 869 and 884) lies between Perseus and Cassiopeia, a stunning naked-eye and binocular object — two rich clusters separated by less than half a degree.",
+        "ra": 46,
+        "dec": 43,
+        "fov": 43,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 51.08067,
+            "dec": 49.86118,
+            "label": "Mirfak",
+            "color": "#ffe8b0",
+            "r": 13
+          },
+          {
+            "ra": 47.04222,
+            "dec": 40.955648,
+            "label": "Algol",
+            "color": "#90c8ff",
+            "r": 12
+          }
+        ]
+      }
+    ]
+  },
+  "Pisces": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Pisces — the Fish, a faint zodiacal constellation south of Andromeda with no star brighter than magnitude 3.7, representing two fish tied together by their tails.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south of Andromeda in autumn",
+        "caption": "In October and November, Pisces is high in the sky for northern observers. The Great Square of Pegasus is the key landmark — Pisces lies south and east of the Square. The Circlet of Pisces, a ring of five faint stars (the western fish's head), sits about 15° south-southwest of the Square's southeastern corner, Markab.",
+        "ra": 12,
+        "dec": 14,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find the Circlet",
+        "caption": "The Circlet of Pisces is a ring of five stars (magnitudes 4–5) about 4° across, forming the most identifiable sub-pattern in the constellation. It represents the head of the western fish. Under suburban skies the Circlet can be difficult; look for it as a faint loop of stars south of the Great Square.",
+        "ra": 8,
+        "dec": 8,
+        "fov": 28,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 351.99207,
+            "dec": 6.378992,
+            "label": "Alrescha (Knot)",
+            "color": "#c8d8ff",
+            "r": 10
+          }
+        ]
+      },
+      {
+        "title": "Two fish and the knot",
+        "caption": "Al Rischa (Alpha Piscium, mag 3.8) is the 'Knot' where the two fish are tied together, located in the eastern part of the constellation. Two curved chains of stars arc away from the Knot — one toward the Circlet in the west, the other curving northeast toward Andromeda. Pisces currently hosts the vernal equinox due to precession from its historical location in Aries.",
+        "ra": 10,
+        "dec": 14,
+        "fov": 62,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 351.99207,
+            "dec": 6.378992,
+            "label": "Al Rischa",
+            "color": "#c8d8ff",
+            "r": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Piscis Austrinus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Piscis Austrinus — the Southern Fish, whose one brilliant star Fomalhaut stands completely alone in the autumn sky, earning it the name 'the Lonely Star of Autumn.'",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look south in autumn",
+        "caption": "In September and October evenings, Fomalhaut is the brightest star low in the southern sky for northern observers — there are no other first-magnitude stars anywhere near it. From the Great Square of Pegasus, extend its western side southward about 45° and you land almost exactly on Fomalhaut. From the southern hemisphere it is well-placed and high in the sky.",
+        "ra": 336,
+        "dec": -28,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Fomalhaut",
+        "caption": "Fomalhaut (Alpha PsA, mag 1.2) is a blue-white A-type star about 25 light-years away — one of the Sun's relatively close neighbors. It is famous for hosting one of the first directly imaged debris disks, and a candidate exoplanet (Fomalhaut b) was detected orbiting within this disk. The star's isolation in the sky is striking: the nearest comparably bright star is hundreds of degrees away.",
+        "ra": 344,
+        "dec": -29,
+        "fov": 25,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 344.41256999999996,
+            "dec": -29.622236,
+            "label": "Fomalhaut",
+            "color": "#90c8ff",
+            "r": 15
+          }
+        ]
+      },
+      {
+        "title": "The southern fish",
+        "caption": "The rest of Piscis Austrinus consists of a curved arc of faint stars (magnitudes 4–5) arranged in a fish shape around Fomalhaut. The full constellation fits within about 20° and is not particularly prominent beyond its one bright star. Fomalhaut's isolation makes it useful as an autumn benchmark: when you can see it, the southern sky is reasonably transparent.",
+        "ra": 336,
+        "dec": -30,
+        "fov": 22,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 344.41256999999996,
+            "dec": -29.622236,
+            "label": "Fomalhaut",
+            "color": "#90c8ff",
+            "r": 15
+          }
+        ]
+      }
+    ]
+  },
+  "Puppis": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Puppis — the Ship's Stern, the largest fragment of the ancient constellation Argo Navis, sitting in the winter Milky Way east of Sirius.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look east of Sirius in winter",
+        "caption": "In January through March, Puppis is in the southern sky east of the brilliant Sirius. From Sirius, move east and slightly south to enter Puppis's star fields. For northern observers above 30°N only the northern part of the constellation is visible; from the southern hemisphere the full constellation is well-placed.",
+        "ra": 112,
+        "dec": -38,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Naos and the bright stars",
+        "caption": "Naos (Zeta Puppis, mag 2.2) is one of the most luminous and hottest naked-eye stars — a blue O-type supergiant with a surface temperature around 42,000 K, about 1,100 light-years away. It is also a powerful source of ultraviolet radiation. The magnitude 1.8 star at the constellation's southwestern corner (Pi Puppis) provides a second bright anchor near Canopus in Carina.",
+        "ra": 112,
+        "dec": -40,
+        "fov": 42,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 120.896055,
+            "dec": -40.003148,
+            "label": "Naos",
+            "color": "#90c8ff",
+            "r": 13
+          },
+          {
+            "ra": 122.38314,
+            "dec": -47.336588,
+            "label": "Pi Puppis",
+            "color": "#90c8ff",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "Star clusters in the stern",
+        "caption": "Puppis is in the Milky Way and contains several showpiece open clusters: M46 and M47 are 1.5° apart in the northern part of the constellation — M47 (mag 4.4) is visible naked-eye and M46 (mag 6.1) is a rich binocular cluster with a planetary nebula inside. M93 is another nearby cluster. The sheer density of background stars makes Puppis a rewarding sweep with any optics.",
+        "ra": 111,
+        "dec": -38,
+        "fov": 43,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 120.896055,
+            "dec": -40.003148,
+            "label": "Naos",
+            "color": "#90c8ff",
+            "r": 13
+          }
+        ]
+      }
+    ]
+  },
+  "Serpens": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Serpens — the Serpent, the only constellation split into two separate parts in the sky, divided by the large figure of Ophiuchus the Serpent Bearer.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look in the summer sky",
+        "caption": "In June and July, Serpens is well-placed for northern observers. Serpens Caput (the head) lies west of Ophiuchus, visible as a small bent chain of stars below Corona Borealis. Serpens Cauda (the tail) is on the opposite side of Ophiuchus, in the summer Milky Way east of Rasalhague.",
+        "ra": 250,
+        "dec": 8,
+        "fov": 75,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Unukalhai in the head",
+        "caption": "Unukalhai (Alpha Serpentis, mag 2.6) is the constellation's brightest star and belongs to Serpens Caput. It is an orange giant about 74 light-years away. From Arcturus in Boötes, move about 30° to the south-southeast to find Unukalhai. A small bent chain of stars — the serpent's head and neck — extends east from it toward Ophiuchus.",
+        "ra": 237,
+        "dec": 10,
+        "fov": 32,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 236.06697,
+            "dec": 6.425627,
+            "label": "Unukalhai",
+            "color": "#ff9060",
+            "r": 13
+          }
+        ]
+      },
+      {
+        "title": "Caput and Cauda",
+        "caption": "Serpens Cauda contains the Eagle Nebula (M16), a famous star-forming region 7,000 light-years away famous from Hubble's 'Pillars of Creation' image — visible in binoculars as a fuzzy patch. The full serpent, connecting the head and tail across Ophiuchus, is one of the most unusual and mythologically rich constellations in the sky.",
+        "ra": 258,
+        "dec": 6,
+        "fov": 60,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 236.06697,
+            "dec": 6.425627,
+            "label": "Unukalhai",
+            "color": "#ff9060",
+            "r": 13
+          },
+          {
+            "ra": 275.32750500000003,
+            "dec": -2.898825,
+            "label": "Xi Ser (Cauda)",
+            "color": "#ffe8b0",
+            "r": 9
+          }
+        ]
+      }
+    ]
+  },
+  "Vela": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Vela — the Sails, a southern Milky Way constellation that forms part of the ancient ship Argo and contains the famous False Cross asterism.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Look in the southern Milky Way",
+        "caption": "Vela is best seen from the southern hemisphere in February through April, sitting in the brilliant southern Milky Way between Puppis to the west and Centaurus to the east. From northern latitudes above about 30°N only the northern edge is visible. Look east of Sirius, past Puppis, to enter the rich Vela star fields.",
+        "ra": 143,
+        "dec": -47,
+        "fov": 70,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "The False Cross",
+        "caption": "The False Cross is formed by Gamma Velorum, Delta Velorum, Epsilon Carinae, and Iota Carinae — four stars that resemble the Southern Cross but are larger, less bright, and oriented differently. Gamma Velorum (Regor, mag 1.8) is the brightest Wolf-Rayet star visible to the naked eye — a massive star shedding its outer layers. The False Cross can confuse Southern Cross–seekers as it is more easily found in some orientations.",
+        "ra": 138,
+        "dec": -46,
+        "fov": 38,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 136.99902,
+            "dec": -43.432589,
+            "label": "Regor (Gamma Vel)",
+            "color": "#90c8ff",
+            "r": 13
+          },
+          {
+            "ra": 131.175885,
+            "dec": -54.708821,
+            "label": "Alsephina (Delta Vel)",
+            "color": "#90c8ff",
+            "r": 12
+          }
+        ]
+      },
+      {
+        "title": "Vela's full sail",
+        "caption": "Suhail (Lambda Velorum, mag 2.2) is the second-brightest star in Vela — a distant orange supergiant about 545 light-years away. The eight main stars of Vela trace a rough pentagon of sail. The Vela Supernova Remnant, at about 800 light-years, is the nearest known supernova remnant to Earth and covers nearly 8° of sky, though it requires nebula filters to see photographically.",
+        "ra": 142,
+        "dec": -48,
+        "fov": 38,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 136.99902,
+            "dec": -43.432589,
+            "label": "Regor",
+            "color": "#90c8ff",
+            "r": 13
+          },
+          {
+            "ra": 131.175885,
+            "dec": -54.708821,
+            "label": "Alsephina",
+            "color": "#90c8ff",
+            "r": 12
+          },
+          {
+            "ra": 161.69232,
+            "dec": -49.420255,
+            "label": "Suhail",
+            "color": "#ff9060",
+            "r": 12
+          }
+        ]
+      }
+    ]
+  },
+  "Virgo": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Virgo — the Maiden, the second-largest constellation overall and the largest zodiacal constellation, anchored by brilliant Spica.",
+        "random": true,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Arc to Arcturus, speed on to Spica",
+        "caption": "In April and May, Virgo is well-placed in the south for northern observers. The classic mnemonic guides you: follow the arc of the Big Dipper's handle to orange Arcturus in Boötes, then continue that same curve south for another 30° to arrive at blue-white Spica. No other first-magnitude star is nearby, so Spica is unmistakable.",
+        "ra": 200,
+        "dec": 0,
+        "fov": 80,
+        "photo": true,
+        "diagram": false,
+        "names": false,
+        "bounds": false
+      },
+      {
+        "title": "Find Spica",
+        "caption": "Spica (Alpha Virginis, mag 1.0) is one of the closest massive binary stars to Earth at about 250 light-years. It consists of two blue giants so close together they distort each other into egg shapes via tidal forces, orbiting every 4 days. Its blue-white color is obvious compared to nearby orange Arcturus.",
+        "ra": 200,
+        "dec": -3,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "ra": 201.298245,
+            "dec": -11.161322,
+            "label": "Spica",
+            "color": "#90c8ff",
+            "r": 15
+          }
+        ]
+      },
+      {
+        "title": "The outstretched maiden",
+        "caption": "The full outline of Virgo stretches from Spica in the south to Zavijava (Beta Vir, mag 3.6) in the northwest and Vindemiatrix (Epsilon Vir, mag 2.9) in the northeast — arms extended as if holding sheaves of wheat. Porrima (Gamma Vir, mag 2.7) is a famous visual double star just north of the constellation's center. The northern portion of Virgo overlaps with the Virgo Cluster of galaxies — thousands of galaxies some 65 million light-years away.",
+        "ra": 199,
+        "dec": 0,
+        "fov": 60,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "ra": 201.298245,
+            "dec": -11.161322,
+            "label": "Spica",
+            "color": "#90c8ff",
+            "r": 15
+          },
+          {
+            "ra": 190.415175,
+            "dec": -1.449375,
+            "label": "Porrima",
+            "color": "#ffe8b0",
+            "r": 10
+          },
+          {
+            "ra": 195.54416999999998,
+            "dec": 10.95915,
+            "label": "Vindemiatrix",
+            "color": "#ffd080",
+            "r": 10
+          }
+        ]
       }
     ]
   }
