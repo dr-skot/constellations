@@ -82,6 +82,21 @@
     .btn:disabled { opacity: .28; cursor: default; background: rgba(91,138,245,.06); }
     .btn.primary  { background: rgba(91,138,245,.25); color: #d8eaff; }
     .btn.primary:hover { background: rgba(91,138,245,.38); }
+
+    #picker {
+      width: 100%; max-width: 600px;
+      display: flex; flex-direction: column; gap: 12px;
+      margin-top: 32px;
+    }
+    #picker p { font-size: .9rem; color: var(--dim); }
+    #picker-row { display: flex; gap: 10px; }
+    #picker-input {
+      flex: 1; background: var(--card); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 9px 12px; font-size: .9rem;
+    }
+    #picker-input:focus { outline: none; border-color: var(--accent); }
+    #picker-msg { font-size: .8rem; color: var(--err, #ef4444); min-height: 1.2em; }
   </style>
 </head>
 <body>
@@ -101,6 +116,17 @@
   <span class="sub" id="page-sub">Finding …</span>
   <a href="index.html">← Back</a>
 </header>
+
+<div id="picker" style="display:none">
+  <p>Which constellation would you like to find?</p>
+  <div id="picker-row">
+    <input type="text" id="picker-input" list="con-search-list"
+           placeholder="Type a constellation name…" autocomplete="off">
+    <datalist id="con-search-list"></datalist>
+    <button class="btn primary" id="picker-go">Go →</button>
+  </div>
+  <div id="picker-msg"></div>
+</div>
 
 <div id="explore-wrap">
   <canvas id="explore-gl-canvas"></canvas>
@@ -132,13 +158,39 @@
 <script>
 // ── Resolve constellation from URL param ──────────────────────────────────
 const params   = new URLSearchParams(location.search);
-const conParam = (params.get('con') || 'Sagittarius').toLowerCase();
-const con = C.find(c => c.abbr.toLowerCase() === conParam ||
-                        c.name.toLowerCase() === conParam)
-         || C.find(c => c.name === 'Sagittarius');
+const conParam = params.get('con');
+const con = conParam
+  ? C.find(c => c.abbr.toLowerCase() === conParam.toLowerCase() ||
+                c.name.toLowerCase() === conParam.toLowerCase())
+  : null;
 
-document.title = `Finding ${con.name} — Constellate`;
-document.getElementById('page-sub').textContent = `Finding ${con.name}`;
+if (!con) {
+  document.getElementById('page-sub').textContent = 'Finding …';
+  document.getElementById('explore-wrap').style.display = 'none';
+  document.querySelector('.step-row').style.display   = 'none';
+  document.querySelector('.caption-card').style.display = 'none';
+  document.querySelector('.nav').style.display        = 'none';
+  const picker = document.getElementById('picker');
+  picker.style.display = '';
+  const dl = document.getElementById('con-search-list');
+  [...C].sort((a,b) => a.name.localeCompare(b.name)).forEach(c => {
+    const o = document.createElement('option'); o.value = c.name; dl.appendChild(o);
+  });
+  const go = () => {
+    const val = document.getElementById('picker-input').value.trim();
+    const found = C.find(c => c.name.toLowerCase() === val.toLowerCase() ||
+                               c.abbr.toLowerCase() === val.toLowerCase());
+    if (found) { location.href = 'find-help.html?con=' + found.abbr; }
+    else { document.getElementById('picker-msg').textContent = 'Unknown constellation'; }
+  };
+  document.getElementById('picker-go').addEventListener('click', go);
+  document.getElementById('picker-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') go();
+  });
+} else {
+  document.title = `Finding ${con.name} — Constellate`;
+  document.getElementById('page-sub').textContent = `Finding ${con.name}`;
+}
 
 // ── Render helpers ────────────────────────────────────────────────────────
 function drawScene() {
@@ -210,6 +262,19 @@ function animateTo(step, onDone) {
   requestAnimationFrame(tick);
 }
 
+// ── North-up rotation ─────────────────────────────────────────────────────
+// Returns the R value that puts north (increasing dec) at the top of the
+// view when the camera is pointing at position P.
+function northUpR(P) {
+  const pz = P[2];
+  const cos2 = 1 - pz * pz;
+  if (cos2 < 1e-10) return 0; // looking straight at a pole
+  const s = Math.sqrt(cos2);
+  const northDir = [-pz*P[0]/s, -pz*P[1]/s, cos2/s];
+  const q = rotateByFromTo(northDir, P, [0, 0, 1]);
+  return Math.atan2(q[0], q[1]);
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────
 fetch('js/finding-guides.json')
   .then(r => r.json())
@@ -238,7 +303,9 @@ function init(guide) {
 
   explore.P   = raDecToVec(startRa, startDec);
   explore.fov = steps[0].fov || 80;
-  explore.R   = guide.rotation || 0;
+  explore.R   = guide.rotation != null
+    ? guide.rotation
+    : northUpR(raDecToVec(con.ra, con.dec));
 
   let stepIdx   = -1;
   let animating = false;

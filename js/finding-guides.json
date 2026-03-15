@@ -1,4 +1,460 @@
 {
+  "Aquila": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Aquila — the Eagle, a summer constellation whose heart is Altair, the southernmost star of the Summer Triangle.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The summer Milky Way",
+        "caption": "Look to the southern sky on a summer evening. Aquila straddles the Milky Way on the celestial equator, visible from both hemispheres. In August it rides highest in the south for northern observers.",
+        "ra": 294, "dec": 8, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Three stars in a line",
+        "caption": "Altair is easy to identify: a bright star flanked closely by a dimmer star on each side, all three nearly in a straight line. Tarazed (slightly orange, to the north) and Alshain (to the south) give Altair the impression of a bird with spread wings.",
+        "ra": 297, "dec": 9, "fov": 16,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 297.696, "dec": 8.868,  "label": "Altair",  "color": "#ffe8b0", "r": 14 },
+          { "ra": 296.565, "dec": 10.613, "label": "Tarazed", "color": "#ffd080", "r": 9  },
+          { "ra": 298.828, "dec": 6.407,  "label": "Alshain", "color": "#c8d8ff", "r": 7  }
+        ]
+      },
+      {
+        "title": "The Eagle",
+        "caption": "Pull back to see the full eagle, wings spread along the Milky Way. Altair sits almost exactly on the celestial equator — it rises nearly due east and sets nearly due west from any location on Earth.",
+        "ra": 294, "dec": 6, "fov": 38,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 297.696, "dec": 8.868, "label": "Altair", "color": "#ffe8b0", "r": 14 }
+        ]
+      },
+      {
+        "title": "Summer Triangle",
+        "caption": "Altair is the southernmost point of the Summer Triangle. Look northeast to Vega in Lyra, and north to Deneb in Cygnus. The Triangle spans a wide swath of the summer Milky Way and is the most prominent star pattern in the summer evening sky.",
+        "ra": 294, "dec": 22, "fov": 60,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 297.696, "dec": 8.868,  "label": "Altair", "color": "#ffe8b0", "r": 14 },
+          { "ra": 279.235, "dec": 38.784, "label": "Vega",   "color": "#90c8ff", "r": 16 },
+          { "ra": 310.358, "dec": 45.280, "label": "Deneb",  "color": "#c8d8ff", "r": 10 }
+        ]
+      }
+    ]
+  },
+  "Canis Major": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Canis Major — the Great Dog, home of Sirius, the brightest star in the entire night sky.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The winter sky",
+        "caption": "Look to the southern sky on a winter evening. Canis Major follows Orion like a faithful hunting dog, sitting south and east of the Hunter. Sirius blazes so brightly it cannot be mistaken for anything else.",
+        "ra": 92, "dec": -8, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Follow the Belt",
+        "caption": "Take Orion's three belt stars and follow their line southeast about 20°. You will arrive at Sirius — a brilliant blue-white star that outshines everything else in the night sky. At magnitude −1.4 it is nearly twice as bright as the second-brightest star, Canopus.",
+        "ra": 92, "dec": -8, "fov": 42,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 83.002, "dec": -0.299, "label": "belt", "color": "#c8d8ff", "r": 8 },
+          { "ra": 84.053, "dec": -1.202, "label": "",    "color": "#c8d8ff", "r": 8 },
+          { "ra": 85.190, "dec": -1.943, "label": "",    "color": "#c8d8ff", "r": 8 },
+          { "ra": 101.287, "dec": -16.716, "label": "Sirius", "color": "#90c8ff", "r": 18 }
+        ]
+      },
+      {
+        "title": "The Great Dog",
+        "caption": "Sirius marks the dog's shoulder. Fainter stars trace the body, hindquarters and legs below. Adhara at the hindquarters is intrinsically far more luminous than Sirius — it simply appears dimmer because it is nearly 30 times further away.",
+        "ra": 103, "dec": -21, "fov": 36,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 101.287, "dec": -16.716, "label": "Sirius",  "color": "#90c8ff", "r": 18 },
+          { "ra": 104.656, "dec": -28.972, "label": "Adhara", "color": "#90c8ff", "r": 10 }
+        ]
+      },
+      {
+        "title": "The Dog Star",
+        "caption": "Sirius is only 8.6 light-years away — our fifth-closest stellar neighbour — which explains much of its brilliance. The ancient Egyptians timed the annual Nile flood by its first dawn rising and called it Sopdet.",
+        "ra": 100, "dec": -15, "fov": 55,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
+  "Cassiopeia": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Cassiopeia — a brilliant W-shape high in the northern sky, circumpolar and visible year-round from most northern latitudes.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Look north",
+        "caption": "Turn to the northern sky. Cassiopeia wheels around the celestial pole without ever setting. When the Big Dipper is low, Cassiopeia is high, and vice versa — they sit on opposite sides of the pole. In autumn evenings it passes nearly overhead.",
+        "ra": 13, "dec": 60, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The W shape",
+        "caption": "Five second-magnitude stars form an unmistakable W — or M, depending on its orientation as it circles the pole. No other pattern in the northern sky has this zigzag. Schedar (orange) and Caph anchor the outer ends; Cih sits at the sharp central peak.",
+        "ra": 14, "dec": 59, "fov": 28,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 10.127, "dec": 56.537, "label": "Schedar", "color": "#ffd080", "r": 10 },
+          { "ra": 2.293,  "dec": 59.150, "label": "Caph",    "color": "#c8d8ff", "r": 9  },
+          { "ra": 14.177, "dec": 60.717, "label": "Cih",     "color": "#c8d8ff", "r": 10 }
+        ]
+      },
+      {
+        "title": "Rich in the Milky Way",
+        "caption": "Cassiopeia sits embedded in the brightest part of the northern Milky Way. The W is an excellent guide to this star-rich region — sweep it with binoculars for open clusters and nebulae. It is one of the most rewarding fields in the northern sky.",
+        "ra": 14, "dec": 59, "fov": 55,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
+  "Crux": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Crux — the Southern Cross, the smallest constellation in the sky and the most iconic in the southern hemisphere.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Look south",
+        "caption": "Crux is only visible from latitudes south of about 25°N — the further south you are, the higher it rides. In the southern hemisphere it is circumpolar, never setting. Look for a bright, compact kite of four stars low in the south from subtropical northern regions.",
+        "ra": 188, "dec": -45, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The Southern Cross",
+        "caption": "Four bright stars form the cross: Acrux at the southern foot is the brightest, Gacrux at the top glows distinctly red, and Mimosa marks the left arm. The whole cross fits within a circle just 6° wide.",
+        "ra": 188, "dec": -60, "fov": 18,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 186.650, "dec": -63.099, "label": "Acrux",  "color": "#90c8ff", "r": 13 },
+          { "ra": 187.791, "dec": -57.113, "label": "Gacrux", "color": "#ff9060", "r": 10 },
+          { "ra": 191.930, "dec": -59.689, "label": "Mimosa", "color": "#c8d8ff", "r": 11 }
+        ]
+      },
+      {
+        "title": "Beware the False Cross",
+        "caption": "To the northwest lies the False Cross — four stars in Vela and Carina that form a similar pattern but are larger and less symmetrical. If your cross looks large and lopsided, you've found the impostor.",
+        "ra": 161, "dec": -58, "fov": 56,
+        "photo": true, "diagram": true, "names": false, "bounds": false,
+        "highlight": [
+          { "ra": 125.629, "dec": -59.509, "label": "", "color": "#ffd080", "r": 11 },
+          { "ra": 139.273, "dec": -59.275, "label": "", "color": "#90c8ff", "r": 10 },
+          { "ra": 131.176, "dec": -54.709, "label": "", "color": "#90c8ff", "r": 11 },
+          { "ra": 140.528, "dec": -55.011, "label": "", "color": "#90c8ff", "r": 9  }
+        ]
+      },
+      {
+        "title": "Finding south",
+        "caption": "The long axis — from Gacrux through Acrux — points toward the south celestial pole. Extend it about 4.5 times its own length beyond Acrux and you arrive near the pole. Unlike the north, there is no bright star marking it.",
+        "ra": 188, "dec": -73, "fov": 38,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 186.650, "dec": -63.099, "label": "Acrux",    "color": "#90c8ff", "r": 11 },
+          { "ra": 187.791, "dec": -57.113, "label": "Gacrux",     "color": "#ff9060", "r": 9  },
+          { "ra": 189.0,   "dec": -90.0,   "label": "south pole", "color": "#ffffff", "r": 12 }
+        ]
+      },
+      {
+        "title": "The Coalsack",
+        "caption": "Adjacent to Crux lies the Coalsack — a dark nebula, a patch conspicuously empty of stars where interstellar dust blocks the Milky Way behind it. Indigenous Australians saw it as a celestial emu's head, part of a sky mythology drawn in dark shapes rather than star patterns.",
+        "ra": 188, "dec": -58, "fov": 25,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 192.5, "dec": -62.5, "label": "Coalsack", "color": "#aaaaaa", "r": 55 }
+        ]
+      }
+    ]
+  },
+  "Gemini": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Gemini — the Twins, a winter constellation crowned by the bright pair Castor and Pollux, one of the most recognisable double stars in the sky.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The winter sky",
+        "caption": "Turn to the southern sky on a winter evening. Gemini lies northeast of Orion in the same brilliant winter star field, best placed in the south for northern observers in January and February.",
+        "ra": 103, "dec": 23, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Two bright stars side by side",
+        "caption": "Castor and Pollux are the twin heads — two bright stars sitting just 4.5° apart. From Orion, follow the line from Rigel through Betelgeuse and beyond — you'll arrive between them.",
+        "ra": 97, "dec": 12, "fov": 60,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 78.634,  "dec": -8.202, "label": "Rigel",      "color": "#90c8ff", "r": 14 },
+          { "ra": 88.793,  "dec": 7.407,  "label": "Betelgeuse", "color": "#ff7060", "r": 13 },
+          { "ra": 113.650, "dec": 31.888, "label": "Castor",     "color": "#c8d8ff", "r": 10 },
+          { "ra": 116.329, "dec": 28.026, "label": "Pollux",     "color": "#ffd080", "r": 12 }
+        ]
+      },
+      {
+        "title": "The twin figures",
+        "caption": "Below each head, a chain of fainter stars stretches south-southwest — the bodies of the twins, lying side by side. The two chains run nearly parallel, making the whole constellation look like two people walking together.",
+        "ra": 107, "dec": 25, "fov": 44,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 113.650, "dec": 31.888, "label": "Castor", "color": "#c8d8ff", "r": 10 },
+          { "ra": 116.329, "dec": 28.026, "label": "Pollux", "color": "#ffd080", "r": 12 }
+        ]
+      },
+      {
+        "title": "The Twins",
+        "caption": "Pollux is the nearer twin at just 34 light-years, and its warm orange colour betrays its giant status. Castor, only 4.5° away, is actually six stars — three gravitationally bound pairs — all masquerading as one point of light.",
+        "ra": 115, "dec": 30, "fov": 20,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 113.650, "dec": 31.888, "label": "Castor", "color": "#c8d8ff", "r": 10 },
+          { "ra": 116.329, "dec": 28.026, "label": "Pollux", "color": "#ffd080", "r": 12 }
+        ]
+      },
+      {
+        "title": "The Geminids",
+        "caption": "Gemini straddles the Milky Way and hosts the radiant of the Geminid meteor shower every December — the year's most reliable and prolific display, with up to 120 meteors per hour emanating from just above Castor.",
+        "ra": 103, "dec": 25, "fov": 58,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
+  "Leo": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Leo — the Lion, a spring constellation with one of the sky's most distinctive head shapes, anchored by bright Regulus.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Look south in spring",
+        "caption": "Turn to the southern sky on a spring evening. Leo is the most prominent constellation of the spring sky for northern observers, riding high in the south in March and April.",
+        "ra": 160, "dec": 20, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The Sickle",
+        "caption": "The lion's head and mane form a backward question mark called the Sickle. Regulus — a hot blue-white star sitting almost exactly on the ecliptic — anchors the base of the hook. It is the brightest star in Leo and impossible to miss once you know the shape.",
+        "ra": 153, "dec": 17, "fov": 28,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 152.093, "dec": 11.967, "label": "Regulus", "color": "#90c8ff", "r": 12 },
+          { "ra": 154.993, "dec": 19.841, "label": "Algieba", "color": "#ffd080", "r": 10 }
+        ]
+      },
+      {
+        "title": "The full Lion",
+        "caption": "The Sickle forms Leo's head; a right-angled triangle of stars to the east traces the haunches and tail. Denebola marks the tail tip. The whole figure does evoke a crouching lion facing west, sickle raised like a mane.",
+        "ra": 163, "dec": 17, "fov": 52,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 152.093, "dec": 11.967, "label": "Regulus",  "color": "#90c8ff", "r": 12 },
+          { "ra": 177.265, "dec": 14.572, "label": "Denebola", "color": "#c8d8ff", "r": 10 }
+        ]
+      },
+      {
+        "title": "Found by the Pointers",
+        "caption": "A useful trick: extend the Big Dipper's Pointer Stars southward — opposite the direction to Polaris — and you land on Regulus. The same two stars that find the North Star also find the Lion's heart.",
+        "ra": 159, "dec": 36, "fov": 76,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 165.932, "dec": 61.751, "label": "Dubhe",   "color": "#ffd080", "r": 11 },
+          { "ra": 165.460, "dec": 56.382, "label": "Merak",   "color": "#c8d8ff", "r": 9  },
+          { "ra": 152.093, "dec": 11.967, "label": "Regulus", "color": "#90c8ff", "r": 12 }
+        ]
+      }
+    ]
+  },
+  "Lyra": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Lyra — a small constellation but home to Vega, the fifth-brightest star in the sky and the dominant beacon of summer nights.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The summer sky",
+        "caption": "Look overhead on a summer evening. From mid-northern latitudes Vega passes nearly directly overhead in August — impossible to miss. In the southern hemisphere it skims the northern horizon in winter.",
+        "ra": 285, "dec": 38, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The Summer Triangle",
+        "caption": "Vega is the brightest corner of the Summer Triangle — an asterism formed with Deneb in Cygnus and Altair in Aquila. Vega blazes brilliant blue-white at magnitude 0.0; astronomers have historically used it as the calibration standard for the entire magnitude scale.",
+        "ra": 296, "dec": 30, "fov": 56,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 279.235, "dec": 38.784, "label": "Vega",   "color": "#90c8ff", "r": 16 },
+          { "ra": 310.358, "dec": 45.280, "label": "Deneb",  "color": "#c8d8ff", "r": 10 },
+          { "ra": 297.696, "dec": 8.868,  "label": "Altair", "color": "#ffe8b0", "r": 13 }
+        ]
+      },
+      {
+        "title": "The Lyre",
+        "caption": "Just south of Vega, four fainter stars form a small parallelogram — the frame of the lyre. The Ring Nebula (M57), a planetary nebula easily found in a small telescope, lies between the two southern stars of the parallelogram.",
+        "ra": 281, "dec": 36, "fov": 18,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 279.235, "dec": 38.784, "label": "Vega",        "color": "#90c8ff", "r": 16 },
+          { "ra": 283.396, "dec": 33.029, "label": "Ring Nebula", "color": "#aaddff", "r": 8  }
+        ]
+      },
+      {
+        "title": "Brightest of summer",
+        "caption": "Vega served as the north pole star around 12,000 BCE and will again around 13,700 CE, as Earth's axis slowly precesses. For now it is simply the queen of summer nights — brilliant, blue-white, and unmistakable overhead.",
+        "ra": 283, "dec": 37, "fov": 40,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
+  "Taurus": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Taurus — the Bull, a winter constellation anchored by brilliant orange-red Aldebaran and the iconic Pleiades star cluster.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The winter sky",
+        "caption": "Turn to the southern sky on a winter evening. Taurus lies northwest of Orion in the same brilliant winter star field, prominent from November through February and visible from both hemispheres.",
+        "ra": 75, "dec": 12, "fov": 82,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Follow the Belt",
+        "caption": "If you can find Orion's Belt, Aldebaran is easy: follow the three belt stars northwest about 20° and you run straight into it. Aldebaran's distinctly orange-red colour makes it unmistakable — it is the angry eye of the charging bull.",
+        "ra": 76, "dec": 8, "fov": 42,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 83.002, "dec": -0.299, "label": "belt", "color": "#c8d8ff", "r": 8 },
+          { "ra": 84.053, "dec": -1.202, "label": "",    "color": "#c8d8ff", "r": 8 },
+          { "ra": 85.190, "dec": -1.943, "label": "",    "color": "#c8d8ff", "r": 8 },
+          { "ra": 68.980, "dec": 16.509, "label": "Aldebaran", "color": "#ff9060", "r": 14 }
+        ]
+      },
+      {
+        "title": "The V-face and the Pleiades",
+        "caption": "Aldebaran sits at the tip of the V-shaped Hyades cluster — the bull's face. Although it looks like part of the V, Aldebaran is a foreground star at just 65 light-years, while the Hyades lie 150 light-years away. The Pleiades jewel-box glitters to the northwest, marking the bull's shoulder.",
+        "ra": 64, "dec": 20, "fov": 44,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 68.980, "dec": 16.509, "label": "Aldebaran", "color": "#ff9060", "r": 14 },
+          { "ra": 56.75,  "dec": 24.12,  "label": "Pleiades",  "color": "#c8d8ff", "r": 13 }
+        ]
+      },
+      {
+        "title": "The Bull",
+        "caption": "Taurus rewards slow looking: the Hyades V, orange Aldebaran, the Pleiades jewel-box, and the long horns extending northeast. On a clear night, count how many Pleiades you can see unaided — most people spot six or seven, though sharp eyes find more.",
+        "ra": 67, "dec": 18, "fov": 60,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
+  "Ursa Major": {
+    "rotation": 1.5708,
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Ursa Major — home of the Big Dipper, one of the most recognisable star patterns in the northern sky.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Look north",
+        "caption": "Turn to the northern sky. Ursa Major is circumpolar for most northern hemisphere observers — it never sets, wheeling around the pole through the night and seasons. In spring it rides highest overhead.",
+        "ra": 170, "dec": 55, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "The Big Dipper",
+        "caption": "The Big Dipper is unmistakable: four stars form the bowl, three arc away to form the handle. The two stars on the outer edge of the bowl — Dubhe and Merak — are the Pointer Stars, your most useful navigational tool in the northern sky.",
+        "ra": 186, "dec": 56, "fov": 40,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 165.932, "dec": 61.751, "label": "Dubhe",  "color": "#ffd080", "r": 11 },
+          { "ra": 165.460, "dec": 56.382, "label": "Merak",  "color": "#c8d8ff", "r": 9  }
+        ]
+      },
+      {
+        "title": "Follow the Pointers",
+        "caption": "Draw a line from Merak through Dubhe and keep going about 29° — five times the gap between them — and you land on Polaris, the North Star. Polaris marks the celestial north pole and barely moves all night while every other star circles around it.",
+        "ra": 164, "dec": 76, "fov": 44,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 165.932, "dec": 61.751, "label": "Dubhe",   "color": "#ffd080", "r": 11 },
+          { "ra": 165.460, "dec": 56.382, "label": "Merak",   "color": "#c8d8ff", "r": 9  },
+          { "ra": 37.946,  "dec": 89.264, "label": "Polaris", "color": "#ffe8b0", "r": 10 }
+        ]
+      },
+      {
+        "title": "The Great Bear",
+        "caption": "The Big Dipper is just the back and tail of Ursa Major — the Great Bear. Fainter stars extend outward to trace the head, shoulders and paws. It is the third-largest constellation in the sky and one of the oldest recognised star figures in human history.",
+        "ra": 170, "dec": 52, "fov": 70,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
+  "Scorpius": {
+    "steps": [
+      {
+        "title": "Orient yourself",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Scorpius — one of the most magnificent constellations, shaped unmistakably like a scorpion curling through the summer Milky Way.",
+        "random": true, "fov": 80,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Look south in summer",
+        "caption": "Look low to the southern sky on a summer evening. In July, Scorpius hugs the southern horizon for northern observers. In the southern hemisphere it rides high overhead, fully revealing its spectacular curved tail.",
+        "ra": 252, "dec": -15, "fov": 82,
+        "photo": true, "diagram": false, "names": false, "bounds": false
+      },
+      {
+        "title": "Find Antares",
+        "caption": "The easiest entry point is Antares — a brilliant red-orange supergiant marking the scorpion's heart. It is one of the largest stars visible to the naked eye, and its distinctly reddish colour is obvious at a glance.",
+        "ra": 248, "dec": -26, "fov": 30,
+        "photo": true, "diagram": true, "names": true, "bounds": false,
+        "highlight": [
+          { "ra": 247.352, "dec": -26.432, "label": "Antares", "color": "#ff7060", "r": 14 }
+        ]
+      },
+      {
+        "title": "The scorpion's curve",
+        "caption": "Stars arc north of Antares to form the head and claws, while the tail sweeps south and east, curling back on itself through the Milky Way. Shaula marks the tip of the sting — best seen from latitudes below about 35°N where the tail clears the horizon.",
+        "ra": 253, "dec": -31, "fov": 52,
+        "photo": true, "diagram": true, "names": true, "bounds": true,
+        "highlight": [
+          { "ra": 247.352, "dec": -26.432, "label": "Antares",        "color": "#ff7060", "r": 14 },
+          { "ra": 263.402, "dec": -37.104, "label": "Shaula (sting)", "color": "#c8d8ff", "r": 10 }
+        ]
+      },
+      {
+        "title": "Hunter and scorpion",
+        "caption": "Scorpius rides the Milky Way with the galactic core glowing just to its east in Sagittarius. Ancient myth says Scorpius and Orion the Hunter chase each other across the sky — when one rises in the east, the other sets in the west.",
+        "ra": 252, "dec": -22, "fov": 65,
+        "photo": true, "diagram": true, "names": true, "bounds": false
+      }
+    ]
+  },
   "Orion": {
     "rotation": 3.14159,
     "steps": [
