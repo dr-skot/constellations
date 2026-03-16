@@ -137,11 +137,13 @@
           <div id="explore-wrap">
             <canvas id="explore-gl-canvas"></canvas>
             <canvas id="explore-canvas"></canvas>
+            <canvas id="annotation-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
           </div>
           <div id="explore-art-credit"></div>
         </div>
         <div id="explore-roll-strip" style="padding:8px;text-align:center;font-size:12px;color:#aaa;cursor:ew-resize;user-select:none;letter-spacing:0.05em">Rotate</div>
         <div id="explore-quiz-bar" style="display:none">
+          <button id="find-help-btn" style="display:none">? Help</button>
           <div id="eq-label-area">
             <p class="q-label" id="eq-prompt">Click on: <strong id="eq-target-name"></strong></p>
             <div id="eq-feedback"></div>
@@ -158,6 +160,22 @@
       <div class="nav-row screen-ftr" id="find-nav-row" style="display:none">
         <button class="btn-prev" id="find-btn-prev">← Prev</button>
         <button class="btn-next" id="eq-next">Next →</button>
+      </div>
+      <div id="find-guide-overlay" style="display:none">
+        <div id="fg-info-row">
+          <div id="fg-step-row">
+            <div id="fg-step-dots"></div>
+            <span id="fg-step-count"></span>
+          </div>
+          <button id="fg-back-btn">← Back to quiz</button>
+        </div>
+        <div id="fg-caption-label"></div>
+        <p id="fg-caption-text"></p>
+        <div id="fg-nav-row">
+          <button id="fg-btn-prev">← Back</button>
+          <button id="fg-btn-toggle-diag" style="display:none">Diagrams</button>
+          <button id="fg-btn-next">Next →</button>
+        </div>
       </div>
     </div>
 
@@ -193,6 +211,7 @@
   <script src="js/quiz.js"></script>
   <script src="js/explore-gl.js"></script>
   <script src="js/explore.js"></script>
+  <script src="js/find-guide.js"></script>
   <script src="js/course.js"></script>
   <script src="js/main.js"></script>
 </body>

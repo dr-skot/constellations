@@ -101,3 +101,82 @@
 .btn-explore-quiz:hover { border-color: var(--accent); color: var(--text) }
 .btn-explore-quiz.active { border-color: var(--accent); color: var(--accent) }
 
+#find-help-btn {
+  display: block;
+  margin: 2px auto 4px;
+  padding: 4px 16px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .78rem;
+  transition: all .18s;
+}
+#find-help-btn:hover { border-color: var(--accent); color: var(--text); }
+
+#find-guide-overlay {
+  padding: 8px 12px 6px;
+  border-top: 1px solid var(--border);
+}
+#fg-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+#fg-step-row { display: flex; align-items: center; gap: 6px; }
+#fg-step-dots { display: flex; gap: 4px; }
+.fg-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(91,138,245,.2);
+}
+.fg-dot.done   { background: rgba(91,138,245,.45); }
+.fg-dot.active { background: var(--accent); }
+#fg-step-count { font-size: .72rem; color: var(--dim); }
+#fg-back-btn {
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .75rem;
+}
+#fg-back-btn:hover { border-color: var(--accent); color: var(--accent); }
+#fg-caption-label {
+  font-size: .85rem; font-weight: 600;
+  color: var(--text); margin-bottom: 2px;
+}
+#fg-caption-text {
+  font-size: .8rem; color: var(--dim);
+  line-height: 1.45; margin: 0 0 6px;
+}
+#fg-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#fg-btn-prev, #fg-btn-next {
+  padding: 7px 22px;
+  border: 1px solid var(--accent);
+  background: rgba(91,138,245,.12);
+  color: #b0ccff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .88rem;
+  transition: all .18s;
+}
+#fg-btn-prev:hover, #fg-btn-next:hover { background: rgba(91,138,245,.22); }
+#fg-btn-prev:disabled, #fg-btn-next:disabled { opacity: .4; cursor: default; }
+#fg-btn-toggle-diag {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .78rem;
+}
+#fg-btn-toggle-diag:hover { border-color: var(--accent); color: var(--text); }
+

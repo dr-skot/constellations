@@ -89,6 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   document.getElementById('find-btn-quit').addEventListener('click', () => { endLesson(); });
+  document.getElementById('find-help-btn').addEventListener('click', () => {
+    const q = explore.quiz;
+    if (q?.target) startFindGuide(q.target);
+  });
   document.getElementById('find-btn-prev').addEventListener('click', () => {
     if (session.idx > 0 && session.history[session.idx - 1]) {
       session.idx--;

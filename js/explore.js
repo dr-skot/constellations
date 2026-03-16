@@ -515,6 +515,7 @@ function handleExploreClick(px, py) {
   fb.className = correct ? 'correct' : 'wrong';
   document.getElementById('eq-label-area').classList.add('answered');
   document.getElementById('eq-next').classList.add('show');
+  document.getElementById('find-help-btn').style.display = 'none';
   // Set reveal checkbox defaults and show controls
   document.getElementById('chk-eq-photo').checked    = q.stageMode === 'photo';
   document.getElementById('chk-eq-boundary').checked = true;

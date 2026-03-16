@@ -136,6 +136,7 @@ function startLessonFindQuestion(q) {
   document.getElementById('find-btn-prev').classList.toggle('show', session.idx > 0);
   document.getElementById('explore-quiz-bar').style.display = '';
   document.getElementById('eq-reveal-controls').style.display = 'none';
+  updateFindHelpBtn(q.con);
   showScreen('explore');
   drawExplore();
 }

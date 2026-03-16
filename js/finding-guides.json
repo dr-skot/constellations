@@ -2197,31 +2197,31 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          { "ra": 114.825, "dec":   5.225, "label": "Procyon",    "color": "#c8d8ff", "r": 14 },
+          { "ra":  88.793, "dec":   7.407, "label": "Betelgeuse", "color": "#ff7060", "r": 14 }
+        ]
       },
       {
-        "title": "Find Procyon",
-        "caption": "Procyon (mag 0.4) is a white star about 11.5 light-years away — one of the Sun's closest neighbors. Like Sirius, it has a white dwarf companion (Procyon B) detectable only with large telescopes. Procyon forms the Winter Triangle with Sirius (Canis Major) and Betelgeuse (Orion) — a large asterism spanning about 25° per side.",
-        "ra": 114,
-        "dec": 7,
-        "fov": 18,
+        "title": "The Winter Triangle",
+        "caption": "Procyon forms the Winter Triangle with Sirius (Canis Major) and Betelgeuse (Orion) — a large asterism spanning about 25° per side. Procyon (mag 0.4) is a white star about 11.5 light-years away, one of the Sun's closest neighbors. Like Sirius, it has a white dwarf companion detectable only with large telescopes.",
+        "ra": 101,
+        "dec": -3,
+        "fov": 55,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "ra": 114.825495,
-            "dec": 5.224993,
-            "label": "Procyon",
-            "color": "#c8d8ff",
-            "r": 15
-          }
+          { "ra": 114.825, "dec":   5.225, "label": "Procyon",    "color": "#c8d8ff", "r": 14 },
+          { "ra": 101.287, "dec": -16.716, "label": "Sirius",     "color": "#90c8ff", "r": 16 },
+          { "ra":  88.793, "dec":   7.407, "label": "Betelgeuse", "color": "#ff7060", "r": 14 }
         ]
       },
       {
         "title": "The two-star constellation",
-        "caption": "Canis Minor contains only two stars bright enough to see without effort: Procyon and Gomeisa (Beta CMi, mag 2.9), a blue-white star about 3° to the northwest. The 'dog body' is largely imaginary — there is little else to see. The simplicity of Canis Minor makes it a useful pointer: it marks the midpoint between Gemini's Pollux and Sirius in Canis Major.",
+        "caption": "Canis Minor contains only two stars bright enough to see without effort: Procyon and Gomeisa (Beta CMi, mag 2.9), a blue-white star about 3° to the northwest. The 'dog body' is largely imaginary — there is little else to see.",
         "ra": 113,
         "dec": 7,
         "fov": 16,
@@ -2244,6 +2244,21 @@
             "color": "#90c8ff",
             "r": 10
           }
+        ]
+      },
+      {
+        "title": "A midpoint pointer",
+        "caption": "Canis Minor marks the midpoint between Gemini's Pollux and Sirius in Canis Major — a handy reference for navigating the winter sky.",
+        "ra": 110,
+        "dec": 6,
+        "fov": 72,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          { "ra": 116.329, "dec": 28.026, "label": "Pollux", "color": "#ff9060", "r": 14 },
+          { "ra": 101.287, "dec": -16.716, "label": "Sirius", "color": "#90c8ff", "r": 16 }
         ]
       }
     ]
