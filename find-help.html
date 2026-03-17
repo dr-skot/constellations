@@ -6,41 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Finding … — Constellate</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/explore.css">
   <style>
-    :root {
-      --bg: #05060f;
-      --card: #0c0f1e;
-      --border: rgba(255, 255, 255, .08);
-      --accent: #5b8af5;
-      --text: #d8e2ff;
-      --dim: #5a6480;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 14px 16px 28px;
-    }
-
     header {
-      width: 100%;
-      max-width: 600px;
       display: flex;
       align-items: baseline;
       gap: 14px;
-      margin-bottom: 14px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
+      flex-shrink: 0;
     }
 
     header h1 {
@@ -63,141 +38,9 @@
       text-decoration: none;
     }
 
-    header a:hover {
-      text-decoration: underline;
-    }
-
-    #explore-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #010208;
-      flex-shrink: 0;
-    }
-
-    #explore-wrap::after {
-      content: '';
-      display: block;
-      padding-top: 100%;
-    }
-
-    #explore-gl-canvas,
-    #explore-canvas,
-    #annotation-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    #annotation-canvas {
-      pointer-events: none;
-    }
-
-    .step-row {
-      width: 100%;
-      max-width: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 2px 8px;
-    }
-
-    .step-dots {
-      display: flex;
-      gap: 6px;
-    }
-
-    .step-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .15);
-      transition: background .25s;
-    }
-
-    .step-dot.done {
-      background: rgba(91, 138, 245, .45);
-    }
-
-    .step-dot.active {
-      background: var(--accent);
-    }
-
-    .step-count {
-      font-size: .72rem;
-      color: var(--dim);
-    }
-
-    .caption-card {
-      width: 100%;
-      max-width: 600px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      min-height: 90px;
-    }
-
-    .caption-label {
-      font-size: .68rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 7px;
-    }
-
-    .caption-text {
-      font-size: .9rem;
-      line-height: 1.6;
-      color: var(--text);
-    }
-
-    .nav {
-      width: 100%;
-      max-width: 600px;
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-    }
-
-    .btn {
-      padding: 9px 22px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: .85rem;
-      border: 1px solid var(--accent);
-      background: rgba(91, 138, 245, .12);
-      color: #b0ccff;
-      transition: background .15s;
-    }
-
-    .btn:hover {
-      background: rgba(91, 138, 245, .22);
-    }
-
-    .btn:disabled {
-      opacity: .28;
-      cursor: default;
-      background: rgba(91, 138, 245, .06);
-    }
-
-    .btn.primary {
-      background: rgba(91, 138, 245, .25);
-      color: #d8eaff;
-    }
-
-    .btn.primary:hover {
-      background: rgba(91, 138, 245, .38);
-    }
+    header a:hover { text-decoration: underline; }
 
     #picker {
-      width: 100%;
-      max-width: 600px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -231,61 +74,68 @@
 
     #picker-msg {
       font-size: .8rem;
-      color: var(--err, #ef4444);
+      color: var(--err);
       min-height: 1.2em;
     }
   </style>
 </head>
 
 <body>
+  <div id="app">
 
-  <!-- Dummy IDs that drawExplore() reads -->
-  <div id="screen-explore" class="active" style="display:none"></div>
-  <input type="checkbox" id="chk-ex-photo" style="display:none">
-  <input type="checkbox" id="chk-ex-diagram" style="display:none" checked>
-  <input type="checkbox" id="chk-ex-bounds" style="display:none">
-  <input type="checkbox" id="chk-ex-art" style="display:none">
-  <input type="checkbox" id="chk-ex-starlabels" style="display:none">
-  <input type="checkbox" id="chk-ex-connames" style="display:none" checked>
-  <input type="checkbox" id="chk-ex-equator" style="display:none">
+    <header>
+      <h1>Constellate</h1>
+      <span class="sub" id="page-sub">Finding …</span>
+      <a href="find-help.html">← Back</a>
+    </header>
 
-  <header>
-    <h1>Constellate</h1>
-    <span class="sub" id="page-sub">Finding …</span>
-    <a href="index.html">← Back</a>
-  </header>
-
-  <div id="picker" style="display:none">
-    <p>Which constellation would you like to find?</p>
-    <div id="picker-row">
-      <input type="text" id="picker-input" list="con-search-list" placeholder="Type a constellation name…"
-        autocomplete="off">
-      <datalist id="con-search-list"></datalist>
-      <button class="btn primary" id="picker-go">Go →</button>
+    <div id="picker" style="display:none">
+      <p>Which constellation would you like to find?</p>
+      <div id="picker-row">
+        <input type="text" id="picker-input" list="con-search-list" placeholder="Type a constellation name…"
+          autocomplete="off">
+        <datalist id="con-search-list"></datalist>
+        <button class="btn-go" id="picker-go">Go →</button>
+      </div>
+      <div id="picker-msg"></div>
     </div>
-    <div id="picker-msg"></div>
-  </div>
 
-  <div id="explore-wrap">
-    <canvas id="explore-gl-canvas"></canvas>
-    <canvas id="explore-canvas"></canvas>
-    <canvas id="annotation-canvas"></canvas>
-  </div>
+    <div id="screen-explore" class="screen">
+      <div class="screen-body">
+        <div class="explore-layers" style="display:none">
+          <label><input type="checkbox" id="chk-ex-photo"> Photo</label>
+          <label><input type="checkbox" id="chk-ex-diagram" checked> Diagram</label>
+          <label><input type="checkbox" id="chk-ex-bounds"> Bounds</label>
+          <label><input type="checkbox" id="chk-ex-art"> Art</label>
+          <label><input type="checkbox" id="chk-ex-starlabels"> Star names</label>
+          <label><input type="checkbox" id="chk-ex-connames" checked> Con. names</label>
+          <label><input type="checkbox" id="chk-ex-equator"> Equator</label>
+        </div>
+        <div id="explore-area">
+          <div id="explore-wrap">
+            <canvas id="explore-gl-canvas"></canvas>
+            <canvas id="explore-canvas"></canvas>
+            <canvas id="annotation-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+          </div>
+        </div>
+      </div>
+      <div id="find-guide-overlay">
+        <div id="fg-info-row">
+          <div id="fg-step-row">
+            <div id="fg-step-dots"></div>
+            <span id="fg-step-count"></span>
+          </div>
+        </div>
+        <div id="fg-caption-label"></div>
+        <p id="fg-caption-text"></p>
+        <div id="fg-nav-row">
+          <button id="fg-btn-prev">← Back</button>
+          <button id="fg-btn-toggle-diag" style="display:none">Show overlays</button>
+          <button id="fg-btn-next">Next →</button>
+        </div>
+      </div>
+    </div>
 
-  <div class="step-row">
-    <div class="step-dots" id="step-dots"></div>
-    <span class="step-count" id="step-count"></span>
-  </div>
-
-  <div class="caption-card">
-    <div class="caption-label" id="caption-label"></div>
-    <div class="caption-text" id="caption-text"></div>
-  </div>
-
-  <div class="nav">
-    <button class="btn" id="btn-prev">← Back</button>
-    <button class="btn" id="btn-toggle-diag" style="display:none">Show Diagrams</button>
-    <button class="btn primary" id="btn-next">Next →</button>
   </div>
 
   <script src="js/data.js"></script>
@@ -305,10 +155,6 @@
 
     if (!con) {
       document.getElementById('page-sub').textContent = 'Finding …';
-      document.getElementById('explore-wrap').style.display = 'none';
-      document.querySelector('.step-row').style.display = 'none';
-      document.querySelector('.caption-card').style.display = 'none';
-      document.querySelector('.nav').style.display = 'none';
       const picker = document.getElementById('picker');
       picker.style.display = '';
       const dl = document.getElementById('con-search-list');
@@ -329,137 +175,51 @@
     } else {
       document.title = `Finding ${con.name} — Constellate`;
       document.getElementById('page-sub').textContent = `Finding ${con.name}`;
+      document.getElementById('screen-explore').classList.add('active');
     }
 
-    // ── Render helpers ────────────────────────────────────────────────────────
-    let catalog = {};
-    function drawScene() { explore.quiz = null; drawExplore(); }
-    function drawAnnotation(step) { guideDrawAnnotation(step, catalog); }
-    function animateTo(step, onDone) { guideAnimateTo(step, drawScene, drawAnnotation, onDone); }
-
     // ── Boot ──────────────────────────────────────────────────────────────────
+    if (con) {
+      Promise.all([
+        fetch('js/finding-guides.json').then(r => r.json()),
+        fetch('js/sky-objects.json').then(r => r.json()),
+      ]).then(([guides, catalog]) => {
+          const guide = guides[con.name];
+          if (!guide || !guide.steps || !guide.steps.length) {
+            document.getElementById('fg-caption-label').textContent = con.name;
+            document.getElementById('fg-caption-text').textContent = 'No finding guide is available for this constellation yet.';
+            document.getElementById('fg-btn-next').disabled = true;
+            document.getElementById('fg-btn-prev').disabled = true;
+            return;
+          }
+          init(guide, catalog);
+        })
+        .catch(() => {
+          document.getElementById('fg-caption-text').textContent = 'Could not load finding guide.';
+        });
+    }
 
-    Promise.all([
-      fetch('js/finding-guides.json').then(r => r.json()),
-      fetch('js/sky-objects.json').then(r => r.json()),
-    ]).then(([guides, cat]) => {
-        catalog = cat;
-        const guide = guides[con.name];
-        if (!guide || !guide.steps || !guide.steps.length) {
-          document.getElementById('caption-label').textContent = con.name;
-          document.getElementById('caption-text').textContent = 'No finding guide is available for this constellation yet.';
-          document.getElementById('btn-next').disabled = true;
-          document.getElementById('btn-prev').disabled = true;
-          return;
-        }
-        init(guide);
-      })
-      .catch(() => {
-        document.getElementById('caption-text').textContent = 'Could not load finding guide.';
-      });
-
-    function init(guide) {
-      const steps = guide.steps;
+    function init(guide, catalog) {
       initExploreGL(document.getElementById('explore-gl-canvas'));
 
+      const steps = guide.steps.map(s => Object.assign({}, s));
       const startRa = Math.random() * 360;
       const startDec = (Math.random() * 2 - 1) * 60;
       steps.forEach(s => { if (s.random) { s.ra = startRa; s.dec = startDec; } });
 
-      explore.P = raDecToVec(startRa, startDec);
-      explore.fov = steps[0].fov || 80;
       explore.R = guide.rotation != null
         ? guide.rotation
         : guideNorthUpR(raDecToVec(con.ra, con.dec));
 
-      const stepKey = `find-help-step-${con.abbr}`;
-      let stepIdx = -1;
-      let animating = false;
-      let diagVisible = !!steps[0].diagram;
-
-      function applySettings(step) {
-        document.getElementById('chk-ex-photo').checked = !!step.photo;
-        document.getElementById('chk-ex-diagram').checked = !!step.diagram;
-        document.getElementById('chk-ex-bounds').checked = !!step.bounds;
-        document.getElementById('chk-ex-art').checked = !!step.art;
-        document.getElementById('chk-ex-starlabels').checked = false;
-        document.getElementById('chk-ex-connames').checked = !!step.names;
-        document.getElementById('chk-ex-equator').checked = !!step.equator;
-      }
-
-      function renderUI() {
-        const n = steps.length;
-        document.getElementById('step-dots').innerHTML = steps.map((_, i) =>
-          `<div class="step-dot ${i < stepIdx ? 'done' : i === stepIdx ? 'active' : ''}"></div>`
-        ).join('');
-        document.getElementById('step-count').textContent = `${stepIdx + 1} / ${n}`;
-        document.getElementById('caption-label').textContent = steps[stepIdx].title;
-        document.getElementById('caption-text').textContent = steps[stepIdx].caption;
-        document.getElementById('btn-prev').disabled = stepIdx === 0 || animating;
-        const isLast = stepIdx === n - 1;
-        const diagBtn2 = document.getElementById('btn-toggle-diag');
-        diagBtn2.style.display = isLast ? '' : 'none';
-        diagBtn2.textContent = diagVisible ? 'Hide overlays' : 'Show overlays';
-        const next = document.getElementById('btn-next');
-        next.textContent = isLast ? 'Done ✓' : 'Next →';
-        next.disabled = animating;
-      }
-
-      function goTo(i, immediate) {
-        stepIdx = i;
-        localStorage.setItem(stepKey, i);
-        animating = !immediate;
-        diagVisible = !!steps[i].diagram;
-        const step = steps[i];
-        applySettings(step);
-        renderUI();
-
-        if (immediate) {
-          explore.P = raDecToVec(step.ra, step.dec);
-          explore.fov = step.fov;
-          drawScene();
-          drawAnnotation(step);
-          animating = false;
-          renderUI();
-        } else {
-          animateTo(step, () => {
-            animating = false;
-            renderUI();
-          });
-        }
-      }
-
-      const diagBtn = document.getElementById('btn-toggle-diag');
-      diagBtn.addEventListener('click', () => {
-        diagVisible = !diagVisible;
-        diagBtn.textContent = diagVisible ? 'Hide overlays' : 'Show overlays';
-        const step = steps[stepIdx];
-        document.getElementById('chk-ex-diagram').checked = diagVisible && !!step.diagram;
-        document.getElementById('chk-ex-connames').checked = diagVisible && !!step.names;
-        document.getElementById('chk-ex-bounds').checked = diagVisible && !!step.bounds;
-        document.getElementById('chk-ex-art').checked = diagVisible && !!step.art;
-        drawScene();
-        drawAnnotation(diagVisible ? step : null);
-      });
-
-      document.getElementById('btn-next').addEventListener('click', () => {
-        if (animating) return;
-        if (stepIdx === steps.length - 1) { window.location.href = 'find-help.html'; return; }
-        goTo(stepIdx + 1);
-      });
-
-      document.getElementById('btn-prev').addEventListener('click', () => {
-        if (animating || stepIdx === 0) return;
-        goTo(stepIdx - 1);
-      });
-
       document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight') document.getElementById('got').click();
-        if (e.key === 'ArrowLeft') document.getElementById('btn-prev').click();
+        if (e.key === 'ArrowRight') document.getElementById('fg-btn-next').click();
+        if (e.key === 'ArrowLeft') document.getElementById('fg-btn-prev').click();
       });
 
-      const saved = parseInt(localStorage.getItem(stepKey), 10);
-      goTo((saved >= 0 && saved < steps.length) ? saved : 0, true);
+      guideStart(steps, catalog, {
+        stepKey: `find-help-step-${con.abbr}`,
+        onLastNext: () => { window.location.href = 'find-help.html'; },
+      });
     }
   </script>
 </body>

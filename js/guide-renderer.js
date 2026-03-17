@@ -121,7 +121,7 @@ function guideDrawAnnotation(step, catalog) {
 
 // ── Animation ─────────────────────────────────────────────────────────────────
 // shouldContinue: optional function returning false to abort mid-animation
-function guideAnimateTo(step, draw, drawAnnotation, onDone, shouldContinue) {
+function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldContinue) {
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
   const v1 = explore.P.slice(), f1 = explore.fov;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
@@ -139,7 +139,7 @@ function guideAnimateTo(step, draw, drawAnnotation, onDone, shouldContinue) {
     }
     explore.fov = f1 + (f2 - f1) * t;
     draw();
-    drawAnnotation(raw < 1 ? null : step);
+    drawAnnotation(raw < 1 ? prevStep : step);
     if (raw < 1) {
       explore.animFrame = requestAnimationFrame(tick);
     } else {
@@ -148,4 +148,117 @@ function guideAnimateTo(step, draw, drawAnnotation, onDone, shouldContinue) {
     }
   }
   requestAnimationFrame(tick);
+}
+
+// ── Guide session ─────────────────────────────────────────────────────────────
+// _gs holds all state for the active guide session
+let _gs = null;
+
+function _guideDraw() { explore.quiz = null; drawExplore(); }
+
+function _guideApplySettings(step) {
+  document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
+  document.getElementById('chk-ex-diagram'   ).checked = !!step.diagram;
+  document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
+  document.getElementById('chk-ex-art'       ).checked = !!step.art;
+  document.getElementById('chk-ex-starlabels').checked = false;
+  document.getElementById('chk-ex-connames'  ).checked = !!step.names;
+  document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
+}
+
+function _guideRenderUI() {
+  const { steps, idx, animating, diagVisible } = _gs;
+  const n = steps.length;
+  document.getElementById('fg-step-dots').innerHTML = steps.map((_, j) =>
+    `<div class="fg-dot ${j < idx ? 'done' : j === idx ? 'active' : ''}"></div>`
+  ).join('');
+  document.getElementById('fg-step-count').textContent = `${idx + 1} / ${n}`;
+  document.getElementById('fg-caption-label').textContent = steps[idx].title;
+  document.getElementById('fg-caption-text').textContent  = steps[idx].caption;
+  document.getElementById('fg-btn-prev').disabled = idx === 0 || animating;
+  const isLast = idx === n - 1;
+  const toggleBtn = document.getElementById('fg-btn-toggle-diag');
+  toggleBtn.style.display = isLast ? '' : 'none';
+  toggleBtn.textContent   = diagVisible ? 'Hide overlays' : 'Show overlays';
+  const nextBtn = document.getElementById('fg-btn-next');
+  nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
+  nextBtn.disabled    = animating;
+}
+
+let _guideListenersAdded = false;
+
+function _guideAddListeners() {
+  if (_guideListenersAdded) return;
+  _guideListenersAdded = true;
+
+  document.getElementById('fg-btn-next').addEventListener('click', () => {
+    if (!_gs || _gs.animating) return;
+    if (_gs.idx === _gs.steps.length - 1) { if (_gs.onLastNext) _gs.onLastNext(); return; }
+    guideGoTo(_gs.idx + 1);
+  });
+
+  document.getElementById('fg-btn-prev').addEventListener('click', () => {
+    if (!_gs || _gs.animating || _gs.idx === 0) return;
+    guideGoTo(_gs.idx - 1);
+  });
+
+  document.getElementById('fg-btn-toggle-diag').addEventListener('click', () => {
+    if (!_gs) return;
+    _gs.diagVisible = !_gs.diagVisible;
+    const step = _gs.steps[_gs.idx];
+    document.getElementById('chk-ex-diagram' ).checked = _gs.diagVisible && !!step.diagram;
+    document.getElementById('chk-ex-connames').checked = _gs.diagVisible && !!step.names;
+    document.getElementById('chk-ex-bounds'  ).checked = _gs.diagVisible && !!step.bounds;
+    document.getElementById('chk-ex-art'     ).checked = _gs.diagVisible && !!step.art;
+    _guideDraw();
+    guideDrawAnnotation(_gs.diagVisible ? step : null, _gs.catalog);
+    document.getElementById('fg-btn-toggle-diag').textContent =
+      _gs.diagVisible ? 'Hide overlays' : 'Show overlays';
+  });
+
+  const backBtn = document.getElementById('fg-back-btn');
+  if (backBtn) backBtn.addEventListener('click', () => { if (_gs?.onLastNext) _gs.onLastNext(); });
+}
+
+function guideGoTo(i, immediate) {
+  if (!_gs) return;
+  const prevStep = _gs.idx >= 0 ? _gs.steps[_gs.idx] : null;
+  _gs.idx = i;
+  _gs.animating = !immediate;
+  _gs.diagVisible = !!_gs.steps[i].diagram;
+  if (_gs.stepKey) localStorage.setItem(_gs.stepKey, i);
+  const step = _gs.steps[i];
+  _guideRenderUI();
+
+  if (immediate) {
+    _guideApplySettings(step);
+    explore.P   = raDecToVec(step.ra, step.dec);
+    explore.fov = step.fov;
+    _guideDraw();
+    guideDrawAnnotation(step, _gs.catalog);
+    _gs.animating = false;
+    _guideRenderUI();
+  } else {
+    guideAnimateTo(step, prevStep, _guideDraw, s => guideDrawAnnotation(s, _gs.catalog), () => {
+      if (!_gs) return;
+      _guideApplySettings(step);
+      _guideDraw();
+      _gs.animating = false;
+      _guideRenderUI();
+    }, () => !!_gs);
+  }
+}
+
+function guideStart(steps, catalog, options = {}) {
+  _gs = { steps, catalog, idx: -1, animating: false, diagVisible: false,
+          onLastNext: options.onLastNext || null, stepKey: options.stepKey || null };
+  _guideAddListeners();
+  const saved = _gs.stepKey ? parseInt(localStorage.getItem(_gs.stepKey), 10) : NaN;
+  guideGoTo((!isNaN(saved) && saved >= 0 && saved < steps.length) ? saved : 0, true);
+}
+
+function guideStop() {
+  _gs = null;
+  const ann = document.getElementById('annotation-canvas');
+  if (ann) { const c = ann.getContext('2d'); c.clearRect(0, 0, ann.width, ann.height); }
 }
