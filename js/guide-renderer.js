@@ -98,7 +98,9 @@ function guideDrawAnnotation(step, catalog) {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
       const p = pts[0];
       if (!p || p.d <= 0) continue;
-      const r  = h.r * scale;
+      const r  = h.r_deg !== undefined
+        ? h.r_deg * (W / explore.fov) * scale
+        : h.r * scale;
       const fs = Math.round(13 * scale);
       ctx.strokeStyle = h.color;
       ctx.lineWidth   = Math.max(1.5, 1.5 * scale);

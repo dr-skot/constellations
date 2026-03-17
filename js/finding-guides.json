@@ -40,25 +40,13 @@
         "art": true,
         "highlight": [
           {
-            "ra": 2.097,
-            "dec": 29.09,
-            "label": "Alpheratz",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Alpheratz"
           },
           {
-            "ra": 17.433,
-            "dec": 35.621,
-            "label": "Mirach",
-            "color": "#ff7060",
-            "r": 12
+            "id": "Mirach"
           },
           {
-            "ra": 30.975,
-            "dec": 42.33,
-            "label": "Almach",
-            "color": "#ff7060",
-            "r": 12
+            "id": "Almach"
           }
         ]
       },
@@ -74,18 +62,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 17.433,
-            "dec": 35.621,
-            "label": "Mirach",
-            "color": "#ff7060",
-            "r": 12
+            "id": "Mirach"
           },
           {
-            "ra": 10.68,
-            "dec": 41.27,
-            "label": "Andromeda Galaxy",
-            "color": "#ffe8b0",
-            "r": 40
+            "id": "Andromeda Galaxy"
           }
         ]
       }
@@ -116,11 +96,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 141.897,
-            "dec": -8.659,
-            "label": "Alphard",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Alphard"
           }
         ]
       },
@@ -136,11 +112,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 156.788,
-            "dec": -31.068,
-            "label": "α Ant",
-            "color": "#ffd080",
-            "r": 10
+            "id": "α Ant"
           }
         ]
       },
@@ -156,11 +128,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 146.41,
-            "dec": -31.19,
-            "label": "NGC 2997",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "NGC 2997"
           }
         ]
       }
@@ -191,11 +159,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 252.166,
-            "dec": -69.028,
-            "label": "Atria",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Atria"
           }
         ]
       },
@@ -211,18 +175,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 221.966,
-            "dec": -79.045,
-            "label": "α Aps",
-            "color": "#ff9060",
-            "r": 11
+            "id": "α Aps"
           },
           {
-            "ra": 248.364,
-            "dec": -78.897,
-            "label": "β Aps",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "β Aps"
           }
         ]
       },
@@ -275,25 +231,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 322.89,
-            "dec": -5.571,
-            "label": "Sadalsud",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Sadalsud"
           },
           {
-            "ra": 336.945,
-            "dec": -0.037,
-            "label": "Water Jar",
-            "color": "#c8d8ff",
-            "r": 32
+            "id": "Water Jar"
           },
           {
-            "ra": 344.413,
-            "dec": -29.622,
-            "label": "Fomalhaut",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Fomalhaut"
           }
         ]
       },
@@ -309,18 +253,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 316.05,
-            "dec": -11.36,
-            "label": "Saturn Nebula",
-            "color": "#a0e0a0",
-            "r": 9
+            "id": "Saturn Nebula"
           },
           {
-            "ra": 337.41,
-            "dec": -20.84,
-            "label": "Helix Nebula",
-            "color": "#a0e0a0",
-            "r": 15
+            "id": "Helix Nebula"
           }
         ]
       }
@@ -361,25 +297,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Altair"
           },
           {
-            "ra": 296.565,
-            "dec": 10.613,
-            "label": "Tarazed",
-            "color": "#ffd080",
-            "r": 9
+            "id": "Tarazed"
           },
           {
-            "ra": 298.828,
-            "dec": 6.407,
-            "label": "Alshain",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "Alshain"
           }
         ]
       },
@@ -395,11 +319,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Altair"
           }
         ]
       },
@@ -415,25 +335,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Altair"
           },
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           },
           {
-            "ra": 310.358,
-            "dec": 45.28,
-            "label": "Deneb",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Deneb"
           }
         ]
       }
@@ -464,11 +372,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 263.402,
-            "dec": -37.104,
-            "label": "Shaula",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Shaula"
           }
         ]
       },
@@ -484,18 +388,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 262.96,
-            "dec": -49.876,
-            "label": "β Ara",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "β Ara"
           },
           {
-            "ra": 261.325,
-            "dec": -55.53,
-            "label": "α Ara",
-            "color": "#ff9060",
-            "r": 13
+            "id": "α Ara"
           }
         ]
       },
@@ -537,11 +433,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 56.75,
-            "dec": 24.12,
-            "label": "Pleiades",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Pleiades"
           }
         ]
       },
@@ -557,25 +449,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 31.793325,
-            "dec": 23.462423,
-            "label": "Hamal",
-            "color": "#ffd080",
-            "r": 13
+            "id": "Hamal"
           },
           {
-            "ra": 28.66002,
-            "dec": 20.808035,
-            "label": "Sheratan",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Sheratan"
           },
           {
-            "ra": 28.38,
-            "dec": 19.29,
-            "label": "Mesarthim",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Mesarthim"
           }
         ]
       },
@@ -617,32 +497,18 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 79.172,
-            "dec": 45.998,
-            "label": "Capella",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Capella"
           },
           {
-            "ra": 83.002,
-            "dec": -0.299,
-            "label": "belt",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "belt"
           },
           {
-            "ra": 84.053,
-            "dec": -1.202,
-            "label": "",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Alnilam  ε",
+            "label": ""
           },
           {
-            "ra": 85.19,
-            "dec": -1.943,
-            "label": "",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Alnitak  ζ",
+            "label": ""
           }
         ]
       },
@@ -658,11 +524,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 79.17225,
-            "dec": 45.997991,
-            "label": "Capella",
-            "color": "#ffe8b0",
-            "r": 16
+            "id": "Capella"
           }
         ]
       },
@@ -678,25 +540,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 79.17225,
-            "dec": 45.997991,
-            "label": "Capella",
-            "color": "#ffe8b0",
-            "r": 16
+            "id": "Capella"
           },
           {
-            "ra": 89.882,
-            "dec": 44.947,
-            "label": "Menkalinan",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Menkalinan"
           },
           {
-            "ra": 75.492,
-            "dec": 43.823,
-            "label": "ε Aur",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "ε Aur"
           }
         ]
       },
@@ -712,25 +562,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 84.075,
-            "dec": 34.14,
-            "label": "M36",
-            "color": "#ffe8b0",
-            "r": 10
+            "id": "M36"
           },
           {
-            "ra": 88.075,
-            "dec": 32.55,
-            "label": "M37",
-            "color": "#ffe8b0",
-            "r": 10
+            "id": "M37"
           },
           {
-            "ra": 82.175,
-            "dec": 35.86,
-            "label": "M38",
-            "color": "#ffe8b0",
-            "r": 10
+            "id": "M38"
           }
         ]
       }
@@ -771,11 +609,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 213.91545,
-            "dec": 19.18241,
-            "label": "Arcturus",
-            "color": "#ff9060",
-            "r": 16
+            "id": "Arcturus"
           }
         ]
       },
@@ -791,18 +625,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 213.91545,
-            "dec": 19.18241,
-            "label": "Arcturus",
-            "color": "#ff9060",
-            "r": 16
+            "id": "Arcturus"
           },
           {
-            "ra": 221.24676,
-            "dec": 27.074222,
-            "label": "Izar",
-            "color": "#ff9060",
-            "r": 10
+            "id": "Izar"
           }
         ]
       }
@@ -833,11 +659,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 78.634,
-            "dec": -8.202,
-            "label": "Rigel",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Rigel"
           }
         ]
       },
@@ -853,18 +675,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 70.141,
-            "dec": -41.864,
-            "label": "α Cae",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Cae"
           },
           {
-            "ra": 76.102,
-            "dec": -35.483,
-            "label": "β Cae",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Cae"
           }
         ]
       },
@@ -907,11 +721,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 37.955,
-            "dec": 89.264,
-            "label": "Polaris",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Polaris"
           }
         ]
       },
@@ -927,18 +737,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 75.855,
-            "dec": 60.442,
-            "label": "β Cam",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "β Cam"
           },
           {
-            "ra": 74.322,
-            "dec": 53.752,
-            "label": "α Cam",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Cam"
           }
         ]
       },
@@ -980,25 +782,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 116.329,
-            "dec": 28.026,
-            "label": "Pollux",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Pollux"
           },
           {
-            "ra": 113.65,
-            "dec": 31.888,
-            "label": "Castor",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Castor"
           },
           {
-            "ra": 152.093,
-            "dec": 11.967,
-            "label": "Regulus",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Regulus"
           }
         ]
       },
@@ -1014,11 +804,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 130.1,
-            "dec": 19.67,
-            "label": "Beehive (M44)",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Beehive (M44)"
           }
         ]
       },
@@ -1034,25 +820,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 130.1,
-            "dec": 19.67,
-            "label": "Beehive (M44)",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Beehive (M44)"
           },
           {
-            "ra": 131.17125,
-            "dec": 18.154309,
-            "label": "Asellus Australis",
-            "color": "#ffd080",
-            "r": 9
+            "id": "Asellus Australis"
           },
           {
-            "ra": 124.12884,
-            "dec": 9.185545,
-            "label": "Acubens",
-            "color": "#ff7060",
-            "r": 8
+            "id": "Acubens"
           }
         ]
       }
@@ -1083,18 +857,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 206.885,
-            "dec": 49.313,
-            "label": "Alkaid",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Alkaid"
           },
           {
-            "ra": 194.007,
-            "dec": 38.318,
-            "label": "Cor Caroli",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Cor Caroli"
           }
         ]
       },
@@ -1111,18 +877,10 @@
         "notes": "highlight M51, M3",
         "highlight": [
           {
-            "ra": 194.007,
-            "dec": 38.318,
-            "label": "Cor Caroli",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Cor Caroli"
           },
           {
-            "ra": 188.436,
-            "dec": 41.357,
-            "label": "Chara",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "Chara"
           }
         ]
       },
@@ -1166,11 +924,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 18
+            "id": "Sirius"
           }
         ]
       },
@@ -1186,32 +940,18 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 83.002,
-            "dec": -0.299,
-            "label": "belt",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "belt"
           },
           {
-            "ra": 84.053,
-            "dec": -1.202,
-            "label": "",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Alnilam  ε",
+            "label": ""
           },
           {
-            "ra": 85.19,
-            "dec": -1.943,
-            "label": "",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Alnitak  ζ",
+            "label": ""
           },
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 18
+            "id": "Sirius"
           }
         ]
       },
@@ -1227,18 +967,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 18
+            "id": "Sirius"
           },
           {
-            "ra": 104.656,
-            "dec": -28.972,
-            "label": "Adhara",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "Adhara"
           }
         ]
       },
@@ -1280,18 +1012,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 114.825,
-            "dec": 5.225,
-            "label": "Procyon",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Procyon"
           },
           {
-            "ra": 88.793,
-            "dec": 7.407,
-            "label": "Betelgeuse",
-            "color": "#ff7060",
-            "r": 14
+            "id": "Betelgeuse"
           }
         ]
       },
@@ -1307,25 +1031,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 114.825,
-            "dec": 5.225,
-            "label": "Procyon",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Procyon"
           },
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Sirius"
           },
           {
-            "ra": 88.793,
-            "dec": 7.407,
-            "label": "Betelgeuse",
-            "color": "#ff7060",
-            "r": 14
+            "id": "Betelgeuse"
           }
         ]
       },
@@ -1341,18 +1053,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 114.825495,
-            "dec": 5.224993,
-            "label": "Procyon",
-            "color": "#c8d8ff",
-            "r": 15
+            "id": "Procyon"
           },
           {
-            "ra": 111.78768,
-            "dec": 8.289315,
-            "label": "Gomeisa",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "Gomeisa"
           }
         ]
       },
@@ -1368,18 +1072,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 116.329,
-            "dec": 28.026,
-            "label": "Pollux",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Pollux"
           },
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Sirius"
           }
         ]
       }
@@ -1409,11 +1105,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#ffe8b0",
-            "r": 13
+            "id": "Altair"
           }
         ]
       },
@@ -1429,18 +1121,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 304.51356,
-            "dec": -12.544852,
-            "label": "Algedi",
-            "color": "#ffe8b0",
-            "r": 9
+            "id": "Algedi"
           },
           {
-            "ra": 305.25280499999997,
-            "dec": -14.781367,
-            "label": "Dabih",
-            "color": "#ffd080",
-            "r": 10
+            "id": "Dabih"
           }
         ]
       },
@@ -1457,18 +1141,10 @@
         "art": true,
         "highlight": [
           {
-            "ra": 304.51356,
-            "dec": -12.544852,
-            "label": "Algedi",
-            "color": "#ffe8b0",
-            "r": 9
+            "id": "Algedi"
           },
           {
-            "ra": 326.760165,
-            "dec": -16.127286,
-            "label": "Deneb Algedi",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "Deneb Algedi"
           }
         ]
       }
@@ -1499,18 +1175,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 18
+            "id": "Sirius"
           },
           {
-            "ra": 95.988,
-            "dec": -52.696,
-            "label": "Canopus",
-            "color": "#90c8ff",
-            "r": 20
+            "id": "Canopus"
           }
         ]
       },
@@ -1527,25 +1195,13 @@
         "notes": "highlight Alsephina; is the false cross really 6 stars?; Aspidiske label covers Avior",
         "highlight": [
           {
-            "ra": 95.988,
-            "dec": -52.696,
-            "label": "Canopus",
-            "color": "#90c8ff",
-            "r": 20
+            "id": "Canopus"
           },
           {
-            "ra": 125.629,
-            "dec": -59.51,
-            "label": "Avior",
-            "color": "#ffd080",
-            "r": 14
+            "id": "Avior"
           },
           {
-            "ra": 139.273,
-            "dec": -59.275,
-            "label": "Aspidiske",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Aspidiske"
           }
         ]
       },
@@ -1562,18 +1218,10 @@
         "notes": "circle the nebulae mentioned",
         "highlight": [
           {
-            "ra": 160.739,
-            "dec": -64.394,
-            "label": "Miaplacidus",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Miaplacidus"
           },
           {
-            "ra": 139.273,
-            "dec": -59.275,
-            "label": "Aspidiske",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Aspidiske"
           }
         ]
       }
@@ -1614,25 +1262,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 10.127,
-            "dec": 56.537,
-            "label": "Schedar",
-            "color": "#ffd080",
-            "r": 10
+            "id": "Schedar"
           },
           {
-            "ra": 2.293,
-            "dec": 59.15,
-            "label": "Caph",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "Caph"
           },
           {
-            "ra": 14.177,
-            "dec": 60.717,
-            "label": "Cih",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Cih"
           }
         ]
       },
@@ -1688,18 +1324,10 @@
         "notes": "label collision",
         "highlight": [
           {
-            "ra": 219.911475,
-            "dec": -60.833976,
-            "label": "Rigil Kentaurus",
-            "color": "#ffe8b0",
-            "r": 16
+            "id": "Rigil Kentaurus"
           },
           {
-            "ra": 210.955935,
-            "dec": -60.373039,
-            "label": "Hadar",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Hadar"
           }
         ]
       },
@@ -1715,32 +1343,16 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 219.911475,
-            "dec": -60.833976,
-            "label": "Rigil Kentaurus",
-            "color": "#ffe8b0",
-            "r": 16
+            "id": "Rigil Kentaurus"
           },
           {
-            "ra": 210.955935,
-            "dec": -60.373039,
-            "label": "Hadar",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Hadar"
           },
           {
-            "ra": 211.670925,
-            "dec": -36.369954,
-            "label": "Menkent",
-            "color": "#ffd080",
-            "r": 11
+            "id": "Menkent"
           },
           {
-            "ra": 201.697,
-            "dec": -47.48,
-            "label": "Omega Cen",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Omega Cen"
           }
         ]
       }
@@ -1782,11 +1394,7 @@
         "notes": "show Polaris",
         "highlight": [
           {
-            "ra": 319.64445,
-            "dec": 62.585573,
-            "label": "Alderamin",
-            "color": "#c8d8ff",
-            "r": 12
+            "id": "Alderamin"
           }
         ]
       },
@@ -1803,18 +1411,10 @@
         "notes": "highlight other stars mentioned",
         "highlight": [
           {
-            "ra": 337.292745,
-            "dec": 58.415198,
-            "label": "Zeta Cep",
-            "color": "#ffe8b0",
-            "r": 9
+            "id": "Zeta Cep"
           },
           {
-            "ra": 333.75816,
-            "dec": 57.043587,
-            "label": "Delta Cep",
-            "color": "#ffe8b0",
-            "r": 9
+            "id": "Delta Cep"
           }
         ]
       }
@@ -1846,18 +1446,10 @@
         "notes": "text is redundant with next slide; this should just talk about locating; save stars for next",
         "highlight": [
           {
-            "ra": 2.097,
-            "dec": 29.09,
-            "label": "Alpheratz",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Alpheratz"
           },
           {
-            "ra": 10.897,
-            "dec": -17.987,
-            "label": "Diphda",
-            "color": "#ffd080",
-            "r": 14
+            "id": "Diphda"
           }
         ]
       },
@@ -1873,18 +1465,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 10.897,
-            "dec": -17.987,
-            "label": "Diphda",
-            "color": "#ffd080",
-            "r": 14
+            "id": "Diphda"
           },
           {
-            "ra": 45.57,
-            "dec": 4.09,
-            "label": "Menkar",
-            "color": "#ff9060",
-            "r": 13
+            "id": "Menkar"
           }
         ]
       },
@@ -1940,18 +1524,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 124.631,
-            "dec": -76.92,
-            "label": "α Cha",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Cha"
           },
           {
-            "ra": 158.867,
-            "dec": -78.608,
-            "label": "β Cha",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "β Cha"
           }
         ]
       },
@@ -1996,18 +1572,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 220.627,
-            "dec": -64.975,
-            "label": "α Cir",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "α Cir"
           },
           {
-            "ra": 219.917,
-            "dec": -60.84,
-            "label": "α Cen",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "α Cen"
           }
         ]
       },
@@ -2024,18 +1592,10 @@
         "notes": "highlight gamma Cir",
         "highlight": [
           {
-            "ra": 220.627,
-            "dec": -64.975,
-            "label": "α Cir",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "α Cir"
           },
           {
-            "ra": 229.379,
-            "dec": -58.801,
-            "label": "β Cir",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Cir"
           }
         ]
       },
@@ -2080,25 +1640,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 83.18256,
-            "dec": -17.822289,
-            "label": "Arneb",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Arneb"
           },
           {
-            "ra": 84.912,
-            "dec": -34.074,
-            "label": "Phact",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Phact"
           },
           {
-            "ra": 78.634,
-            "dec": -8.202,
-            "label": "Rigel",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Rigel"
           }
         ]
       },
@@ -2114,18 +1662,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 84.912,
-            "dec": -34.074,
-            "label": "Phact",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Phact"
           },
           {
-            "ra": 87.74,
-            "dec": -35.768,
-            "label": "Wazn",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Wazn"
           }
         ]
       },
@@ -2170,11 +1710,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 177.265,
-            "dec": 14.572,
-            "label": "Denebola",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Denebola"
           }
         ]
       },
@@ -2190,14 +1726,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 197.497,
-            "dec": 17.529,
-            "label": "Diadem",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Diadem"
           },
           {
-            "label": "Coma Star Cluster"
+            "id": "Coma Star Cluster"
           }
         ]
       },
@@ -2215,7 +1747,7 @@
         "notes": "explain the hair",
         "highlight": [
           {
-            "label": "Coma Galaxy Cluster"
+            "id": "Coma Galaxy Cluster"
           }
         ]
       }
@@ -2246,11 +1778,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 276.043,
-            "dec": -34.384,
-            "label": "Kaus Aus.",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Kaus Aus."
           }
         ]
       },
@@ -2266,18 +1794,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 287.507,
-            "dec": -39.341,
-            "label": "α CrA",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α CrA"
           },
           {
-            "ra": 287.368,
-            "dec": -37.904,
-            "label": "β CrA",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "β CrA"
           }
         ]
       },
@@ -2320,11 +1840,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 213.91545,
-            "dec": 19.18241,
-            "label": "Arcturus",
-            "color": "#ff9060",
-            "r": 16
+            "id": "Arcturus"
           }
         ]
       },
@@ -2340,11 +1856,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 233.67192,
-            "dec": 26.714693,
-            "label": "Alphecca",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Alphecca"
           }
         ]
       },
@@ -2361,18 +1873,10 @@
         "notes": "Highlight the blaze star",
         "highlight": [
           {
-            "ra": 233.67192,
-            "dec": 26.714693,
-            "label": "Alphecca",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Alphecca"
           },
           {
-            "ra": 239.39691,
-            "dec": 26.87788,
-            "label": "Nusakan",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Nusakan"
           }
         ]
       }
@@ -2402,25 +1906,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 206.885,
-            "dec": 49.313,
-            "label": "Alkaid",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Alkaid"
           },
           {
-            "ra": 213.91545,
-            "dec": 19.18241,
-            "label": "Arcturus",
-            "color": "#ff9060",
-            "r": 16
+            "id": "Arcturus"
           },
           {
-            "ra": 201.298,
-            "dec": -11.161,
-            "label": "Spica",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Spica"
           }
         ]
       },
@@ -2437,32 +1929,16 @@
         "notes": "highlight Alchiba",
         "highlight": [
           {
-            "ra": 187.466085,
-            "dec": -16.515432,
-            "label": "Gienah",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "Gienah"
           },
           {
-            "ra": 183.95155499999998,
-            "dec": -17.541929,
-            "label": "Algorab",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "Algorab"
           },
           {
-            "ra": 182.53119,
-            "dec": -22.619766,
-            "label": "Minkar",
-            "color": "#ffd080",
-            "r": 10
+            "id": "Minkar"
           },
           {
-            "ra": 188.596815,
-            "dec": -23.396759,
-            "label": "Kraz",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Kraz"
           }
         ]
       },
@@ -2505,11 +1981,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 201.298,
-            "dec": -11.161,
-            "label": "Spica",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Spica"
           }
         ]
       },
@@ -2525,18 +1997,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 169.835,
-            "dec": -14.779,
-            "label": "δ Crt",
-            "color": "#ffd080",
-            "r": 12
+            "id": "δ Crt"
           },
           {
-            "ra": 164.944,
-            "dec": -18.299,
-            "label": "α Crt",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Crt"
           }
         ]
       },
@@ -2589,25 +2053,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 186.65,
-            "dec": -63.099,
-            "label": "Acrux",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Acrux"
           },
           {
-            "ra": 187.791,
-            "dec": -57.113,
-            "label": "Gacrux",
-            "color": "#ff9060",
-            "r": 10
+            "id": "Gacrux"
           },
           {
-            "ra": 191.93,
-            "dec": -59.689,
-            "label": "Mimosa",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "Mimosa"
           }
         ]
       },
@@ -2623,32 +2075,20 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 125.629,
-            "dec": -59.509,
-            "label": "",
-            "color": "#ffd080",
-            "r": 11
+            "id": "Avior",
+            "label": ""
           },
           {
-            "ra": 139.273,
-            "dec": -59.275,
-            "label": "",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "Aspidiske",
+            "label": ""
           },
           {
-            "ra": 131.176,
-            "dec": -54.709,
-            "label": "",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Alsephina",
+            "label": ""
           },
           {
-            "ra": 140.528,
-            "dec": -55.011,
-            "label": "",
-            "color": "#90c8ff",
-            "r": 9
+            "id": "κ Vel",
+            "label": ""
           }
         ]
       },
@@ -2664,25 +2104,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 186.65,
-            "dec": -63.099,
-            "label": "Acrux",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Acrux"
           },
           {
-            "ra": 187.791,
-            "dec": -57.113,
-            "label": "Gacrux",
-            "color": "#ff9060",
-            "r": 9
+            "id": "Gacrux"
           },
           {
-            "ra": 189,
-            "dec": -90,
-            "label": "south pole",
-            "color": "#ffffff",
-            "r": 12
+            "id": "south pole"
           }
         ]
       },
@@ -2698,11 +2126,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 192.5,
-            "dec": -62.5,
-            "label": "Coalsack",
-            "color": "#aaaaaa",
-            "r": 55
+            "id": "Coalsack"
           }
         ]
       }
@@ -2743,11 +2167,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 310.35798,
-            "dec": 45.280338,
-            "label": "Deneb",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Deneb"
           }
         ]
       },
@@ -2763,25 +2183,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 310.35798,
-            "dec": 45.280338,
-            "label": "Deneb",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Deneb"
           },
           {
-            "ra": 305.557095,
-            "dec": 40.256679,
-            "label": "Sadr",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Sadr"
           },
           {
-            "ra": 292.680345,
-            "dec": 27.959681,
-            "label": "Albireo",
-            "color": "#ffd080",
-            "r": 9
+            "id": "Albireo"
           }
         ]
       },
@@ -2797,25 +2205,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 310.358,
-            "dec": 45.28,
-            "label": "Deneb",
-            "color": "#c8d8ff",
-            "r": 12
+            "id": "Deneb"
           },
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           },
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#ffe8b0",
-            "r": 13
+            "id": "Altair"
           },
           {
             "line": [
@@ -2887,11 +2283,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "Altair"
           }
         ]
       },
@@ -2921,18 +2313,10 @@
         "art": true,
         "highlight": [
           {
-            "ra": 309.909525,
-            "dec": 15.912072,
-            "label": "Sualocin",
-            "color": "#90c8ff",
-            "r": 9
+            "id": "Sualocin"
           },
           {
-            "ra": 309.38724,
-            "dec": 14.595087,
-            "label": "Rotanev",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Rotanev"
           }
         ]
       }
@@ -2964,11 +2348,7 @@
         "notes": "highlight the Magellanic cloud",
         "highlight": [
           {
-            "ra": 95.988,
-            "dec": -52.696,
-            "label": "Canopus",
-            "color": "#90c8ff",
-            "r": 20
+            "id": "Canopus"
           }
         ]
       },
@@ -2984,11 +2364,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 68.499,
-            "dec": -55.045,
-            "label": "β Dor",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "β Dor"
           }
         ]
       },
@@ -3004,11 +2380,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 68.499,
-            "dec": -55.045,
-            "label": "β Dor",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "β Dor"
           }
         ]
       }
@@ -3038,11 +2410,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           }
         ]
       },
@@ -3058,11 +2426,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 269.151555,
-            "dec": 51.488895,
-            "label": "Eltanin",
-            "color": "#ff7060",
-            "r": 13
+            "id": "Eltanin"
           }
         ]
       },
@@ -3078,11 +2442,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 211.097,
-            "dec": 64.376,
-            "label": "Thuban",
-            "color": "#d8e2ff",
-            "r": 11
+            "id": "Thuban"
           }
         ]
       }
@@ -3113,11 +2473,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "Altair"
           }
         ]
       },
@@ -3134,11 +2490,7 @@
         "notes": "Kitalpha = part of a horse?? The other 3 stars??",
         "highlight": [
           {
-            "ra": 318.956,
-            "dec": 5.248,
-            "label": "Kitalpha",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "Kitalpha"
           }
         ]
       },
@@ -3182,25 +2534,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 76.962435,
-            "dec": -5.086446,
-            "label": "Cursa",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "Cursa"
           },
           {
-            "ra": 24.42834,
-            "dec": -57.236757,
-            "label": "Achernar",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Achernar"
           },
           {
-            "ra": 78.634,
-            "dec": -8.202,
-            "label": "Rigel",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Rigel"
           }
         ]
       },
@@ -3216,18 +2556,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 76.962435,
-            "dec": -5.086446,
-            "label": "Cursa",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "Cursa"
           },
           {
-            "ra": 78.634,
-            "dec": -8.202,
-            "label": "Rigel",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Rigel"
           }
         ]
       },
@@ -3243,11 +2575,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 24.42834,
-            "dec": -57.236757,
-            "label": "Achernar",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Achernar"
           }
         ]
       },
@@ -3289,18 +2617,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 10.897,
-            "dec": -17.987,
-            "label": "Diphda",
-            "color": "#ffd080",
-            "r": 14
+            "id": "Diphda"
           },
           {
-            "ra": 48.019,
-            "dec": -28.988,
-            "label": "α For",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "α For"
           }
         ]
       },
@@ -3316,11 +2636,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 48.019,
-            "dec": -28.988,
-            "label": "α For",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "α For"
           }
         ]
       },
@@ -3374,32 +2690,16 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 78.634,
-            "dec": -8.202,
-            "label": "Rigel",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Rigel"
           },
           {
-            "ra": 88.793,
-            "dec": 7.407,
-            "label": "Betelgeuse",
-            "color": "#ff7060",
-            "r": 13
+            "id": "Betelgeuse"
           },
           {
-            "ra": 113.65,
-            "dec": 31.888,
-            "label": "Castor",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Castor"
           },
           {
-            "ra": 116.329,
-            "dec": 28.026,
-            "label": "Pollux",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Pollux"
           }
         ]
       },
@@ -3415,18 +2715,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 113.65,
-            "dec": 31.888,
-            "label": "Castor",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Castor"
           },
           {
-            "ra": 116.329,
-            "dec": 28.026,
-            "label": "Pollux",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Pollux"
           }
         ]
       },
@@ -3442,18 +2734,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 113.65,
-            "dec": 31.888,
-            "label": "Castor",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Castor"
           },
           {
-            "ra": 116.329,
-            "dec": 28.026,
-            "label": "Pollux",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Pollux"
           }
         ]
       },
@@ -3494,25 +2778,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 344.413,
-            "dec": -29.622,
-            "label": "Fomalhaut",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "Fomalhaut"
           },
           {
-            "ra": 332.058,
-            "dec": -46.961,
-            "label": "Alnair",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Alnair"
           },
           {
-            "ra": 340.667,
-            "dec": -46.885,
-            "label": "Tiaki",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Tiaki"
           }
         ]
       },
@@ -3528,18 +2800,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 332.058,
-            "dec": -46.961,
-            "label": "Alnair",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Alnair"
           },
           {
-            "ra": 340.667,
-            "dec": -46.885,
-            "label": "Tiaki",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Tiaki"
           }
         ]
       },
@@ -3584,18 +2848,10 @@
         "notes": "highlight the keystone",
         "highlight": [
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           },
           {
-            "ra": 213.91545,
-            "dec": 19.18241,
-            "label": "Arcturus",
-            "color": "#ff9060",
-            "r": 16
+            "id": "Arcturus"
           }
         ]
       },
@@ -3613,18 +2869,10 @@
         "notes:": "Kornephoros is not in the keystone",
         "highlight": [
           {
-            "ra": 250.7239949999999,
-            "dec": 38.922254,
-            "label": "Eta Her",
-            "color": "#ffe8b0",
-            "r": 9
+            "id": "Eta Her"
           },
           {
-            "ra": 250.32169500000003,
-            "dec": 31.602726,
-            "label": "Zeta Her",
-            "color": "#ffe8b0",
-            "r": 11
+            "id": "Zeta Her"
           }
         ]
       },
@@ -3668,18 +2916,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 24.429,
-            "dec": -57.236,
-            "label": "Achernar",
-            "color": "#90c8ff",
-            "r": 17
+            "id": "Achernar"
           },
           {
-            "ra": 63.5,
-            "dec": -42.294,
-            "label": "α Hor",
-            "color": "#ffd080",
-            "r": 11
+            "id": "α Hor"
           }
         ]
       },
@@ -3695,11 +2935,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 63.5,
-            "dec": -42.294,
-            "label": "α Hor",
-            "color": "#ffd080",
-            "r": 11
+            "id": "α Hor"
           }
         ]
       },
@@ -3741,18 +2977,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 141.89685,
-            "dec": -8.658603,
-            "label": "Alphard",
-            "color": "#ff9060",
-            "r": 13
+            "id": "Alphard"
           },
           {
-            "ra": 114.825,
-            "dec": 5.225,
-            "label": "Procyon",
-            "color": "#c8d8ff",
-            "r": 15
+            "id": "Procyon"
           }
         ]
       },
@@ -3768,25 +2996,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 141.89685,
-            "dec": -8.658603,
-            "label": "Alphard",
-            "color": "#ff9060",
-            "r": 13
+            "id": "Alphard"
           },
           {
-            "ra": 113.65,
-            "dec": 31.888,
-            "label": "Castor",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Castor"
           },
           {
-            "ra": 116.329,
-            "dec": 28.026,
-            "label": "Pollux",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Pollux"
           }
         ]
       },
@@ -3803,11 +3019,7 @@
         "art": true,
         "highlight": [
           {
-            "ra": 141.89685,
-            "dec": -8.658603,
-            "label": "Alphard",
-            "color": "#ff9060",
-            "r": 13
+            "id": "Alphard"
           }
         ]
       }
@@ -3839,18 +3051,10 @@
         "notes": "highlight the Magellanic clouds; placement of beta, or language of the caption, is wrong",
         "highlight": [
           {
-            "ra": 24.429,
-            "dec": -57.236,
-            "label": "Achernar",
-            "color": "#90c8ff",
-            "r": 17
+            "id": "Achernar"
           },
           {
-            "ra": 29.692,
-            "dec": -61.57,
-            "label": "β Hyi",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "β Hyi"
           }
         ]
       },
@@ -3867,18 +3071,10 @@
         "notes": "alpha and beta locations seem reversed; only highlight beta, if it's really the sun-like one",
         "highlight": [
           {
-            "ra": 29.692,
-            "dec": -61.57,
-            "label": "β Hyi",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "β Hyi"
           },
           {
-            "ra": 6.419,
-            "dec": -77.254,
-            "label": "α Hyi",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "α Hyi"
           }
         ]
       },
@@ -3922,18 +3118,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 309.392,
-            "dec": -47.292,
-            "label": "α Ind",
-            "color": "#ffd080",
-            "r": 12
+            "id": "α Ind"
           },
           {
-            "ra": 332.058,
-            "dec": -46.961,
-            "label": "Alnair",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Alnair"
           }
         ]
       },
@@ -3949,11 +3137,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 309.392,
-            "dec": -47.292,
-            "label": "α Ind",
-            "color": "#ffd080",
-            "r": 12
+            "id": "α Ind"
           }
         ]
       },
@@ -3998,11 +3182,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 310.358,
-            "dec": 45.28,
-            "label": "Deneb",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Deneb"
           }
         ]
       },
@@ -4018,11 +3198,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 337.823,
-            "dec": 50.282,
-            "label": "α Lac",
-            "color": "#c8d8ff",
-            "r": 11
+            "id": "α Lac"
           }
         ]
       },
@@ -4076,18 +3252,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 152.093,
-            "dec": 11.967,
-            "label": "Regulus",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Regulus"
           },
           {
-            "ra": 154.993,
-            "dec": 19.841,
-            "label": "Algieba",
-            "color": "#ffd080",
-            "r": 10
+            "id": "Algieba"
           }
         ]
       },
@@ -4103,18 +3271,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 152.093,
-            "dec": 11.967,
-            "label": "Regulus",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Regulus"
           },
           {
-            "ra": 177.265,
-            "dec": 14.572,
-            "label": "Denebola",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Denebola"
           }
         ]
       },
@@ -4130,25 +3290,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 165.932,
-            "dec": 61.751,
-            "label": "Dubhe",
-            "color": "#ffd080",
-            "r": 11
+            "id": "Dubhe"
           },
           {
-            "ra": 165.46,
-            "dec": 56.382,
-            "label": "Merak",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "Merak"
           },
           {
-            "ra": 152.093,
-            "dec": 11.967,
-            "label": "Regulus",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Regulus"
           }
         ]
       }
@@ -4179,18 +3327,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 152.093,
-            "dec": 11.967,
-            "label": "Regulus",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Regulus"
           },
           {
-            "ra": 163.328,
-            "dec": 34.215,
-            "label": "Praecipua",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Praecipua"
           }
         ]
       },
@@ -4243,18 +3383,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 83.18256,
-            "dec": -17.822289,
-            "label": "Arneb",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Arneb"
           },
           {
-            "ra": 82.06134,
-            "dec": -20.759441,
-            "label": "Nihal",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Nihal"
           }
         ]
       },
@@ -4298,25 +3430,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 201.298,
-            "dec": -11.161,
-            "label": "Spica",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Spica"
           },
           {
-            "ra": 222.72,
-            "dec": -16.042,
-            "label": "Zubenelgenubi",
-            "color": "#d8e2ff",
-            "r": 12
+            "id": "Zubenelgenubi"
           },
           {
-            "ra": 229.252,
-            "dec": -9.383,
-            "label": "Zubeneschamali",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Zubeneschamali"
           }
         ]
       },
@@ -4332,18 +3452,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 229.251735,
-            "dec": -9.382917,
-            "label": "Zubeneschamali",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Zubeneschamali"
           },
           {
-            "ra": 222.719655,
-            "dec": -16.041778,
-            "label": "Zubenelgenubi",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "Zubenelgenubi"
           }
         ]
       },
@@ -4388,18 +3500,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 220.482,
-            "dec": -47.388,
-            "label": "α Lup",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "α Lup"
           },
           {
-            "ra": 210.416,
-            "dec": -60.384,
-            "label": "Hadar",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Hadar"
           }
         ]
       },
@@ -4415,11 +3519,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 220.482,
-            "dec": -47.388,
-            "label": "α Lup",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "α Lup"
           }
         ]
       },
@@ -4435,18 +3535,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 220.482,
-            "dec": -47.388,
-            "label": "α Lup",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "α Lup"
           },
           {
-            "ra": 233.785,
-            "dec": -41.167,
-            "label": "δ Lup",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "δ Lup"
           }
         ]
       }
@@ -4477,11 +3569,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 79.172,
-            "dec": 45.997,
-            "label": "Capella",
-            "color": "#ffd080",
-            "r": 17
+            "id": "Capella"
           }
         ]
       },
@@ -4497,11 +3585,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 140.264,
-            "dec": 34.393,
-            "label": "α Lyn",
-            "color": "#ff9060",
-            "r": 12
+            "id": "α Lyn"
           }
         ]
       },
@@ -4518,11 +3602,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 140.264,
-            "dec": 34.393,
-            "label": "α Lyn",
-            "color": "#ff9060",
-            "r": 12
+            "id": "α Lyn"
           }
         ]
       }
@@ -4552,11 +3632,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           }
         ]
       },
@@ -4572,25 +3648,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           },
           {
-            "ra": 310.358,
-            "dec": 45.28,
-            "label": "Deneb",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Deneb"
           },
           {
-            "ra": 297.696,
-            "dec": 8.868,
-            "label": "Altair",
-            "color": "#ffe8b0",
-            "r": 13
+            "id": "Altair"
           }
         ]
       },
@@ -4606,11 +3670,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 279.235,
-            "dec": 38.784,
-            "label": "Vega",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Vega"
           }
         ]
       },
@@ -4627,11 +3687,7 @@
         "art": true,
         "highlight": [
           {
-            "ra": 283.396,
-            "dec": 33.029,
-            "label": "Ring Nebula",
-            "color": "#aaddff",
-            "r": 8
+            "id": "Ring Nebula"
           }
         ]
       }
@@ -4701,11 +3757,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 332.058,
-            "dec": -46.961,
-            "label": "Alnair",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Alnair"
           }
         ]
       },
@@ -4748,25 +3800,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 88.793,
-            "dec": 7.407,
-            "label": "Betelgeuse",
-            "color": "#ff7060",
-            "r": 13
+            "id": "Betelgeuse"
           },
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 18
+            "id": "Sirius"
           },
           {
-            "ra": 114.825,
-            "dec": 5.225,
-            "label": "Procyon",
-            "color": "#c8d8ff",
-            "r": 15
+            "id": "Procyon"
           }
         ]
       },
@@ -4783,11 +3823,7 @@
         "art": true,
         "highlight": [
           {
-            "ra": 97.204,
-            "dec": -7.033,
-            "label": "β Mon",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "β Mon"
           }
         ]
       },
@@ -4803,11 +3839,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 97.204,
-            "dec": -7.033,
-            "label": "β Mon",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "β Mon"
           }
         ]
       }
@@ -4838,11 +3870,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 186.649,
-            "dec": -63.099,
-            "label": "Acrux",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Acrux"
           }
         ]
       },
@@ -4858,18 +3886,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 189.296,
-            "dec": -69.136,
-            "label": "α Mus",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "α Mus"
           },
           {
-            "ra": 191.57,
-            "dec": -68.108,
-            "label": "β Mus",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "β Mus"
           }
         ]
       },
@@ -4885,11 +3905,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 186.6,
-            "dec": -72.65,
-            "label": "NGC 4372",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "NGC 4372"
           }
         ],
         "art": true
@@ -4921,11 +3937,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 263.402,
-            "dec": -37.104,
-            "label": "Shaula",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Shaula"
           }
         ]
       },
@@ -4941,18 +3953,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 244.96,
-            "dec": -50.156,
-            "label": "γ² Nor",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "γ² Nor"
           },
           {
-            "ra": 246.796,
-            "dec": -47.555,
-            "label": "ε Nor",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "ε Nor"
           }
         ]
       },
@@ -4968,18 +3972,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 243.3,
-            "dec": -54.2,
-            "label": "NGC 6067",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "NGC 6067"
           },
           {
-            "ra": 244.96,
-            "dec": -50.156,
-            "label": "γ² Nor",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "γ² Nor"
           }
         ],
         "art": true
@@ -5011,11 +4007,8 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 186.649,
-            "dec": -63.099,
-            "label": "Acrux (Crux)",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Acrux",
+            "label": "Acrux (Crux)"
           }
         ]
       },
@@ -5031,11 +4024,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 325.369,
-            "dec": -77.39,
-            "label": "ν Oct",
-            "color": "#ffd080",
-            "r": 12
+            "id": "ν Oct"
           }
         ]
       },
@@ -5051,11 +4040,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 325.369,
-            "dec": -77.39,
-            "label": "ν Oct",
-            "color": "#ffd080",
-            "r": 12
+            "id": "ν Oct"
           }
         ],
         "art": true
@@ -5086,11 +4071,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 247.352,
-            "dec": -26.432,
-            "label": "Antares",
-            "color": "#ff7060",
-            "r": 16
+            "id": "Antares"
           }
         ]
       },
@@ -5106,11 +4087,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 263.733615,
-            "dec": 12.560035,
-            "label": "Rasalhague",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Rasalhague"
           }
         ]
       },
@@ -5126,25 +4103,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 263.733615,
-            "dec": 12.560035,
-            "label": "Rasalhague",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Rasalhague"
           },
           {
-            "ra": 257.59452,
-            "dec": -15.72491,
-            "label": "Sabik",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Sabik"
           },
           {
-            "ra": 243.58641,
-            "dec": -3.694323,
-            "label": "Yed Prior",
-            "color": "#ff7060",
-            "r": 10
+            "id": "Yed Prior"
           }
         ],
         "art": true
@@ -5187,25 +4152,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 83.002,
-            "dec": -0.299,
-            "label": "Mintaka  δ",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "Mintaka  δ"
           },
           {
-            "ra": 84.053,
-            "dec": -1.202,
-            "label": "Alnilam  ε",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Alnilam  ε"
           },
           {
-            "ra": 85.19,
-            "dec": -1.943,
-            "label": "Alnitak  ζ",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Alnitak  ζ"
           }
         ]
       },
@@ -5221,18 +4174,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 88.793,
-            "dec": 7.407,
-            "label": "Betelgeuse  α",
-            "color": "#ff7060",
-            "r": 14
+            "id": "Betelgeuse  α"
           },
           {
-            "ra": 78.634,
-            "dec": -8.202,
-            "label": "Rigel  β",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Rigel  β"
           }
         ]
       },
@@ -5248,25 +4193,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 101.287,
-            "dec": -16.716,
-            "label": "Sirius",
-            "color": "#90c8ff",
-            "r": 16
+            "id": "Sirius"
           },
           {
-            "ra": 68.98,
-            "dec": 16.509,
-            "label": "Aldebaran",
-            "color": "#ff7060",
-            "r": 12
+            "id": "Aldebaran"
           },
           {
-            "ra": 56.75,
-            "dec": 24.12,
-            "label": "Pleiades",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Pleiades"
           }
         ]
       }
@@ -5297,18 +4230,11 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 332.06,
-            "dec": -46.96,
-            "label": "Alnair (Grus)",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Alnair",
+            "label": "Alnair (Grus)"
           },
           {
-            "ra": 306.41,
-            "dec": -56.74,
-            "label": "Peacock",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Peacock"
           }
         ]
       },
@@ -5324,25 +4250,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 306.41,
-            "dec": -56.74,
-            "label": "α Pav",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Pav"
           },
           {
-            "ra": 302.18,
-            "dec": -66.18,
-            "label": "β Pav",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Pav"
           },
           {
-            "ra": 311.24,
-            "dec": -66.2,
-            "label": "δ Pav",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "δ Pav"
           }
         ]
       },
@@ -5358,11 +4272,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 306.41,
-            "dec": -56.74,
-            "label": "Peacock",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "Peacock"
           }
         ]
       }
@@ -5403,25 +4313,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 345.943515,
-            "dec": 28.082789,
-            "label": "Scheat",
-            "color": "#ff7060",
-            "r": 12
+            "id": "Scheat"
           },
           {
-            "ra": 346.19022,
-            "dec": 15.205264,
-            "label": "Markab",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Markab"
           },
           {
-            "ra": 2.096865,
-            "dec": 29.090432,
-            "label": "Alpheratz",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Alpheratz"
           }
         ]
       },
@@ -5437,25 +4335,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 345.943515,
-            "dec": 28.082789,
-            "label": "Scheat",
-            "color": "#ff7060",
-            "r": 12
+            "id": "Scheat"
           },
           {
-            "ra": 346.19022,
-            "dec": 15.205264,
-            "label": "Markab",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Markab"
           },
           {
-            "ra": 326.04649500000005,
-            "dec": 9.875011,
-            "label": "Enif",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Enif"
           }
         ]
       }
@@ -5496,11 +4382,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 51.08067,
-            "dec": 49.86118,
-            "label": "Mirfak",
-            "color": "#ffe8b0",
-            "r": 13
+            "id": "Mirfak"
           }
         ]
       },
@@ -5516,18 +4398,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 51.08067,
-            "dec": 49.86118,
-            "label": "Mirfak",
-            "color": "#ffe8b0",
-            "r": 13
+            "id": "Mirfak"
           },
           {
-            "ra": 47.04222,
-            "dec": 40.955648,
-            "label": "Algol",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Algol"
           }
         ]
       }
@@ -5558,18 +4432,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 344.41,
-            "dec": -29.62,
-            "label": "Fomalhaut",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Fomalhaut"
           },
           {
-            "ra": 6.57,
-            "dec": -42.31,
-            "label": "Ankaa",
-            "color": "#ffd080",
-            "r": 14
+            "id": "Ankaa"
           }
         ]
       },
@@ -5585,25 +4451,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 6.57,
-            "dec": -42.31,
-            "label": "α Phe",
-            "color": "#ffd080",
-            "r": 10
+            "id": "α Phe"
           },
           {
-            "ra": 16.52,
-            "dec": -46.72,
-            "label": "β Phe",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Phe"
           },
           {
-            "ra": 22.09,
-            "dec": -43.32,
-            "label": "γ Phe",
-            "color": "#ff9060",
-            "r": 8
+            "id": "γ Phe"
           }
         ]
       },
@@ -5619,11 +4473,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 6.57,
-            "dec": -42.31,
-            "label": "Ankaa",
-            "color": "#ffd080",
-            "r": 10
+            "id": "Ankaa"
           }
         ]
       }
@@ -5654,25 +4504,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 95.99,
-            "dec": -52.7,
-            "label": "Canopus",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Canopus"
           },
           {
-            "ra": 102.05,
-            "dec": -61.94,
-            "label": "α Pic",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Pic"
           },
           {
-            "ra": 86.82,
-            "dec": -51.07,
-            "label": "β Pic",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Pic"
           }
         ]
       },
@@ -5688,18 +4526,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 102.05,
-            "dec": -61.94,
-            "label": "α Pic",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Pic"
           },
           {
-            "ra": 86.82,
-            "dec": -51.07,
-            "label": "β Pic",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Pic"
           }
         ]
       },
@@ -5715,11 +4545,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 102.05,
-            "dec": -61.94,
-            "label": "α Pic",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Pic"
           }
         ]
       }
@@ -5760,11 +4586,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 351.99207,
-            "dec": 6.378992,
-            "label": "Alrescha (Knot)",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Alrescha (Knot)"
           }
         ]
       },
@@ -5780,11 +4602,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 351.99207,
-            "dec": 6.378992,
-            "label": "Al Rischa",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Al Rischa"
           }
         ]
       }
@@ -5825,11 +4643,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 344.41256999999996,
-            "dec": -29.622236,
-            "label": "Fomalhaut",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Fomalhaut"
           }
         ]
       },
@@ -5845,11 +4659,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 344.41256999999996,
-            "dec": -29.622236,
-            "label": "Fomalhaut",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Fomalhaut"
           }
         ]
       }
@@ -5890,18 +4700,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 120.896055,
-            "dec": -40.003148,
-            "label": "Naos",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Naos"
           },
           {
-            "ra": 122.38314,
-            "dec": -47.336588,
-            "label": "Pi Puppis",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Pi Puppis"
           }
         ]
       },
@@ -5917,11 +4719,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 120.896055,
-            "dec": -40.003148,
-            "label": "Naos",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Naos"
           }
         ]
       }
@@ -5952,18 +4750,11 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 120.9,
-            "dec": -40,
-            "label": "Naos (Puppis)",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Naos",
+            "label": "Naos (Puppis)"
           },
           {
-            "ra": 130.9,
-            "dec": -33.19,
-            "label": "α Pyx",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Pyx"
           }
         ]
       },
@@ -5979,18 +4770,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 130.9,
-            "dec": -33.19,
-            "label": "α Pyx",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Pyx"
           },
           {
-            "ra": 130.03,
-            "dec": -35.31,
-            "label": "β Pyx",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "β Pyx"
           }
         ]
       },
@@ -6006,11 +4789,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 130.9,
-            "dec": -33.19,
-            "label": "α Pyx",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Pyx"
           }
         ]
       }
@@ -6041,25 +4820,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 80.89,
-            "dec": -69.76,
-            "label": "LMC",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "LMC"
           },
           {
-            "ra": 63.61,
-            "dec": -62.47,
-            "label": "α Ret",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Ret"
           },
           {
-            "ra": 56.05,
-            "dec": -64.81,
-            "label": "β Ret",
-            "color": "#ffd080",
-            "r": 8
+            "id": "β Ret"
           }
         ]
       },
@@ -6075,18 +4842,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 63.61,
-            "dec": -62.47,
-            "label": "α Ret",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Ret"
           },
           {
-            "ra": 56.05,
-            "dec": -64.81,
-            "label": "β Ret",
-            "color": "#ffd080",
-            "r": 8
+            "id": "β Ret"
           }
         ]
       },
@@ -6102,11 +4861,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 63.61,
-            "dec": -62.47,
-            "label": "α Ret",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "α Ret"
           }
         ]
       }
@@ -6137,25 +4892,15 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 292.68,
-            "dec": 27.96,
-            "label": "Albireo (Cyg)",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Albireo",
+            "label": "Albireo (Cyg)"
           },
           {
-            "ra": 297.69,
-            "dec": 8.87,
-            "label": "Altair (Aql)",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Altair",
+            "label": "Altair (Aql)"
           },
           {
-            "ra": 299.69,
-            "dec": 19.49,
-            "label": "δ Sge",
-            "color": "#ff9060",
-            "r": 10
+            "id": "δ Sge"
           }
         ]
       },
@@ -6171,25 +4916,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 299.69,
-            "dec": 19.49,
-            "label": "δ Sge",
-            "color": "#ff9060",
-            "r": 10
+            "id": "δ Sge"
           },
           {
-            "ra": 296.85,
-            "dec": 18.53,
-            "label": "γ Sge",
-            "color": "#ffd080",
-            "r": 8
+            "id": "γ Sge"
           },
           {
-            "ra": 295.02,
-            "dec": 18.01,
-            "label": "α Sge",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "α Sge"
           }
         ]
       },
@@ -6205,11 +4938,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 299.69,
-            "dec": 19.49,
-            "label": "δ Sge",
-            "color": "#ff9060",
-            "r": 10
+            "id": "δ Sge"
           }
         ]
       }
@@ -6250,18 +4979,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 247.352,
-            "dec": -26.432,
-            "label": "Antares",
-            "color": "#ff7060",
-            "r": 13
+            "id": "Antares"
           },
           {
-            "ra": 263.402,
-            "dec": -37.104,
-            "label": "Shaula (sting)",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Shaula (sting)"
           }
         ]
       },
@@ -6288,11 +5009,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 271.452,
-            "dec": -30.424,
-            "label": "spout tip",
-            "color": "#8ab4f8",
-            "r": 9
+            "id": "spout tip"
           }
         ]
       },
@@ -6308,18 +5025,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 276.043,
-            "dec": -34.384,
-            "label": "Kaus Australis  ε",
-            "color": "#ffe090",
-            "r": 14
+            "id": "Kaus Australis  ε"
           },
           {
-            "ra": 283.816,
-            "dec": -26.297,
-            "label": "Nunki  σ",
-            "color": "#90c8ff",
-            "r": 11
+            "id": "Nunki  σ"
           }
         ]
       },
@@ -6371,11 +5080,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 247.352,
-            "dec": -26.432,
-            "label": "Antares",
-            "color": "#ff7060",
-            "r": 14
+            "id": "Antares"
           }
         ]
       },
@@ -6391,18 +5096,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 247.352,
-            "dec": -26.432,
-            "label": "Antares",
-            "color": "#ff7060",
-            "r": 14
+            "id": "Antares"
           },
           {
-            "ra": 263.402,
-            "dec": -37.104,
-            "label": "Shaula (sting)",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "Shaula (sting)"
           }
         ]
       },
@@ -6444,18 +5141,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 344.41,
-            "dec": -29.62,
-            "label": "Fomalhaut",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Fomalhaut"
           },
           {
-            "ra": 14.65,
-            "dec": -29.36,
-            "label": "α Scl",
-            "color": "#90c8ff",
-            "r": 8
+            "id": "α Scl"
           }
         ]
       },
@@ -6471,25 +5160,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 14.65,
-            "dec": -29.36,
-            "label": "α Scl",
-            "color": "#90c8ff",
-            "r": 8
+            "id": "α Scl"
           },
           {
-            "ra": 349.71,
-            "dec": -32.53,
-            "label": "γ Scl",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "γ Scl"
           },
           {
-            "ra": 353.24,
-            "dec": -37.82,
-            "label": "δ Scl",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "δ Scl"
           }
         ]
       },
@@ -6505,11 +5182,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 14.65,
-            "dec": -29.36,
-            "label": "α Scl",
-            "color": "#90c8ff",
-            "r": 8
+            "id": "α Scl"
           }
         ]
       }
@@ -6540,18 +5213,11 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 297.69,
-            "dec": 8.87,
-            "label": "Altair (Aql)",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Altair",
+            "label": "Altair (Aql)"
           },
           {
-            "ra": 278.8,
-            "dec": -8.24,
-            "label": "β Sct",
-            "color": "#ffd080",
-            "r": 8
+            "id": "β Sct"
           }
         ]
       },
@@ -6567,18 +5233,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 278.8,
-            "dec": -8.24,
-            "label": "β Sct",
-            "color": "#ffd080",
-            "r": 8
+            "id": "β Sct"
           },
           {
-            "ra": 281.79,
-            "dec": -4.75,
-            "label": "α Sct",
-            "color": "#ffd080",
-            "r": 7
+            "id": "α Sct"
           }
         ]
       },
@@ -6594,11 +5252,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 278.8,
-            "dec": -8.24,
-            "label": "β Sct",
-            "color": "#ffd080",
-            "r": 8
+            "id": "β Sct"
           }
         ]
       }
@@ -6639,11 +5293,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 236.06697,
-            "dec": 6.425627,
-            "label": "Unukalhai",
-            "color": "#ff9060",
-            "r": 13
+            "id": "Unukalhai"
           }
         ]
       },
@@ -6659,18 +5309,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 236.06697,
-            "dec": 6.425627,
-            "label": "Unukalhai",
-            "color": "#ff9060",
-            "r": 13
+            "id": "Unukalhai"
           },
           {
-            "ra": 275.32750500000003,
-            "dec": -2.898825,
-            "label": "Xi Ser (Cauda)",
-            "color": "#ffe8b0",
-            "r": 9
+            "id": "Xi Ser (Cauda)"
           }
         ]
       }
@@ -6701,18 +5343,11 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 152.09,
-            "dec": 11.97,
-            "label": "Regulus (Leo)",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Regulus",
+            "label": "Regulus (Leo)"
           },
           {
-            "ra": 151.98,
-            "dec": -0.37,
-            "label": "β Sex",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "β Sex"
           }
         ]
       },
@@ -6728,11 +5363,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 151.98,
-            "dec": -0.37,
-            "label": "β Sex",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "β Sex"
           }
         ]
       },
@@ -6748,11 +5379,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 151.98,
-            "dec": -0.37,
-            "label": "β Sex",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "β Sex"
           }
         ]
       }
@@ -6793,32 +5420,18 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 83.002,
-            "dec": -0.299,
-            "label": "belt",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "belt"
           },
           {
-            "ra": 84.053,
-            "dec": -1.202,
-            "label": "",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Alnilam  ε",
+            "label": ""
           },
           {
-            "ra": 85.19,
-            "dec": -1.943,
-            "label": "",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "Alnitak  ζ",
+            "label": ""
           },
           {
-            "ra": 68.98,
-            "dec": 16.509,
-            "label": "Aldebaran",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Aldebaran"
           }
         ]
       },
@@ -6834,18 +5447,10 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 68.98,
-            "dec": 16.509,
-            "label": "Aldebaran",
-            "color": "#ff9060",
-            "r": 14
+            "id": "Aldebaran"
           },
           {
-            "ra": 56.75,
-            "dec": 24.12,
-            "label": "Pleiades",
-            "color": "#c8d8ff",
-            "r": 13
+            "id": "Pleiades"
           }
         ]
       },
@@ -6887,25 +5492,14 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 243.86,
-            "dec": -26.43,
-            "label": "Corona Australis",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Corona Australis"
           },
           {
-            "ra": 306.41,
-            "dec": -56.74,
-            "label": "Peacock (Pav)",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Peacock",
+            "label": "Peacock (Pav)"
           },
           {
-            "ra": 276.74,
-            "dec": -45.97,
-            "label": "α Tel",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Tel"
           }
         ]
       },
@@ -6921,18 +5515,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 276.74,
-            "dec": -45.97,
-            "label": "α Tel",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Tel"
           },
           {
-            "ra": 272.81,
-            "dec": -45.95,
-            "label": "ζ Tel",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "ζ Tel"
           }
         ]
       },
@@ -6948,11 +5534,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 276.74,
-            "dec": -45.97,
-            "label": "α Tel",
-            "color": "#90c8ff",
-            "r": 10
+            "id": "α Tel"
           }
         ]
       }
@@ -6983,25 +5565,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 10.89,
-            "dec": 41.27,
-            "label": "Andromeda",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Andromeda"
           },
           {
-            "ra": 56.75,
-            "dec": 24.12,
-            "label": "Pleiades",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Pleiades"
           },
           {
-            "ra": 32.39,
-            "dec": 34.99,
-            "label": "β Tri",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "β Tri"
           }
         ]
       },
@@ -7017,25 +5587,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 32.39,
-            "dec": 34.99,
-            "label": "β Tri",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "β Tri"
           },
           {
-            "ra": 28.27,
-            "dec": 29.58,
-            "label": "α Tri",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "α Tri"
           },
           {
-            "ra": 34.33,
-            "dec": 33.85,
-            "label": "γ Tri",
-            "color": "#c8d8ff",
-            "r": 7
+            "id": "γ Tri"
           }
         ]
       },
@@ -7051,11 +5609,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 32.39,
-            "dec": 34.99,
-            "label": "β Tri",
-            "color": "#c8d8ff",
-            "r": 10
+            "id": "β Tri"
           }
         ]
       }
@@ -7086,25 +5640,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 210.96,
-            "dec": -60.83,
-            "label": "α Cen",
-            "color": "#ffd080",
-            "r": 14
+            "id": "α Cen"
           },
           {
-            "ra": 211.67,
-            "dec": -60.37,
-            "label": "β Cen",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "β Cen"
           },
           {
-            "ra": 252.17,
-            "dec": -69.03,
-            "label": "Atria",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Atria"
           }
         ]
       },
@@ -7120,25 +5662,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 252.17,
-            "dec": -69.03,
-            "label": "Atria",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Atria"
           },
           {
-            "ra": 238.79,
-            "dec": -63.43,
-            "label": "β TrA",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "β TrA"
           },
           {
-            "ra": 229.73,
-            "dec": -68.68,
-            "label": "δ TrA",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "δ TrA"
           }
         ]
       },
@@ -7154,11 +5684,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 252.17,
-            "dec": -69.03,
-            "label": "Atria",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Atria"
           }
         ]
       }
@@ -7189,25 +5715,14 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 24.43,
-            "dec": -57.24,
-            "label": "Achernar",
-            "color": "#90c8ff",
-            "r": 14
+            "id": "Achernar"
           },
           {
-            "ra": 334.63,
-            "dec": -60.26,
-            "label": "α Tuc",
-            "color": "#ff9060",
-            "r": 12
+            "id": "α Tuc"
           },
           {
-            "ra": 6.02,
-            "dec": -72.08,
-            "label": "47 Tuc / SMC",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "47 Tuc",
+            "label": "47 Tuc / SMC"
           }
         ]
       },
@@ -7223,18 +5738,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 334.63,
-            "dec": -60.26,
-            "label": "α Tuc",
-            "color": "#ff9060",
-            "r": 12
+            "id": "α Tuc"
           },
           {
-            "ra": 6.02,
-            "dec": -72.08,
-            "label": "47 Tuc",
-            "color": "#c8d8ff",
-            "r": 12
+            "id": "47 Tuc"
           }
         ]
       },
@@ -7250,11 +5757,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 334.63,
-            "dec": -60.26,
-            "label": "α Tuc",
-            "color": "#ff9060",
-            "r": 12
+            "id": "α Tuc"
           }
         ]
       }
@@ -7296,18 +5799,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 165.932,
-            "dec": 61.751,
-            "label": "Dubhe",
-            "color": "#ffd080",
-            "r": 11
+            "id": "Dubhe"
           },
           {
-            "ra": 165.46,
-            "dec": 56.382,
-            "label": "Merak",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "Merak"
           }
         ]
       },
@@ -7323,25 +5818,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 165.932,
-            "dec": 61.751,
-            "label": "Dubhe",
-            "color": "#ffd080",
-            "r": 11
+            "id": "Dubhe"
           },
           {
-            "ra": 165.46,
-            "dec": 56.382,
-            "label": "Merak",
-            "color": "#c8d8ff",
-            "r": 9
+            "id": "Merak"
           },
           {
-            "ra": 37.946,
-            "dec": 89.264,
-            "label": "Polaris",
-            "color": "#ffe8b0",
-            "r": 10
+            "id": "Polaris"
           }
         ]
       },
@@ -7382,11 +5865,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 37.946,
-            "dec": 89.264,
-            "label": "Polaris",
-            "color": "#ffe8b0",
-            "r": 14
+            "id": "Polaris"
           }
         ]
       },
@@ -7402,25 +5881,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 165.46,
-            "dec": 56.382,
-            "label": "Merak",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Merak"
           },
           {
-            "ra": 165.932,
-            "dec": 61.751,
-            "label": "Dubhe",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Dubhe"
           },
           {
-            "ra": 37.946,
-            "dec": 89.264,
-            "label": "Polaris",
-            "color": "#ffe8b0",
-            "r": 12
+            "id": "Polaris"
           }
         ]
       },
@@ -7436,25 +5903,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 37.946,
-            "dec": 89.264,
-            "label": "Polaris",
-            "color": "#ffe8b0",
-            "r": 12
+            "id": "Polaris"
           },
           {
-            "ra": 222.677,
-            "dec": 74.156,
-            "label": "Kochab",
-            "color": "#ff7060",
-            "r": 11
+            "id": "Kochab"
           },
           {
-            "ra": 230.182,
-            "dec": 71.834,
-            "label": "Pherkad",
-            "color": "#d8e2ff",
-            "r": 11
+            "id": "Pherkad"
           }
         ]
       },
@@ -7470,18 +5925,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 211.097,
-            "dec": 64.376,
-            "label": "Thuban",
-            "color": "#d8e2ff",
-            "r": 11
+            "id": "Thuban"
           },
           {
-            "ra": 37.946,
-            "dec": 89.264,
-            "label": "Polaris",
-            "color": "#ffe8b0",
-            "r": 12
+            "id": "Polaris"
           }
         ]
       }
@@ -7522,18 +5969,12 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 136.99902,
-            "dec": -43.432589,
-            "label": "Regor (Gamma Vel)",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Regor",
+            "label": "Regor (Gamma Vel)"
           },
           {
-            "ra": 131.175885,
-            "dec": -54.708821,
-            "label": "Alsephina (Delta Vel)",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Alsephina",
+            "label": "Alsephina (Delta Vel)"
           }
         ]
       },
@@ -7549,25 +5990,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 136.99902,
-            "dec": -43.432589,
-            "label": "Regor",
-            "color": "#90c8ff",
-            "r": 13
+            "id": "Regor"
           },
           {
-            "ra": 131.175885,
-            "dec": -54.708821,
-            "label": "Alsephina",
-            "color": "#90c8ff",
-            "r": 12
+            "id": "Alsephina"
           },
           {
-            "ra": 161.69232,
-            "dec": -49.420255,
-            "label": "Suhail",
-            "color": "#ff9060",
-            "r": 12
+            "id": "Suhail"
           }
         ]
       }
@@ -7608,11 +6037,7 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 201.298245,
-            "dec": -11.161322,
-            "label": "Spica",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Spica"
           }
         ]
       },
@@ -7628,25 +6053,13 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 201.298245,
-            "dec": -11.161322,
-            "label": "Spica",
-            "color": "#90c8ff",
-            "r": 15
+            "id": "Spica"
           },
           {
-            "ra": 190.415175,
-            "dec": -1.449375,
-            "label": "Porrima",
-            "color": "#ffe8b0",
-            "r": 10
+            "id": "Porrima"
           },
           {
-            "ra": 195.54416999999998,
-            "dec": 10.95915,
-            "label": "Vindemiatrix",
-            "color": "#ffd080",
-            "r": 10
+            "id": "Vindemiatrix"
           }
         ]
       }
@@ -7677,25 +6090,13 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 95.99,
-            "dec": -52.7,
-            "label": "Canopus",
-            "color": "#c8d8ff",
-            "r": 14
+            "id": "Canopus"
           },
           {
-            "ra": 80.89,
-            "dec": -69.76,
-            "label": "LMC",
-            "color": "#c8d8ff",
-            "r": 16
+            "id": "LMC"
           },
           {
-            "ra": 135.61,
-            "dec": -66.4,
-            "label": "γ Vol",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "γ Vol"
           }
         ]
       },
@@ -7711,18 +6112,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 135.61,
-            "dec": -66.4,
-            "label": "γ Vol",
-            "color": "#ffd080",
-            "r": 8
+            "id": "γ Vol"
           },
           {
-            "ra": 126.43,
-            "dec": -66.14,
-            "label": "β Vol",
-            "color": "#ffd080",
-            "r": 7
+            "id": "β Vol"
           }
         ]
       },
@@ -7738,11 +6131,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 135.61,
-            "dec": -66.4,
-            "label": "γ Vol",
-            "color": "#ffd080",
-            "r": 8
+            "id": "γ Vol"
           }
         ]
       }
@@ -7773,25 +6162,14 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 292.68,
-            "dec": 27.96,
-            "label": "Albireo (Cyg)",
-            "color": "#ffd080",
-            "r": 12
+            "id": "Albireo",
+            "label": "Albireo (Cyg)"
           },
           {
-            "ra": 299.69,
-            "dec": 19.49,
-            "label": "Sagitta",
-            "color": "#ff9060",
-            "r": 10
+            "id": "Sagitta"
           },
           {
-            "ra": 292.18,
-            "dec": 24.66,
-            "label": "Anser",
-            "color": "#ff9060",
-            "r": 8
+            "id": "Anser"
           }
         ]
       },
@@ -7807,18 +6185,10 @@
         "bounds": false,
         "highlight": [
           {
-            "ra": 292.18,
-            "dec": 24.66,
-            "label": "Anser",
-            "color": "#ff9060",
-            "r": 8
+            "id": "Anser"
           },
           {
-            "ra": 299.9,
-            "dec": 22.72,
-            "label": "M27 Dumbbell",
-            "color": "#c8d8ff",
-            "r": 8
+            "id": "M27 Dumbbell"
           }
         ]
       },
@@ -7834,11 +6204,7 @@
         "bounds": true,
         "highlight": [
           {
-            "ra": 292.18,
-            "dec": 24.66,
-            "label": "Anser",
-            "color": "#ff9060",
-            "r": 8
+            "id": "Anser"
           }
         ]
       }
