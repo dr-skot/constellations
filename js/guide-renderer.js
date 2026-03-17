@@ -158,6 +158,15 @@ let _gs = null;
 
 function _guideDraw() { explore.quiz = null; drawExplore(); }
 
+window.addEventListener('resize', () => {
+  const wrap = document.getElementById('explore-wrap');
+  const gl   = document.getElementById('explore-gl-canvas');
+  if (wrap) wrap._sized = false;
+  if (gl)   gl._sized   = false;
+  _guideDraw();
+  if (_gs) guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
+});
+
 function _guideApplySettings(step) {
   document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
   document.getElementById('chk-ex-diagram'   ).checked = !!step.diagram;
@@ -260,6 +269,7 @@ function guideStart(steps, catalog, options = {}) {
 }
 
 function guideStop() {
+  if (_gs?.stepKey) localStorage.removeItem(_gs.stepKey);
   _gs = null;
   const ann = document.getElementById('annotation-canvas');
   if (ann) { const c = ann.getContext('2d'); c.clearRect(0, 0, ann.width, ann.height); }
