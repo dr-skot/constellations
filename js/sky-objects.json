@@ -29,12 +29,6 @@
     "color": "#90c8ff",
     "r_deg": 1.2
   },
-  "Al Rischa": {
-    "ra": 351.99207,
-    "dec": 6.378992,
-    "color": "#c8d8ff",
-    "r_deg": 1.2
-  },
   "Albireo": {
     "ra": 292.680345,
     "dec": 27.959681,
@@ -95,18 +89,6 @@
     "color": "#90c8ff",
     "r_deg": 1.2
   },
-  "Alnilam  ε": {
-    "ra": 84.053,
-    "dec": -1.202,
-    "color": "#c8d8ff",
-    "r_deg": 1.2
-  },
-  "Alnitak  ζ": {
-    "ra": 85.19,
-    "dec": -1.943,
-    "color": "#c8d8ff",
-    "r_deg": 1.2
-  },
   "Alphard": {
     "ra": 141.89685,
     "dec": -8.658603,
@@ -125,9 +107,9 @@
     "color": "#90c8ff",
     "r_deg": 1.2
   },
-  "Alrescha (Knot)": {
-    "ra": 351.99207,
-    "dec": 6.378992,
+  "Alrescha": {
+    "ra": 30.5117,
+    "dec": 2.7638,
     "color": "#c8d8ff",
     "r_deg": 1.2
   },
@@ -148,12 +130,6 @@
     "dec": 8.868,
     "color": "#ffe8b0",
     "r_deg": 1.5
-  },
-  "Andromeda": {
-    "ra": 10.89,
-    "dec": 41.27,
-    "color": "#c8d8ff",
-    "r_deg": 1.2
   },
   "Andromeda Galaxy": {
     "ra": 10.68,
@@ -221,23 +197,11 @@
     "color": "#ffe8b0",
     "r_deg": 0.7
   },
-  "belt": {
-    "ra": 83.002,
-    "dec": -0.299,
-    "color": "#c8d8ff",
-    "r_deg": 0.9
-  },
   "Betelgeuse": {
     "ra": 88.793,
     "dec": 7.407,
     "color": "#ff7060",
     "r_deg": 1.5
-  },
-  "Betelgeuse  α": {
-    "ra": 88.793,
-    "dec": 7.407,
-    "color": "#ff7060",
-    "r_deg": 1.2
   },
   "Canopus": {
     "ra": 95.988,
@@ -305,12 +269,6 @@
     "color": "#ffd080",
     "r_deg": 1.2
   },
-  "Delta Cep": {
-    "ra": 333.75816,
-    "dec": 57.043587,
-    "color": "#ffe8b0",
-    "r_deg": 1.2
-  },
   "Deneb": {
     "ra": 310.35798,
     "dec": 45.280338,
@@ -359,12 +317,6 @@
     "color": "#ff9060",
     "r_deg": 1.2
   },
-  "Eta Her": {
-    "ra": 250.7239949999999,
-    "dec": 38.922254,
-    "color": "#ffe8b0",
-    "r_deg": 1.2
-  },
   "Fomalhaut": {
     "ra": 344.41256999999996,
     "dec": -29.622236,
@@ -411,18 +363,6 @@
     "ra": 221.24676,
     "dec": 27.074222,
     "color": "#ff9060",
-    "r_deg": 1.2
-  },
-  "Kaus Aus.": {
-    "ra": 276.043,
-    "dec": -34.384,
-    "color": "#90c8ff",
-    "r_deg": 1.2
-  },
-  "Kaus Australis  ε": {
-    "ra": 276.043,
-    "dec": -34.384,
-    "color": "#ffe090",
     "r_deg": 1.2
   },
   "Kitalpha": {
@@ -527,12 +467,6 @@
     "color": "#ffd080",
     "r_deg": 0.9
   },
-  "Mintaka  δ": {
-    "ra": 83.002,
-    "dec": -0.299,
-    "color": "#c8d8ff",
-    "r_deg": 1.2
-  },
   "Mirach": {
     "ra": 17.433,
     "dec": 35.621,
@@ -575,23 +509,11 @@
     "color": "#ff9060",
     "r_deg": 1.2
   },
-  "Nunki  σ": {
-    "ra": 283.816,
-    "dec": -26.297,
-    "color": "#90c8ff",
-    "r_deg": 1.2
-  },
   "Nusakan": {
     "ra": 239.39691,
     "dec": 26.87788,
     "color": "#c8d8ff",
     "r_deg": 1.2
-  },
-  "Omega Cen": {
-    "ra": 201.697,
-    "dec": -47.48,
-    "color": "#ffe8b0",
-    "r_deg": 0.7
   },
   "Peacock": {
     "ra": 306.41,
@@ -610,12 +532,6 @@
     "dec": 71.834,
     "color": "#d8e2ff",
     "r_deg": 1.2
-  },
-  "Pi Puppis": {
-    "ra": 122.38314,
-    "dec": -47.336588,
-    "color": "#90c8ff",
-    "r_deg": 0.9
   },
   "Pleiades": {
     "ra": 56.75,
@@ -677,12 +593,6 @@
     "color": "#90c8ff",
     "r_deg": 1.5
   },
-  "Rigel  β": {
-    "ra": 78.634,
-    "dec": -8.202,
-    "color": "#90c8ff",
-    "r_deg": 1.2
-  },
   "Rigil Kentaurus": {
     "ra": 219.911475,
     "dec": -60.833976,
@@ -719,12 +629,6 @@
     "color": "#c8d8ff",
     "r_deg": 1.2
   },
-  "Sagitta": {
-    "ra": 299.69,
-    "dec": 19.49,
-    "color": "#ff9060",
-    "r_deg": 0.9
-  },
   "Saturn Nebula": {
     "ra": 316.05,
     "dec": -11.36,
@@ -747,12 +651,6 @@
     "ra": 263.402,
     "dec": -37.104,
     "color": "#90c8ff",
-    "r_deg": 1.2
-  },
-  "Shaula (sting)": {
-    "ra": 263.402,
-    "dec": -37.104,
-    "color": "#c8d8ff",
     "r_deg": 1.2
   },
   "Sheratan": {
@@ -778,12 +676,6 @@
     "dec": -11.161322,
     "color": "#90c8ff",
     "r_deg": 1.2
-  },
-  "spout tip": {
-    "ra": 271.452,
-    "dec": -30.424,
-    "color": "#8ab4f8",
-    "r_deg": 0.9
   },
   "Sualocin": {
     "ra": 309.909525,
@@ -845,28 +737,10 @@
     "color": "#ffd080",
     "r_deg": 1.2
   },
-  "Xi Ser (Cauda)": {
-    "ra": 275.32750500000003,
-    "dec": -2.898825,
-    "color": "#ffe8b0",
-    "r_deg": 0.9
-  },
   "Yed Prior": {
     "ra": 243.58641,
     "dec": -3.694323,
     "color": "#ff7060",
-    "r_deg": 1.2
-  },
-  "Zeta Cep": {
-    "ra": 337.292745,
-    "dec": 58.415198,
-    "color": "#ffe8b0",
-    "r_deg": 1.2
-  },
-  "Zeta Her": {
-    "ra": 250.32169500000003,
-    "dec": 31.602726,
-    "color": "#ffe8b0",
     "r_deg": 1.2
   },
   "Zubenelgenubi": {
@@ -987,18 +861,6 @@
     "ra": 189.296,
     "dec": -69.136,
     "color": "#90c8ff",
-    "r_deg": 0.9
-  },
-  "α Pav": {
-    "ra": 306.41,
-    "dec": -56.74,
-    "color": "#90c8ff",
-    "r_deg": 0.9
-  },
-  "α Phe": {
-    "ra": 6.57,
-    "dec": -42.31,
-    "color": "#ffd080",
     "r_deg": 0.9
   },
   "α Pic": {
@@ -1294,5 +1156,83 @@
     "dec": -55.011,
     "color": "#90c8ff",
     "r_deg": 0.9
+  },
+  "Alnasl": {
+    "ra": 271.452,
+    "dec": -30.424,
+    "color": "#ffd080",
+    "r_deg": 0.9
+  },
+  "Kaus Australis": {
+    "ra": 276.043,
+    "dec": -34.384,
+    "color": "#90c8ff",
+    "r_deg": 1.2
+  },
+  "Alnilam": {
+    "ra": 84.053,
+    "dec": -1.202,
+    "color": "#c8d8ff",
+    "r_deg": 1.2
+  },
+  "Alnitak": {
+    "ra": 85.19,
+    "dec": -1.943,
+    "color": "#c8d8ff",
+    "r_deg": 1.2
+  },
+  "Mintaka": {
+    "ra": 83.002,
+    "dec": -0.299,
+    "color": "#c8d8ff",
+    "r_deg": 1.2
+  },
+  "Nunki": {
+    "ra": 283.816,
+    "dec": -26.297,
+    "color": "#90c8ff",
+    "r_deg": 1.2
+  },
+  "δ Cep": {
+    "ra": 333.75816,
+    "dec": 57.043587,
+    "color": "#ffe8b0",
+    "r_deg": 1.2
+  },
+  "η Her": {
+    "ra": 250.7239949999999,
+    "dec": 38.922254,
+    "color": "#ffe8b0",
+    "r_deg": 1.2
+  },
+  "ω Cen": {
+    "ra": 201.697,
+    "dec": -47.48,
+    "color": "#ffe8b0",
+    "r_deg": 0.7
+  },
+  "π Pup": {
+    "ra": 122.38314,
+    "dec": -47.336588,
+    "color": "#90c8ff",
+    "r_deg": 0.9
+  },
+  "ξ Ser": {
+    "ra": 275.32750500000003,
+    "dec": -2.898825,
+    "color": "#ffe8b0",
+    "r_deg": 0.9
+  },
+  "ζ Cep": {
+    "ra": 337.292745,
+    "dec": 58.415198,
+    "color": "#ffe8b0",
+    "r_deg": 1.2
+  },
+  "ζ Her": {
+    "ra": 250.32169500000003,
+    "dec": 31.602726,
+    "color": "#ffe8b0",
+    "r_deg": 1.2
   }
 }

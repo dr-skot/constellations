@@ -500,14 +500,15 @@
             "id": "Capella"
           },
           {
-            "id": "belt"
+            "id": "Mintaka",
+            "label": "belt"
           },
           {
-            "id": "Alnilam  ε",
+            "id": "Alnilam",
             "label": ""
           },
           {
-            "id": "Alnitak  ζ",
+            "id": "Alnitak",
             "label": ""
           }
         ]
@@ -940,14 +941,15 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "belt"
+            "id": "Mintaka",
+            "label": "belt"
           },
           {
-            "id": "Alnilam  ε",
+            "id": "Alnilam",
             "label": ""
           },
           {
-            "id": "Alnitak  ζ",
+            "id": "Alnitak",
             "label": ""
           },
           {
@@ -1352,7 +1354,8 @@
             "id": "Menkent"
           },
           {
-            "id": "Omega Cen"
+            "id": "ω Cen",
+            "label": "Omega Cen"
           }
         ]
       }
@@ -1411,10 +1414,12 @@
         "notes": "highlight other stars mentioned",
         "highlight": [
           {
-            "id": "Zeta Cep"
+            "id": "ζ Cep",
+            "label": "Zeta Cep"
           },
           {
-            "id": "Delta Cep"
+            "id": "δ Cep",
+            "label": "Delta Cep"
           }
         ]
       }
@@ -1778,7 +1783,7 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "Kaus Aus."
+            "id": "Kaus Australis"
           }
         ]
       },
@@ -2869,10 +2874,12 @@
         "notes:": "Kornephoros is not in the keystone",
         "highlight": [
           {
-            "id": "Eta Her"
+            "id": "η Her",
+            "label": "Eta Her"
           },
           {
-            "id": "Zeta Her"
+            "id": "ζ Her",
+            "label": "Zeta Her"
           }
         ]
       },
@@ -4152,13 +4159,13 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "Mintaka  δ"
+            "id": "Mintaka"
           },
           {
-            "id": "Alnilam  ε"
+            "id": "Alnilam"
           },
           {
-            "id": "Alnitak  ζ"
+            "id": "Alnitak"
           }
         ]
       },
@@ -4174,10 +4181,10 @@
         "bounds": true,
         "highlight": [
           {
-            "id": "Betelgeuse  α"
+            "id": "Betelgeuse"
           },
           {
-            "id": "Rigel  β"
+            "id": "Rigel"
           }
         ]
       },
@@ -4230,8 +4237,7 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "Alnair",
-            "label": "Alnair (Grus)"
+            "id": "Alnair"
           },
           {
             "id": "Peacock"
@@ -4240,7 +4246,7 @@
       },
       {
         "title": "Pavo's kite shape",
-        "caption": "From Peacock (Alpha), look for Beta and Delta Pavonis which form a modest kite or fan shape to the south. Beta and Delta are close together near dec −66°.",
+        "caption": "From Peacock, look for Beta and Delta Pavonis which form a modest kite or fan shape to the south.",
         "ra": 306,
         "dec": -62,
         "fov": 28,
@@ -4250,7 +4256,7 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "α Pav"
+            "id": "Peacock"
           },
           {
             "id": "β Pav"
@@ -4262,7 +4268,7 @@
       },
       {
         "title": "Pavo's extent",
-        "caption": "The constellation spans from Peacock in the north to its southern stars near dec −66°. It is best seen July–September from southern latitudes.",
+        "caption": "The constellation is best seen July–September from southern latitudes.",
         "ra": 306,
         "dec": -62,
         "fov": 28,
@@ -4270,11 +4276,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "highlight": [
-          {
-            "id": "Peacock"
-          }
-        ]
+        "art": true
       }
     ]
   },
@@ -4412,7 +4414,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Phoenix contains Ankaa (Alpha Phoenicis, mag 2.4), a useful southern hemisphere guide star in a sparse region between Fomalhaut and Achernar.",
+        "caption": "Phoenix contains Ankaa, a useful southern hemisphere guide star in a sparse region between Fomalhaut and Achernar.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4436,28 +4438,9 @@
           },
           {
             "id": "Ankaa"
-          }
-        ]
-      },
-      {
-        "title": "Phoenix's Y shape",
-        "caption": "From Ankaa at the southern base, the constellation extends north as a rough Y or bird shape. Beta and Gamma Phoenix are to the northeast.",
-        "ra": 14,
-        "dec": -44,
-        "fov": 32,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Phe"
           },
           {
-            "id": "β Phe"
-          },
-          {
-            "id": "γ Phe"
+            "id": "Achernar"
           }
         ]
       },
@@ -4471,11 +4454,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "highlight": [
-          {
-            "id": "Ankaa"
-          }
-        ]
+        "art": true
       }
     ]
   },
@@ -4572,27 +4551,28 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Find the Circlet",
-        "caption": "The Circlet of Pisces is a ring of five stars (magnitudes 4–5) about 4° across, forming the most identifiable sub-pattern in the constellation. It represents the head of the western fish. Under suburban skies the Circlet can be difficult; look for it as a faint loop of stars south of the Great Square.",
-        "ra": 8,
-        "dec": 8,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Alrescha (Knot)"
+            "id": "Markab"
           }
         ]
       },
       {
+        "title": "Find the Circlet",
+        "caption": "The Circlet of Pisces is a ring of five stars (magnitudes 4–5) about 4° across, forming the most identifiable sub-pattern in the constellation. It represents the head of the western fish. Under suburban skies the Circlet can be difficult; look for it as a faint loop of stars south of the Great Square.",
+        "ra": -6,
+        "dec": 8,
+        "fov": 25,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": []
+      },
+      {
         "title": "Two fish and the knot",
-        "caption": "Al Rischa (Alpha Piscium, mag 3.8) is the 'Knot' where the two fish are tied together, located in the eastern part of the constellation. Two curved chains of stars arc away from the Knot — one toward the Circlet in the west, the other curving northeast toward Andromeda. Pisces currently hosts the vernal equinox due to precession from its historical location in Aries.",
+        "caption": "Alrescha is the 'Knot' where the two fish are tied together, located in the eastern part of the constellation. Pisces currently hosts the vernal equinox due to precession from its historical location in Aries.",
         "ra": 10,
         "dec": 14,
         "fov": 62,
@@ -4602,7 +4582,7 @@
         "bounds": true,
         "highlight": [
           {
-            "id": "Al Rischa"
+            "id": "Alrescha"
           }
         ]
       }
@@ -4703,7 +4683,8 @@
             "id": "Naos"
           },
           {
-            "id": "Pi Puppis"
+            "id": "π Pup",
+            "label": "Pi Puppis"
           }
         ]
       },
@@ -4882,56 +4863,29 @@
       },
       {
         "title": "Find Sagitta",
-        "caption": "Find Sagitta about 10° south of Albireo (the colorful head star of Cygnus), or midway between Altair and Albireo. The arrow points eastward.",
+        "caption": "Find Sagitta between Albireo (the colorful head star of Cygnus) and Altair in Aquila. The arrow points eastward.",
         "ra": 297,
         "dec": 19,
         "fov": 40,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Albireo",
-            "label": "Albireo (Cyg)"
-          },
-          {
-            "id": "Altair",
-            "label": "Altair (Aql)"
-          },
-          {
-            "id": "δ Sge"
-          }
-        ]
-      },
-      {
-        "title": "The arrow stars",
-        "caption": "Delta Sagittae (mag 3.5, red) is the brightest. Gamma (mag 3.7, orange) is to the west. Together with Alpha and Beta they form the arrow shaft and head.",
-        "ra": 297.5,
-        "dec": 18.5,
-        "fov": 16,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "δ Sge"
+            "id": "Albireo"
           },
           {
-            "id": "γ Sge"
-          },
-          {
-            "id": "α Sge"
+            "id": "Altair"
           }
         ]
       },
       {
-        "title": "Sagitta's extent",
-        "caption": "Sagitta is one of the smallest constellations (80 sq°). Globular cluster M71 lies along the arrow shaft — an easy binocular target. Best seen August–September.",
+        "title": "The arrow stars",
+        "caption": "Delta Sagittae is the brightest star in the arrow. Sagitta is one of the smallest constellations. Globular cluster M71 lies along the arrow shaft — an easy binocular target. Best seen August–September.",
         "ra": 297.5,
         "dec": 18.5,
-        "fov": 16,
+        "fov": 18,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -4982,7 +4936,8 @@
             "id": "Antares"
           },
           {
-            "id": "Shaula (sting)"
+            "id": "Shaula",
+            "label": "Shaula (sting)"
           }
         ]
       },
@@ -5009,7 +4964,8 @@
         "bounds": true,
         "highlight": [
           {
-            "id": "spout tip"
+            "id": "Alnasl",
+            "label": "spout tip"
           }
         ]
       },
@@ -5025,10 +4981,10 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "Kaus Australis  ε"
+            "id": "Kaus Australis"
           },
           {
-            "id": "Nunki  σ"
+            "id": "Nunki"
           }
         ]
       },
@@ -5099,7 +5055,8 @@
             "id": "Antares"
           },
           {
-            "id": "Shaula (sting)"
+            "id": "Shaula",
+            "label": "Shaula (sting)"
           }
         ]
       },
@@ -5312,7 +5269,8 @@
             "id": "Unukalhai"
           },
           {
-            "id": "Xi Ser (Cauda)"
+            "id": "ξ Ser",
+            "label": "Xi Ser (Cauda)"
           }
         ]
       }
@@ -5420,14 +5378,15 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "belt"
+            "id": "Mintaka",
+            "label": "belt"
           },
           {
-            "id": "Alnilam  ε",
+            "id": "Alnilam",
             "label": ""
           },
           {
-            "id": "Alnitak  ζ",
+            "id": "Alnitak",
             "label": ""
           },
           {
@@ -5482,24 +5441,17 @@
       },
       {
         "title": "Find Telescopium",
-        "caption": "Find it about 20° south of Corona Australis (which sits below Sagittarius), or about 15° north of Peacock (Alpha Pavonis, mag 1.9) to the south.",
+        "caption": "Find it about 20° south of Corona Australis (which sits below Sagittarius), or about 15° north of Peacock to the south.",
         "ra": 275,
         "dec": -48,
         "fov": 50,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Corona Australis"
-          },
-          {
-            "id": "Peacock",
-            "label": "Peacock (Pav)"
-          },
-          {
-            "id": "α Tel"
+            "id": "Peacock"
           }
         ]
       },
@@ -5565,7 +5517,8 @@
         "bounds": false,
         "highlight": [
           {
-            "id": "Andromeda"
+            "id": "Andromeda Galaxy",
+            "label": "Andromeda"
           },
           {
             "id": "Pleiades"
@@ -6152,21 +6105,17 @@
       },
       {
         "title": "Find Vulpecula",
-        "caption": "Find Sagitta (the tiny arrow south of Albireo in Cygnus) and look just north of it. Anser (Alpha Vulpeculae, mag 4.4) is the faint brightest star in that region.",
+        "caption": "Find Sagitta (the tiny arrow south of Albireo in Cygnus) and look just north of it. Anser is the faint brightest star in that region.",
         "ra": 295,
         "dec": 24,
         "fov": 40,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Albireo",
-            "label": "Albireo (Cyg)"
-          },
-          {
-            "id": "Sagitta"
+            "id": "Albireo"
           },
           {
             "id": "Anser"
@@ -6175,7 +6124,7 @@
       },
       {
         "title": "Anser and Vulpecula",
-        "caption": "Anser (Alpha Vulpeculae, mag 4.4, red giant) is the sole named star. The Dumbbell Nebula (M27) lies to the east — the largest and brightest planetary nebula in the sky.",
+        "caption": "The Dumbbell Nebula (M27) lies to the east — the largest and brightest planetary nebula in the sky. Vulpecula is best seen July–September for northern observers.",
         "ra": 295,
         "dec": 23.5,
         "fov": 18,
@@ -6183,28 +6132,10 @@
         "diagram": true,
         "names": true,
         "bounds": false,
+        "art": true,
         "highlight": [
-          {
-            "id": "Anser"
-          },
           {
             "id": "M27 Dumbbell"
-          }
-        ]
-      },
-      {
-        "title": "Vulpecula's extent",
-        "caption": "M27 is an easy binocular target under dark skies — a glowing oval nebula. Vulpecula is best seen July–September for northern observers.",
-        "ra": 295,
-        "dec": 23.5,
-        "fov": 18,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "Anser"
           }
         ]
       }
