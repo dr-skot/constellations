@@ -200,7 +200,6 @@ function drawExplore() {
     const cssPx = Math.round(sz);
     canvas.style.width  = cssPx + 'px';
     canvas.style.height = Math.round(wrap.offsetHeight + (caption ? caption.offsetHeight : 0)) + 'px';
-    console.log('canvas init: sz='+sz+' need='+need+' cssPx='+cssPx+' wrapOffsetWidth='+wrap.offsetWidth+' wrapOffsetHeight='+wrap.offsetHeight);
   }
   const glCanvas = document.getElementById('explore-gl-canvas');
   if (glCanvas && !glCanvas._sized) {

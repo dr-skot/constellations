@@ -8,12 +8,12 @@ const GL_VS = `
   attribute vec3 aSkyVec;
   attribute vec2 aTexCoord;
   uniform vec3 uRight, uUp, uCenter;
-  uniform float uTanHalfFov;
+  uniform float uTanHalfFov, uAspect;
   varying vec2 vTexCoord;
   void main() {
     float d = dot(aSkyVec, uCenter);
     float x = dot(aSkyVec, uRight) / (d * uTanHalfFov);
-    float y = dot(aSkyVec, uUp)   / (d * uTanHalfFov);
+    float y = dot(aSkyVec, uUp)   / (d * uTanHalfFov) * uAspect;
     gl_Position = vec4(d > 0.0 ? x : 2.0, d > 0.0 ? y : 2.0, 0.0, 1.0);
     vTexCoord = aTexCoord;
   }
@@ -66,6 +66,7 @@ function initExploreGL(canvas) {
   glLoc.up        = gl.getUniformLocation(glProg, 'uUp');
   glLoc.center    = gl.getUniformLocation(glProg, 'uCenter');
   glLoc.tanHFov   = gl.getUniformLocation(glProg, 'uTanHalfFov');
+  glLoc.aspect    = gl.getUniformLocation(glProg, 'uAspect');
   glLoc.tex       = gl.getUniformLocation(glProg, 'uTex');
   glLoc.alpha     = gl.getUniformLocation(glProg, 'uAlpha');
 
@@ -91,6 +92,7 @@ function glClear(W, H) {
 }
 
 function glSetCamera(camP, camUp, fov) {
+  const W = gl.canvas.width, H = gl.canvas.height;
   const [cx, cy, cz] = camP, [ux, uy, uz] = camUp;
   let rx = cy*uz - cz*uy, ry = cz*ux - cx*uz, rz = cx*uy - cy*ux;
   const rl = Math.sqrt(rx*rx + ry*ry + rz*rz);
@@ -100,6 +102,7 @@ function glSetCamera(camP, camUp, fov) {
   gl.uniform3f(glLoc.up,     upx, upy, upz);
   gl.uniform3f(glLoc.center, cx, cy, cz);
   gl.uniform1f(glLoc.tanHFov, Math.tan(fov * Math.PI / 360));
+  gl.uniform1f(glLoc.aspect, (W && H) ? W / H : 1.0);
 }
 
 // ── Mesh builders ─────────────────────────────────────────
