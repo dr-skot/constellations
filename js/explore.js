@@ -192,9 +192,23 @@ function drawExplore() {
   const dpr = window.devicePixelRatio || 1;
   const sz = wrap.offsetWidth;
   const need = Math.round(sz * dpr);
-  if (canvas.width !== need) canvas.width = canvas.height = need;
+  if (!wrap._sized) {
+    wrap._sized = true;
+    const caption = document.getElementById('fg-caption-text');
+    const fullH = Math.round((wrap.offsetHeight + (caption ? caption.offsetHeight : 0)) * dpr);
+    canvas.width = need; canvas.height = fullH;
+    const cssPx = Math.round(sz);
+    canvas.style.width  = cssPx + 'px';
+    canvas.style.height = Math.round(wrap.offsetHeight + (caption ? caption.offsetHeight : 0)) + 'px';
+    console.log('canvas init: sz='+sz+' need='+need+' cssPx='+cssPx+' wrapOffsetWidth='+wrap.offsetWidth+' wrapOffsetHeight='+wrap.offsetHeight);
+  }
   const glCanvas = document.getElementById('explore-gl-canvas');
-  if (glCanvas && glCanvas.width !== need) glCanvas.width = glCanvas.height = need;
+  if (glCanvas && !glCanvas._sized) {
+    glCanvas._sized = true;
+    glCanvas.width = canvas.width; glCanvas.height = canvas.height;
+    glCanvas.style.width  = canvas.style.width;
+    glCanvas.style.height = canvas.style.height;
+  }
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
   const { ra, dec } = vecToRaDec(explore.P);

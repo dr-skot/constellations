@@ -25,6 +25,8 @@ function guideDrawAnnotation(step, catalog) {
   const src = document.getElementById('explore-canvas');
   const W = src.width, H = src.height;
   ann.width = W; ann.height = H;
+  ann.style.width  = src.style.width;
+  ann.style.height = src.style.height;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
   if (!step?.highlight?.length) return;
@@ -178,7 +180,7 @@ function _guideRenderUI() {
   document.getElementById('fg-btn-prev').disabled = idx === 0 || animating;
   const isLast = idx === n - 1;
   const toggleBtn = document.getElementById('fg-btn-toggle-diag');
-  toggleBtn.style.display = isLast ? '' : 'none';
+  toggleBtn.style.display = '';
   toggleBtn.textContent   = diagVisible ? 'Hide overlays' : 'Show overlays';
   const nextBtn = document.getElementById('fg-btn-next');
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
@@ -222,7 +224,7 @@ function _guideAddListeners() {
 
 function guideGoTo(i, immediate) {
   if (!_gs) return;
-  const prevStep = _gs.idx >= 0 ? _gs.steps[_gs.idx] : null;
+  const prevStep = (_gs.idx >= 0 && _gs.diagVisible) ? _gs.steps[_gs.idx] : null;
   _gs.idx = i;
   _gs.animating = !immediate;
   _gs.diagVisible = !!_gs.steps[i].diagram;

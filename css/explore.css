@@ -17,8 +17,9 @@
   flex: 1;
   min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  overflow: hidden;
 }
 #explore-wrap {
   position: relative;
@@ -27,14 +28,11 @@
   border: 1px solid var(--border);
   background: #010208;
   cursor: grab;
-  height: 100%;
-  aspect-ratio: 1;
-  max-width: 100%;
+  width: 100%;
 }
 #explore-gl-canvas, #explore-canvas {
   position: absolute;
   top: 0; left: 0;
-  width: 100%; height: 100%;
   display: block;
 }
 #explore-art-credit { position:absolute; bottom:6px; right:8px; font-size:.65rem;
@@ -117,7 +115,6 @@
 
 #find-guide-overlay {
   padding: 8px 12px 6px;
-  border-top: 1px solid var(--border);
 }
 #fg-info-row {
   display: flex;
