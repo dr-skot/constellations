@@ -232,7 +232,7 @@ function _fgRenderUI() {
   const isLast = i === n - 1;
   const toggleBtn = document.getElementById('fg-btn-toggle-diag');
   toggleBtn.style.display = isLast ? '' : 'none';
-  toggleBtn.textContent   = _guideDiagVisible ? 'Hide Diagrams' : 'Show Diagrams';
+  toggleBtn.textContent   = _guideDiagVisible ? 'Hide overlays' : 'Show overlays';
   const nextBtn = document.getElementById('fg-btn-next');
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
   nextBtn.disabled    = _guideAnimating;
@@ -242,7 +242,7 @@ function _fgApplySettings(step) {
   document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
   document.getElementById('chk-ex-diagram'   ).checked = !!step.diagram;
   document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
-  document.getElementById('chk-ex-art'       ).checked = false;
+  document.getElementById('chk-ex-art'       ).checked = !!step.art;
   document.getElementById('chk-ex-starlabels').checked = false;
   document.getElementById('chk-ex-connames'  ).checked = !!step.names;
   document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
@@ -294,12 +294,15 @@ function _addGuideListeners() {
   document.getElementById('fg-btn-toggle-diag').addEventListener('click', () => {
     if (!_guideSteps) return;
     _guideDiagVisible = !_guideDiagVisible;
-    document.getElementById('chk-ex-diagram' ).checked = _guideDiagVisible;
-    document.getElementById('chk-ex-connames').checked = _guideDiagVisible;
+    const step = _guideSteps[_guideStepIdx];
+    document.getElementById('chk-ex-diagram' ).checked = _guideDiagVisible && !!step.diagram;
+    document.getElementById('chk-ex-connames').checked = _guideDiagVisible && !!step.names;
+    document.getElementById('chk-ex-bounds'  ).checked = _guideDiagVisible && !!step.bounds;
+    document.getElementById('chk-ex-art'     ).checked = _guideDiagVisible && !!step.art;
     _fgDraw();
-    _fgDrawAnnotation(_guideDiagVisible ? _guideSteps[_guideStepIdx] : null);
+    _fgDrawAnnotation(_guideDiagVisible ? step : null);
     document.getElementById('fg-btn-toggle-diag').textContent =
-      _guideDiagVisible ? 'Hide Diagrams' : 'Show Diagrams';
+      _guideDiagVisible ? 'Hide overlays' : 'Show overlays';
   });
 }
 
