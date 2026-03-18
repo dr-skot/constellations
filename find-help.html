@@ -86,7 +86,7 @@
     <header>
       <h1>Constellate</h1>
       <span class="sub" id="page-sub">Finding …</span>
-      <a href="find-help.html">← Back</a>
+      <a href="find-help.html" id="back-link">← Back</a>
     </header>
 
     <div id="picker" style="display:none">
@@ -216,9 +216,13 @@
         if (e.key === 'ArrowLeft') document.getElementById('fg-btn-prev').click();
       });
 
+      document.getElementById('back-link').addEventListener('click', e => {
+        e.preventDefault(); guideStop(); window.location.href = 'find-help.html';
+      });
+
       guideStart(steps, catalog, {
         stepKey: `find-help-step-${con.abbr}`,
-        onLastNext: () => { window.location.href = 'find-help.html'; },
+        onLastNext: () => { guideStop(); window.location.href = 'find-help.html'; },
       });
     }
   </script>

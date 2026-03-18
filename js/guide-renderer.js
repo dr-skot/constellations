@@ -37,6 +37,47 @@ function guideDrawAnnotation(step, catalog) {
 
   ctx.save();
   for (const raw of step.highlight) {
+    if (raw.capsule) {
+      const ends = raw.capsule.map(e => {
+        const obj = e.id ? (catalog && catalog[e.id]) : e;
+        return obj || null;
+      }).filter(Boolean);
+      if (ends.length < 2) continue;
+      const pts = ends.map(e => {
+        const p = projectStarsCamera([[e.ra, e.dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
+        return (p && p.d > 0) ? p : null;
+      });
+      if (pts.some(p => !p)) continue;
+      const P1 = pts[0], P2 = pts[pts.length - 1];
+      const r = (raw.r || 10) * scale;
+      const color = raw.color || '#fff';
+      const dx = P2.x - P1.x, dy = P2.y - P1.y;
+      const theta = Math.atan2(dy, dx);
+      const nx = Math.sin(theta) * r, ny = -Math.cos(theta) * r;
+      ctx.strokeStyle = color;
+      ctx.lineWidth   = Math.max(1.5, 1.5 * scale);
+      ctx.shadowColor = color;
+      ctx.shadowBlur  = r * 0.7;
+      ctx.beginPath();
+      ctx.moveTo(P1.x + nx, P1.y + ny);
+      ctx.lineTo(P2.x + nx, P2.y + ny);
+      ctx.arc(P2.x, P2.y, r, theta - Math.PI / 2, theta + Math.PI / 2);
+      ctx.lineTo(P1.x - nx, P1.y - ny);
+      ctx.arc(P1.x, P1.y, r, theta + Math.PI / 2, theta - Math.PI / 2);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      if (raw.label) {
+        const fs = Math.round(13 * scale);
+        ctx.font = `bold ${fs}px system-ui, sans-serif`;
+        ctx.textBaseline = 'middle';
+        const lx = P1.x + r + 6 * scale, ly = P1.y;
+        ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
+        ctx.strokeText(raw.label, lx, ly);
+        ctx.fillStyle = color; ctx.fillText(raw.label, lx, ly);
+      }
+      continue;
+    }
     const h = guideResolveHighlight(raw, catalog);
     if (!h) continue;
     if (h.line) {

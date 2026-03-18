@@ -86,13 +86,13 @@
       },
       {
         "title": "Between Hydra and Vela",
-        "caption": "Antlia lies between Hydra to the north and Vela to the south. From Alphard — the solitary orange star that marks Hydra's heart — drop about 25° due south to reach Antlia's sparse territory. It is best seen from February to April and is invisible north of about 45°N.",
+        "caption": "From Alphard — the solitary orange star that marks Hydra's heart — drop south toward the bright stars of Vela. Antlia sits in that empty-looking gap. It is best seen from February to April and is invisible north of about 45°N.",
         "ra": 150,
         "dec": -22,
         "fov": 70,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -101,31 +101,16 @@
         ]
       },
       {
-        "title": "Three faint stars",
-        "caption": "Antlia's three brightest stars — Alpha (mag 4.3), Epsilon (mag 4.5), and Theta (mag 4.6) — are all barely visible to the naked eye and form no recognizable shape. Alpha Antliae is an orange giant about 370 light-years away. There is no useful asterism; sweep the region between Alphard and the Vela star fields with binoculars.",
+        "title": "Lacaille's air pump",
+        "caption": "Antlia honors the vacuum pump, a cutting-edge scientific instrument of the Age of Enlightenment. The region contains NGC 2997, a face-on spiral galaxy about 40 million light-years away visible in a small telescope from dark southern sites.",
         "ra": 153,
         "dec": -33,
         "fov": 35,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Ant"
-          }
-        ]
-      },
-      {
-        "title": "Lacaille's air pump",
-        "caption": "Antlia honors the air pump of experimental physics — one of 14 instrument constellations Lacaille invented after his 1751–52 Cape of Good Hope survey. The region contains the spiral galaxy NGC 2997, a face-on spiral about 40 million light-years away visible in a small telescope from dark southern sites.",
-        "ra": 153,
-        "dec": -33,
-        "fov": 25,
-        "photo": true,
-        "diagram": true,
-        "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "NGC 2997"
@@ -139,7 +124,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "You're somewhere in the night sky. Tonight we'll find Apus — the Bird of Paradise, a small far-southern constellation between Triangulum Australe and the south celestial pole.",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Apus — the Bird of Paradise, a small faint constellation near the south celestial pole.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -148,14 +133,14 @@
         "bounds": false
       },
       {
-        "title": "South of Triangulum Australe",
-        "caption": "Apus lies about 20° south of Triangulum Australe — the compact bright southern triangle. Find Atria (Alpha TrA, mag 1.9), the brightest and southernmost vertex of that triangle, then sweep south into the sparser region below it. Apus is best seen May–July from southern latitudes and is invisible north of about 25°N.",
+        "title": "South of the Southern Triangle",
+        "caption": "Triangulum Australe, the compact bright southern triangle, is the key landmark. Apus lies in the sparse region between it and the south celestial pole.",
         "ra": 235,
-        "dec": -74,
-        "fov": 55,
+        "dec": -72,
+        "fov": 50,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -164,30 +149,11 @@
         ]
       },
       {
-        "title": "A faint quadrilateral",
-        "caption": "Alpha Apodis (mag 3.8) is an orange-red giant and the brightest star in the constellation. The four main stars form a loose, undistinguished quadrilateral with no memorable shape. The constellation is circumpolar from most of Australia and southern South America.",
+        "title": "Bird of Paradise",
+        "caption": "Apus was named by Dutch navigators Keyser and de Houtman in the late 16th century, after the exotic Birds of Paradise encountered on their East Indies voyages — birds so beautiful they were believed to spend their entire lives in flight, never touching the ground.",
         "ra": 236,
         "dec": -78,
         "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Aps"
-          },
-          {
-            "id": "β Aps"
-          }
-        ]
-      },
-      {
-        "title": "Bird of Paradise",
-        "caption": "Apus was introduced by the Dutch navigators Keyser and de Houtman in the late 16th century, naming it after the exotic Birds of Paradise they encountered on their East Indies voyages. The constellation sits adjacent to Octans (which contains the south celestial pole) and Triangulum Australe, making it a useful region to learn for south polar navigation.",
-        "ra": 236,
-        "dec": -78,
-        "fov": 20,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -200,7 +166,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "You're somewhere in the night sky. Tonight we'll find Aquarius — the Water Bearer, a sprawling but faint zodiacal constellation best known for its Y-shaped Water Jar asterism.",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Aquarius — the Water Bearer, a sprawling zodiacal constellation best seen in autumn. It has no bright stars, so dark skies help considerably.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -209,19 +175,8 @@
         "bounds": false
       },
       {
-        "title": "Look south in autumn",
-        "caption": "In September and October, Aquarius crosses the southern meridian during the evening hours for northern observers, sitting between about 0° and -25° declination. It is an expansive but faint constellation — no stars brighter than magnitude 2.9 — so dark skies help considerably.",
-        "ra": 332,
-        "dec": -8,
-        "fov": 75,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
         "title": "Find the Water Jar",
-        "caption": "The Y-shaped Water Jar asterism sits northeast of Sadalsud, with Zeta Aquarii (a close double star) at its junction. Fomalhaut — the lone first-magnitude star about 30° to the south in Piscis Austrinus — is a useful anchor: from Fomalhaut, sweep north and the Water Jar floats above it.",
+        "caption": "The Y-shaped Water Jar asterism is the key landmark. Fomalhaut — the lone bright star to the south in Piscis Austrinus — is a useful anchor: the Water Jar floats above it. Sadalsud, the brightest star in Aquarius, sits just to the west of the jar.",
         "ra": 335,
         "dec": -10,
         "fov": 48,
@@ -242,15 +197,16 @@
         ]
       },
       {
-        "title": "The water bearer's full extent",
-        "caption": "The constellation sprawls south and east of the Water Jar, with streams of stars representing water pouring from the jar toward Fomalhaut in Piscis Austrinus to the south. The Saturn Nebula (NGC 7009) near Nu Aquarii is a fine planetary nebula in small telescopes, and the Helix Nebula (NGC 7293) nearby is the closest planetary nebula to Earth at about 650 light-years.",
+        "title": "Two remarkable nebulae",
+        "caption": "The Saturn Nebula and the Helix Nebula both lie within Aquarius. The Helix is the closest planetary nebula to Earth at about 650 light-years — in a telescope it appears as a ghostly ring, larger than a full moon. The Saturn Nebula earns its name from the lobes flanking its disc, visible in larger telescopes.",
         "ra": 335,
-        "dec": -12,
-        "fov": 55,
+        "dec": -16,
+        "fov": 40,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "Saturn Nebula"
@@ -266,7 +222,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "You're somewhere in the night sky. Tonight we'll find Aquila — the Eagle, a summer constellation whose heart is Altair, the southernmost star of the Summer Triangle.",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Aquila — the Eagle, whose heart is Altair, the southernmost star of the Summer Triangle.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -275,19 +231,24 @@
         "bounds": false
       },
       {
-        "title": "The summer Milky Way",
-        "caption": "Look to the southern sky on a summer evening. Aquila straddles the Milky Way on the celestial equator, visible from both hemispheres. In August it rides highest in the south for northern observers.",
+        "title": "Straddling the Milky Way",
+        "caption": "Aquila straddles the Milky Way right on the celestial equator, making it visible from every inhabited place on Earth. Altair is the brightest star in the constellation and one of the closest naked-eye stars to us, just 17 light-years away.",
         "ra": 294,
-        "dec": 8,
-        "fov": 80,
+        "dec": 6,
+        "fov": 38,
         "photo": true,
         "diagram": true,
-        "names": false,
-        "bounds": false
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "id": "Altair"
+          }
+        ]
       },
       {
-        "title": "Three stars in a line",
-        "caption": "Altair is easy to identify: a bright star flanked closely by a dimmer star on each side, all three nearly in a straight line. Tarazed (slightly orange, to the north) and Alshain (to the south) give Altair the impression of a bird with spread wings.",
+        "title": "The eagle's head",
+        "caption": "Altair is flanked closely by Tarazed to the north and Alshain to the south — three stars nearly in a line that form the eagle's head. Tarazed has a warm orange tint that sets it apart from the other two.",
         "ra": 297,
         "dec": 9,
         "fov": 16,
@@ -308,31 +269,16 @@
         ]
       },
       {
-        "title": "The Eagle",
-        "caption": "Pull back to see the full eagle, wings spread along the Milky Way. Altair sits almost exactly on the celestial equator — it rises nearly due east and sets nearly due west from any location on Earth.",
-        "ra": 294,
-        "dec": 6,
-        "fov": 38,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "Altair"
-          }
-        ]
-      },
-      {
         "title": "Summer Triangle",
-        "caption": "Altair is the southernmost point of the Summer Triangle. Look northeast to Vega in Lyra, and north to Deneb in Cygnus. The Triangle spans a wide swath of the summer Milky Way and is the most prominent star pattern in the summer evening sky.",
+        "caption": "Altair is the southernmost point of the Summer Triangle. Vega in Lyra shines to the northwest, and Deneb in Cygnus to the north. Together they span a wide swath of the Milky Way and form the most prominent star pattern in the evening sky during northern summer and southern winter.",
         "ra": 294,
         "dec": 22,
         "fov": 60,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "Altair"
@@ -352,7 +298,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "You're somewhere in the night sky. Tonight we'll find Ara — the Altar, a compact southern constellation with several bright stars just south of Scorpius's stinger.",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Ara — the Altar, a compact southern constellation just south of Scorpius's stinger.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -362,13 +308,13 @@
       },
       {
         "title": "Below the scorpion's tail",
-        "caption": "Ara lies about 15° south of the scorpion's stinger stars. Find Shaula, the brightest of the tail stars, then drop due south — the compact rectangular outline of the Altar is right there. The Milky Way runs richly through this region, making it a spectacular binocular field.",
+        "caption": "Find Shaula, the brightest star at the tip of the scorpion's stinger, then look south — the compact outline of the Altar sits just beyond. The Milky Way runs richly through this region.",
         "ra": 263,
         "dec": -46,
         "fov": 65,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -377,35 +323,21 @@
         ]
       },
       {
-        "title": "Find Beta and Alpha Arae",
-        "caption": "Beta Arae (mag 2.8, blue) and Alpha Arae (mag 2.8, orange-red) are the two brightest stars, nearly equal in brightness. Several other third-magnitude stars complete the altar's rectangular outline spanning about 10°. Ara is best seen June–August from the southern hemisphere.",
-        "ra": 261,
-        "dec": -54,
-        "fov": 30,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "β Ara"
-          },
-          {
-            "id": "α Ara"
-          }
-        ]
-      },
-      {
         "title": "The ancient altar",
-        "caption": "Ara is one of the 48 original Ptolemaic constellations — the altar upon which the Olympian gods swore oaths before the Titanomachy. The constellation contains NGC 6397, one of the nearest globular clusters to Earth at about 7,800 light-years, visible as a fuzzy star in binoculars. The dense Milky Way star fields through Ara reward any sweeping with binoculars.",
+        "caption": "Ara is one of the 48 original Ptolemaic constellations — the altar upon which the Olympian gods swore their oaths before the Titanomachy, the great war against the Titans. NGC 6397 is one of the nearest globular clusters to Earth at about 7,800 light-years — visible as a fuzzy star in binoculars.",
         "ra": 261,
         "dec": -55,
-        "fov": 20,
+        "fov": 28,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": true,
+        "highlight": [
+          {
+            "id": "NGC 6397"
+          }
+        ]
       }
     ]
   },
@@ -422,14 +354,14 @@
         "bounds": false
       },
       {
-        "title": "Look west of the Pleiades",
-        "caption": "In November and December evenings, Aries is well-placed high in the southern sky for northern observers. The Pleiades star cluster (in Taurus) is the easiest landmark: look about 20° west of the Pleiades to find the small curved arc of Aries. The constellation has just a handful of notable stars.",
+        "title": "West of the Pleiades",
+        "caption": "The Pleiades cluster in Taurus is the easiest landmark — Aries lies just to the west of it, a small curved arc of stars in an otherwise sparse region.",
         "ra": 38,
         "dec": 22,
         "fov": 65,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -438,8 +370,8 @@
         ]
       },
       {
-        "title": "Find Hamal and Sheratan",
-        "caption": "Hamal is the constellation's brightest star — an orange giant about 66 light-years away. Sheratan, just 4° west of Hamal, forms an obvious pair with it. A third fainter star, Mesarthim, extends the arc.",
+        "title": "Hamal, Sheratan, and Mesarthim",
+        "caption": "Hamal is the brightest star, an orange giant. Sheratan forms an obvious pair with it. Mesarthim, the faintest of the three, is historically notable — it was one of the first double stars ever observed through a telescope.",
         "ra": 33,
         "dec": 22,
         "fov": 28,
@@ -461,7 +393,7 @@
       },
       {
         "title": "The First Point of Aries",
-        "caption": "Though Aries is small and modest, it was the most important constellation in ancient astronomy: the vernal equinox, where the Sun crosses the celestial equator each March, was once located here. Due to precession it has since moved into Pisces, but 'First Point of Aries' remains the term for the vernal equinox direction. Aries is best seen from mid-northern latitudes in November.",
+        "caption": "Though small and modest, Aries was the most important constellation in ancient astronomy: the vernal equinox — where the Sun crosses the celestial equator each March — was once located here. Due to precession it has since drifted into Pisces, but the term “First Point of Aries” endures as the name for the vernal equinox direction.",
         "ra": 35,
         "dec": 22,
         "fov": 24,
@@ -477,7 +409,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "You're somewhere in the night sky. Tonight we'll find Auriga — the Charioteer, anchored by brilliant Capella, the sixth-brightest star in the sky and a golden-yellow beacon of the winter sky.",
+        "caption": "You're somewhere in the night sky. Tonight we'll find Auriga — the Charioteer, anchored by Capella, one of the brightest stars in the sky and easy to spot by its warm golden colour.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -486,39 +418,11 @@
         "bounds": false
       },
       {
-        "title": "Look high in the winter sky",
-        "caption": "In January and February, Capella passes nearly overhead at mid-northern latitudes, making it one of the most prominent winter stars. From Orion's belt, move north and slightly west for about 45° to reach Capella. Capella is circumpolar for observers north of about 44°N — it never sets from those latitudes.",
-        "ra": 81,
-        "dec": 22,
-        "fov": 62,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Capella"
-          },
-          {
-            "id": "Mintaka",
-            "label": "belt"
-          },
-          {
-            "id": "Alnilam",
-            "label": ""
-          },
-          {
-            "id": "Alnitak",
-            "label": ""
-          }
-        ]
-      },
-      {
         "title": "Find Capella",
-        "caption": "Capella appears as a single golden-yellow star but is actually two giant G-type stars orbiting each other every 104 days, about 43 light-years away. It is very similar in color to the Sun but far more luminous. Look for a prominent pentagon of stars with Capella at the top — that is Auriga.",
-        "ra": 82,
-        "dec": 42,
-        "fov": 38,
+        "caption": "If you can see Orion, Capella is the bright golden star on the far side of the belt from Sirius. Look for a prominent pentagon of stars with Capella at the top — that is Auriga.",
+        "ra": 87,
+        "dec": 12,
+        "fov": 75,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -526,25 +430,38 @@
         "highlight": [
           {
             "id": "Capella"
+          },
+          {
+            "id": "Sirius"
+          },
+          {
+            "capsule": [
+              {
+                "id": "Mintaka"
+              },
+              {
+                "id": "Alnitak"
+              }
+            ],
+            "r": 10,
+            "color": "#c8d8ff",
+            "label": "belt"
           }
         ]
       },
       {
-        "title": "The pentagon and the Kids",
-        "caption": "Menkalinan marks the opposite corner of the pentagon from Capella. Three faint stars called the Kids — Epsilon, Zeta, and Eta Aurigae — cluster just southwest of Capella. Epsilon Aurigae is a remarkable eclipsing system: a supergiant star eclipsed every 27 years by a vast disk of unknown material.",
+        "title": "Capella and the Kids",
+        "caption": "Capella is actually two golden giant stars — both remarkably similar to the Sun in colour, but far more luminous. Three faint stars called the Kids cluster nearby. One of them, Epsilon Aurigae, is a remarkable eclipsing system: a supergiant eclipsed every 27 years by a vast disc of unknown material.",
         "ra": 82,
         "dec": 42,
         "fov": 36,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": false,
         "highlight": [
           {
             "id": "Capella"
-          },
-          {
-            "id": "Menkalinan"
           },
           {
             "id": "ε Aur"
@@ -552,15 +469,16 @@
         ]
       },
       {
-        "title": "Rich in star clusters",
-        "caption": "The Milky Way passes through Auriga, and the constellation contains three fine Messier open clusters: M36, M37 (the richest, containing about 500 stars), and M38. All three are visible as hazy patches in binoculars and resolve into lovely star fields in a small telescope. They lie roughly along a line in the southern part of the pentagon.",
+        "title": "Three Messier clusters",
+        "caption": "The Milky Way passes through Auriga, bringing three fine open clusters: M36, M37, and M38. All three are visible as hazy patches in binoculars and resolve into beautiful star fields in a small telescope.",
         "ra": 83,
         "dec": 37,
         "fov": 30,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "M36"
