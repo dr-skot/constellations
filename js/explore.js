@@ -194,12 +194,10 @@ function drawExplore() {
   const need = Math.round(sz * dpr);
   if (!wrap._sized) {
     wrap._sized = true;
-    const caption = document.getElementById('fg-caption-text');
-    const fullH = Math.round((wrap.offsetHeight + (caption ? caption.offsetHeight : 0)) * dpr);
-    canvas.width = need; canvas.height = fullH;
+    canvas.width = need; canvas.height = Math.round(wrap.offsetHeight * dpr);
     const cssPx = Math.round(sz);
     canvas.style.width  = cssPx + 'px';
-    canvas.style.height = Math.round(wrap.offsetHeight + (caption ? caption.offsetHeight : 0)) + 'px';
+    canvas.style.height = wrap.offsetHeight + 'px';
   }
   const glCanvas = document.getElementById('explore-gl-canvas');
   if (glCanvas && !glCanvas._sized) {
@@ -213,6 +211,7 @@ function drawExplore() {
   const { ra, dec } = vecToRaDec(explore.P);
   const camP = explore.P;
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  const celDash = 6, celGap = 5;
 
   if (gl) {
     glClear(W, H);
@@ -250,7 +249,7 @@ function drawExplore() {
     ctx.save();
     ctx.strokeStyle = 'rgba(220,180,80,0.55)';
     ctx.lineWidth = Math.max(1, W / 640);
-    ctx.setLineDash([6, 5]);
+    ctx.setLineDash([celDash, celGap]);
     ctx.beginPath();
     let penDown = false;
     for (const p of pts) {
@@ -433,11 +432,11 @@ function drawExplore() {
   }
 
   // Crosshairs at celestial poles
-  const arm = W * 0.025;
+  const arm = 0.5 * (3 * celDash + 2 * celGap);
   ctx.save();
   ctx.strokeStyle = 'rgba(220,180,80,0.55)';
   ctx.lineWidth = Math.max(1, W / 640);
-  ctx.setLineDash([6, 5]);
+  ctx.setLineDash([celDash, celGap]);
   for (const pole of [[0, 0, 1], [0, 0, -1]]) {
     const p = vecToPixel(pole, camP, camUp, explore.fov, W, H);
     if (!p) continue;
