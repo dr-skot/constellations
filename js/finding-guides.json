@@ -193,7 +193,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Aquarius — the Water Bearer, a sprawling zodiacal constellation best seen in autumn. It has no bright stars, so dark skies help considerably.",
+        "caption": "Let's find Aquarius — the Water Bearer, a sprawling zodiacal constellation. It has no bright stars, so dark skies help considerably.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -226,8 +226,8 @@
       {
         "title": "Two remarkable nebulae",
         "caption": "The Saturn Nebula and the Helix Nebula both lie within Aquarius. The Helix is the closest planetary nebula to Earth at about 650 light-years — in a telescope it appears as a ghostly ring, larger than a full moon. The Saturn Nebula earns its name from the lobes flanking its disc, visible in larger telescopes.",
-        "ra": 335,
-        "dec": -16,
+        "ra": 330,
+        "dec": -10,
         "fov": 40,
         "photo": true,
         "diagram": true,
@@ -297,7 +297,7 @@
       },
       {
         "title": "Summer Triangle",
-        "caption": "Altair is the southernmost point of the Summer Triangle. Vega in Lyra shines to the northwest, and Deneb in Cygnus to the north. Together they span a wide swath of the Milky Way and form the most prominent star pattern in the evening sky during northern summer and southern winter.",
+        "caption": "Altair forms the Summer Triangle with Vega in Lyra and Deneb in Cygnus. Together they span a wide swath of the Milky Way and form the most prominent star pattern in the evening sky during northern summer and southern winter.",
         "ra": 294,
         "dec": 22,
         "fov": 60,
