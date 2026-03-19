@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════
 function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++)h = (Math.imul(31, h) + s.charCodeAt(i)) | 0; return h >>> 0 }
 function makeRng(seed) { let s = seed; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296 } }
-function magToR(m) { return m <= -1 ? 7 : m < 0 ? 6 : m < 1 ? 5 : m < 2 ? 3.8 : m < 3 ? 2.8 : m < 4 ? 2.0 : m < 5 ? 1.4 : 1.0 }
+function magToR(m) { return m <= -1 ? 8.5 : m < 0 ? 7.5 : m < 1 ? 6.2 : m < 2 ? 4.8 : m < 3 ? 3.5 : m < 4 ? 2.5 : m < 5 ? 1.8 : 1.2 }
 function starCol(h) { return h === 'r' ? '#ff7060' : h === 'o' ? '#ffb860' : h === 'b' ? '#90c8ff' : '#f5eedc' }
 
 function photoUrl(con) {

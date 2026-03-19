@@ -34,6 +34,7 @@ function guideDrawAnnotation(step, catalog) {
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
   const scale = W / (src.offsetWidth || W / dpr);
+  const fovScale = 40 / explore.fov;
 
   if (step.foreground?.length) {
     drawForeground(ctx, step.foreground, explore.P, camUp, explore.fov, W, H);
@@ -74,7 +75,7 @@ function guideDrawAnnotation(step, catalog) {
         return (p && p.d > 0) ? p : null;
       });
       if (pts.some(p => !p)) continue;
-      const r     = (raw.r || 10) * scale;
+      const r     = (raw.r || 10) * scale * fovScale;
       const color = raw.color || '#fff';
       const lw    = Math.max(1.5, 1.5 * scale);
       const drawPath = () => {
@@ -166,7 +167,7 @@ function guideDrawAnnotation(step, catalog) {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
       const p = pts[0];
       if (!p || p.d <= 0) continue;
-      const r  = h.r * scale;
+      const r  = h.r * scale * fovScale;
       const fs = Math.round(13 * scale);
       ctx.strokeStyle = h.color;
       ctx.lineWidth   = Math.max(1.5, 1.5 * scale);
@@ -239,7 +240,8 @@ window.addEventListener('resize', () => {
 
 function _guideApplySettings(step) {
   document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
-  document.getElementById('chk-ex-diagram'   ).checked = !!step.diagram;
+  document.getElementById('chk-ex-stars'     ).checked = !!step.diagram;
+  document.getElementById('chk-ex-lines'     ).checked = !!step.diagram;
   document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
   document.getElementById('chk-ex-art'       ).checked = !!step.art && !step.foreground?.length;
   document.getElementById('chk-ex-starlabels').checked = false;
@@ -312,7 +314,8 @@ function _guideAddListeners() {
     if (!_gs) return;
     _gs.diagVisible = !_gs.diagVisible;
     const step = _gs.steps[_gs.idx];
-    document.getElementById('chk-ex-diagram' ).checked = _gs.diagVisible && !!step.diagram;
+    document.getElementById('chk-ex-stars'   ).checked = _gs.diagVisible && !!step.diagram;
+    document.getElementById('chk-ex-lines'   ).checked = _gs.diagVisible && !!step.diagram;
     document.getElementById('chk-ex-connames').checked = _gs.diagVisible && !!step.names;
     document.getElementById('chk-ex-bounds'  ).checked = _gs.diagVisible && !!step.bounds;
     document.getElementById('chk-ex-art'     ).checked = _gs.diagVisible && !!step.art;

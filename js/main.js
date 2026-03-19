@@ -180,16 +180,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(id).addEventListener('change', () => drawExplore());
   });
 
-  const exploreCheckboxIds = ['chk-ex-photo', 'chk-ex-diagram', 'chk-ex-starlabels', 'chk-ex-connames', 'chk-ex-equator', 'chk-ex-bounds', 'chk-ex-art'];
+  const exploreCheckboxIds = ['chk-ex-photo', 'chk-ex-stars', 'chk-ex-lines', 'chk-ex-starlabels', 'chk-ex-connames', 'chk-ex-equator', 'chk-ex-bounds', 'chk-ex-art', 'chk-ex-phototiles'];
   // Restore saved checkbox states
   exploreCheckboxIds.forEach(id => {
     const saved = localStorage.getItem(id);
-    if (saved !== null) document.getElementById(id).checked = saved === '1';
+    if (saved !== null) {
+      const el = document.getElementById(id);
+      if (!el) console.error('Missing checkbox element:', id);
+      else el.checked = saved === '1';
+    }
   });
   // Save on change and redraw
   exploreCheckboxIds.forEach(id => {
-    document.getElementById(id).addEventListener('change', () => {
-      localStorage.setItem(id, document.getElementById(id).checked ? '1' : '0');
+    const el = document.getElementById(id);
+    if (!el) { console.error('Missing checkbox element for listener:', id); return; }
+    el.addEventListener('change', () => {
+      localStorage.setItem(id, el.checked ? '1' : '0');
       drawExplore();
     });
   });

@@ -251,8 +251,9 @@ function drawExplore() {
   const cm = q?.stageMode;  // course mode active?
   const isAnswered = !!(q?.answered);
   const showPhoto      = cm ? (isAnswered ? document.getElementById('chk-eq-photo').checked    : cm === 'photo')   : document.getElementById('chk-ex-photo').checked;
-  const showDiag       = cm ? (isAnswered ? document.getElementById('chk-eq-diagram').checked  : cm !== 'photo')   : document.getElementById('chk-ex-diagram').checked;
-  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : true;
+  const showDiag       = cm ? (isAnswered ? document.getElementById('chk-eq-diagram').checked  : cm !== 'photo')   : true;
+  const showStars      = cm ? showDiag : document.getElementById('chk-ex-stars').checked;
+  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : document.getElementById('chk-ex-lines').checked;
   const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : document.getElementById('chk-ex-bounds').checked;
   const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : document.getElementById('chk-ex-art').checked;
   const showStarLabels = cm ? false : document.getElementById('chk-ex-starlabels').checked;
@@ -263,6 +264,34 @@ function drawExplore() {
   if (showPhoto) {
     for (const con of visible) {
       drawExplorePhotoLayerGL(con, camP, camUp, explore.fov);
+    }
+    // Debug: red outline around each photo tile
+    if (document.getElementById('chk-ex-phototiles')?.checked) {
+      ctx.save();
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 1;
+      for (const con of visible) {
+        const IW = 640, IH = 640, N = 20;
+        const edges = [];
+        for (let i = 0; i <= N; i++) edges.push([i/N * IW, 0]);
+        for (let i = 0; i <= N; i++) edges.push([IW, i/N * IH]);
+        for (let i = N; i >= 0; i--) edges.push([i/N * IW, IH]);
+        for (let i = N; i >= 0; i--) edges.push([0, i/N * IH]);
+        const pts = edges.map(([px, py]) => {
+          const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
+          return projectStarsCamera([[rd.ra, rd.dec, 0]], camP, camUp, explore.fov, W, H)[0];
+        });
+        ctx.beginPath();
+        let started = false;
+        for (const p of pts) {
+          if (p.d <= 0) { started = false; continue; }
+          if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+      ctx.restore();
     }
   }
 
@@ -355,7 +384,7 @@ function drawExplore() {
   }
 
   // Diagram: stars + lines + star labels
-  if (showDiag) {
+  if (showStars || showLines) {
     for (const con of visible) {
       const proj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
         .map((p, i) => ({ ...p, _orig: con.stars[i] }))
@@ -365,7 +394,7 @@ function drawExplore() {
           .map(p => p.d > 0 ? p : null);
         drawLines(ctx, fullProj, con);
       }
-      drawStars(ctx, proj);
+      if (showStars) drawStars(ctx, proj, explore.fov);
       if (showStarLabels) drawLabels(ctx, proj, W);
     }
   }

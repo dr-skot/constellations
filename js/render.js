@@ -35,11 +35,13 @@ function drawLines(ctx, proj, con) {
   ctx.restore();
 }
 
-function drawStars(ctx, proj) {
+function drawStars(ctx, proj, fov) {
+  const REF_FOV = 40;
+  const s = fov ? REF_FOV / fov : 1;
   for (const p of proj) {
-    const r = magToR(p.mag), col = starCol(p.hint);
+    const r = magToR(p.mag) * s, col = starCol(p.hint);
     if (p.mag < 2.5) {
-      const gs = p.mag < 0 ? 26 : p.mag < 1 ? 18 : p.mag < 2 ? 13 : 8;
+      const gs = (p.mag < 0 ? 26 : p.mag < 1 ? 18 : p.mag < 2 ? 13 : 8) * s;
       const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, gs);
       const hx = col.replace('#', '');
       const ri = parseInt(hx.slice(0, 2), 16), gi = parseInt(hx.slice(2, 4), 16), bi = parseInt(hx.slice(4, 6), 16);
@@ -49,7 +51,7 @@ function drawStars(ctx, proj) {
       ctx.beginPath(); ctx.arc(p.x, p.y, gs, 0, Math.PI * 2); ctx.fill();
     }
     ctx.save();
-    ctx.shadowColor = col; ctx.shadowBlur = p.mag < 2 ? 8 : p.mag < 3 ? 4 : 2;
+    ctx.shadowColor = col; ctx.shadowBlur = (p.mag < 2 ? 8 : p.mag < 3 ? 4 : 2) * s;
     ctx.fillStyle = col;
     ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
