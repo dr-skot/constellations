@@ -247,6 +247,31 @@ function _guideApplySettings(step) {
   document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
 }
 
+function _guideIntersectSettings(a, b) {
+  return {
+    photo:   a.photo   && b.photo,
+    diagram: a.diagram && b.diagram,
+    bounds:  a.bounds  && b.bounds,
+    art:     a.art     && b.art,
+    names:   a.names   && b.names,
+    equator: a.equator && b.equator
+  };
+}
+
+function _guideIntersectAnnotation(a, b) {
+  if (!a || !b) return null;
+  const aIds = new Set((a.highlight || []).map(h => h.id || JSON.stringify(h)));
+  const shared = (b.highlight || []).filter(h => aIds.has(h.id || JSON.stringify(h)));
+  const aFg = new Set(a.foreground || []);
+  const sharedFg = (b.foreground || []).filter(abbr => aFg.has(abbr));
+  if (!shared.length && !sharedFg.length) return null;
+  return {
+    highlight: shared.length ? shared : undefined,
+    foreground: sharedFg.length ? sharedFg : undefined,
+    art: a.art && b.art
+  };
+}
+
 function _guideRenderUI() {
   const { steps, idx, animating, diagVisible } = _gs;
   const n = steps.length;
@@ -321,10 +346,18 @@ function guideGoTo(i, immediate) {
     _gs.animating = false;
     _guideRenderUI();
   } else {
-    guideAnimateTo(step, prevStep, _guideDraw, s => guideDrawAnnotation(s, _gs.catalog), () => {
+    // Before animation: apply intersection settings, clear departing elements
+    const midSettings = prevStep ? _guideIntersectSettings(prevStep, step) : step;
+    const midAnnotation = _guideIntersectAnnotation(prevStep, step);
+    _guideApplySettings(midSettings);
+    _guideDraw();
+    guideDrawAnnotation(midAnnotation, _gs.catalog);
+
+    guideAnimateTo(step, null, _guideDraw, () => guideDrawAnnotation(midAnnotation, _gs.catalog), () => {
       if (!_gs) return;
       _guideApplySettings(step);
       _guideDraw();
+      guideDrawAnnotation(step, _gs.catalog);
       _gs.animating = false;
       _guideRenderUI();
     }, () => !!_gs);
