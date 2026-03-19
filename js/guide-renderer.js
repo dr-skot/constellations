@@ -34,7 +34,8 @@ function guideDrawAnnotation(step, catalog) {
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
   const scale = W / (src.offsetWidth || W / dpr);
-  const fovScale = 40 / explore.fov;
+  const fovS = 40 / explore.fov;  // FOV scale factor (same as drawStars)
+  const margin = 10 * scale;     // fixed pixel margin around star
 
   if (step.foreground?.length) {
     drawForeground(ctx, step.foreground, explore.P, camUp, explore.fov, W, H);
@@ -75,7 +76,8 @@ function guideDrawAnnotation(step, catalog) {
         return (p && p.d > 0) ? p : null;
       });
       if (pts.some(p => !p)) continue;
-      const r     = (raw.r || 10) * scale * fovScale;
+      const maxStarR = Math.max(...ends.map(e => magToR(e.mag ?? 6))) * fovS * scale;
+      const r     = maxStarR + margin;
       const color = raw.color || '#fff';
       const lw    = Math.max(1.5, 1.5 * scale);
       const drawPath = () => {
@@ -83,15 +85,24 @@ function guideDrawAnnotation(step, catalog) {
         ctx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
       };
-      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.shadowColor = color; ctx.shadowBlur = r * 0.3;
-      ctx.strokeStyle = color; ctx.lineWidth = r * 2;
-      drawPath(); ctx.stroke();
+      // Draw capsule to offscreen canvas, then composite with glow
+      const tmp = document.createElement('canvas');
+      tmp.width = W; tmp.height = H;
+      const tc = tmp.getContext('2d');
+      tc.lineCap = 'round'; tc.lineJoin = 'round';
+      tc.strokeStyle = color; tc.lineWidth = (r + lw / 2) * 2;
+      tc.beginPath(); tc.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) tc.lineTo(pts[i].x, pts[i].y);
+      tc.stroke();
+      tc.globalCompositeOperation = 'destination-out';
+      tc.strokeStyle = 'rgba(0,0,0,1)'; tc.lineWidth = Math.max(0, (r - lw / 2) * 2);
+      tc.beginPath(); tc.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) tc.lineTo(pts[i].x, pts[i].y);
+      tc.stroke();
+      // Blit with glow
+      ctx.shadowColor = color; ctx.shadowBlur = r * 0.7;
+      ctx.drawImage(tmp, 0, 0);
       ctx.shadowBlur = 0;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.strokeStyle = 'rgba(0,0,0,1)'; ctx.lineWidth = Math.max(0, r * 2 - lw * 2);
-      drawPath(); ctx.stroke();
-      ctx.globalCompositeOperation = 'source-over';
       if (raw.label) {
         const P1 = pts[0];
         const fs = Math.round(13 * scale);
@@ -167,12 +178,12 @@ function guideDrawAnnotation(step, catalog) {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
       const p = pts[0];
       if (!p || p.d <= 0) continue;
-      const r  = h.r * scale * fovScale;
+      const starR = magToR(h.mag ?? 6) * fovS * scale;
+      const r  = starR + margin;
       const fs = Math.round(13 * scale);
       ctx.strokeStyle = h.color;
       ctx.lineWidth   = Math.max(1.5, 1.5 * scale);
-      ctx.shadowColor = h.color;
-      ctx.shadowBlur  = r * 0.7;
+      ctx.shadowColor = h.color; ctx.shadowBlur = r * 0.7;
       ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.stroke();
       ctx.shadowBlur = 0;
       ctx.font = `bold ${fs}px system-ui, sans-serif`;
