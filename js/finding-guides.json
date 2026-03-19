@@ -497,7 +497,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Boötes — the Herdsman, home to Arcturus, the brightest star north of the celestial equator and a brilliant orange beacon of the spring sky.",
+        "caption": "Let’s find Boötes — the Herdsman, home to Arcturus, the brightest star north of the celestial equator and an unmistakably orange beacon in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -507,18 +507,41 @@
       },
       {
         "title": "Arc to Arcturus",
-        "caption": "In April and May evenings, Boötes is high in the southeast sky. The classic mnemonic 'Arc to Arcturus' guides you straight there: follow the curved arc of the Big Dipper's handle outward for about 30° and you land on Arcturus. This is one of the most reliable star-hops in astronomy.",
-        "ra": 216,
-        "dec": 30,
+        "caption": "The classic star-hop: follow the curved arc of the Big Dipper’s handle outward and you land on Arcturus. “Arc to Arcturus” is one of the most reliable mnemonics in astronomy.",
+        "ra": 196,
+        "dec": 42,
         "fov": 75,
         "photo": true,
         "diagram": true,
-        "names": false,
-        "bounds": false
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "capsule": [
+              {
+                "id": "Megrez"
+              },
+              {
+                "id": "Alioth"
+              },
+              {
+                "id": "Mizar"
+              },
+              {
+                "id": "Alkaid"
+              }
+            ],
+            "r": 10,
+            "color": "#c8d8ff"
+          },
+          {
+            "id": "Arcturus"
+          }
+        ]
       },
       {
-        "title": "Find Arcturus",
-        "caption": "Arcturus is unmistakably orange — an evolved K-type giant, about 37 light-years away, and the fourth-brightest star in the night sky. It is moving through space at an unusually high velocity relative to the Sun and belongs to the thick disk of the Milky Way, older stars with a different orbital history.",
+        "title": "Arcturus",
+        "caption": "Arcturus is the fourth-brightest star in the night sky — its orange colour unmistakable. It moves through space at an unusually high velocity relative to the Sun, a member of the older thick disk of the Milky Way with a very different orbital history from most nearby stars.",
         "ra": 215,
         "dec": 22,
         "fov": 35,
@@ -533,8 +556,8 @@
         ]
       },
       {
-        "title": "The kite shape of Boötes",
-        "caption": "Boötes forms a kite or ice cream cone shape with Arcturus at its tip (southernmost point). Izar marks one side of the kite — it is a stunning orange-and-blue double star in a small telescope, nicknamed Pulcherrima ('most beautiful') by astronomers. The kite widens north from Arcturus toward a line of four stars.",
+        "title": "The kite",
+        "caption": "Boötes forms a kite shape with Arcturus at its southern tip. Izar, on the side of the kite, is a stunning orange-and-blue double star in a small telescope — nicknamed Pulcherrima, “most beautiful,” by astronomers.",
         "ra": 217,
         "dec": 31,
         "fov": 52,
@@ -542,6 +565,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "Arcturus"
@@ -558,7 +582,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Caelum — the Chisel, one of the smallest and faintest constellations, invented by Lacaille and tucked south of Eridanus between Columba and Horologium.",
+        "caption": "Let’s find Caelum — the Chisel, one of the smallest and faintest constellations, invented by Lacaille and tucked between Eridanus, Columba, and Horologium in the southern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -567,8 +591,8 @@
         "bounds": false
       },
       {
-        "title": "South of Lepus, east of Columba",
-        "caption": "Caelum lies roughly 30° east-southeast of Rigel in Orion, south of the river Eridanus and east of Columba the Dove. There is no bright anchor star nearby — the best approach is to find Rigel and sweep southeast into the sparse southern field. It is best seen November–January and is invisible north of 40°N.",
+        "title": "Between Eridanus and Columba",
+        "caption": "Caelum sits in a sparse corner of the southern sky, nestled beside the winding river Eridanus. Rigel in Orion is the brightest nearby star — look south from there into the empty-looking region between Eridanus and Columba.",
         "ra": 74,
         "dec": -38,
         "fov": 65,
@@ -583,30 +607,11 @@
         ]
       },
       {
-        "title": "A tiny pair of faint stars",
-        "caption": "Alpha Caeli (mag 4.4) is the brightest star, a white subgiant about 66 light-years away. Beta Caeli (mag 5.0) and Gamma (mag 4.4) are the other main stars. There is no recognizable pattern — Caelum is simply a faint wisp of a constellation in an empty corner of the southern sky.",
+        "title": "Lacaille’s engraving tool",
+        "caption": "Caelum honors the burin — the engraving tool used by printmakers and sculptors. One of 14 instrument constellations Lacaille introduced after his 1751–52 Cape of Good Hope survey, it is among the most challenging to identify, with no bright stars and no deep-sky objects of note. A completionist’s target.",
         "ra": 71,
         "dec": -41,
-        "fov": 30,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Cae"
-          },
-          {
-            "id": "β Cae"
-          }
-        ]
-      },
-      {
-        "title": "Lacaille's engraving tool",
-        "caption": "Caelum is one of 14 instrument constellations Lacaille introduced after his 1751–52 Cape of Good Hope survey, honoring the burin — the engraving tool used by printmakers and sculptors. It is among the most challenging constellations to identify and is routinely skipped by beginners. With no deep-sky objects of note, it is purely a completionist's target.",
-        "ra": 71,
-        "dec": -41,
-        "fov": 20,
+        "fov": 28,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -620,7 +625,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Camelopardalis — the Giraffe, a very large but very faint circumpolar constellation filling the gap between Polaris and the bright stars of Perseus and Cassiopeia.",
+        "caption": "Let's find Camelopardalis — the Giraffe, a very large but very faint circumpolar constellation filling the gap between Polaris and Auriga.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -629,43 +634,27 @@
         "bounds": false
       },
       {
-        "title": "Between Polaris and Perseus",
-        "caption": "Camelopardalis sprawls between Polaris to the north and Perseus/Auriga to the south. The best strategy is to identify Cassiopeia's W to the east and Perseus to the south, then note the large, empty-looking region between them and Polaris — that is the Giraffe. It is circumpolar from most of the northern hemisphere and best seen on winter evenings.",
-        "ra": 78,
-        "dec": 66,
-        "fov": 70,
+        "title": "Sprawling but dim",
+        "caption": "The left arm of Cassiopeia's W points to the dark void between Polaris and Capella where the Giraffe lives. It's the third largest constellation by area, but easy to miss because its main stars are so faint.",
+        "ra": 68,
+        "dec": 70,
+        "fov": 60,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": true,
         "highlight": [
           {
             "id": "Polaris"
-          }
-        ]
-      },
-      {
-        "title": "Beta and Alpha Camelopardalis",
-        "caption": "Beta Camelopardalis (mag 4.0) is the brightest star — a yellow supergiant about 1,000 light-years away. Alpha Cam (mag 4.3) is a distant blue supergiant. Despite the faintness, the constellation spans about 60° from top to bottom. Sweep slowly with binoculars to trace the meandering chain of 4th-magnitude stars.",
-        "ra": 75,
-        "dec": 64,
-        "fov": 45,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "β Cam"
           },
           {
-            "id": "α Cam"
+            "id": "Capella"
           }
         ]
       },
       {
-        "title": "The forgotten northern giant",
-        "caption": "Camelopardalis was introduced in 1613 by Petrus Plancius, representing the giraffe that carried Rebekah to Isaac. Despite its enormous area (3rd largest constellation), beginners often miss it entirely because it lacks any star above magnitude 4. It contains NGC 2403, one of the nearest grand-design spiral galaxies at about 8 million light-years — a fine binocular target from dark sites.",
+        "title": "NGC 2403",
+        "caption": "Invented by Petrus Plancius in 1613, it represents the giraffe that carried Rebekah to Isaac. Its most rewarding target is NGC 2403 — one of the nearest spiral galaxies beyond our Local Group and a fine binocular object from dark skies.",
         "ra": 72,
         "dec": 63,
         "fov": 50,
@@ -673,7 +662,12 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": true,
+        "highlight": [
+          {
+            "id": "NGC 2403"
+          }
+        ]
       }
     ]
   },
@@ -681,7 +675,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cancer — the Crab, the faintest of the zodiacal constellations, but home to the beautiful Beehive Cluster, a naked-eye star cluster known since antiquity.",
+        "caption": "Let's find Cancer — the Crab, the faintest of the zodiacal constellations, but home to the beautiful Beehive, a naked-eye star cluster known since antiquity.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -691,13 +685,13 @@
       },
       {
         "title": "Look between Gemini and Leo",
-        "caption": "In February and March evenings, Cancer is due south at midnight. It lies between the unmistakable twin stars of Gemini (Pollux and Castor) to the west and bright Regulus in Leo to the east — draw a line between them and Cancer occupies the middle third. Its stars are all below magnitude 3.5, so this region will look conspicuously sparse.",
+        "caption": "Cancer sits in the sparse gap between Pollux and Castor in Gemini and bright Regulus in Leo. Cancer's inconspicuous stars make it an ideal dark-sky test: if you can see them with the naked eye, conditions are excellent.",
         "ra": 130,
         "dec": 18,
         "fov": 70,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -713,7 +707,7 @@
       },
       {
         "title": "Spot the Beehive Cluster",
-        "caption": "The Beehive is a naked-eye fuzzy patch at the center of Cancer, visible as a smear of light under dark skies and resolving in binoculars into dozens of stars. It is one of the nearest open clusters at about 610 light-years. The faint Y-shape of Cancer's main stars surrounds the cluster on four sides.",
+        "caption": "The Beehive is a fuzzy patch at the center of Cancer, visible as a smear of light under dark skies and resolving in binoculars into dozens of stars. It is one of the nearest open clusters at about 610 light-years.",
         "ra": 130,
         "dec": 19,
         "fov": 28,
@@ -721,31 +715,11 @@
         "diagram": true,
         "names": true,
         "bounds": false,
+        "art": true,
         "highlight": [
           {
-            "id": "Beehive (M44)"
-          }
-        ]
-      },
-      {
-        "title": "Cancer's main stars",
-        "caption": "Acubens and Asellus Australis are the most identifiable stars, flanking the Beehive. Asellus Australis and Asellus Borealis are the Southern and Northern Donkeys of ancient lore, watching over the Beehive manger. Cancer's inconspicuous stars make it an ideal dark-sky test: if you can see the individual Beehive stars naked-eye, conditions are excellent.",
-        "ra": 129,
-        "dec": 19,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "Beehive (M44)"
-          },
-          {
-            "id": "Asellus Australis"
-          },
-          {
-            "id": "Acubens"
+            "id": "Beehive (M44)",
+            "label": "Beehive Cluster"
           }
         ]
       }
@@ -756,7 +730,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Canes Venatici — the Hunting Dogs, a small spring constellation below the handle of the Big Dipper, anchored by the bright blue-white star Cor Caroli.",
+        "caption": "Let's find Canes Venatici — the Hunting Dogs, a small constellation below the handle of the Big Dipper, anchored by the bright blue-white star Cor Caroli.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -765,8 +739,8 @@
         "bounds": false
       },
       {
-        "title": "Below the Big Dipper's handle",
-        "caption": "Find the Big Dipper's handle — the three stars arcing away from the bowl. From Alkaid, the star at the very end of the handle, drop about 20° due south and you land directly on Cor Caroli. This is the brightest star in the Hunting Dogs and one of the easiest star-hops in the spring sky.",
+        "title": "Below the Big Dipper handle",
+        "caption": "Find Alkaid — the star at the tip of the Dipper's handle. Cor Caroli is the bright blue-white star sitting just below it.",
         "ra": 198,
         "dec": 44,
         "fov": 55,
@@ -785,7 +759,7 @@
       },
       {
         "title": "Cor Caroli",
-        "caption": "Cor Caroli (\"Charles's Heart\", mag 2.9) is a mild magnetic variable and an easy, attractive double star in a small telescope. Chara (mag 4.3) lies about 3.5° to the southwest. Despite having only two named stars, the constellation is rich in background galaxies including M51 (the Whirlpool) and the globular cluster M3.",
+        "caption": "Cor Caroli (‘Charles’s Heart’) is a beautiful double star in a small telescope and the brightest of the two named stars in the constellation. Nearby shines Chara. Despite having only two named stars, the constellation is rich in background galaxies.",
         "ra": 193,
         "dec": 38,
         "fov": 22,
@@ -793,7 +767,6 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "highlight M51, M3",
         "highlight": [
           {
             "id": "Cor Caroli"
@@ -805,17 +778,23 @@
       },
       {
         "title": "Galaxy country",
-        "caption": "Canes Venatici contains some of the finest galaxies in the sky: M51 (the Whirlpool Galaxy) near Alkaid, M63 (the Sunflower), M94, and M106. The globular cluster M3 is one of the finest in the northern sky at magnitude 6.2 — visible in binoculars as a fuzzy star. The constellation sits far from the Milky Way plane, giving unobstructed views of the deep universe.",
-        "ra": 193,
-        "dec": 38,
-        "fov": 30,
+        "caption": "Canes Venatici sits away from the Milky Way’s dust, giving clear sightlines into the deep universe. M51, the Whirlpool Galaxy, is one of the most photogenic spirals in the sky. M3 is among the finest globular clusters — visible in binoculars as a fuzzy star.",
+        "ra": 200,
+        "dec": 40,
+        "fov": 35,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
-        "notes": "highlight M51, M63, M94, M106, M3",
-        "highlight": [],
-        "art": true
+        "art": true,
+        "highlight": [
+          {
+            "id": "Whirlpool Galaxy"
+          },
+          {
+            "id": "M3"
+          }
+        ]
       }
     ]
   },
@@ -823,7 +802,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Canis Major — the Great Dog, home of Sirius, the brightest star in the entire night sky.",
+        "caption": "Let's find Canis Major — the Great Dog, home of Sirius, the brightest star in the night sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -832,43 +811,31 @@
         "bounds": false
       },
       {
-        "title": "The winter sky",
-        "caption": "Look to the southern sky on a winter evening. Canis Major follows Orion like a faithful hunting dog, sitting south and east of the Hunter. Sirius blazes so brightly it cannot be mistaken for anything else.",
+        "title": "Find the Dog Star",
+        "caption": "Canis Major follows Orion across the sky. Sirius marks the dog’s shoulder. Follow the line of Orion's belt and you'll find it. The ancient Egyptians timed the annual Nile flood by the first dawn rising of Sirius and called it Sopdet.",
         "ra": 92,
         "dec": -8,
-        "fov": 80,
+        "fov": 60,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Sirius"
-          }
-        ]
-      },
-      {
-        "title": "Follow the Belt",
-        "caption": "Take Orion's three belt stars and follow their line southeast about 20°. You will arrive at Sirius — a brilliant blue-white star that outshines everything else in the night sky. At magnitude −1.4 it is nearly twice as bright as the second-brightest star, Canopus.",
-        "ra": 92,
-        "dec": -8,
-        "fov": 42,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Mintaka",
-            "label": "belt"
-          },
-          {
-            "id": "Alnilam",
-            "label": ""
-          },
-          {
-            "id": "Alnitak",
-            "label": ""
+            "capsule": [
+              {
+                "id": "Mintaka"
+              },
+              {
+                "id": "Alnilam"
+              },
+              {
+                "id": "Alnitak"
+              }
+            ],
+            "label": "Orion's belt",
+            "r": 10,
+            "color": "#c8d8ff"
           },
           {
             "id": "Sirius"
@@ -877,7 +844,7 @@
       },
       {
         "title": "The Great Dog",
-        "caption": "Sirius marks the dog's shoulder. Fainter stars trace the body, hindquarters and legs below. Adhara at the hindquarters is intrinsically far more luminous than Sirius — it simply appears dimmer because it is nearly 30 times further away.",
+        "caption": "Adhara, at the hindquarters, is intrinsically far more luminous than Sirius, but appears dimmer because it's nearly 30 times as far away.",
         "ra": 103,
         "dec": -21,
         "fov": 36,
@@ -885,6 +852,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "Sirius"
@@ -893,18 +861,6 @@
             "id": "Adhara"
           }
         ]
-      },
-      {
-        "title": "The Dog Star",
-        "caption": "Sirius is only 8.6 light-years away — our fifth-closest stellar neighbour — which explains much of its brilliance. The ancient Egyptians timed the annual Nile flood by its first dawn rising and called it Sopdet.",
-        "ra": 100,
-        "dec": -15,
-        "fov": 55,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "art": true
       }
     ]
   },
@@ -912,7 +868,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Canis Minor — the Lesser Dog, a tiny constellation defined almost entirely by one brilliant star: Procyon, the eighth-brightest star in the night sky.",
+        "caption": "Let's find Canis Minor — the Lesser Dog, a tiny constellation defined almost entirely by one brilliant star: Procyon, the eighth-brightest in the night sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -921,27 +877,8 @@
         "bounds": false
       },
       {
-        "title": "Look east of Orion in winter",
-        "caption": "In January and February, Procyon is bright and obvious in the southeast after Orion rises. From Betelgeuse at Orion's shoulder, move east-northeast about 25° and you will land directly on Procyon. The constellation is best seen January through March from both hemispheres.",
-        "ra": 115,
-        "dec": 8,
-        "fov": 70,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Procyon"
-          },
-          {
-            "id": "Betelgeuse"
-          }
-        ]
-      },
-      {
         "title": "The Winter Triangle",
-        "caption": "Procyon forms the Winter Triangle with Sirius (Canis Major) and Betelgeuse (Orion) — a large asterism spanning about 25° per side. Procyon (mag 0.4) is a white star about 11.5 light-years away, one of the Sun's closest neighbors. Like Sirius, it has a white dwarf companion detectable only with large telescopes.",
+        "caption": "Procyon forms the Winter Triangle with Sirius and Betelgeuse. If you can spot those two, Procyon completes the triangle.",
         "ra": 101,
         "dec": -3,
         "fov": 55,
@@ -962,8 +899,8 @@
         ]
       },
       {
-        "title": "The two-star constellation",
-        "caption": "Canis Minor contains only two stars bright enough to see without effort: Procyon and Gomeisa (Beta CMi, mag 2.9), a blue-white star about 3° to the northwest. The 'dog body' is largely imaginary — there is little else to see.",
+        "title": "Two stars",
+        "caption": "Canis Minor has only two stars worth finding: Procyon and Gomeisa. The dog body is largely imaginary — there is little else to see. Procyon is one of the Sun's nearest neighbors and, like Sirius, has a white dwarf companion detectable only with large telescopes.",
         "ra": 113,
         "dec": 7,
         "fov": 16,
@@ -971,31 +908,13 @@
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "Procyon"
           },
           {
             "id": "Gomeisa"
-          }
-        ]
-      },
-      {
-        "title": "A midpoint pointer",
-        "caption": "Canis Minor marks the midpoint between Gemini's Pollux and Sirius in Canis Major — a handy reference for navigating the winter sky.",
-        "ra": 110,
-        "dec": 6,
-        "fov": 72,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Pollux"
-          },
-          {
-            "id": "Sirius"
           }
         ]
       }

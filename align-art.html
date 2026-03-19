@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Constellation Framing</title>
+<title>Art Alignment</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box }
 body {
@@ -38,13 +38,13 @@ button {
   cursor: pointer; font-size: .85rem;
 }
 button:hover { background: rgba(91,138,245,.28) }
-#output { font-size: .82rem; color: #6f8; font-family: monospace; letter-spacing: .04em; min-height: 1.2em }
+#output { font-size: .82rem; color: #6f8; font-family: monospace; letter-spacing: .04em; min-height: 1.2em; max-width: 520px; word-break: break-all; }
 label { display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: .85rem; color: #7080a0 }
 label:hover { color: #b0ccff }
 </style>
 </head>
 <body>
-<h1>Constellation Framing</h1>
+<h1>Art Alignment</h1>
 <div id="top">
   <select id="con-sel"></select>
   <label><input type="checkbox" id="chk-photo"> Photo</label>
@@ -56,19 +56,23 @@ label:hover { color: #b0ccff }
   <canvas id="canvas" width="520" height="520"></canvas>
 </div>
 <div id="controls">
+  <span class="lbl">Rotate</span>
+  <input type="range" id="sl-rotate" min="-180" max="180" value="0" step="0.5">
+  <span class="val" id="vl-rotate">0.0°</span>
+
   <span class="lbl">Scale</span>
   <input type="range" id="sl-scale" min="25" max="400" value="100" step="1">
   <span class="val" id="vl-scale">1.00×</span>
 
-  <span class="lbl">RA offset</span>
-  <input type="range" id="sl-dx" min="-45" max="45" value="0" step="0.5">
-  <span class="val" id="vl-dx">0.0°</span>
+  <span class="lbl">X offset</span>
+  <input type="range" id="sl-dx" min="-260" max="260" value="0" step="1">
+  <span class="val" id="vl-dx">0</span>
 
-  <span class="lbl">Dec offset</span>
-  <input type="range" id="sl-dy" min="-45" max="45" value="0" step="0.5">
-  <span class="val" id="vl-dy">0.0°</span>
+  <span class="lbl">Y offset</span>
+  <input type="range" id="sl-dy" min="-260" max="260" value="0" step="1">
+  <span class="val" id="vl-dy">0</span>
 </div>
-<button id="btn-copy">Copy ra/dec/fov</button>
+<button id="btn-copy">Copy anchor JSON</button>
 <div id="output">—</div>
 
 <script src="js/data.js"></script>
@@ -82,23 +86,9 @@ const artCache = {};
 let currentCon = null;
 let photoImg = null;
 
-function loadArt(con, callback) {
-  const src = artSrc(con.abbr);
-  const art = ART[src];
-  if (!art) return;
-  if (artCache[src] instanceof HTMLImageElement) { callback(artCache[src]); return; }
-  if (artCache[src] === 'loading' || artCache[src] === 'error') return;
-  artCache[src] = 'loading';
-  const img = new Image();
-  img.onload = () => { artCache[src] = img; callback(img); };
-  img.onerror = () => { artCache[src] = 'error'; };
-  img.src = art.url;
-}
-
 const ANCHOR_COLORS = ['#ff4040', '#40ff80', '#4080ff'];
 
 function drawCross(x, y, size, color, style) {
-  // style: 'x' or '+'
   ctx.save();
   ctx.strokeStyle = color; ctx.lineWidth = 2;
   ctx.shadowColor = color; ctx.shadowBlur = 4;
@@ -114,31 +104,65 @@ function drawCross(x, y, size, color, style) {
   ctx.restore();
 }
 
-function drawArt(tc) {
-  const con = currentCon;
-  if (!con) return;
+function getTweak() {
+  return {
+    rotate: parseFloat(document.getElementById('sl-rotate').value) * Math.PI / 180,
+    scale:  parseFloat(document.getElementById('sl-scale').value) / 100,
+    dx:     parseFloat(document.getElementById('sl-dx').value),
+    dy:     parseFloat(document.getElementById('sl-dy').value),
+  };
+}
+
+function applyTweak(pts, tweak) {
+  const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
+  const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+  const cos = Math.cos(tweak.rotate), sin = Math.sin(tweak.rotate);
+  return pts.map(([x, y]) => {
+    const rx = x - cx, ry = y - cy;
+    return [
+      cx + (rx * cos - ry * sin) * tweak.scale + tweak.dx,
+      cy + (rx * sin + ry * cos) * tweak.scale + tweak.dy,
+    ];
+  });
+}
+
+function loadArt(con, callback) {
+  const src = artSrc(con.abbr);
+  const art = ART[src];
+  if (!art) return;
+  if (artCache[src] instanceof HTMLImageElement) { callback(artCache[src]); return; }
+  if (artCache[src] === 'loading' || artCache[src] === 'error') return;
+  artCache[src] = 'loading';
+  const img = new Image();
+  img.onload = () => { artCache[src] = img; callback(img); };
+  img.onerror = () => { artCache[src] = 'error'; };
+  img.src = art.url;
+}
+
+function drawArt(con) {
   const src = artSrc(con.abbr);
   const art = ART[src];
   if (!art) return;
   const img = artCache[src];
   if (!(img instanceof HTMLImageElement)) return;
-  const canvasPts = projectStarsTAN(art.anchors.map(a => [a.ra, a.dec, 0]), tc, W, H);
+  const canvasPts = projectStarsTAN(art.anchors.map(a => [a.ra, a.dec, 0]), con, W, H);
   const iw = img.naturalWidth, ih = img.naturalHeight;
   const imgPts = art.anchors.map(a => [a.px * iw, a.py * ih]);
-  const dstPts = canvasPts.map(p => [p.x, p.y]);
-  const xform = solveAffine(imgPts, dstPts);
+  const naturalDst = canvasPts.map(p => [p.x, p.y]);
+  const tweakedDst = applyTweak(naturalDst, getTweak());
+  const xform = solveAffine(imgPts, tweakedDst);
   ctx.save();
   ctx.setTransform(...xform);
   ctx.globalAlpha = 0.60;
   ctx.globalCompositeOperation = 'screen';
   ctx.drawImage(img, 0, 0, iw, ih);
-  // Draw X markers at anchor image positions
-  imgPts.forEach(([px, py], i) => drawCross(px, py, 12, ANCHOR_COLORS[i % ANCHOR_COLORS.length], 'x'));
+  // X markers at anchor image positions (move with the art)
+  imgPts.forEach(([px, py], i) =>
+    drawCross(px, py, 12, ANCHOR_COLORS[i % ANCHOR_COLORS.length], 'x'));
   ctx.restore();
-  // Draw + markers at anchor sky positions
-  canvasPts.forEach((p, i) => {
-    if (p.d > 0) drawCross(p.x, p.y, 10, ANCHOR_COLORS[i % ANCHOR_COLORS.length], '+');
-  });
+  // + markers at original sky positions (fixed)
+  naturalDst.forEach(([x, y], i) =>
+    drawCross(x, y, 10, ANCHOR_COLORS[i % ANCHOR_COLORS.length], '+'));
 }
 
 const sorted = [...C].sort((a, b) => a.name.localeCompare(b.name));
@@ -150,14 +174,6 @@ sorted.forEach(con => {
   sel.appendChild(opt);
 });
 
-function tweakedCon(con) {
-  const scale = parseFloat(document.getElementById('sl-scale').value) / 100;
-  const dx    = parseFloat(document.getElementById('sl-dx').value);
-  const dy    = parseFloat(document.getElementById('sl-dy').value);
-  const newFov = 2 * Math.atan(Math.tan(con.fov * Math.PI / 360) / scale) * 180 / Math.PI;
-  return { ...con, ra: ((con.ra + dx) % 360 + 360) % 360, dec: con.dec + dy, fov: newFov };
-}
-
 function magToR(m) {
   return m <= -1 ? 7 : m < 0 ? 6 : m < 1 ? 5 : m < 2 ? 3.8 : m < 3 ? 2.8 : m < 4 ? 2.0 : m < 5 ? 1.4 : 1.0;
 }
@@ -165,37 +181,9 @@ function starCol(h) {
   return h === 'r' ? '#ff7060' : h === 'o' ? '#ffb860' : h === 'b' ? '#90c8ff' : '#f5eedc';
 }
 
-function drawLines(proj, con) {
-  ctx.save();
-  ctx.strokeStyle = 'rgba(80,145,230,0.6)';
-  ctx.lineWidth = 1.5;
-  ctx.shadowColor = 'rgba(100,160,255,0.4)';
-  ctx.shadowBlur = 5;
-  for (const [i, j] of con.lines) {
-    const a = proj[i], b = proj[j];
-    if (!a || !b || a.d <= 0 || b.d <= 0) continue;
-    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-  }
-  ctx.restore();
-}
-
-function drawStars(proj) {
-  for (const p of proj) {
-    if (p.d <= 0) continue;
-    const r = magToR(p.mag), col = starCol(p.hint);
-    ctx.save();
-    ctx.shadowColor = col;
-    ctx.shadowBlur = p.mag < 2 ? 8 : p.mag < 3 ? 4 : 2;
-    ctx.fillStyle = col;
-    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
-    ctx.restore();
-  }
-}
-
 function draw() {
   const con = currentCon;
   if (!con) return;
-  const tc = tweakedCon(con);
 
   ctx.fillStyle = '#010208';
   ctx.fillRect(0, 0, W, H);
@@ -205,17 +193,30 @@ function draw() {
   }
 
   if (document.getElementById('chk-art').checked) {
-    drawArt(tc);
+    drawArt(con);
   }
 
   if (document.getElementById('chk-diagram').checked) {
-    const proj = projectStarsTAN(con.stars, tc, W, H);
-    drawLines(proj, con);
-    drawStars(proj);
+    const proj = projectStarsTAN(con.stars, con, W, H);
+    for (const [i, j] of con.lines) {
+      const a = proj[i], b = proj[j];
+      if (!a || !b || a.d <= 0 || b.d <= 0) continue;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(80,145,230,0.6)'; ctx.lineWidth = 1.5;
+      ctx.shadowColor = 'rgba(100,160,255,0.4)'; ctx.shadowBlur = 5;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      ctx.restore();
+    }
+    for (const p of proj) {
+      if (p.d <= 0) continue;
+      const r = magToR(p.mag), col = starCol(p.hint);
+      ctx.save();
+      ctx.shadowColor = col; ctx.shadowBlur = p.mag < 2 ? 8 : p.mag < 3 ? 4 : 2;
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
   }
-
-  document.getElementById('output').textContent =
-    `ra: ${tc.ra.toFixed(1)}, dec: ${tc.dec.toFixed(1)}, fov: ${tc.fov.toFixed(1)}`;
 }
 
 function loadPhoto(con) {
@@ -229,53 +230,72 @@ function loadPhoto(con) {
   img.src = `img/${con.abbr}.jpg`;
 }
 
+function resetSliders() {
+  document.getElementById('sl-rotate').value = 0;
+  document.getElementById('sl-scale').value  = 100;
+  document.getElementById('sl-dx').value     = 0;
+  document.getElementById('sl-dy').value     = 0;
+  document.getElementById('vl-rotate').textContent = '0.0°';
+  document.getElementById('vl-scale').textContent  = '1.00×';
+  document.getElementById('vl-dx').textContent     = '0';
+  document.getElementById('vl-dy').textContent     = '0';
+}
+
 function selectCon(abbr) {
   currentCon = C.find(c => c.abbr === abbr);
   if (!currentCon) return;
-  document.getElementById('sl-scale').value = 100;
-  document.getElementById('sl-dx').value = 0;
-  document.getElementById('sl-dy').value = 0;
-  document.getElementById('vl-scale').textContent = '1.00×';
-  document.getElementById('vl-dx').textContent = '0.0°';
-  document.getElementById('vl-dy').textContent = '0.0°';
+  resetSliders();
   loadPhoto(currentCon);
   loadArt(currentCon, () => draw());
   draw();
 }
 
 function onSlider() {
-  const scale = parseFloat(document.getElementById('sl-scale').value) / 100;
-  const dx    = parseFloat(document.getElementById('sl-dx').value);
-  const dy    = parseFloat(document.getElementById('sl-dy').value);
-  document.getElementById('vl-scale').textContent = scale.toFixed(2) + '×';
-  document.getElementById('vl-dx').textContent    = dx.toFixed(1) + '°';
-  document.getElementById('vl-dy').textContent    = dy.toFixed(1) + '°';
+  const rotate = parseFloat(document.getElementById('sl-rotate').value);
+  const scale  = parseFloat(document.getElementById('sl-scale').value) / 100;
+  const dx     = parseFloat(document.getElementById('sl-dx').value);
+  const dy     = parseFloat(document.getElementById('sl-dy').value);
+  document.getElementById('vl-rotate').textContent = rotate.toFixed(1) + '°';
+  document.getElementById('vl-scale').textContent  = scale.toFixed(2) + '×';
+  document.getElementById('vl-dx').textContent     = dx.toFixed(0);
+  document.getElementById('vl-dy').textContent     = dy.toFixed(0);
   draw();
 }
 
 sel.addEventListener('change', () => selectCon(sel.value));
-['sl-scale','sl-dx','sl-dy'].forEach(id =>
+['sl-rotate','sl-scale','sl-dx','sl-dy'].forEach(id =>
   document.getElementById(id).addEventListener('input', onSlider));
 ['chk-photo','chk-diagram','chk-art'].forEach(id =>
   document.getElementById(id).addEventListener('change', draw));
 
 document.getElementById('btn-reset').addEventListener('click', () => {
-  if (currentCon) selectCon(currentCon.abbr);
+  resetSliders(); draw();
 });
 
 document.getElementById('btn-copy').addEventListener('click', () => {
-  if (!currentCon) return;
-  const tc = tweakedCon(currentCon);
-  const text = `ra: ${tc.ra.toFixed(1)}, dec: ${tc.dec.toFixed(1)}, fov: ${tc.fov.toFixed(1)}`;
-  navigator.clipboard.writeText(text).then(() => {
+  const con = currentCon;
+  if (!con) return;
+  const src = artSrc(con.abbr);
+  const art = ART[src];
+  if (!art) return;
+  const canvasPts = projectStarsTAN(art.anchors.map(a => [a.ra, a.dec, 0]), con, W, H);
+  const naturalDst = canvasPts.map(p => [p.x, p.y]);
+  const tweakedDst = applyTweak(naturalDst, getTweak());
+  const newAnchors = art.anchors.map((a, i) => {
+    const { ra, dec } = pixelToRADec(tweakedDst[i][0], tweakedDst[i][1], con.ra, con.dec, con.fov, W, H);
+    return { ra: parseFloat(ra.toFixed(6)), dec: parseFloat(dec.toFixed(6)), px: a.px, py: a.py };
+  });
+  const json = JSON.stringify(newAnchors);
+  navigator.clipboard.writeText(json).then(() => {
+    document.getElementById('output').textContent = json;
     const btn = document.getElementById('btn-copy');
     btn.textContent = 'Copied!';
-    setTimeout(() => { btn.textContent = 'Copy ra/dec/fov'; }, 1500);
+    setTimeout(() => { btn.textContent = 'Copy anchor JSON'; }, 1500);
   });
 });
 
-selectCon(sorted[0].abbr);
-sel.value = sorted[0].abbr;
+selectCon('Ant');
+sel.value = 'Ant';
 </script>
 </body>
 </html>
