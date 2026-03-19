@@ -323,6 +323,12 @@
     "color": "#ff9060",
     "r": 12
   },
+  "Eta Carinae Nebula": {
+    "ra": 161.25,
+    "dec": -59.87,
+    "color": "#ffe0c0",
+    "r": 30
+  },
   "Fomalhaut": {
     "ra": 344.41256999999996,
     "dec": -29.622236,
@@ -418,6 +424,12 @@
     "dec": 35.86,
     "color": "#ffe8b0",
     "r": 10
+  },
+  "Markeb": {
+    "ra": 140.53,
+    "dec": -55.01,
+    "color": "#90c8ff",
+    "r": 11
   },
   "Markab": {
     "ra": 346.19022,
@@ -682,6 +694,12 @@
     "dec": -11.161322,
     "color": "#90c8ff",
     "r": 15
+  },
+  "Southern Pleiades": {
+    "ra": 160.8,
+    "dec": -64.4,
+    "color": "#c8d8ff",
+    "r": 20
   },
   "Sualocin": {
     "ra": 309.909525,

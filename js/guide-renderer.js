@@ -163,8 +163,12 @@ function guideDrawAnnotation(step, catalog) {
 // shouldContinue: optional function returning false to abort mid-animation
 function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldContinue) {
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
-  const v1 = explore.P.slice(), f1 = explore.fov;
+  const v1 = explore.P.slice(), f1 = explore.fov, R1 = explore.R;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
+  const R2 = _gs && step.rotation != null ? step.rotation : _gs ? _gs.defaultR : R1;
+  let dR = R2 - R1;
+  if (dR > Math.PI) dR -= 2 * Math.PI;
+  if (dR < -Math.PI) dR += 2 * Math.PI;
   const dot = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
   const angle = Math.acos(dot), sinA = Math.sin(angle);
   const duration = Math.max(700, Math.min(2600, (angle / Math.PI) * 2600 + Math.abs(f2 - f1) * 10));
@@ -178,12 +182,14 @@ function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldCont
       explore.P = [fa*v1[0]+fb*v2[0], fa*v1[1]+fb*v2[1], fa*v1[2]+fb*v2[2]];
     }
     explore.fov = f1 + (f2 - f1) * t;
+    explore.R = R1 + dR * t;
     draw();
     drawAnnotation(raw < 1 ? prevStep : step);
     if (raw < 1) {
       explore.animFrame = requestAnimationFrame(tick);
     } else {
-      explore.P = v2; explore.fov = f2; explore.animFrame = null;
+      explore.P = v2; explore.fov = f2; explore.R = R2;
+      explore.animFrame = null;
       if (onDone) onDone();
     }
   }
@@ -283,6 +289,7 @@ function guideGoTo(i, immediate) {
     _guideApplySettings(step);
     explore.P   = raDecToVec(step.ra, step.dec);
     explore.fov = step.fov;
+    explore.R   = step.rotation != null ? step.rotation : _gs.defaultR;
     _guideDraw();
     guideDrawAnnotation(step, _gs.catalog);
     _gs.animating = false;
@@ -300,7 +307,8 @@ function guideGoTo(i, immediate) {
 
 function guideStart(steps, catalog, options = {}) {
   _gs = { steps, catalog, idx: -1, animating: false, diagVisible: false,
-          onLastNext: options.onLastNext || null, stepKey: options.stepKey || null };
+          onLastNext: options.onLastNext || null, stepKey: options.stepKey || null,
+          defaultR: explore.R };
   _guideAddListeners();
   const saved = _gs.stepKey ? parseInt(localStorage.getItem(_gs.stepKey), 10) : NaN;
   guideGoTo((!isNaN(saved) && saved >= 0 && saved < steps.length) ? saved : 0, true);

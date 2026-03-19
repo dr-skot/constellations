@@ -1002,7 +1002,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Carina — the Keel, the brightest section of the ancient ship Argo, containing Canopus, the second-brightest star in the entire sky.",
+        "caption": "Let's find Carina — the Keel, the brightest part of the ancient ship Argo Navis. It contains Canopus, the second-brightest star in the entire sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1011,14 +1011,14 @@
         "bounds": false
       },
       {
-        "title": "Follow south from Sirius to Canopus",
-        "caption": "Drop about 35° due south of Sirius — the brightest star in the sky — and you arrive at brilliant Canopus, the unmistakable anchor of Carina. From southern latitudes Canopus is impossible to miss; from below 30°N it just grazes the southern horizon. The constellation rides the southern Milky Way in spectacular star fields.",
-        "ra": 107,
-        "dec": -52,
+        "title": "Find Canopus",
+        "caption": "Sirius is the brightest star in the sky. Canopus is the second brightest — find it near Sirius on the opposite side from Orion.",
+        "ra": 100,
+        "dec": -28,
         "fov": 75,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -1030,31 +1030,47 @@
         ]
       },
       {
-        "title": "Four bright stars",
-        "caption": "Carina contains a remarkable collection of bright stars: Canopus (mag −0.7), Avior (mag 1.9, orange), Alsephina (mag 1.9, blue), and Aspidiske (mag 2.2, blue). These four, plus two bright stars of Vela, form the False Cross — an asterism sometimes mistaken for the true Southern Cross.",
-        "ra": 127,
-        "dec": -60,
+        "title": "The Ship Argo",
+        "caption": "Carina was once part of Argo Navis — the great ship of Jason and the Argonauts, and the largest of Ptolemy's original 48 constellations. Lacaille split it into three parts in 1755: Carina (the keel), Vela (the sails), and Puppis (the stern).",
+        "ra": 130,
+        "dec": -48,
         "fov": 55,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
+        "bounds": true,
+        "rotation": 3
+      },
+      {
+        "title": "The False Cross",
+        "caption": "Two of Carina's bright stars — orange Avior and Aspidiske — join two stars in neighbouring Vela to form the False Cross, a diamond sometimes mistaken for the Southern Cross.",
+        "ra": 133,
+        "dec": -58,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
         "bounds": false,
-        "notes": "highlight Alsephina; is the false cross really 6 stars?; Aspidiske label covers Avior",
         "highlight": [
-          {
-            "id": "Canopus"
-          },
           {
             "id": "Avior"
           },
           {
             "id": "Aspidiske"
+          },
+          {
+            "id": "Alsephina",
+            "label": ""
+          },
+          {
+            "id": "Markeb",
+            "label": ""
           }
         ]
       },
       {
         "title": "Eta Carinae Nebula",
-        "caption": "The Eta Carinae Nebula (NGC 3372) is one of the largest and most active star-forming regions in the Milky Way, visible to the naked eye as a bright patch. The hypergiant Eta Carinae within it is one of the most massive and unstable stars known — a candidate for a future supernova. The Southern Pleiades (IC 2602) nearby is one of the finest open clusters in the sky.",
+        "caption": "The Eta Carinae Nebula is one of the largest star-forming regions in the Milky Way, visible to the naked eye as a bright patch. The unstable hypergiant Eta Carinae within it may one day become a supernova. Nearby is the Southern Pleiades, one of the finest open clusters in the sky.",
         "ra": 161,
         "dec": -60,
         "fov": 28,
@@ -1062,13 +1078,13 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "notes": "circle the nebulae mentioned",
+        "art": true,
         "highlight": [
           {
-            "id": "Miaplacidus"
+            "id": "Eta Carinae Nebula"
           },
           {
-            "id": "Aspidiske"
+            "id": "Southern Pleiades"
           }
         ]
       }
