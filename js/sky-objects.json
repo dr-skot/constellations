@@ -256,10 +256,18 @@
     "arcmin": 420
   },
   "Coma Galaxy Cluster": {
-    "r": 8
+    "ra": 194.935,
+    "dec": 27.912,
+    "color": "#ffe8b0",
+    "r": 8,
+    "arcmin": 30
   },
   "Coma Star Cluster": {
-    "r": 14
+    "ra": 185.625,
+    "dec": 25.85,
+    "color": "#ffe8b0",
+    "r": 14,
+    "arcmin": 450
   },
   "Cor Caroli": {
     "ra": 194.007,
