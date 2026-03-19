@@ -248,6 +248,12 @@
     "color": "#c8d8ff",
     "r": 10
   },
+  "Circinus Galaxy": {
+    "ra": 213.291,
+    "dec": -65.339,
+    "color": "#ffe8b0",
+    "arcmin": 7
+  },
   "Coalsack": {
     "ra": 192.5,
     "dec": -62.5,

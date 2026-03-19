@@ -961,7 +961,7 @@
       },
       {
         "title": "Follow the Beak",
-        "caption": "Start at Altair in Aquila and follow the direction of the eagle's beak. ",
+        "caption": "Start at Altair in Aquila and follow the direction of the eagle's beak.",
         "ra": 316,
         "dec": -18,
         "fov": 70,
@@ -983,7 +983,7 @@
         "fov": 15,
         "photo": true,
         "diagram": false,
-        "names": true,
+        "names": false,
         "bounds": false,
         "highlight": [
           {
@@ -995,19 +995,17 @@
                 "id": "Algedi (α1)"
               }
             ],
-            "r": 15,
             "color": "#ffe8b0",
             "label": "Algedi"
           },
           {
-            "id": "Dabih",
-            "r": 15
+            "id": "Dabih"
           }
         ]
       },
       {
         "title": "The sea goat's outline",
-        "caption": "Deneb Algedi at the opposite tip is the brightest star — an eclipsing binary that dips every 24.5 hours. Neptune was first spotted in Capricornus in 1846.",
+        "caption": "Deneb Algedi at the tail is the brightest star — an eclipsing binary that dips every 24.5 hours. Neptune was first spotted in Capricornus in 1846.",
         "ra": 315,
         "dec": -20,
         "fov": 33,
@@ -1039,7 +1037,7 @@
       },
       {
         "title": "Find Canopus",
-        "caption": "Sirius is the brightest star in the sky. Canopus is the second brightest — find it near Sirius on the opposite side from Orion.",
+        "caption": "Sirius is the brightest star in the sky. Canopus is the second. Look well south of Sirius for another blazing star.",
         "ra": 100,
         "dec": -28,
         "fov": 75,
@@ -1104,8 +1102,8 @@
         "fov": 28,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
           {
             "id": "Eta Carinae Nebula"
@@ -1189,7 +1187,7 @@
       },
       {
         "title": "The Queen's vanity",
-        "caption": "Cassiopeia boasted she was more beautiful than the sea nymphs, angering Poseidon, which eventually placed her her daughter Andromeda in mortal peril. As punishment the Queen is forever bound to her throne, circling the pole and never setting.",
+        "caption": "Cassiopeia boasted she was more beautiful than the sea nymphs, angering Poseidon, which eventually placed her daughter Andromeda in mortal peril. As punishment the Queen is forever bound to her throne, circling the pole and never setting (in northern latitudes).",
         "ra": 14,
         "dec": 59,
         "fov": 33,
@@ -1510,7 +1508,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Circinus — the Drawing Compass, one of the smallest constellations in the sky, wedged just 4° from brilliant Alpha Centauri.",
+        "caption": "Let's find Circinus — the Drawing Compass, one of the smallest constellations in the sky, tucked right next to the Southern Pointers.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1519,57 +1517,52 @@
         "bounds": false
       },
       {
-        "title": "Next to Alpha Centauri",
-        "caption": "Circinus sits right beside Alpha Centauri — one of the two bright Southern Pointers. Locate Alpha Centauri (the brighter of the two pointer stars) and look about 4° south-southeast. Alpha Circini (mag 3.2) is easily found in that direction. Best seen April–June from the southern hemisphere; invisible north of about 20°N.",
+        "title": "Next to the Southern Pointers",
+        "caption": "Circinus sits right beside the Southern Pointers (so named because they point at the Southern Cross). Find Rigil Kentaurus — the brighter of the two — and Alpha Circini is the next noticeable star beside it.",
         "ra": 220,
         "dec": -61,
         "fov": 45,
         "photo": true,
         "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Cir"
-          },
-          {
-            "id": "α Cen"
-          }
-        ]
-      },
-      {
-        "title": "Alpha Circini",
-        "caption": "Alpha Circini (mag 3.2) is the only star worth noting — a blue-white star about 54 light-years away. Beta and Gamma Circini (both around mag 4.5) complete the tiny compass shape spanning just 5°. The entire constellation fits within a single binocular field.",
-        "ra": 224,
-        "dec": -63,
-        "fov": 18,
-        "photo": true,
-        "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "highlight gamma Cir",
         "highlight": [
           {
             "id": "α Cir"
           },
           {
-            "id": "β Cir"
+            "id": "Rigil Kentaurus"
           }
         ]
       },
       {
-        "title": "The Circinus Galaxy",
-        "caption": "Despite its obscurity, Circinus contains a remarkable deep-sky object: the Circinus Galaxy, one of the nearest Seyfert 2 galaxies at about 13 million light-years, heavily obscured by the Milky Way. It is one of the most active known galactic nuclei and is extensively studied in X-ray and radio wavelengths, though it requires a telescope to detect visually.",
+        "title": "The tiny compass",
+        "caption": "Three faint stars form the compass shape — so small the whole constellation fits in a single binocular field.",
         "ra": 224,
         "dec": -63,
         "fov": 12,
         "photo": true,
         "diagram": true,
         "names": true,
+        "bounds": false,
+        "art": true
+      },
+      {
+        "title": "The Circinus Galaxy",
+        "caption": "Circinus hides a remarkable object: the Circinus Galaxy, one of the nearest active galaxies at 13 million light-years. It's heavily obscured by the Milky Way's dust lanes and requires a telescope to spot.",
+        "ra": 224,
+        "dec": -63,
+        "fov": 20,
+        "photo": true,
+        "diagram": true,
+        "names": false,
         "bounds": true,
-        "art": true,
-        "notes": "highlight Circinus Galaxy",
-        "highlight": []
+        "art": false,
+        "highlight": [
+          {
+            "id": "Circinus Galaxy"
+          }
+        ]
       }
     ]
   },
@@ -1675,17 +1668,14 @@
       {
         "title": "The Coma Star Cluster",
         "caption": "The Coma Star Cluster (Melotte 111) contains about 40 stars spread across 5° of sky at a distance of 290 light-years. In binoculars it resolves into dozens of faint stars against a dark background — one of the sky's finest binocular clusters. Diadem (mag 4.3) marks the cluster's southern edge.",
-        "ra": 192,
+        "ra": 188,
         "dec": 24,
-        "fov": 30,
+        "fov": 22,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Diadem"
-          },
           {
             "id": "Coma Star Cluster"
           }
