@@ -924,7 +924,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Capricornus — the Sea Goat, a faint but distinctively shaped zodiacal constellation resembling an arrowhead or a bikini top in the southern autumn sky.",
+        "caption": "Let's find Capricornus — the Sea Goat, one of the oldest recognized constellations. Its stars are faint but form a distinctive arrowhead shape.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -933,8 +933,8 @@
         "bounds": false
       },
       {
-        "title": "Look south in autumn",
-        "caption": "In September and October evenings, Capricornus sits due south and relatively low in the sky from mid-northern latitudes. Start at Altair in Aquila and follow the direction of the eagle's beak. Capricornus lies in the relatively starless region between Sagittarius to the west and Aquarius to the east.",
+        "title": "Follow the Beak",
+        "caption": "Start at Altair in Aquila and follow the direction of the eagle's beak. ",
         "ra": 316,
         "dec": -18,
         "fov": 70,
@@ -950,26 +950,37 @@
       },
       {
         "title": "Find Algedi and Dabih",
-        "caption": "The western tip of the arrowhead is marked by Algedi and Dabih, a pair of stars about 1° apart that form an optical double visible to the naked eye. Dabih is a genuine multiple star system. Together they define the 'head' end of the sea goat's triangular shape.",
+        "caption": "The tip of the arrowhead nearest Aquila is marked by Algedi and Dabih. Look closely at Algedi — it's actually two unrelated stars that happen to line up, forming one of the easiest naked-eye doubles in the sky.",
         "ra": 307,
         "dec": -14,
-        "fov": 30,
+        "fov": 15,
         "photo": true,
-        "diagram": true,
+        "diagram": false,
         "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Algedi"
+            "capsule": [
+              {
+                "id": "Algedi"
+              },
+              {
+                "id": "Algedi (α1)"
+              }
+            ],
+            "r": 15,
+            "color": "#ffe8b0",
+            "label": "Algedi"
           },
           {
-            "id": "Dabih"
+            "id": "Dabih",
+            "r": 15
           }
         ]
       },
       {
         "title": "The sea goat's outline",
-        "caption": "Deneb Algedi at the eastern tip is the constellation's brightest star — an eclipsing binary that dims slightly every 24.5 hours. The full arrowhead outline contains about eight to nine stars visible to the naked eye. Neptune was discovered in Capricornus in 1846.",
+        "caption": "Deneb Algedi at the opposite tip is the brightest star — an eclipsing binary that dips every 24.5 hours. Neptune was first spotted in Capricornus in 1846.",
         "ra": 315,
         "dec": -20,
         "fov": 33,
@@ -979,9 +990,6 @@
         "bounds": true,
         "art": true,
         "highlight": [
-          {
-            "id": "Algedi"
-          },
           {
             "id": "Deneb Algedi"
           }

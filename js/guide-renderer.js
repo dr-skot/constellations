@@ -57,7 +57,7 @@ function guideDrawAnnotation(step, catalog) {
         for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
       };
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.shadowColor = color; ctx.shadowBlur = r * 0.7;
+      ctx.shadowColor = color; ctx.shadowBlur = r * 0.3;
       ctx.strokeStyle = color; ctx.lineWidth = r * 2;
       drawPath(); ctx.stroke();
       ctx.shadowBlur = 0;
