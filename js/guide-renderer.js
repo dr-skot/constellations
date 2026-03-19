@@ -36,6 +36,9 @@ function guideDrawAnnotation(step, catalog) {
   const scale = W / (src.offsetWidth || W / dpr);
   const fovS = 40 / explore.fov;  // FOV scale factor (same as drawStars)
   const margin = 10 * scale;     // fixed pixel margin around star
+  const objRadius = (obj) => obj.arcmin
+    ? (obj.arcmin / 60) / explore.fov * (W / 2)
+    : magToR(obj.mag ?? 6) * fovS * scale;
 
   if (step.foreground?.length) {
     drawForeground(ctx, step.foreground, explore.P, camUp, explore.fov, W, H);
@@ -76,8 +79,8 @@ function guideDrawAnnotation(step, catalog) {
         return (p && p.d > 0) ? p : null;
       });
       if (pts.some(p => !p)) continue;
-      const maxStarR = Math.max(...ends.map(e => magToR(e.mag ?? 6))) * fovS * scale;
-      const r     = maxStarR + margin;
+      const maxObjR = Math.max(...ends.map(objRadius));
+      const r     = maxObjR + margin;
       const color = raw.color || '#fff';
       const lw    = Math.max(1.5, 1.5 * scale);
       const drawPath = () => {
@@ -178,8 +181,7 @@ function guideDrawAnnotation(step, catalog) {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
       const p = pts[0];
       if (!p || p.d <= 0) continue;
-      const starR = magToR(h.mag ?? 6) * fovS * scale;
-      const r  = starR + margin;
+      const r  = objRadius(h) + margin;
       const fs = Math.round(13 * scale);
       ctx.strokeStyle = h.color;
       ctx.lineWidth   = Math.max(1.5, 1.5 * scale);
