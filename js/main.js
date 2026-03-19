@@ -289,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     explore.drag = null;
     ew.classList.remove('dragging');
     saveExploreState();
+    drawExplore();
   }
 
   ec.addEventListener('contextmenu', e => e.preventDefault());
@@ -352,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     explore.fov = Math.max(10, Math.min(110, explore.fov * factor));
     drawExplore();
     clearTimeout(exploreWheelTimer);
-    exploreWheelTimer = setTimeout(saveExploreState, 300);
+    exploreWheelTimer = setTimeout(() => { saveExploreState(); drawExplore(); }, 300);
   }, { passive: false });
 
   document.addEventListener('keydown', e => {

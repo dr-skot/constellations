@@ -5,6 +5,67 @@ const explorePhotoCache = {};
 let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null, animFrame: null };
 let exploreDragMoved = false;
 
+// Throttled constellation name placement — returns {ra, dec} for label position.
+// Caches results and only recomputes after `interval` ms.
+const _conNameCache = {};  // abbr -> {ra, dec, time}
+const _conNameInterval = 500;  // ms between recomputations
+let _conNameRefreshTimer = null;
+function _clearConNameCache() {
+  for (const k in _conNameCache) delete _conNameCache[k];
+  if (_conNameRefreshTimer) { clearTimeout(_conNameRefreshTimer); _conNameRefreshTimer = null; }
+}
+function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBoundEdges, showBounds) {
+  const now = performance.now();
+  const cached = _conNameCache[con.abbr];
+  if (cached && now - cached.time < _conNameInterval) {
+    // Schedule a redraw for when cache expires, in case nothing else triggers one
+    if (!_conNameRefreshTimer) {
+      const remaining = _conNameInterval - (now - cached.time);
+      _conNameRefreshTimer = setTimeout(() => { _conNameRefreshTimer = null; drawExplore(); }, remaining);
+    }
+    return cached;
+  }
+
+  const cp = projectStarsCamera([[con.ra, con.dec, 99]], camP, camUp, fov, W, H)[0];
+  if (!cp || cp.d <= 0) return null;
+
+  const name = con.name;
+  const tw = ctx.measureText(name).width;
+  const hw = tw / 2 + 2, hh = fs * 0.65;
+  const pRings = projBounds[con.abbr];
+  const polyPts = pRings ? pRings.flatMap(pts => pts.filter(p => p.d > 0)) : null;
+  const canPIP = polyPts && polyPts.length >= 3;
+  const valid = (tx, ty) => {
+    if (tx < hw || tx > W - hw || ty < hh || ty > H - hh) return false;
+    const x1 = tx - hw, x2 = tx + hw, y1 = ty - hh, y2 = ty + hh;
+    if (canPIP) {
+      for (const [px, py] of [[tx,ty],[x1,y1],[x2,y1],[x1,y2],[x2,y2]])
+        if (!pointInPoly2D(px, py, polyPts)) return false;
+    }
+    if (showBounds && allBoundEdges.length && edgesHitRect(allBoundEdges, x1, y1, x2, y2)) return false;
+    return true;
+  };
+  let lx = cp.x, ly = cp.y;
+  if (!valid(lx, ly)) {
+    let found = false;
+    const step = Math.max(hw, fs);
+    for (let r = step; r < W * 0.7 && !found; r += step) {
+      for (let ai = 0; ai < 16 && !found; ai++) {
+        const tx = cp.x + Math.cos(ai * Math.PI / 8) * r;
+        const ty = cp.y + Math.sin(ai * Math.PI / 8) * r;
+        if (valid(tx, ty)) { lx = tx; ly = ty; found = true; }
+      }
+    }
+    if (!found) return null;
+  }
+  const up = cameraReverse(camP, explore.R, [0, 1, 0]);
+  const vec = pixelToVec(lx, ly, camP, up, fov, W, H);
+  const rd = vecToRaDec(vec);
+  const result = { ra: rd.ra, dec: rd.dec, time: now };
+  _conNameCache[con.abbr] = result;
+  return result;
+}
+
 function animateGoTo(targetRa, targetDec) {
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
   const v1 = explore.P.slice();
@@ -29,6 +90,7 @@ function animateGoTo(targetRa, targetDec) {
     } else {
       explore.P = v2;
       explore.animFrame = null;
+      _clearConNameCache();
       drawExplore();
       saveExploreState();
     }
@@ -37,6 +99,7 @@ function animateGoTo(targetRa, targetDec) {
 }
 
 function saveExploreState() {
+  _clearConNameCache();
   const pos = vecToRaDec(explore.P);
   sessionStorage.setItem('explore-state',
     JSON.stringify({ ra: pos.ra, dec: pos.dec, fov: explore.fov, R: explore.R }));
@@ -399,7 +462,7 @@ function drawExplore() {
     }
   }
 
-  // Constellation name labels — placed inside boundary polygon, avoiding boundary edges.
+  // Constellation name labels — placement is throttled and cached in RA/dec.
   if (showConNames) {
     const fs = Math.max(9, Math.round(W * 0.02));
     ctx.save();
@@ -408,38 +471,10 @@ function drawExplore() {
     ctx.textBaseline = 'middle';
     ctx.fillStyle = 'rgba(160,185,255,0.6)';
     for (const con of visible) {
-      const cp = projectStarsCamera([[con.ra, con.dec, 99]], camP, camUp, explore.fov, W, H)[0];
-      if (!cp || cp.d <= 0) continue;
-      const name = con.name;
-      const tw = ctx.measureText(name).width;
-      const hw = tw / 2 + 2, hh = fs * 0.65;
-      const pRings = projBounds[con.abbr];
-      const polyPts = pRings ? pRings.flatMap(pts => pts.filter(p => p.d > 0)) : null;
-      const canPIP = polyPts && polyPts.length >= 3;
-      const valid = (tx, ty) => {
-        if (tx < hw || tx > W - hw || ty < hh || ty > H - hh) return false;
-        const x1 = tx - hw, x2 = tx + hw, y1 = ty - hh, y2 = ty + hh;
-        if (canPIP) {
-          for (const [px, py] of [[tx,ty],[x1,y1],[x2,y1],[x1,y2],[x2,y2]])
-            if (!pointInPoly2D(px, py, polyPts)) return false;
-        }
-        if (showBounds && allBoundEdges.length && edgesHitRect(allBoundEdges, x1, y1, x2, y2)) return false;
-        return true;
-      };
-      let lx = cp.x, ly = cp.y;
-      if (!valid(lx, ly)) {
-        let found = false;
-        const step = Math.max(hw, fs);
-        for (let r = step; r < W * 0.7 && !found; r += step) {
-          for (let ai = 0; ai < 16 && !found; ai++) {
-            const tx = cp.x + Math.cos(ai * Math.PI / 8) * r;
-            const ty = cp.y + Math.sin(ai * Math.PI / 8) * r;
-            if (valid(tx, ty)) { lx = tx; ly = ty; found = true; }
-          }
-        }
-        if (!found) continue;
-      }
-      ctx.fillText(name, lx, ly);
+      const pos = conNamePosition(con, ctx, fs, camP, camUp, explore.fov, W, H, projBounds, allBoundEdges, showBounds);
+      if (!pos) continue;
+      const p = projectStarsCamera([[pos.ra, pos.dec, 99]], camP, camUp, explore.fov, W, H)[0];
+      if (p && p.d > 0) ctx.fillText(con.name, p.x, p.y);
     }
     ctx.restore();
   }
