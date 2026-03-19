@@ -1066,6 +1066,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "rotation": 3
       },
       {
@@ -1105,7 +1106,6 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
         "highlight": [
           {
             "id": "Eta Carinae Nebula"
@@ -1450,11 +1450,10 @@
     ]
   },
   "Chamaeleon": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Chamaeleon — the Chameleon, a small faint far-southern constellation near the south celestial pole, south of Carina.",
+        "caption": "Let's find Chamaeleon — the Chameleon, a small faint constellation near the south celestial pole.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1463,39 +1462,38 @@
         "bounds": false
       },
       {
-        "title": "South of the False Cross",
-        "caption": "Chamaeleon lies between Carina to the north and Octans (the south pole) to the south, about 40° from the south celestial pole. Identify the False Cross in Carina/Vela, then sweep about 30° due south into increasingly sparse territory. It is circumpolar from latitudes south of 20°S and invisible north of 20°N.",
-        "ra": 160,
+        "title": "Between two landmarks",
+        "caption": "Chamaeleon lies roughly halfway between the Large Magellanic Cloud and Rigil Kentaurus, in a sparse region with few bright stars.",
+        "ra": 150,
         "dec": -75,
         "fov": 65,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "highlight the false cross"
+        "highlight": [
+          {
+            "id": "LMC"
+          },
+          {
+            "id": "Rigil Kentaurus"
+          }
+        ]
       },
       {
         "title": "A loose kite of faint stars",
-        "caption": "Alpha Chamaeleontis (mag 4.1) is a white giant about 63 light-years away. The four brightest stars (magnitudes 4.1–4.5) form a loose kite or box shape spanning about 10°. None is particularly conspicuous — dark skies are needed to trace the pattern.",
+        "caption": "Four faint stars form a loose kite shape. Dark skies are needed to trace the pattern — none of the stars stands out on its own.",
         "ra": 160,
         "dec": -79,
         "fov": 30,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Cha"
-          },
-          {
-            "id": "β Cha"
-          }
-        ]
+        "bounds": false
       },
       {
-        "title": "A stellar nursery",
-        "caption": "Chamaeleon was introduced by the Dutch navigators Keyser and de Houtman around 1598. The constellation hosts the Chamaeleon Cloud complex, a star-forming region about 520 light-years away and one of the closest active stellar nurseries to Earth — heavily studied by infrared astronomers hunting newly-formed protostars.",
+        "title": "The Chameleon",
+        "caption": "Chamaeleon was introduced by the Dutch navigators Keyser and de Houtman around 1598. It hosts the Chamaeleon Cloud, one of the closest active star-forming regions to Earth.",
         "ra": 160,
         "dec": -79,
         "fov": 20,
@@ -1503,9 +1501,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
-        "notes": "highlight the nursery",
-        "highlight": []
+        "art": true
       }
     ]
   },
