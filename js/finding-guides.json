@@ -12,8 +12,8 @@
         "bounds": false
       },
       {
-        "title": "Look high in the autumn sky",
-        "caption": "In October and November, Andromeda rides high overhead for northern observers. The Great Square of Pegasus is the key landmark — Andromeda attaches to the northeast corner of the Square at the star Alpheratz. From southern latitudes below about 40°S the constellation is not well seen.",
+        "title": "Follow the W to the Great Square",
+        "caption": "The third zag of Cassiopeia's W points to Andromeda's brightest star, Alpheratz, at one corner of the Great Square of Pegasus.",
         "ra": 15,
         "dec": 35,
         "fov": 80,
@@ -24,12 +24,20 @@
         "highlight": [
           {
             "id": "Alpheratz"
+          },
+          {
+            "id": "Schedar",
+            "label": ""
+          },
+          {
+            "id": "Cih",
+            "label": ""
           }
         ]
       },
       {
         "title": "Three stars in a chain",
-        "caption": "Andromeda's backbone is a curving chain of three equally bright stars: Alpheratz, Mirach, and Almach. Almach is a beautiful colour-contrast double — orange and blue-green — easily split in a small telescope.",
+        "caption": "Andromeda's backbone is a curving chain of three bright stars: Alpheratz, Mirach, and Almach. They stretch away from the Great Square in a gentle arc.",
         "ra": 16,
         "dec": 36,
         "fov": 52,
@@ -37,7 +45,6 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
         "highlight": [
           {
             "id": "Alpheratz"
@@ -51,8 +58,28 @@
         ]
       },
       {
+        "title": "The myth of Andromeda",
+        "caption": "Andromeda is at the center of a six-constellation mythological group. Her father, King Cepheus, offers her as a sacrifice to the sea monster Cetus, hoping to appease a god offended by her mother Cassiopeia's vanity. She's rescued in the nick of time by Perseus, who rides to her on the winged horse Pegasus.",
+        "ra": 8,
+        "dec": 30,
+        "fov": 90,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "art": true,
+        "foreground": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ]
+      },
+      {
         "title": "The Andromeda Galaxy",
-        "caption": "The Andromeda Galaxy is the farthest object most people ever see with unaided eyes — 2.5 million light-years away. To find it, hop two stars north from Mirach. Under dark skies it appears as a large fuzzy oval, several times the diameter of the full Moon. It contains around a trillion stars and is approaching us at 110 km/s, set to merge with the Milky Way in about 4.5 billion years.",
+        "caption": "The Andromeda Galaxy is the farthest object most people will ever see with unaided eyes—2.5 million light-years. Look for a fuzzy oval near Mirach—under dark skies it appears several times wider than the full Moon.",
         "ra": 13,
         "dec": 38,
         "fov": 32,
