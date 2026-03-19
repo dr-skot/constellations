@@ -1358,11 +1358,10 @@
     ]
   },
   "Cetus": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cetus — the Whale, one of the largest constellations in the sky, sprawling across the autumn equatorial sky between Pisces and Eridanus.",
+        "caption": "Let's find Cetus — the sea monster from the Andromeda myth, one of the largest constellations in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1371,16 +1370,15 @@
         "bounds": false
       },
       {
-        "title": "South of Pisces, west of Eridanus",
-        "caption": "Cetus has two distinct parts: the head (north) marked by Menkar (Alpha Ceti, mag 2.5), and the body (south) marked by Diphda (Beta Ceti, mag 2.0), the constellation's brightest star. Find Diphda about 35° south of Alpheratz (the top-left corner of Pegasus's Great Square). The two groups connect via a curving chain of faint stars.",
-        "ra": 25,
+        "title": "Below the Great Square",
+        "caption": "Start at the Great Square of Pegasus and look below it. Diphda, the brightest star in Cetus, stands out in an otherwise sparse region.",
+        "ra": 15,
         "dec": 5,
         "fov": 80,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "text is redundant with next slide; this should just talk about locating; save stars for next",
         "highlight": [
           {
             "id": "Alpheratz"
@@ -1392,14 +1390,15 @@
       },
       {
         "title": "Diphda and Menkar",
-        "caption": "Diphda (Beta Ceti, mag 2.0) is the brightest star, an orange giant about 96 light-years away. Menkar (Alpha Ceti, mag 2.5) is a red giant marking the monster's open jaw. Between them stretches a chain of 4th-magnitude stars — recognizable from dark sites but hard to trace under suburban skies.",
+        "caption": "Diphda marks the tail and Menkar marks the jaw. A curving chain of faint stars connects them, recognizable from dark sites but hard to trace under bright skies.",
         "ra": 27,
         "dec": -6,
         "fov": 50,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": true,
+        "art": true,
         "highlight": [
           {
             "id": "Diphda"
@@ -1410,17 +1409,43 @@
         ]
       },
       {
-        "title": "Mira the Wonderful",
-        "caption": "Mira (Omicron Ceti) is one of the sky's most famous variable stars, pulsating between magnitude 2 and magnitude 10 over about 332 days. At maximum it outshines every other star in Cetus; at minimum it vanishes without a telescope. Tau Ceti (magnitude 3.5, just 12 light-years away) is one of the nearest Sun-like stars and a prime target in the search for exoplanets.",
-        "ra": 34,
-        "dec": -3,
-        "fov": 25,
+        "title": "The myth of Andromeda",
+        "caption": "Cetus is the sea monster sent by Poseidon to devour Andromeda — part of the largest mythological group in the sky, spanning six neighbouring constellations.",
+        "ra": 8,
+        "dec": 30,
+        "fov": 90,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
-        "notes": "highlight the stars mentioned",
-        "highlight": []
+        "art": true,
+        "foreground": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ]
+      },
+      {
+        "title": "Mira the Wonderful",
+        "caption": "Mira is one of the sky's most famous variable stars, pulsating over about 332 days. At maximum it outshines every other star in Cetus; at minimum it vanishes entirely. Tau Ceti, just 12 light-years away, is one of the nearest Sun-like stars.",
+        "ra": 30,
+        "dec": -8,
+        "fov": 35,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "highlight": [
+          {
+            "id": "Mira"
+          },
+          {
+            "id": "Tau Ceti"
+          }
+        ]
       }
     ]
   },
