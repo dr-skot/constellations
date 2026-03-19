@@ -189,22 +189,23 @@ function drawExplore() {
   const canvas = document.getElementById('explore-canvas');
   if (!canvas) return;
   const wrap = document.getElementById('explore-wrap');
+  const glCanvas = document.getElementById('explore-gl-canvas');
   const dpr = window.devicePixelRatio || 1;
   const sz = wrap.offsetWidth;
-  const need = Math.round(sz * dpr);
-  if (!wrap._sized) {
+  if (sz > 0 && (!wrap._sized || (glCanvas && !glCanvas._sized))) {
+    const w = Math.round(sz * dpr);
+    const h = Math.round(wrap.offsetHeight * dpr);
+    const cssW = Math.round(sz) + 'px';
+    const cssH = wrap.offsetHeight + 'px';
+    canvas.width = w; canvas.height = h;
+    canvas.style.width = cssW; canvas.style.height = cssH;
     wrap._sized = true;
-    canvas.width = need; canvas.height = Math.round(wrap.offsetHeight * dpr);
-    const cssPx = Math.round(sz);
-    canvas.style.width  = cssPx + 'px';
-    canvas.style.height = wrap.offsetHeight + 'px';
-  }
-  const glCanvas = document.getElementById('explore-gl-canvas');
-  if (glCanvas && !glCanvas._sized) {
-    glCanvas._sized = true;
-    glCanvas.width = canvas.width; glCanvas.height = canvas.height;
-    glCanvas.style.width  = canvas.style.width;
-    glCanvas.style.height = canvas.style.height;
+    if (glCanvas) {
+      glCanvas.width = w; glCanvas.height = h;
+      glCanvas.style.width = cssW; glCanvas.style.height = cssH;
+      glCanvas._sized = true;
+    }
+    console.log('canvas sized:', w, h, 'from wrap:', sz, wrap.offsetHeight, 'dpr:', dpr);
   }
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
