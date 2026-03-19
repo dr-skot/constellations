@@ -1178,7 +1178,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Centaurus — the Centaur, a spectacular southern constellation containing the two nearest star systems to Earth: Alpha Centauri and Proxima Centauri.",
+        "caption": "Let's find Centaurus — the Centaur, a large southern constellation anchored by two of the brightest stars in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1187,28 +1187,34 @@
         "bounds": false
       },
       {
-        "title": "Look south in the southern hemisphere",
-        "caption": "Centaurus is best seen from the southern hemisphere in April and May, when it culminates nearly overhead from latitudes around -35°. From northern latitudes above 25°N, only the northern edge is visible. Look for two unmistakably brilliant stars, Alpha and Beta Centauri, low in the south from subtropical northern locations.",
-        "ra": 202,
-        "dec": -48,
-        "fov": 75,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "notes": "circle the stars?"
-      },
-      {
         "title": "The Southern Pointers",
-        "caption": "Rigil Kentaurus (Alpha Centauri) is the third-brightest star in the night sky and the nearest star system to the Sun at 4.24 light-years — it is actually a triple system including dim Proxima Centauri, the closest individual star. Hadar is 4° away. Together they are called the Southern Pointers because they point directly to the Southern Cross (Crux).",
-        "ra": 213,
-        "dec": -57,
-        "fov": 30,
+        "caption": "Two brilliant stars close together — Rigil Kentaurus and Hadar — are the Centaur's front hooves. They're called the Southern Pointers because a line through them leads straight to the Southern Cross.",
+        "ra": 200,
+        "dec": -58,
+        "fov": 45,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "label collision",
+        "highlight": [
+          {
+            "id": "Rigil Kentaurus"
+          },
+          {
+            "id": "Hadar"
+          }
+        ]
+      },
+      {
+        "title": "Nearest star",
+        "caption": "Rigil Kentaurus, also popularly known as Alpha Centauri, is the nearest star system to the Sun and the third-brightest star in the night sky. Together with Hadar, the pair is unmistakable.",
+        "ra": 213,
+        "dec": -59,
+        "fov": 20,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
         "highlight": [
           {
             "id": "Rigil Kentaurus"
@@ -1220,7 +1226,7 @@
       },
       {
         "title": "The full centaur",
-        "caption": "The Centaur's body sprawls over a large area north of Alpha and Beta Centauri, with Menkent marking the head region. The constellation is the ninth-largest in the sky. Omega Centauri (NGC 5139), near the northern boundary, is the largest and most massive globular cluster in the Milky Way — nearly 18 million solar masses in a sphere 150 light-years across, visible to the naked eye as a fuzzy star.",
+        "caption": "Menkent marks the Centaur's head, far from the bright pointers at the hooves. Omega Centauri, the sky's brightest globular cluster, is visible as a fuzzy star near the boundary.",
         "ra": 201,
         "dec": -48,
         "fov": 55,
@@ -1228,13 +1234,8 @@
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
-          {
-            "id": "Rigil Kentaurus"
-          },
-          {
-            "id": "Hadar"
-          },
           {
             "id": "Menkent"
           },
