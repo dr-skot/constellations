@@ -29,14 +29,40 @@ function guideDrawAnnotation(step, catalog) {
   ann.style.height = src.style.height;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
-  if (!step?.highlight?.length) return;
+  if (!step?.highlight?.length && !step?.foreground?.length) return;
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
   const scale = W / (src.offsetWidth || W / dpr);
 
+  if (step.foreground?.length) {
+    drawForeground(ctx, step.foreground, explore.P, camUp, explore.fov, W, H);
+    if (step.art) {
+      for (const abbr of step.foreground) {
+        const con = C.find(c => c.abbr === abbr);
+        if (!con) continue;
+        const art = ART[con.abbr];
+        if (!art || art.anchors.length < 3) continue;
+        if (!artCache[con.abbr]) {
+          artCache[con.abbr] = 'loading';
+          const img = new Image();
+          img.onload = () => {
+            artCache[con.abbr] = img;
+            if (_gs) guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
+          };
+          img.onerror = () => { artCache[con.abbr] = 'error'; };
+          img.src = art.url;
+          continue;
+        }
+        const img = artCache[con.abbr];
+        if (!(img instanceof HTMLImageElement)) continue;
+        drawExploreArtLayer(ctx, con, explore.P, camUp, explore.fov, W, H);
+      }
+    }
+  }
+
   ctx.save();
-  for (const raw of step.highlight) {
+  for (const raw of (step.highlight || [])) {
     if (raw.capsule) {
       const ends = raw.capsule.map(e => {
         const obj = e.id ? (catalog && catalog[e.id]) : e;
@@ -215,7 +241,7 @@ function _guideApplySettings(step) {
   document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
   document.getElementById('chk-ex-diagram'   ).checked = !!step.diagram;
   document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
-  document.getElementById('chk-ex-art'       ).checked = !!step.art;
+  document.getElementById('chk-ex-art'       ).checked = !!step.art && !step.foreground?.length;
   document.getElementById('chk-ex-starlabels').checked = false;
   document.getElementById('chk-ex-connames'  ).checked = !!step.names;
   document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
