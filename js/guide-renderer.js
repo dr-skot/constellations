@@ -177,6 +177,29 @@ function guideDrawAnnotation(step, catalog) {
         ctx.strokeText(h.label, lx, ly);
         ctx.fillStyle = h.color; ctx.fillText(h.label, lx, ly);
       }
+    } else if (h.crosshair) {
+      const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
+      const p = pts[0];
+      if (!p || p.d <= 0) continue;
+      const celDash = 6, celGap = 5;
+      const arm = 0.5 * (3 * celDash + 2 * celGap);
+      const fs = Math.round(13 * scale);
+      ctx.strokeStyle = 'rgba(220,180,80,0.55)';
+      ctx.lineWidth = Math.max(1, W / 640);
+      ctx.setLineDash([celDash, celGap]);
+      ctx.beginPath();
+      ctx.moveTo(p.x - arm, p.y); ctx.lineTo(p.x + arm, p.y);
+      ctx.moveTo(p.x, p.y - arm); ctx.lineTo(p.x, p.y + arm);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if (h.label) {
+        ctx.font = `bold ${fs}px system-ui, sans-serif`;
+        ctx.textBaseline = 'middle';
+        const lx = p.x + arm + 6 * scale, ly = p.y;
+        ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
+        ctx.strokeText(h.label, lx, ly);
+        ctx.fillStyle = 'rgba(220,180,80,0.55)'; ctx.fillText(h.label, lx, ly);
+      }
     } else {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
       const p = pts[0];

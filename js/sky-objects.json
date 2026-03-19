@@ -254,6 +254,11 @@
     "color": "#ffe8b0",
     "arcmin": 7
   },
+  "North Galactic Pole": {
+    "ra": 192.86,
+    "dec": 27.13,
+    "color": "#ffffff"
+  },
   "Coalsack": {
     "ra": 192.5,
     "dec": -62.5,

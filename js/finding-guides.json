@@ -1651,7 +1651,7 @@
       },
       {
         "title": "Between Leo and Boötes",
-        "caption": "Coma Berenices lies between Leo to the southwest and Boötes to the east. From Denebola (the tail of Leo), move about 15° north — the faint but wide scatter of Coma's stars will be there. From a truly dark site the Coma Star Cluster looks like a large, loose, fuzzy glow spanning several degrees.",
+        "caption": "Coma Berenices lies between Leo and Boötes. Look past Denebola, Leo's tail, for a large, loose, fuzzy glow. That's the Coma Star Cluster, 40 stars at 290 light-years, one of the sky's finest binocular clusters.",
         "ra": 196,
         "dec": 27,
         "fov": 60,
@@ -1662,20 +1662,7 @@
         "highlight": [
           {
             "id": "Denebola"
-          }
-        ]
-      },
-      {
-        "title": "The Coma Star Cluster",
-        "caption": "The Coma Star Cluster (Melotte 111) contains about 40 stars spread across 5° of sky at a distance of 290 light-years. In binoculars it resolves into dozens of faint stars against a dark background — one of the sky's finest binocular clusters. Diadem (mag 4.3) marks the cluster's southern edge.",
-        "ra": 188,
-        "dec": 24,
-        "fov": 22,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
+          },
           {
             "id": "Coma Star Cluster"
           }
@@ -1683,7 +1670,7 @@
       },
       {
         "title": "Galaxy country",
-        "caption": "Behind the nearby star cluster lies the Coma Galaxy Cluster (Abell 1656), over a thousand galaxies some 330 million light-years away. The entire region around the North Galactic Pole falls in Coma Berenices, which is why the area is so extraordinarily rich in background galaxies for telescope observers. The Virgo Cluster's northern extent also spills into the southern edge of this constellation.",
+        "caption": "Nearby lies the Coma Galaxy Cluster, over a thousand galaxies some 330 million light-years away. The North Galactic Pole falls in Coma Berenices, making this region extraordinarily rich in background galaxies for telescope observers.",
         "ra": 192,
         "dec": 24,
         "fov": 20,
@@ -1691,13 +1678,27 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
-        "notes": "explain the hair",
         "highlight": [
           {
             "id": "Coma Galaxy Cluster"
+          },
+          {
+            "id": "North Galactic Pole",
+            "crosshair": true
           }
         ]
+      },
+      {
+        "title": "Berenice's Hair",
+        "caption": "Queen Berenice II of Egypt pledged to cut off her famous long hair if her husband returned safely from war. He did, she did, and when the shorn hair vanished from the temple overnight, the court astronomer reported that the gods had placed it among the stars. It's the only modern constellation named after a real person.",
+        "ra": 190,
+        "dec": 24,
+        "fov": 22,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "art": true
       }
     ]
   },
