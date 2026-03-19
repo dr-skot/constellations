@@ -1094,7 +1094,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cassiopeia — a brilliant W-shape high in the northern sky, circumpolar and visible year-round from most northern latitudes.",
+        "caption": "Let's find Cassiopeia — the Queen, one of the most recognizable patterns in the sky. Five bright stars form an unmistakable W shape.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1103,19 +1103,24 @@
         "bounds": false
       },
       {
-        "title": "Look north",
-        "caption": "Turn to the northern sky. Cassiopeia wheels around the celestial pole without ever setting. When the Big Dipper is low, Cassiopeia is high, and vice versa — they sit on opposite sides of the pole. In autumn evenings it passes nearly overhead.",
+        "title": "Across from the Big Dipper",
+        "caption": "Cassiopeia and the Big Dipper sit on opposite sides of Polaris. Find the W on the far side of the pole from the Dipper's handle.",
         "ra": 13,
-        "dec": 60,
+        "dec": 90,
         "fov": 80,
         "photo": true,
         "diagram": true,
-        "names": false,
-        "bounds": false
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          {
+            "id": "Polaris"
+          }
+        ]
       },
       {
-        "title": "The W shape",
-        "caption": "Five second-magnitude stars form an unmistakable W — or M, depending on its orientation as it circles the pole. No other pattern in the northern sky has this zigzag. Schedar (orange) and Caph anchor the outer ends; Cih sits at the sharp central peak.",
+        "title": "The W",
+        "caption": "Schedar and Caph mark one end of the W, with Cih at the sharp central peak. The W — or M, depending on its orientation — is unlike any other pattern near the pole.",
         "ra": 14,
         "dec": 59,
         "fov": 28,
@@ -1136,17 +1141,36 @@
         ]
       },
       {
-        "title": "Rich in the Milky Way",
-        "caption": "Cassiopeia sits embedded in the brightest part of the northern Milky Way. The W is an excellent guide to this star-rich region — sweep it with binoculars for open clusters and nebulae. It is one of the most rewarding fields in the northern sky.",
-        "ra": 14,
-        "dec": 59,
-        "fov": 55,
+        "title": "The myth of Andromeda",
+        "caption": "Cassiopeia is part of the largest mythological group in the sky — six neighbouring constellations tell the story of Andromeda's rescue from a sea monster.",
+        "ra": 8,
+        "dec": 30,
+        "fov": 90,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": true,
         "art": true,
-        "notes": "closer? show specific galaxies?"
+        "foreground": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ]
+      },
+      {
+        "title": "The Queen's vanity",
+        "caption": "Cassiopeia boasted she was more beautiful than the sea nymphs, angering Poseidon, which eventually placed her her daughter Andromeda in mortal peril. As punishment the Queen is forever bound to her throne, circling the pole and never setting.",
+        "ra": 14,
+        "dec": 59,
+        "fov": 33,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "art": true
       }
     ]
   },
@@ -1226,7 +1250,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cepheus — the King, a circumpolar northern constellation shaped like a child's drawing of a house, sitting between Cassiopeia and Polaris.",
+        "caption": "Let's find Cepheus — the King, shaped like a child's drawing of a house. Look for it between Cassiopeia and Polaris.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1235,27 +1259,31 @@
         "bounds": false
       },
       {
-        "title": "Look near the north celestial pole",
-        "caption": "Cepheus is circumpolar for observers north of about 35°N and is best positioned on autumn evenings when it rides high overhead near the zenith. Find Cassiopeia's distinctive W shape first, then look on its northern side — Cepheus forms a blunt pentagon between Cassiopeia and Polaris.",
+        "title": "Between Cassiopeia and Polaris",
+        "caption": "Find Cassiopeia's W first. Cepheus is the blunt pentagon on the Polaris side of the W.",
         "ra": 335,
         "dec": 68,
         "fov": 65,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {
+            "id": "Polaris"
+          }
+        ]
       },
       {
-        "title": "The house-shaped asterism",
-        "caption": "The bright star Alderamin marks one corner of the house's base. The triangular 'roof' points north toward Polaris. Although no star stands out dramatically, the house shape — once learned — is easy to recognize in a circumpolar sweep.",
+        "title": "The house shape",
+        "caption": "Alderamin marks one corner of the base. The triangular roof points toward Polaris. None of the stars are especially bright, but the house shape is easy to spot once you know where to look.",
         "ra": 332,
         "dec": 68,
         "fov": 35,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "notes": "show Polaris",
+        "bounds": true,
         "highlight": [
           {
             "id": "Alderamin"
@@ -1263,24 +1291,39 @@
         ]
       },
       {
-        "title": "Garnet Star and Delta Cephei",
-        "caption": "Mu Cephei, the Garnet Star (not in the main line set), is one of the largest and reddest stars visible to the naked eye — a red supergiant. Delta Cephei is the prototype Cepheid variable, pulsating with a 5.4-day period that is perfectly predictable. Astronomers use Cepheids like Delta Cephei as 'standard candles' to measure cosmic distances.",
-        "ra": 333,
-        "dec": 67,
+        "title": "The myth of Andromeda",
+        "caption": "Cepheus is part of the largest mythological group in the sky — six neighbouring constellations tell the story of Andromeda's rescue from a sea monster.",
+        "ra": 8,
+        "dec": 30,
+        "fov": 90,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": true,
+        "art": true,
+        "foreground": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ]
+      },
+      {
+        "title": "The reluctant King",
+        "caption": "Cepheus is Cassiopeia's husband — the king who reluctantly agreed to sacrifice his daughter Andromeda to appease Poseidon's sea monster. The Garnet Star on the base of the house is one of the largest and reddest stars visible to the naked eye.",
+        "ra": 332,
+        "dec": 68,
         "fov": 35,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
-        "notes": "highlight other stars mentioned",
+        "art": true,
         "highlight": [
           {
-            "id": "ζ Cep",
-            "label": "Zeta Cep"
-          },
-          {
-            "id": "δ Cep",
-            "label": "Delta Cep"
+            "id": "Garnet Star"
           }
         ]
       }

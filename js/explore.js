@@ -56,6 +56,30 @@ function exploreVisibleCons() {
   );
 }
 
+function drawForeground(ctx, abbrs, camP, camUp, fov, W, H) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,0,10,0.75)';
+  ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = 'rgba(0,0,0,1)';
+  for (const abbr of abbrs) {
+    if (!BOUNDS[abbr]) continue;
+    for (const ring of BOUNDS[abbr]) {
+      const pts = projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, fov, W, H);
+      ctx.beginPath();
+      let started = false;
+      for (const p of pts) {
+        if (p.d <= 0) { started = false; continue; }
+        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.fill();
+    }
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.restore();
+}
+
 function loadExplorePhoto(con) {
   if (explorePhotoCache[con.abbr]) return;
   explorePhotoCache[con.abbr] = 'loading';
