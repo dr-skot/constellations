@@ -64,14 +64,19 @@
         "dec": 30,
         "fov": 90,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "foreground": [
+        "names": [
+          "And",
           "Cas",
           "Cep",
+          "Per",
+          "Cet",
+          "Peg"
+        ],
+        "bounds": false,
+        "art": [
           "And",
+          "Cas",
+          "Cep",
           "Per",
           "Cet",
           "Peg"
@@ -1206,11 +1211,16 @@
         "dec": 30,
         "fov": 90,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "foreground": [
+        "names": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ],
+        "bounds": false,
+        "art": [
           "Cas",
           "Cep",
           "And",
@@ -1361,11 +1371,16 @@
         "dec": 30,
         "fov": 90,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "foreground": [
+        "names": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ],
+        "bounds": false,
+        "art": [
           "Cas",
           "Cep",
           "And",
@@ -1455,11 +1470,16 @@
         "dec": 30,
         "fov": 90,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "foreground": [
+        "names": [
+          "Cas",
+          "Cep",
+          "And",
+          "Per",
+          "Cet",
+          "Peg"
+        ],
+        "bounds": false,
+        "art": [
           "Cas",
           "Cep",
           "And",
@@ -2131,7 +2151,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cygnus — the Swan, whose stars form the unmistakable Northern Cross, one of the most striking asterisms of the summer Milky Way.",
+        "caption": "Let's find Cygnus — the Swan, whose stars form the unmistakable Northern Cross.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2140,22 +2160,40 @@
         "bounds": false
       },
       {
-        "title": "Look overhead in summer",
-        "caption": "On a summer evening, look nearly overhead from mid-northern latitudes. Cygnus rides high through the Milky Way in August and September, with the Northern Cross oriented nearly vertical in the sky. From the southern hemisphere the cross appears low in the northern sky.",
+        "title": "The Northern Cross in the Milky Way",
+        "caption": "Cygnus rides through one of the richest stretches of the Milky Way. Look for a large, bright cross shape. It's one of the most recognizable patterns in the sky once you know it.",
         "ra": 305,
         "dec": 42,
-        "fov": 80,
+        "fov": 60,
         "photo": true,
-        "diagram": true,
+        "diagram": false,
         "names": false,
-        "bounds": false
+        "bounds": false,
+        "lines": [
+          [
+            "Deneb",
+            "Sadr"
+          ],
+          [
+            "Sadr",
+            "Albireo"
+          ],
+          [
+            "Fawaris",
+            "Sadr"
+          ],
+          [
+            "Sadr",
+            "Aljanah"
+          ]
+        ]
       },
       {
-        "title": "Find Deneb and the Northern Cross",
-        "caption": "The brightest star, Deneb (mag 1.2), anchors the top of the Northern Cross and marks the swan's tail. Despite appearing similar in brightness to nearby stars, Deneb is actually a distant supergiant — roughly 2,600 light-years away — making it one of the intrinsically most luminous stars in the sky.",
-        "ra": 308,
-        "dec": 43,
-        "fov": 42,
+        "title": "Deneb",
+        "caption": "Deneb marks the swan's tail at the top of the cross. It looks similar in brightness to nearby stars, but Deneb is a distant supergiant roughly 2,600 light-years away — one of the most intrinsically luminous stars visible to the naked eye.",
+        "ra": 303,
+        "dec": 39,
+        "fov": 48,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -2168,14 +2206,17 @@
       },
       {
         "title": "The swan in flight",
-        "caption": "Sadr (mag 2.2) sits at the center of the cross — the swan's chest — while Albireo (mag 3.0) marks the beak at the southern tip, one of the most celebrated double stars, appearing gold and blue in a small telescope. The wings of the swan stretch east and west along the Milky Way band.",
+        "caption": "Sadr sits at the swan's chest in the center of the cross. Albireo at the beak is a celebrated double star, gold and blue in a small telescope.",
         "ra": 303,
         "dec": 39,
         "fov": 48,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": false,
+        "art": [
+          "Cyg"
+        ],
         "highlight": [
           {
             "id": "Deneb"
@@ -2189,8 +2230,8 @@
         ]
       },
       {
-        "title": "Part of the Summer Triangle",
-        "caption": "Deneb forms the Summer Triangle with Vega (in Lyra, 24° to the west-southwest) and Altair (in Aquila, about 38° to the south). The Milky Way runs directly through Cygnus, making it one of the richest binocular regions in the sky. From a dark site the Great Rift — a dark lane of dust — bisects the constellation lengthwise.",
+        "title": "The Summer Triangle and the Great Rift",
+        "caption": "Deneb forms the Summer Triangle with Vega in Lyra and Altair in Aquila. Cygnus is bisected lengthwise by the Great Rift, a dark lane of interstellar dust that runs through the Milky Way.",
         "ra": 300,
         "dec": 30,
         "fov": 70,
@@ -2198,6 +2239,9 @@
         "diagram": true,
         "names": true,
         "bounds": false,
+        "art": [
+          "Cyg"
+        ],
         "highlight": [
           {
             "id": "Deneb"

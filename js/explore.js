@@ -315,12 +315,12 @@ function drawExplore() {
   const isAnswered = !!(q?.answered);
   const showPhoto      = cm ? (isAnswered ? document.getElementById('chk-eq-photo').checked    : cm === 'photo')   : document.getElementById('chk-ex-photo').checked;
   const showDiag       = cm ? (isAnswered ? document.getElementById('chk-eq-diagram').checked  : cm !== 'photo')   : true;
-  const showStars      = cm ? showDiag : document.getElementById('chk-ex-stars').checked;
-  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : document.getElementById('chk-ex-lines').checked;
-  const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : document.getElementById('chk-ex-bounds').checked;
-  const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : document.getElementById('chk-ex-art').checked;
+  const showStars      = cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : document.getElementById('chk-ex-stars').checked;
+  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : document.getElementById('chk-ex-lines').checked;
+  const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : document.getElementById('chk-ex-bounds').checked;
+  const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : explore.art !== undefined ? !!explore.art : document.getElementById('chk-ex-art').checked;
   const showStarLabels = cm ? false : document.getElementById('chk-ex-starlabels').checked;
-  const showConNames   = cm ? false : document.getElementById('chk-ex-connames').checked;
+  const showConNames   = cm ? false : explore.names !== undefined ? !!explore.names : document.getElementById('chk-ex-connames').checked;
   const showEquator    = cm ? true  : document.getElementById('chk-ex-equator').checked;
 
   // Photo layer (WebGL)
@@ -429,7 +429,9 @@ function drawExplore() {
     ctx.save();
     ctx.strokeStyle = 'rgba(120,200,120,0.45)';
     ctx.lineWidth = Math.max(1, W / 640);
+    const boundsFilter = Array.isArray(explore.bounds) ? explore.bounds : null;
     for (const con of visible) {
+      if (boundsFilter && !boundsFilter.includes(con.abbr)) continue;
       const pRings = projBounds[con.abbr];
       if (!pRings) continue;
       for (const pts of pRings) {
@@ -448,7 +450,9 @@ function drawExplore() {
 
   // Diagram: stars + lines + star labels
   if (showStars || showLines) {
+    const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
     for (const con of visible) {
+      if (diagFilter && !diagFilter.includes(con.abbr)) continue;
       const proj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
         .map((p, i) => ({ ...p, _orig: con.stars[i] }))
         .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
@@ -470,7 +474,9 @@ function drawExplore() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = 'rgba(160,185,255,0.6)';
+    const namesFilter = Array.isArray(explore.names) ? explore.names : null;
     for (const con of visible) {
+      if (namesFilter && !namesFilter.includes(con.abbr)) continue;
       const pos = conNamePosition(con, ctx, fs, camP, camUp, explore.fov, W, H, projBounds, allBoundEdges, showBounds);
       if (!pos) continue;
       const p = projectStarsCamera([[pos.ra, pos.dec, 99]], camP, camUp, explore.fov, W, H)[0];
@@ -482,9 +488,13 @@ function drawExplore() {
   // Artwork layer (WebGL)
   const exploreCredit = document.getElementById('explore-art-credit');
   if (showArt) {
+    const artFilter = Array.isArray(explore.art) ? explore.art : null;
     let hasArt = false;
     for (const con of visible) {
-      if (ART[con.abbr]) { hasArt = true; drawExploreArtLayerGL(con, camP, camUp, explore.fov); }
+      if (!ART[con.abbr]) continue;
+      if (artFilter && !artFilter.includes(con.abbr)) continue;
+      hasArt = true;
+      drawExploreArtLayerGL(con, camP, camUp, explore.fov);
     }
     if (exploreCredit) exploreCredit.textContent = hasArt ? 'Art: Johan Meuris / Free Art Licence' : '';
   } else {
