@@ -29,7 +29,7 @@ function guideDrawAnnotation(step, catalog) {
   ann.style.height = src.style.height;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
-  if (!step?.highlight?.length && !step?.foreground?.length) return;
+  if (!step?.highlight?.length && !step?.foreground?.length && !Array.isArray(step?.art)) return;
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
@@ -40,30 +40,38 @@ function guideDrawAnnotation(step, catalog) {
     ? (obj.arcmin / 60) / explore.fov * (W / 2)
     : magToR(obj.mag ?? 6) * fovS * scale;
 
+  // Draw artwork for a list of constellation abbreviations on the annotation canvas
+  const _drawArtForAbbrs = (abbrs) => {
+    for (const abbr of abbrs) {
+      const con = C.find(c => c.abbr === abbr);
+      if (!con) continue;
+      const art = ART[con.abbr];
+      if (!art || art.anchors.length < 3) continue;
+      if (!artCache[con.abbr]) {
+        artCache[con.abbr] = 'loading';
+        const img = new Image();
+        img.onload = () => {
+          artCache[con.abbr] = img;
+          if (_gs) guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
+        };
+        img.onerror = () => { artCache[con.abbr] = 'error'; };
+        img.src = art.url;
+        continue;
+      }
+      const img = artCache[con.abbr];
+      if (!(img instanceof HTMLImageElement)) continue;
+      drawExploreArtLayer(ctx, con, explore.P, camUp, explore.fov, W, H);
+    }
+  };
+
   if (step.foreground?.length) {
     drawForeground(ctx, step.foreground, explore.P, camUp, explore.fov, W, H);
-    if (step.art) {
-      for (const abbr of step.foreground) {
-        const con = C.find(c => c.abbr === abbr);
-        if (!con) continue;
-        const art = ART[con.abbr];
-        if (!art || art.anchors.length < 3) continue;
-        if (!artCache[con.abbr]) {
-          artCache[con.abbr] = 'loading';
-          const img = new Image();
-          img.onload = () => {
-            artCache[con.abbr] = img;
-            if (_gs) guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
-          };
-          img.onerror = () => { artCache[con.abbr] = 'error'; };
-          img.src = art.url;
-          continue;
-        }
-        const img = artCache[con.abbr];
-        if (!(img instanceof HTMLImageElement)) continue;
-        drawExploreArtLayer(ctx, con, explore.P, camUp, explore.fov, W, H);
-      }
-    }
+    if (step.art) _drawArtForAbbrs(step.foreground);
+  }
+
+  // art: ["Abc", ...] — show artwork for only listed constellations
+  if (Array.isArray(step.art)) {
+    _drawArtForAbbrs(step.art);
   }
 
   ctx.save();
@@ -279,7 +287,7 @@ function _guideApplySettings(step) {
   document.getElementById('chk-ex-stars'     ).checked = !!step.diagram;
   document.getElementById('chk-ex-lines'     ).checked = !!step.diagram;
   document.getElementById('chk-ex-bounds'    ).checked = !!step.bounds;
-  document.getElementById('chk-ex-art'       ).checked = !!step.art && !step.foreground?.length;
+  document.getElementById('chk-ex-art'       ).checked = step.art === true && !step.foreground?.length;
   document.getElementById('chk-ex-starlabels').checked = false;
   document.getElementById('chk-ex-connames'  ).checked = !!step.names;
   document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
@@ -290,7 +298,7 @@ function _guideIntersectSettings(a, b) {
     photo:   a.photo   && b.photo,
     diagram: a.diagram && b.diagram,
     bounds:  a.bounds  && b.bounds,
-    art:     a.art     && b.art,
+    art:     a.art === true && b.art === true,
     names:   a.names   && b.names,
     equator: a.equator && b.equator
   };
@@ -306,8 +314,17 @@ function _guideIntersectAnnotation(a, b) {
   return {
     highlight: shared.length ? shared : undefined,
     foreground: sharedFg.length ? sharedFg : undefined,
-    art: a.art && b.art
+    art: _intersectArt(a.art, b.art)
   };
+}
+
+function _intersectArt(a, b) {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    const s = new Set(a);
+    const shared = b.filter(x => s.has(x));
+    return shared.length ? shared : undefined;
+  }
+  return a && b;  // both truthy booleans
 }
 
 function _guideRenderUI() {

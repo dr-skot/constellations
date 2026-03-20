@@ -1581,36 +1581,36 @@
       },
       {
         "title": "South of Orion and Lepus",
-        "caption": "From Rigel in Orion, move about 20° south-southwest to find Phact, the brightest star in this part of the sky south of Orion. Alternatively, from Arneb at the head of the Hare, continue about 15° further south. Columba is best seen December–February.",
+        "caption": "Phact sits roughly halfway between Rigel and Canopus, two of the brightest stars in the sky. Look for it just past Lepus the Hare.",
         "ra": 87,
         "dec": -29,
         "fov": 65,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Arneb"
-          },
           {
             "id": "Phact"
           },
           {
             "id": "Rigel"
+          },
+          {
+            "id": "Canopus"
           }
         ]
       },
       {
         "title": "Phact and Wazn",
-        "caption": "Phact (mag 2.6) is a blue-white subgiant about 270 light-years away. Wazn (mag 3.1) is an orange giant about 87 light-years away. Together they mark the main body of the Dove, which stretches about 10° across.",
+        "caption": "Blue-white Phact and orange Wazn mark the body of the Dove — a nice color contrast in binoculars.",
         "ra": 86,
         "dec": -36,
         "fov": 28,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": true,
         "highlight": [
           {
             "id": "Phact"
@@ -1622,17 +1622,22 @@
       },
       {
         "title": "Noah's dove",
-        "caption": "Columba was introduced by Petrus Plancius in the 16th century, likely representing Noah's dove returning with an olive branch. The star Mu Columbae is a runaway star — a blue giant hurled from the Orion OB1 association at over 100 km/s by a supernova explosion millions of years ago, and now racing away from Orion through this region.",
-        "ra": 86,
+        "caption": "Columba likely represents Noah's dove returning with an olive branch. The faint star Mu Columbae is a runaway — a blue star hurled from the Orion Nebula region at over 100 km/s by a supernova explosion millions of years ago, now racing away through this quiet corner of sky.",
+        "ra": 89,
         "dec": -36,
         "fov": 18,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
-        "art": true,
-        "notes": "highlight Mu",
-        "highlight": []
+        "bounds": false,
+        "art": [
+          "Col"
+        ],
+        "highlight": [
+          {
+            "id": "Mu Columbae"
+          }
+        ]
       }
     ]
   },
