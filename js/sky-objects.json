@@ -578,6 +578,16 @@
     "color": "#c8d8ff",
     "r": 8
   },
+  "Alchiba": {
+    "ra": 182.103,
+    "dec": -24.729,
+    "color": "#c8d8ff"
+  },
+  "Blaze Star": {
+    "ra": 239.876,
+    "dec": 25.92,
+    "color": "#ff7060"
+  },
   "Peacock": {
     "ra": 306.41,
     "dec": -56.74,
@@ -1230,6 +1240,12 @@
     "dec": -26.43,
     "color": "#c8d8ff",
     "r": 14
+  },
+  "Corona Australis Nebula": {
+    "ra": 285.41,
+    "dec": -36.89,
+    "color": "#a0c0ff",
+    "arcmin": 30
   },
   "κ Vel": {
     "ra": 140.528,

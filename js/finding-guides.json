@@ -1722,13 +1722,13 @@
       },
       {
         "title": "Below the Teapot",
-        "caption": "Corona Australis lies about 10° directly south of Kaus Australis, the bright star at the base of the Teapot. The southern crown's semicircular arc of five stars is fainter than its northern counterpart, but the curved shape is recognizable in dark skies just below the rich Milky Way of Sagittarius. Best seen June–August.",
+        "caption": "Look just past the base of the Teapot in Sagittarius. Corona Australis is a faint semicircular arc flanking the rich Milky Way below Kaus Australis.",
         "ra": 285,
         "dec": -32,
         "fov": 55,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -1738,35 +1738,33 @@
       },
       {
         "title": "A faint semicircle",
-        "caption": "The arc spans about 6° and curves from northwest to southeast. Alpha Coronae Australis (mag 4.1) is the brightest star. The five main stars range from magnitude 4.1 to 4.6 — fainter than the Northern Crown but similarly shaped. All five fit comfortably in a single binocular field.",
-        "ra": 286,
+        "caption": "The crown is fainter than its northern counterpart but the same lovely shape — a curving arc of stars that fits in a single binocular field.",
+        "ra": 280,
         "dec": -39,
-        "fov": 22,
+        "fov": 18,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α CrA"
-          },
-          {
-            "id": "β CrA"
-          }
-        ]
+        "bounds": true
       },
       {
         "title": "A stellar nursery",
-        "caption": "The NGC 6726–6729 complex is a beautiful reflection and emission nebula within Corona Australis, associated with the R CrA star-forming region about 420 light-years away — one of the nearest active stellar nurseries to Earth. In long-exposure photographs, the nebulae glow blue and gold around embedded young stars.",
+        "caption": "One of the nearest active stellar nurseries to Earth hides inside the crown, just 420 light-years away. In long-exposure photographs the nebulae glow blue and gold around embedded young stars.",
         "ra": 286,
         "dec": -39,
         "fov": 14,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
-        "art": true,
-        "notes": "highlight the nurseries"
+        "bounds": false,
+        "art": [
+          "CrA"
+        ],
+        "highlight": [
+          {
+            "id": "Corona Australis Nebula"
+          }
+        ]
       }
     ]
   },
@@ -1783,11 +1781,11 @@
         "bounds": false
       },
       {
-        "title": "Look east of Boötes in spring",
-        "caption": "In May, June, and July, Corona Borealis is well-placed high in the east or overhead for northern observers. Find brilliant orange Arcturus in Boötes, then look about 22° to the east-northeast. The crown's semicircle sits in a region otherwise lacking bright stars, making it stand out despite the stars being only magnitude 2–4.",
-        "ra": 238,
+        "title": "Between Arcturus and Vega",
+        "caption": "Find brilliant orange Arcturus in Boötes — the crown's semicircle sits in the stretch between Arcturus and Vega, making it easy to spot despite its modest stars.",
+        "ra": 242,
         "dec": 28,
-        "fov": 60,
+        "fov": 70,
         "photo": true,
         "diagram": true,
         "names": false,
@@ -1795,12 +1793,15 @@
         "highlight": [
           {
             "id": "Arcturus"
+          },
+          {
+            "id": "Vega"
           }
         ]
       },
       {
-        "title": "Find Alphecca — the gem in the crown",
-        "caption": "Alphecca is the brightest star in the crown and marks its center. It is a spectroscopic binary about 75 light-years away. The full arc of seven stars spans only about 10° and is one of the tightest, most recognizable small patterns in the sky — no other similar curved arc exists nearby.",
+        "title": "Alphecca — the gem in the crown",
+        "caption": "Alphecca is the brightest point in the arc. Seven stars curve into one of the tightest, most recognizable small patterns in the sky — no similar arc exists nearby.",
         "ra": 236,
         "dec": 28,
         "fov": 18,
@@ -1815,22 +1816,21 @@
         ]
       },
       {
-        "title": "A crown of seven stars",
-        "caption": "The seven stars of the crown arc from northwest to southeast, with Alphecca as the brightest 'gem.' T Coronae Borealis (the Blaze Star) is a recurrent nova lurking in the crown — it is normally at magnitude 10 but erupts to naked-eye brightness about every 80 years. The next eruption was predicted for around 2024–2025, so it may be visible as an extra bright star in this arc.",
+        "title": "The Blaze Star",
+        "caption": "The Blaze Star (T CrB) is a recurrent nova lurking near the crown — normally invisible, it erupts to naked-eye brightness roughly every 80 years. It last blew in 1946, and astronomers expect the next eruption any time now.",
         "ra": 236,
-        "dec": 28,
-        "fov": 14,
+        "dec": 29,
+        "fov": 10,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
-        "notes": "Highlight the blaze star",
+        "art": [
+          "CrB"
+        ],
         "highlight": [
           {
-            "id": "Alphecca"
-          },
-          {
-            "id": "Nusakan"
+            "id": "Blaze Star"
           }
         ]
       }
@@ -1840,7 +1840,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Corvus — the Crow, a compact, easy-to-recognize quadrilateral of four second-magnitude stars in the southern spring sky.",
+        "caption": "Let's find Corvus — the Crow, a compact quadrilateral that's one of the easiest small constellations to recognize.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1849,8 +1849,8 @@
         "bounds": false
       },
       {
-        "title": "Look southwest of Spica",
-        "caption": "In April and May evenings, Corvus is well-placed in the southern sky. Follow the classic pointer: 'Arc to Arcturus, speed on to Spica' — the mnemonic for following the Big Dipper's handle. Once you find brilliant blue-white Spica in Virgo, look about 15° to the southwest and you will see the compact tilted quadrilateral of Corvus.",
+        "title": "Arc to Arcturus, speed on to Spica",
+        "caption": "Follow the Big Dipper's handle to arc to Arcturus, then speed on to Spica. Once you've found Spica, the compact tilted quadrilateral of Corvus is the next obvious group of stars.",
         "ra": 185,
         "dec": 15,
         "fov": 90,
@@ -1872,7 +1872,7 @@
       },
       {
         "title": "The compact crow",
-        "caption": "The four main stars — Gienah (mag 2.6), Kraz (mag 2.6), Algorab (mag 2.9), and Minkar — form a tight quadrilateral about 6° across. Gienah, the brightest, is a blue-white giant about 165 light-years away. A fifth star, Alchiba (mag 4.0), sits off one corner.",
+        "caption": "Four stars of similar brightness form a tight, lopsided quadrilateral — the body of the Crow.",
         "ra": 185,
         "dec": -20,
         "fov": 18,
@@ -1880,33 +1880,25 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "highlight Alchiba",
-        "highlight": [
-          {
-            "id": "Gienah"
-          },
-          {
-            "id": "Algorab"
-          },
-          {
-            "id": "Minkar"
-          },
-          {
-            "id": "Kraz"
-          }
+        "art": [
+          "Crv"
         ]
       },
       {
         "title": "The crow and the cup",
-        "caption": "Corvus and the neighboring constellation Crater (the Cup) both sit on the back of Hydra the Water Snake, which stretches across this part of the sky. The compactness and uniform brightness of Corvus's four main stars make it easy to identify once you know where to look — scan the area southwest of Spica and the neat quadrilateral jumps out.",
-        "ra": 185,
-        "dec": -20,
-        "fov": 35,
+        "caption": "Corvus and neighboring Crater (the Cup) both sit on the back of Hydra the Water Snake, which stretches across this part of the sky. In myth, Apollo sent the Crow to fetch water in the Cup, but the bird dawdled and was punished — all three were flung into the sky together.",
+        "ra": 160,
+        "dec": -10,
+        "fov": 75,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "names": false,
+        "bounds": false,
+        "art": [
+          "Crv",
+          "Crt",
+          "Hya"
+        ]
       }
     ]
   },

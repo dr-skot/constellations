@@ -310,11 +310,12 @@ function _guideIntersectAnnotation(a, b) {
   const shared = (b.highlight || []).filter(h => aIds.has(h.id || JSON.stringify(h)));
   const aFg = new Set(a.foreground || []);
   const sharedFg = (b.foreground || []).filter(abbr => aFg.has(abbr));
-  if (!shared.length && !sharedFg.length) return null;
+  const sharedArt = _intersectArt(a.art, b.art);
+  if (!shared.length && !sharedFg.length && !sharedArt) return null;
   return {
     highlight: shared.length ? shared : undefined,
     foreground: sharedFg.length ? sharedFg : undefined,
-    art: _intersectArt(a.art, b.art)
+    art: sharedArt
   };
 }
 
@@ -371,7 +372,7 @@ function _guideAddListeners() {
     document.getElementById('chk-ex-lines'   ).checked = _gs.diagVisible && !!step.diagram;
     document.getElementById('chk-ex-connames').checked = _gs.diagVisible && !!step.names;
     document.getElementById('chk-ex-bounds'  ).checked = _gs.diagVisible && !!step.bounds;
-    document.getElementById('chk-ex-art'     ).checked = _gs.diagVisible && !!step.art;
+    document.getElementById('chk-ex-art'     ).checked = _gs.diagVisible && step.art === true && !step.foreground?.length;
     _guideDraw();
     guideDrawAnnotation(_gs.diagVisible ? step : null, _gs.catalog);
     document.getElementById('fg-btn-toggle-diag').textContent =
@@ -387,7 +388,8 @@ function guideGoTo(i, immediate) {
   const prevStep = (_gs.idx >= 0 && _gs.diagVisible) ? _gs.steps[_gs.idx] : null;
   _gs.idx = i;
   _gs.animating = !immediate;
-  _gs.diagVisible = !!_gs.steps[i].diagram;
+  const s = _gs.steps[i];
+  _gs.diagVisible = !!(s.diagram || s.art || s.names || s.bounds || s.highlight?.length || s.foreground?.length);
   if (_gs.stepKey) localStorage.setItem(_gs.stepKey, i);
   const step = _gs.steps[i];
   _guideRenderUI();
