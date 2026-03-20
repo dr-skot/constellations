@@ -20,6 +20,8 @@
   align-items: stretch;
   justify-content: center;
   overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 0 15px rgba(80,130,220,0.3);
 }
 #explore-wrap {
   position: relative;
@@ -29,6 +31,13 @@
   background: #010208;
   cursor: grab;
   width: 100%;
+}
+#annotation-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 #explore-gl-canvas, #explore-canvas {
   position: absolute;

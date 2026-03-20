@@ -332,8 +332,10 @@ function _guideRenderUI() {
   document.getElementById('fg-caption-text').textContent  = steps[idx].caption;
   document.getElementById('fg-btn-prev').disabled = idx === 0 || animating;
   const isLast = idx === n - 1;
+  const step = steps[idx];
+  const hasOverlays = !!(step.diagram || step.art || step.names || step.bounds || step.highlight?.length || step.lines?.length);
   const toggleBtn = document.getElementById('fg-btn-toggle-diag');
-  toggleBtn.style.display = '';
+  toggleBtn.style.display = hasOverlays ? '' : 'none';
   toggleBtn.textContent   = diagVisible ? 'Hide overlays' : 'Show overlays';
   const nextBtn = document.getElementById('fg-btn-next');
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
