@@ -593,6 +593,11 @@
     "dec": -24.729,
     "color": "#c8d8ff"
   },
+  "Aldulfin": {
+    "ra": 308.303,
+    "dec": 11.303,
+    "color": "#90c8ff"
+  },
   "Blaze Star": {
     "ra": 239.876,
     "dec": 25.92,
@@ -781,6 +786,13 @@
     "dec": -49.420255,
     "color": "#ff9060",
     "r": 12
+  },
+  "Tarantula Nebula": {
+    "ra": 84.673,
+    "dec": -69.101,
+    "color": "#ff88aa",
+    "r": 12,
+    "arcmin": 40
   },
   "Tarazed": {
     "ra": 296.565,

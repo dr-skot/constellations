@@ -2302,7 +2302,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Delphinus — the Dolphin, one of the most charming small constellations, a tiny diamond of stars that genuinely resembles a leaping dolphin.",
+        "caption": "Let's find Delphinus — the Dolphin, a tiny diamond of stars that genuinely resembles a leaping dolphin.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2311,8 +2311,8 @@
         "bounds": false
       },
       {
-        "title": "Look east of Aquila in summer",
-        "caption": "In August and September evenings, Delphinus is well-placed in the southern sky for northern observers, sitting about 10° east-northeast of Altair in Aquila. The Summer Triangle's Altair is easy to spot; from there, the compact diamond of Delphinus is visible about two fist-widths to the northeast.",
+        "title": "Find Altair, then look nearby",
+        "caption": "Start with Altair, the bright anchor of Aquila. Delphinus swims just above the eagle's head — a compact diamond shape that's easy to spot once you know where to look.",
         "ra": 310,
         "dec": 14,
         "fov": 55,
@@ -2328,28 +2328,17 @@
       },
       {
         "title": "Job's Coffin",
-        "caption": "The four-star diamond asterism is sometimes called 'Job's Coffin.' All four stars are close in brightness (magnitudes 3.6–4.3), making the diamond quite uniform. The fifth star forms the dolphin's tail beneath the diamond. The constellation's compact size — fitting within a 5° circle — makes it easy to see in a single binocular field.",
+        "caption": "The four-star diamond is sometimes called Job's Coffin — nobody knows why. The two brightest stars, Sualocin and Rotanev, are the reversed spelling of Nicolaus Venator — the Latinization of Niccolò Cacciatore, an assistant at Palermo Observatory who snuck his own name into the 1814 star catalog.",
         "ra": 310,
-        "dec": 14,
-        "fov": 14,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "notes": "what's the tail star's name really? If its brightness is same as the four stars just say so",
-        "highlight": []
-      },
-      {
-        "title": "The reversed names",
-        "caption": "Sualocin and Rotanev have an unusual origin: they are the reversed Latin spelling of 'Nicolaus Venator' — Niccolò Cacciatore, an assistant at Palermo Observatory who covertly named the stars after himself in the 1814 star catalog. The dolphin's empty surroundings in this otherwise star-poor region make it stand out despite its faintness.",
-        "ra": 310,
-        "dec": 14,
-        "fov": 11,
+        "dec": 12,
+        "fov": 20,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Del"
+        ],
         "highlight": [
           {
             "id": "Sualocin"
@@ -2366,7 +2355,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Dorado — the Swordfish, a southern constellation best known for containing most of the Large Magellanic Cloud, one of the nearest galaxies to the Milky Way.",
+        "caption": "Let's find Dorado — the Swordfish, a southern constellation best known for containing most of the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2375,8 +2364,8 @@
         "bounds": false
       },
       {
-        "title": "East of Canopus — find the LMC",
-        "caption": "From Canopus (the second-brightest star in the sky), move about 25° to the east-northeast. In dark skies from the southern hemisphere, the Large Magellanic Cloud — a detached patch of milky light, clearly visible to the naked eye — makes Dorado unmistakable. Best seen November–February; circumpolar south of 30°S.",
+        "title": "Start from Canopus",
+        "caption": "Start from Canopus, the second-brightest star in the sky. The Large Magellanic Cloud — a detached patch of milky light, clearly visible to the naked eye in dark skies — makes Dorado easy to locate.",
         "ra": 78,
         "dec": -57,
         "fov": 65,
@@ -2384,42 +2373,49 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "highlight the Magellanic cloud",
         "highlight": [
           {
             "id": "Canopus"
+          },
+          {
+            "id": "LMC"
           }
         ]
       },
       {
         "title": "The Large Magellanic Cloud",
-        "caption": "The LMC spans about 7° in diameter and is the second-nearest galaxy to the Milky Way at about 160,000 light-years. Beta Doradus (mag 3.3) is the brightest naked-eye star in the constellation proper, a Cepheid variable. But the LMC completely dominates the field — its Tarantula Nebula (NGC 2070) is the largest known emission nebula.",
+        "caption": "The LMC is a nearby satellite galaxy of the Milky Way, spanning about seven degrees. It dominates Dorado's territory, dwarfing the constellation's own stars.",
         "ra": 73,
         "dec": -60,
-        "fov": 38,
+        "fov": 28,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": [
+          "Dor"
+        ],
+        "art": [
+          "Dor"
+        ],
         "highlight": [
           {
-            "id": "β Dor"
+            "id": "LMC"
           }
         ]
       },
       {
         "title": "The Tarantula Nebula",
-        "caption": "The Tarantula Nebula (NGC 2070) within the LMC is so immense that if placed at the Orion Nebula's distance it would cast visible shadows on Earth. The LMC also hosted Supernova 1987A — the nearest supernova seen from Earth in nearly 400 years — whose glowing remnant is still expanding and brightening. This is the most spectacular extragalactic object visible to the naked eye.",
+        "caption": "The Tarantula Nebula within the LMC is the largest known emission nebula. The LMC also hosted Supernova 1987A, the nearest supernova observed in nearly 400 years.",
         "ra": 81,
         "dec": -66,
         "fov": 25,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": false,
         "highlight": [
           {
-            "id": "β Dor"
+            "id": "Tarantula Nebula"
           }
         ]
       }
@@ -2438,15 +2434,17 @@
         "bounds": false
       },
       {
-        "title": "Look circumpolar in the north",
-        "caption": "Draco is circumpolar for observers north of about 20°N and winds around Ursa Minor through the entire northern sky. The best seasons to trace its full length are spring and summer evenings. The most recognizable feature is the Dragon's Head — a quadrilateral of four stars about 25° north-northwest of Vega.",
+        "title": "Between the Bears",
+        "caption": "Draco winds between Ursa Major and Ursa Minor through the northern sky. The most recognizable feature is the Dragon's Head — a quadrilateral of four stars near Vega.",
         "ra": 250,
         "dec": 68,
         "fov": 75,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": [
+          "Dra"
+        ],
         "highlight": [
           {
             "id": "Vega"
@@ -2455,7 +2453,7 @@
       },
       {
         "title": "Find the Dragon's Head",
-        "caption": "The Dragon's Head is a compact trapezoid of four stars with Eltanin (mag 2.2) as its brightest corner — a reddish-orange giant about 148 light-years away. The head quadrilateral spans about 6° and is the most distinctive feature of this otherwise winding constellation.",
+        "caption": "The Dragon's Head is a compact trapezoid of four stars with Eltanin as its brightest corner. It's the most distinctive part of this otherwise long, winding constellation.",
         "ra": 268,
         "dec": 57,
         "fov": 25,
@@ -2471,18 +2469,40 @@
       },
       {
         "title": "The dragon's long body",
-        "caption": "From the head, the Dragon's body snakes north then west, curving around Ursa Minor. Thuban, deep in the body, was the pole star around 2700 BC when the pyramids were being built. The full dragon spans about 60° of sky from head to tail.",
-        "ra": 230,
-        "dec": 69,
+        "caption": "From the head, the Dragon's body snakes around Ursa Minor. Thuban, deep in the body, was the pole star around 2700 BC when the pyramids were being built.",
+        "ra": 245,
+        "dec": 64,
         "fov": 60,
+        "rotation": 3.49066,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": false,
+        "art": [
+          "Dra"
+        ],
         "highlight": [
           {
             "id": "Thuban"
           }
+        ]
+      },
+      {
+        "title": "Heracles and the dragon",
+        "caption": "In Greek myth, Draco is Ladon, the dragon that guarded the golden apples in the garden of the Hesperides. Heracles killed it as one of his twelve labors. In the sky, Hercules kneels with one foot on the dragon's head.",
+        "ra": 258,
+        "dec": 50,
+        "fov": 60,
+        "rotation": 2.8,
+        "photo": true,
+        "names": [
+          "Dra",
+          "Her"
+        ],
+        "bounds": false,
+        "art": [
+          "Dra",
+          "Her"
         ]
       }
     ]
