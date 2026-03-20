@@ -119,29 +119,6 @@ function exploreVisibleCons() {
   );
 }
 
-function drawForeground(ctx, abbrs, camP, camUp, fov, W, H) {
-  ctx.save();
-  ctx.fillStyle = 'rgba(0,0,10,0.75)';
-  ctx.fillRect(0, 0, W, H);
-  ctx.globalCompositeOperation = 'destination-out';
-  ctx.fillStyle = 'rgba(0,0,0,1)';
-  for (const abbr of abbrs) {
-    if (!BOUNDS[abbr]) continue;
-    for (const ring of BOUNDS[abbr]) {
-      const pts = projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, fov, W, H);
-      ctx.beginPath();
-      let started = false;
-      for (const p of pts) {
-        if (p.d <= 0) { started = false; continue; }
-        if (!started) { ctx.moveTo(p.x, p.y); started = true; }
-        else ctx.lineTo(p.x, p.y);
-      }
-      ctx.fill();
-    }
-  }
-  ctx.globalCompositeOperation = 'source-over';
-  ctx.restore();
-}
 
 function loadExplorePhoto(con) {
   if (explorePhotoCache[con.abbr]) return;
@@ -209,68 +186,6 @@ function drawExplorePhotoLayer(ctx, con, camP, camUp, fov, W, H) {
   }
 }
 
-function drawExploreArtLayer(ctx, con, camP, camUp, fov, W, H) {
-  const art = ART[con.abbr];
-  if (!art || art.anchors.length < 3) return;
-  if (!artCache[con.abbr]) {
-    artCache[con.abbr] = 'loading';
-    const img = new Image();
-    img.onload = () => {
-      artCache[con.abbr] = img;
-      if (document.getElementById('screen-explore').classList.contains('active')) drawExplore();
-    };
-    img.onerror = () => { artCache[con.abbr] = 'error'; };
-    img.src = art.url;
-  }
-  const img = artCache[con.abbr];
-  if (!(img instanceof HTMLImageElement)) return;
-  const iw = img.naturalWidth, ih = img.naturalHeight;
-
-  // Map art pixels through the constellation's own fixed TAN projection
-  // (ref canvas) as a stable intermediate, then invert to RA/Dec and
-  // re-project into the explore view. This matches each pixel to the same
-  // sky position regardless of where the explore view is pointing.
-  const REF = 1000;
-  const refPts = projectStarsTAN(art.anchors.map(a => [a.ra, a.dec, 0]), con, REF, REF);
-  const artToRef = solveAffine(
-    art.anchors.map(a => [a.px * iw, a.py * ih]),
-    refPts.map(p => [p.x, p.y])
-  );
-
-  const GRID = 8, gw = GRID + 1;
-  const verts = new Array(gw * gw);
-  for (let gy = 0; gy <= GRID; gy++) {
-    for (let gx = 0; gx <= GRID; gx++) {
-      const px = gx / GRID * iw, py = gy / GRID * ih;
-      const qx = artToRef[0] * px + artToRef[2] * py + artToRef[4];
-      const qy = artToRef[1] * px + artToRef[3] * py + artToRef[5];
-      const rd = pixelToRADec(qx, qy, con.ra, con.dec, con.fov, REF, REF);
-      const ep = projectStarsCamera([[rd.ra, rd.dec, 0]], camP, camUp, fov, W, H)[0];
-      verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
-    }
-  }
-
-  ctx.save();
-  ctx.globalAlpha = 0.5;
-  ctx.globalCompositeOperation = 'screen';
-  for (let gy = 0; gy < GRID; gy++) {
-    for (let gx = 0; gx < GRID; gx++) {
-      const p00 = verts[gy * gw + gx];
-      const p10 = verts[gy * gw + gx + 1];
-      const p01 = verts[(gy + 1) * gw + gx];
-      const p11 = verts[(gy + 1) * gw + gx + 1];
-      if (p00 && p10 && p01)
-        drawImageTriangle(ctx, img,
-          [[p00[0], p00[1]], [p10[0], p10[1]], [p01[0], p01[1]]],
-          [[p00[2], p00[3]], [p10[2], p10[3]], [p01[2], p01[3]]]);
-      if (p10 && p11 && p01)
-        drawImageTriangle(ctx, img,
-          [[p10[0], p10[1]], [p11[0], p11[1]], [p01[0], p01[1]]],
-          [[p10[2], p10[3]], [p11[2], p11[3]], [p01[2], p01[3]]]);
-    }
-  }
-  ctx.restore();
-}
 
 function drawExplore() {
   const canvas = document.getElementById('explore-canvas');

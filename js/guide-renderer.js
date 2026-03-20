@@ -29,7 +29,7 @@ function guideDrawAnnotation(step, catalog) {
   ann.style.height = src.style.height;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
-  if (!step?.highlight?.length && !step?.foreground?.length && !step?.lines?.length) return;
+  if (!step?.highlight?.length && !step?.lines?.length) return;
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
@@ -39,10 +39,6 @@ function guideDrawAnnotation(step, catalog) {
   const objRadius = (obj) => obj.arcmin
     ? (obj.arcmin / 60) / explore.fov * (W / 2)
     : magToR(obj.mag ?? 6) * fovS * scale;
-
-  if (step.foreground?.length) {
-    drawForeground(ctx, step.foreground, explore.P, camUp, explore.fov, W, H);
-  }
 
   // lines: [["Star1","Star2"], ...] — custom diagram lines between named stars
   if (step.lines?.length && catalog) {
@@ -280,8 +276,7 @@ window.addEventListener('resize', () => {
 function _guideApplySettings(step) {
   document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
   explore.diagram = step.diagram || false;
-  explore.art     = step.foreground?.length ? step.foreground
-                  : step.art || false;
+  explore.art     = step.art || false;
   explore.names   = step.names || false;
   explore.bounds  = step.bounds || false;
   document.getElementById('chk-ex-stars'     ).checked = !!explore.diagram;
@@ -308,15 +303,11 @@ function _guideIntersectAnnotation(a, b) {
   if (!a || !b) return null;
   const aIds = new Set((a.highlight || []).map(h => h.id || JSON.stringify(h)));
   const shared = (b.highlight || []).filter(h => aIds.has(h.id || JSON.stringify(h)));
-  const aFg = new Set(a.foreground || []);
-  const sharedFg = (b.foreground || []).filter(abbr => aFg.has(abbr));
   const aLines = new Set((a.lines || []).map(l => l.join('|')));
   const sharedLines = (b.lines || []).filter(l => aLines.has(l.join('|')));
-  if (!shared.length && !sharedFg.length && !sharedLines.length) return null;
+  if (!shared.length && !sharedLines.length) return null;
   return {
     highlight: shared.length ? shared : undefined,
-    foreground: sharedFg.length ? sharedFg : undefined,
-    art: a.art && b.art,
     lines: sharedLines.length ? sharedLines : undefined
   };
 }
@@ -400,7 +391,7 @@ function guideGoTo(i, immediate) {
   }
 
   _gs.animating = !immediate;
-  _gs.diagVisible = !!(s.diagram || s.art || s.names || s.bounds || s.highlight?.length || s.foreground?.length || s.lines?.length);
+  _gs.diagVisible = !!(s.diagram || s.art || s.names || s.bounds || s.highlight?.length || s.lines?.length);
   if (_gs.stepKey) localStorage.setItem(_gs.stepKey, i);
   const step = s;
   _guideRenderUI();
