@@ -6,7 +6,7 @@ function guideResolveHighlight(h, catalog) {
   if (!h.id) return h;
   const obj = catalog && catalog[h.id];
   if (!obj) return null;
-  return Object.assign({}, obj, { label: h.label || h.id }, h);
+  return Object.assign({}, obj, { label: h.label != null ? h.label : h.id }, h);
 }
 
 // ── North-up roll ─────────────────────────────────────────────────────────────
@@ -29,7 +29,7 @@ function guideDrawAnnotation(step, catalog) {
   ann.style.height = src.style.height;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
-  if (!step?.highlight?.length && !step?.lines?.length) return;
+  if (!step?.highlight?.length) return;
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const dpr   = window.devicePixelRatio || 1;
@@ -39,31 +39,6 @@ function guideDrawAnnotation(step, catalog) {
   const objRadius = (obj) => obj.arcmin
     ? (obj.arcmin / 60) / explore.fov * (W / 2)
     : magToR(obj.mag ?? 6) * fovS * scale;
-
-  // lines: [["Star1","Star2"], ...] — custom diagram lines between named stars
-  if (step.lines?.length && catalog) {
-    const lineColor = step.lineColor || 'rgba(80,145,230,0.52)';
-    ctx.save();
-    ctx.strokeStyle = lineColor;
-    ctx.lineWidth = 1.5;
-    ctx.shadowColor = lineColor.replace(/[\d.]+\)$/, '0.4)');
-    ctx.shadowBlur = 5;
-    for (const [nameA, nameB] of step.lines) {
-      const a = catalog[nameA], b = catalog[nameB];
-      if (!a || !b) continue;
-      const pts = projectStarsCamera(
-        [[a.ra, a.dec, 0], [b.ra, b.dec, 0]],
-        explore.P, camUp, explore.fov, W, H
-      );
-      if (pts[0].d > 0 && pts[1].d > 0) {
-        ctx.beginPath();
-        ctx.moveTo(pts[0].x, pts[0].y);
-        ctx.lineTo(pts[1].x, pts[1].y);
-        ctx.stroke();
-      }
-    }
-    ctx.restore();
-  }
 
   ctx.save();
   for (const raw of (step.highlight || [])) {
@@ -284,6 +259,14 @@ function _guideApplySettings(step) {
   explore.art     = step.art || false;
   explore.names   = step.names || false;
   explore.bounds  = step.bounds || false;
+  if (step.lines?.length && _gs?.catalog) {
+    explore.guideLinesDef     = step.lines;
+    explore.guideLinesCatalog = _gs.catalog;
+    explore.guideLinesColor   = step.lineColor || 'rgba(80,145,230,0.52)';
+    explore.guideLinesWidth   = step.lineWidth || 1.5;
+  } else {
+    explore.guideLinesDef = null;
+  }
   document.getElementById('chk-ex-stars'     ).checked = !!explore.diagram;
   document.getElementById('chk-ex-lines'     ).checked = !!explore.diagram;
   document.getElementById('chk-ex-art'       ).checked = !!explore.art;
@@ -294,7 +277,7 @@ function _guideApplySettings(step) {
 }
 
 function _guideIntersectSettings(a, b) {
-  return {
+  const result = {
     photo:   a.photo   && b.photo,
     diagram: _intersectFilter(a.diagram, b.diagram),
     bounds:  _intersectFilter(a.bounds, b.bounds),
@@ -302,19 +285,24 @@ function _guideIntersectSettings(a, b) {
     names:   _intersectFilter(a.names, b.names),
     equator: a.equator && b.equator
   };
+  if (a.lines?.length && b.lines?.length) {
+    const aSet = new Set(a.lines.map(l => l.join('|')));
+    const shared = b.lines.filter(l => aSet.has(l.join('|')));
+    if (shared.length) {
+      result.lines = shared;
+      result.lineColor = b.lineColor;
+      result.lineWidth = b.lineWidth;
+    }
+  }
+  return result;
 }
 
 function _guideIntersectAnnotation(a, b) {
   if (!a || !b) return null;
   const aIds = new Set((a.highlight || []).map(h => h.id || JSON.stringify(h)));
   const shared = (b.highlight || []).filter(h => aIds.has(h.id || JSON.stringify(h)));
-  const aLines = new Set((a.lines || []).map(l => l.join('|')));
-  const sharedLines = (b.lines || []).filter(l => aLines.has(l.join('|')));
-  if (!shared.length && !sharedLines.length) return null;
-  return {
-    highlight: shared.length ? shared : undefined,
-    lines: sharedLines.length ? sharedLines : undefined
-  };
+  if (!shared.length) return null;
+  return { highlight: shared };
 }
 
 function _intersectFilter(a, b) {
@@ -371,10 +359,7 @@ function _guideAddListeners() {
     if (_gs.diagVisible) {
       _guideApplySettings(step);
     } else {
-      explore.diagram = false;
-      explore.art     = false;
-      explore.names   = false;
-      explore.bounds  = false;
+      _guideApplySettings({ photo: step.photo, equator: step.equator });
     }
     _guideDraw();
     guideDrawAnnotation(_gs.diagVisible ? step : null, _gs.catalog);
@@ -393,7 +378,7 @@ function guideGoTo(i, immediate) {
   const s = _gs.steps[i];
 
   // Skip animation if we're not actually moving
-  if (!immediate && prevStep && s.ra === prevStep.ra && s.dec === prevStep.dec && s.fov === prevStep.fov) {
+  if (!immediate && prevStep && s.ra === prevStep.ra && s.dec === prevStep.dec && s.fov === prevStep.fov && (s.rotation ?? null) === (prevStep.rotation ?? null)) {
     immediate = true;
   }
 
@@ -447,6 +432,7 @@ function guideStop() {
   delete explore.art;
   delete explore.names;
   delete explore.bounds;
+  explore.guideLinesDef = null;
   const ann = document.getElementById('annotation-canvas');
   if (ann) { const c = ann.getContext('2d'); c.clearRect(0, 0, ann.width, ann.height); }
 }

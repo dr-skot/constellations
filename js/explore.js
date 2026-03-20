@@ -363,7 +363,48 @@ function drawExplore() {
     ctx.restore();
   }
 
-  // Diagram: stars + lines + star labels
+  // Diagram: two-pass so guide lines can sit between diagram lines and stars
+  if (showStars || showLines) {
+    const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
+    // Pass 1: diagram lines only
+    for (const con of visible) {
+      if (diagFilter && !diagFilter.includes(con.abbr)) continue;
+      if (con.lines && showLines) {
+        const fullProj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
+          .map(p => p.d > 0 ? p : null);
+        drawLines(ctx, fullProj, con);
+      }
+    }
+  }
+
+  // Guide custom lines (above diagram lines, below stars)
+  if (explore.guideLinesDef?.length && explore.guideLinesCatalog) {
+    const gc = explore.guideLinesColor || 'rgba(80,145,230,0.52)';
+    const glw = (explore.guideLinesWidth || 1.5) * (40 / explore.fov);
+    ctx.save();
+    ctx.strokeStyle = gc;
+    ctx.lineWidth = glw;
+    ctx.shadowColor = gc;
+    ctx.shadowBlur = glw * 6;
+    for (const [nameA, nameB] of explore.guideLinesDef) {
+      const a = explore.guideLinesCatalog[nameA];
+      const b = explore.guideLinesCatalog[nameB];
+      if (!a || !b) continue;
+      const pts = projectStarsCamera(
+        [[a.ra, a.dec, 0], [b.ra, b.dec, 0]],
+        camP, camUp, explore.fov, W, H
+      );
+      if (pts[0].d > 0 && pts[1].d > 0) {
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        ctx.lineTo(pts[1].x, pts[1].y);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  // Pass 2: stars + labels
   if (showStars || showLines) {
     const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
     for (const con of visible) {
@@ -371,11 +412,6 @@ function drawExplore() {
       const proj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
         .map((p, i) => ({ ...p, _orig: con.stars[i] }))
         .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
-      if (con.lines && showLines) {
-        const fullProj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
-          .map(p => p.d > 0 ? p : null);
-        drawLines(ctx, fullProj, con);
-      }
       if (showStars) drawStars(ctx, proj, explore.fov);
       if (showStarLabels) drawLabels(ctx, proj, W);
     }

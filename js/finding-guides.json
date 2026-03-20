@@ -2162,11 +2162,11 @@
       {
         "title": "The Northern Cross in the Milky Way",
         "caption": "Cygnus rides through one of the richest stretches of the Milky Way. Look for a large, bright cross shape. It's one of the most recognizable patterns in the sky once you know it.",
-        "ra": 305,
-        "dec": 42,
-        "fov": 60,
+        "ra": 302,
+        "dec": 40,
+        "fov": 40,
         "photo": true,
-        "diagram": false,
+        "diagram": true,
         "names": false,
         "bounds": false,
         "lines": [
@@ -2186,7 +2186,9 @@
             "Sadr",
             "Aljanah"
           ]
-        ]
+        ],
+        "lineColor": "rgba(140,200,255,0.9)",
+        "lineWidth": 5
       },
       {
         "title": "Deneb",
@@ -2665,7 +2667,11 @@
         "fov": 80,
         "photo": true,
         "diagram": true,
-        "names": ["For", "Eri", "Lep"],
+        "names": [
+          "For",
+          "Eri",
+          "Lep"
+        ],
         "bounds": false,
         "highlight": [
           {
@@ -2677,17 +2683,34 @@
         ]
       },
       {
-        "title": "The Fornax Galaxy Cluster",
-        "caption": "Fornax contains the Fornax Galaxy Cluster, one of the nearest large galaxy clusters. Fornax A and the Great Barred Spiral are its brightest members, both visible in backyard telescopes.",
+        "title": "The Chemical Furnace",
+        "caption": "Fornax is one of 14 southern constellations invented by Nicolas-Louis de Lacaille in the 1750s. He filled blank patches of the sky with instruments of the Enlightenment. The original name was le Fourneau Chymique — the Chemical Furnace, depicting a distillation furnace with an alembic and receiver.",
         "ra": 43,
         "dec": -31,
+        "fov": 28,
+        "rotation": -0.605,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": [
+          "For"
+        ],
+        "art": [
+          "For"
+        ],
+        "highlight": []
+      },
+      {
+        "title": "The Fornax Galaxy Cluster",
+        "caption": "Fornax contains the Fornax Galaxy Cluster, one of the nearest large galaxy clusters. Fornax A and the Great Barred Spiral are its brightest members, both visible in backyard telescopes.",
+        "ra": 48,
+        "dec": -33,
         "fov": 28,
         "rotation": 0.524,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": ["For"],
-        "art": ["For"],
+        "bounds": false,
         "highlight": [
           {
             "id": "Fornax Galaxy Cluster"
@@ -2706,7 +2729,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Gemini — the Twins, a winter constellation crowned by the bright pair Castor and Pollux, one of the most recognisable double stars in the sky.",
+        "caption": "Let's find Gemini — the Twins, crowned by the bright pair Castor and Pollux.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2715,19 +2738,8 @@
         "bounds": false
       },
       {
-        "title": "The winter sky",
-        "caption": "Turn to the southern sky on a winter evening. Gemini lies northeast of Orion in the same brilliant winter star field, best placed in the south for northern observers in January and February.",
-        "ra": 103,
-        "dec": 23,
-        "fov": 80,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false
-      },
-      {
-        "title": "Two bright stars side by side",
-        "caption": "Castor and Pollux are the twin heads — two bright stars sitting just 4.5° apart. From Orion, follow the line from Rigel through Betelgeuse and beyond — you'll arrive between them.",
+        "title": "Near Orion",
+        "caption": "Gemini lies near Orion in a brilliant star field. From Orion, follow the line from Rigel through Betelgeuse and beyond to find Castor and Pollux, the twin heads.",
         "ra": 97,
         "dec": 12,
         "fov": 60,
@@ -2751,33 +2763,14 @@
         ]
       },
       {
-        "title": "The twin figures",
-        "caption": "Below each head, a chain of fainter stars stretches south-southwest — the bodies of the twins, lying side by side. The two chains run nearly parallel, making the whole constellation look like two people walking together.",
-        "ra": 107,
-        "dec": 25,
-        "fov": 44,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "Castor"
-          },
-          {
-            "id": "Pollux"
-          }
-        ]
-      },
-      {
         "title": "The Twins",
-        "caption": "Pollux is the nearer twin at just 34 light-years, and its warm orange colour betrays its giant status. Castor, only 4.5° away, is actually six stars — three gravitationally bound pairs — all masquerading as one point of light.",
+        "caption": "Pollux has a warm orange colour that betrays its giant status. Castor, right next to it, is actually six stars — three gravitationally bound pairs — all masquerading as one point of light.",
         "ra": 115,
         "dec": 30,
         "fov": 20,
         "photo": true,
         "diagram": true,
-        "names": true,
+        "names": false,
         "bounds": false,
         "highlight": [
           {
@@ -2790,13 +2783,19 @@
       },
       {
         "title": "The Geminids",
-        "caption": "Gemini straddles the Milky Way and hosts the radiant of the Geminid meteor shower every December — the year's most reliable and prolific display, with up to 120 meteors per hour emanating from just above Castor.",
-        "ra": 103,
-        "dec": 25,
-        "fov": 58,
+        "caption": "Gemini hosts the radiant of the Geminid meteor shower every December, with up to 120 meteors per hour emanating from just above Castor.",
+        "ra": 106,
+        "dec": 23,
+        "fov": 36,
         "photo": true,
         "diagram": true,
-        "names": true
+        "names": true,
+        "bounds": [
+          "Gem"
+        ],
+        "art": [
+          "Gem"
+        ]
       }
     ]
   },
@@ -2805,7 +2804,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Grus — the Crane, a southern constellation with two bright stars (Alnair and Tiaki) forming a distinctive kite shape, easy to spot in southern autumn skies.",
+        "caption": "Let's find Grus — the Crane, a southern constellation with a distinctive kite shape anchored by two bright stars, Alnair and Tiaki.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2814,8 +2813,8 @@
         "bounds": false
       },
       {
-        "title": "Southeast of Fomalhaut",
-        "caption": "From Fomalhaut — the solitary bright Autumn Star of Piscis Austrinus — move about 20° south-southeast to reach Alnair and Tiaki. Best seen August–October from the southern hemisphere.",
+        "title": "Below Fomalhaut",
+        "caption": "Start from Fomalhaut, the solitary bright star in Piscis Austrinus. Grus sits below it, with Alnair and Tiaki easy to pick out.",
         "ra": 336,
         "dec": -41,
         "fov": 45,
@@ -2837,36 +2836,30 @@
       },
       {
         "title": "Alnair and Tiaki",
-        "caption": "Alnair (mag 1.7) is a blue-white star about 101 light-years away. Tiaki (mag 2.1) is a cool red giant about 170 light-years away. Together they anchor the kite-shaped body of the crane, with a chain of stars extending north representing the bird's long neck.",
+        "caption": "Alnair is blue-white; Tiaki is a cool red giant. Together they anchor the kite-shaped body of the crane, with a chain of stars extending out as the bird's long neck. The Grus Quartet, a set of four interacting galaxies, is visible in a single telescope field.",
         "ra": 336,
-        "dec": -47,
+        "dec": -45,
         "fov": 30,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": [
+          "Gru"
+        ],
+        "art": [
+          "Gru"
+        ],
         "highlight": [
           {
             "id": "Alnair"
           },
           {
             "id": "Tiaki"
+          },
+          {
+            "id": "Grus Quartet"
           }
         ]
-      },
-      {
-        "title": "The Grus Quartet",
-        "caption": "Grus contains several interacting galaxy groups visible in small telescopes. The Grus Quartet (NGC 7552, 7582, 7590, 7599) is a set of four galaxies about 60 million light-years away, all visible in the same telescope field and showing signs of gravitational interaction.",
-        "ra": 336,
-        "dec": -45,
-        "fov": 25,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "notes": "highlight galaxies",
-        "art": true,
-        "highlight": []
       }
     ]
   },
@@ -2874,7 +2867,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Hercules — the Hero, a large summer constellation identified by the distinctive Keystone asterism and home to the finest globular cluster visible from the northern hemisphere.",
+        "caption": "Let's find Hercules — the Hero, a large constellation identified by the distinctive Keystone asterism and home to M13, a spectacular globular cluster.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2883,8 +2876,8 @@
         "bounds": false
       },
       {
-        "title": "Look between Vega and Arcturus",
-        "caption": "In June and July, Hercules passes high overhead for mid-northern observers. Draw an imaginary line from Vega (in Lyra) to Arcturus (in Boötes) — the Keystone of Hercules lies about one-third of the way from Vega.",
+        "title": "Between Vega and Arcturus",
+        "caption": "Draw an imaginary line from Vega to Arcturus — the Keystone of Hercules lies about a third of the way from Vega.",
         "ra": 244,
         "dec": 30,
         "fov": 75,
@@ -2892,7 +2885,6 @@
         "diagram": true,
         "names": false,
         "bounds": false,
-        "notes": "highlight the keystone",
         "highlight": [
           {
             "id": "Vega"
@@ -2912,31 +2904,62 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "art": true,
-        "notes:": "Kornephoros is not in the keystone",
-        "highlight": [
-          {
-            "id": "η Her",
-            "label": "Eta Her"
-          },
-          {
-            "id": "ζ Her",
-            "label": "Zeta Her"
-          }
-        ]
+        "art": [
+          "Her"
+        ],
+        "lines": [
+          [
+            "ε Her",
+            "π Her"
+          ],
+          [
+            "π Her",
+            "η Her"
+          ],
+          [
+            "η Her",
+            "ζ Her"
+          ],
+          [
+            "ζ Her",
+            "ε Her"
+          ]
+        ],
+        "lineColor": "rgba(140,200,255,0.9)",
+        "lineWidth": 5
       },
       {
         "title": "M13 — the Great Globular",
-        "caption": "The Great Globular Cluster M13 sits on the western edge of the Keystone, visible to the naked eye under dark skies as a faint fuzzy star. It contains roughly 300,000 stars packed into a sphere about 145 light-years across, about 22,000 light-years away.",
+        "caption": "The Great Globular Cluster M13 sits on the edge of the Keystone, visible to the naked eye under dark skies as a faint fuzzy star. It contains roughly 300,000 stars packed into a sphere about 145 light-years across.",
         "ra": 253,
         "dec": 35,
         "fov": 18,
         "photo": true,
         "diagram": true,
+        "names": false,
+        "bounds": false,
+        "highlight": [
+          {
+            "id": "M13"
+          }
+        ]
+      },
+      {
+        "title": "The poisoned cloak",
+        "caption": "Hercules killed the centaur Nessus for assaulting his wife Deianeira. Dying, Nessus told her to keep his blood as a love charm. Years later she smeared it on a cloak for Hercules, not knowing the blood carried Hydra venom from the arrow that killed Nessus. The poison burned away Hercules' mortal flesh; his immortal half ascended to Olympus, and Zeus placed him in the sky.",
+        "ra": 256,
+        "dec": 29,
+        "fov": 52,
+        "rotation": 3.14159,
+        "photo": true,
+        "diagram": true,
         "names": true,
-        "bounds": true,
-        "notes": "highlight the cluster",
-        "highlight": []
+        "bounds": [
+          "Her"
+        ],
+        "art": [
+          "Her"
+        ]
       }
     ]
   },
