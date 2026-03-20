@@ -1907,7 +1907,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Crater — the Cup, a small faint constellation sitting on the back of Hydra, just west of the more prominent quadrilateral of Corvus.",
+        "caption": "Let's find Crater — the Cup, a small faint constellation sitting on the back of Hydra, next to the more prominent Corvus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1916,8 +1916,8 @@
         "bounds": false
       },
       {
-        "title": "West of Corvus on Hydra's back",
-        "caption": "Find the compact quadrilateral of Corvus — the crow southwest of Spica — then move about 15° to its west. Crater's circular ring of faint stars sits there on Hydra's back. The constellation is best seen March–May but is low in the south for northern observers above 40°N.",
+        "title": "Next to Corvus on Hydra's back",
+        "caption": "Find the compact quadrilateral of Corvus, then look for the faint ring of stars next to it, also sitting on Hydra's back. Crater is dim but its circular cup shape is distinctive once you spot it.",
         "ra": 183,
         "dec": -11,
         "fov": 55,
@@ -1932,8 +1932,8 @@
         ]
       },
       {
-        "title": "Alkes and Delta Crateris",
-        "caption": "Delta Crateris (mag 3.6) is the brightest star, an orange giant about 163 light-years away. Alpha Crateris (Alkes, mag 4.1) marks the southern base of the cup. The eight main stars range from magnitude 3.6 to 5.2, forming a rough circular cup shape about 10° across.",
+        "title": "The Cup",
+        "caption": "A ring of faint stars traces the outline of a goblet. None are bright, but the shape is satisfying — a nearly complete circle with a short stem.",
         "ra": 172,
         "dec": -16,
         "fov": 28,
@@ -1941,26 +1941,25 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "highlight": [
-          {
-            "id": "δ Crt"
-          },
-          {
-            "id": "α Crt"
-          }
+        "art": [
+          "Crt"
         ]
       },
       {
         "title": "The cup, the crow, and the snake",
-        "caption": "In mythology, Apollo sent the crow to fetch water in the cup, carried on Hydra the Water Snake. The bird tarried; Apollo placed all three in the sky as punishment — which is why Crater, Corvus, and Hydra are neighbors to this day. The cup's circular outline, once learned, is Crater's most distinctive identifying feature.",
-        "ra": 176,
-        "dec": -16,
-        "fov": 35,
+        "caption": "Apollo sent the Crow to fetch water in this Cup, carried on Hydra the Water Snake — but the bird dawdled, so Apollo flung all three into the sky. That's why Crater, Corvus, and Hydra are still neighbors.",
+        "ra": 160,
+        "dec": -10,
+        "fov": 75,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
-        "art": true
+        "bounds": false,
+        "art": [
+          "Crv",
+          "Crt",
+          "Hya"
+        ]
       }
     ]
   },
@@ -1977,8 +1976,8 @@
         "bounds": false
       },
       {
-        "title": "Look south",
-        "caption": "Crux is only visible from latitudes south of about 25°N — the further south you are, the higher it rides. In the southern hemisphere it is circumpolar, never setting. Look for a bright, compact kite of four stars low in the south from subtropical northern regions.",
+        "title": "A bright compact kite",
+        "caption": "Crux is only visible from latitudes south of about 25°N — the further south you are, the higher it rides. Look for a bright, compact kite of four stars embedded in a rich stretch of the Milky Way.",
         "ra": 188,
         "dec": -45,
         "fov": 80,
@@ -1989,7 +1988,7 @@
       },
       {
         "title": "The Southern Cross",
-        "caption": "Four bright stars form the cross: Acrux at the southern foot is the brightest, Gacrux at the top glows distinctly red, and Mimosa marks the left arm. The whole cross fits within a circle just 6° wide.",
+        "caption": "Four bright stars form the cross: Acrux at the foot is the brightest, Gacrux at the top glows distinctly red, and Mimosa marks one arm.",
         "ra": 188,
         "dec": -60,
         "fov": 18,
@@ -2011,7 +2010,7 @@
       },
       {
         "title": "Beware the False Cross",
-        "caption": "To the northwest lies the False Cross — four stars in Vela and Carina that form a similar pattern but are larger and less symmetrical. If your cross looks large and lopsided, you've found the impostor.",
+        "caption": "Nearby lies the False Cross — four stars in Vela and Carina that form a similar pattern but are larger and less symmetrical. If your cross looks large and lopsided, you've found the impostor.",
         "ra": 161,
         "dec": -58,
         "fov": 56,
@@ -2056,7 +2055,9 @@
             "id": "Gacrux"
           },
           {
-            "id": "south pole"
+            "id": "south pole",
+            "crosshair": true,
+            "label": "South Celestial Pole"
           }
         ]
       },
