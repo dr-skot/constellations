@@ -363,6 +363,27 @@
     "r": 30,
     "arcmin": 120
   },
+  "Fornax A": {
+    "ra": 50.674,
+    "dec": -37.208,
+    "color": "#ffe8b0",
+    "r": 10,
+    "arcmin": 13
+  },
+  "Fornax Galaxy Cluster": {
+    "ra": 54.0,
+    "dec": -35.5,
+    "color": "#a0c0ff",
+    "r": 10,
+    "arcmin": 360
+  },
+  "Great Barred Spiral": {
+    "ra": 53.402,
+    "dec": -36.141,
+    "color": "#ffe8b0",
+    "r": 10,
+    "arcmin": 11
+  },
   "Fomalhaut": {
     "ra": 344.41256999999996,
     "dec": -29.622236,

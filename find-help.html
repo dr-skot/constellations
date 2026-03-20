@@ -208,9 +208,8 @@
       const startDec = (Math.random() * 2 - 1) * 60;
       steps.forEach(s => { if (s.random) { s.ra = startRa; s.dec = startDec; } });
 
-      explore.R = guide.rotation != null
-        ? guide.rotation
-        : guideNorthUpR(raDecToVec(con.ra, con.dec));
+      const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
+      explore.R = guide.rotation != null ? defaultR + guide.rotation : defaultR;
 
       document.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') document.getElementById('fg-btn-next').click();

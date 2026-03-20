@@ -1104,7 +1104,7 @@
           "Vel",
           "Pup"
         ],
-        "rotation": 3
+        "rotation": 0.557
       },
       {
         "title": "The False Cross",
@@ -2473,7 +2473,7 @@
         "ra": 245,
         "dec": 64,
         "fov": 60,
-        "rotation": 3.49066,
+        "rotation": 3.054,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -2489,11 +2489,11 @@
       },
       {
         "title": "Heracles and the dragon",
-        "caption": "In Greek myth, Draco is Ladon, the dragon that guarded the golden apples in the garden of the Hesperides. Heracles killed it as one of his twelve labors. In the sky, Hercules kneels with one foot on the dragon's head.",
+        "caption": "In Greek myth, Draco is Ladon, the dragon that guarded the golden apples in the garden of the Hesperides. Heracles killed it as one of his twelve labors. In the sky, Hercules kneels with one foot on the dragon's head. In a Roman telling, Minerva hurled the serpent into the sky during the war with the Titans, where it wrapped around the pole and froze.",
         "ra": 258,
         "dec": 50,
         "fov": 60,
-        "rotation": 2.8,
+        "rotation": 2.591,
         "photo": true,
         "names": [
           "Dra",
@@ -2512,7 +2512,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Equuleus — the Little Horse, the second-smallest constellation in the sky, a tiny diamond of four faint stars just west of Delphinus.",
+        "caption": "Let's find Equuleus — the Little Horse, the second-smallest constellation in the sky, a tiny group of faint stars next to Delphinus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2521,8 +2521,8 @@
         "bounds": false
       },
       {
-        "title": "Just west of Delphinus",
-        "caption": "Find Delphinus — the compact diamond of Job's Coffin, easily spotted about 10° east of Altair in Aquila. Then look about 10° to its west and you will find the small L of Equuleus. From Altair itself, the Little Horse lies about 9° to the east-northeast. Best seen August–September.",
+        "title": "Next to Delphinus",
+        "caption": "Find Delphinus first — the compact diamond of Job's Coffin near Altair. Equuleus sits right next to it, a small pattern that's easy to overlook.",
         "ra": 311,
         "dec": 9,
         "fov": 40,
@@ -2537,35 +2537,24 @@
         ]
       },
       {
-        "title": "Kitalpha",
-        "caption": "Kitalpha (mag 3.9) is the constellation's sole notable star — its name means \"part of a horse\" in Arabic. The other stars range from magnitude 4.5 to 4.7. The entire constellation fits within a circle just 4° across, making it smaller even than Crux.",
-        "ra": 318,
-        "dec": 8,
-        "fov": 15,
+        "title": "The ancient foal",
+        "caption": "Kitalpha, the brightest star, takes its name from the Arabic for 'part of a horse.' Equuleus is one of Ptolemy's original 48 constellations, recognized since antiquity as a horse's head. Despite being tiny, it has been continuously catalogued for over 2,000 years.",
+        "ra": 318.5,
+        "dec": 7.5,
+        "fov": 12,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
-        "notes": "Kitalpha = part of a horse?? The other 3 stars??",
+        "bounds": [
+          "Equ"
+        ],
+        "art": [
+          "Equ"
+        ],
         "highlight": [
           {
             "id": "Kitalpha"
           }
         ]
-      },
-      {
-        "title": "The ancient foal",
-        "caption": "Equuleus is one of Ptolemy's original 48 constellations, recognized since antiquity as a horse's head with no attached mythology. Despite being tiny and unremarkable, it has been continuously catalogued for over 2,000 years. Its location in an empty stretch of sky means the little diamond stands out slightly more than its faint magnitudes would suggest.",
-        "ra": 318,
-        "dec": 8,
-        "fov": 10,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "notes": "diamond again! check the diagram",
-        "highlight": []
       }
     ]
   },
@@ -2583,7 +2572,7 @@
       },
       {
         "title": "Start near Orion",
-        "caption": "The northern end of Eridanus begins at Cursa, just north of Rigel in Orion. In winter evenings, trace the river southward — it meanders west then curls back southeast, becoming progressively fainter. Achernar, the river's end at declination -57°, is only visible south of about 33°N latitude.",
+        "caption": "The river begins at Cursa, a bright star next to Rigel in Orion. From there it meanders a long way across the sky, ending at Achernar, one of the brightest stars in the southern sky.",
         "ra": 55,
         "dec": -30,
         "fov": 80,
@@ -2604,8 +2593,8 @@
         ]
       },
       {
-        "title": "Find the river's source at Cursa",
-        "caption": "Cursa (mag 2.8) sits about 3° north-northwest of Rigel and marks where the river 'pours' from Orion's foot. The northern section of Eridanus consists of a chain of 4th-magnitude stars that meander west and south through a relatively barren region of sky. Follow the chain star by star as it winds away from Orion.",
+        "title": "The river's source",
+        "caption": "Cursa sits next to Rigel and marks where the river pours from Orion's foot. The northern section of Eridanus is a chain of faint stars that wind away from Orion.",
         "ra": 68,
         "dec": -10,
         "fov": 35,
@@ -2624,7 +2613,7 @@
       },
       {
         "title": "Achernar — end of the river",
-        "caption": "Achernar, the ninth-brightest star in the sky, is a rapidly rotating blue-white star spinning so fast it bulges at its equator. From the southern hemisphere it is a prominent circumpolar beacon; from latitudes above 33°N it never rises.",
+        "caption": "Achernar marks the end of the river. It's the ninth-brightest star in the sky, spinning so fast it bulges visibly at its equator.",
         "ra": 25,
         "dec": -55,
         "fov": 30,
@@ -2640,14 +2629,18 @@
       },
       {
         "title": "The full river",
-        "caption": "Eridanus is the sixth-largest constellation, impossible to see entirely from any single latitude. From mid-southern latitudes the river arches dramatically across the sky in summer evenings — one of the grandest sweeps any constellation makes.",
-        "ra": 45,
-        "dec": -35,
-        "fov": 80,
+        "caption": "Eridanus is the sixth-largest constellation, stretching so far across the sky that it's impossible to see in full from any single latitude.",
+        "ra": 55,
+        "dec": -32,
+        "fov": 60,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true
+        "names": [
+          "Eri"
+        ],
+        "art": [
+          "Eri"
+        ]
       }
     ]
   },
@@ -2665,52 +2658,47 @@
         "bounds": false
       },
       {
-        "title": "Inside the Eridanus bend",
-        "caption": "Fornax lies in a region devoid of bright stars inside a large meander of Eridanus, about 30° south of Diphda, the brightest star in Cetus. Its brightest star, Alpha Fornacis, is the sole landmark. Best seen October–December; invisible north of 50°N.",
-        "ra": 35,
-        "dec": -27,
-        "fov": 60,
+        "title": "Inside the bend of Eridanus",
+        "caption": "Eridanus makes two big bends as it snakes from Rigel to Achernar. Fornax sits inside the second bend, with Lepus the Hare looking across the river at it.",
+        "ra": 55,
+        "dec": -32,
+        "fov": 80,
         "photo": true,
         "diagram": true,
-        "names": true,
+        "names": ["For", "Eri", "Lep"],
         "bounds": false,
         "highlight": [
           {
-            "id": "Diphda"
+            "id": "Rigel"
           },
           {
-            "id": "α For"
-          }
-        ]
-      },
-      {
-        "title": "Alpha Fornacis",
-        "caption": "Alpha Fornacis (mag 3.9) is a wide binary system — two yellow-white stars separated enough to be resolved in a small telescope, about 46 light-years away.",
-        "ra": 41,
-        "dec": -30,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α For"
+            "id": "Achernar"
           }
         ]
       },
       {
         "title": "The Fornax Galaxy Cluster",
-        "caption": "Fornax contains the Fornax Galaxy Cluster (Abell S0373), one of the two nearest large galaxy clusters. NGC 1316 and NGC 1365 (the Great Barred Spiral) are spectacular members visible in backyard telescopes.",
-        "ra": 40,
-        "dec": -30,
-        "fov": 18,
+        "caption": "Fornax contains the Fornax Galaxy Cluster, one of the nearest large galaxy clusters. Fornax A and the Great Barred Spiral are its brightest members, both visible in backyard telescopes.",
+        "ra": 43,
+        "dec": -31,
+        "fov": 28,
+        "rotation": 0.524,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
-        "notes": "highlight galaxies; explain name?",
-        "highlight": []
+        "bounds": ["For"],
+        "art": ["For"],
+        "highlight": [
+          {
+            "id": "Fornax Galaxy Cluster"
+          },
+          {
+            "id": "Fornax A"
+          },
+          {
+            "id": "Great Barred Spiral"
+          }
+        ]
       }
     ]
   },
@@ -4178,7 +4166,7 @@
     ]
   },
   "Orion": {
-    "rotation": 3.14159,
+    "rotation": -0.127,
     "steps": [
       {
         "title": "Orient yourself",
@@ -5771,7 +5759,7 @@
     ]
   },
   "Ursa Major": {
-    "rotation": 1.5708,
+    "rotation": -0.164,
     "steps": [
       {
         "title": "Orient yourself",

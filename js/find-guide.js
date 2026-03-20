@@ -47,7 +47,8 @@ function startFindGuide(con) {
     const steps = guide.steps.map(s => Object.assign({}, s));
     const { ra: curRa, dec: curDec } = vecToRaDec(explore.P);
     steps.forEach(s => { if (s.random) { s.ra = curRa; s.dec = curDec; } });
-    explore.R = guide.rotation != null ? guide.rotation : guideNorthUpR(raDecToVec(con.ra, con.dec));
+    const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
+    explore.R = guide.rotation != null ? defaultR + guide.rotation : defaultR;
 
     guideStart(steps, _catalogCache, { onLastNext: exitFindGuide });
   });

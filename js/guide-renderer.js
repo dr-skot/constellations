@@ -221,13 +221,18 @@ function guideDrawAnnotation(step, catalog) {
   ctx.restore();
 }
 
+function _stepR(step) {
+  const base = guideNorthUpR(raDecToVec(step.ra, step.dec));
+  return step.rotation != null ? base + step.rotation : _gs ? _gs.defaultR : explore.R;
+}
+
 // ── Animation ─────────────────────────────────────────────────────────────────
 // shouldContinue: optional function returning false to abort mid-animation
 function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldContinue) {
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
   const v1 = explore.P.slice(), f1 = explore.fov, R1 = explore.R;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
-  const R2 = _gs && step.rotation != null ? step.rotation : _gs ? _gs.defaultR : R1;
+  const R2 = _stepR(step);
   let dR = R2 - R1;
   if (dR > Math.PI) dR -= 2 * Math.PI;
   if (dR < -Math.PI) dR += 2 * Math.PI;
@@ -402,7 +407,7 @@ function guideGoTo(i, immediate) {
     _guideApplySettings(step);
     explore.P   = raDecToVec(step.ra, step.dec);
     explore.fov = step.fov;
-    explore.R   = step.rotation != null ? step.rotation : _gs.defaultR;
+    explore.R   = _stepR(step);
     _guideDraw();
     guideDrawAnnotation(step, _gs.catalog);
     _gs.animating = false;
