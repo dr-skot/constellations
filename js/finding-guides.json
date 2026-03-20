@@ -137,7 +137,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Ant"
+        ],
         "highlight": [
           {
             "id": "NGC 2997"
@@ -185,7 +187,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": [
+          "Aps"
+        ]
       }
     ]
   },
@@ -233,7 +237,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Aqr"
+        ],
         "highlight": [
           {
             "id": "Saturn Nebula"
@@ -305,7 +311,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Aql"
+        ],
         "highlight": [
           {
             "id": "Altair"
@@ -359,7 +367,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Ara"
+        ],
         "highlight": [
           {
             "id": "NGC 6397"
@@ -428,7 +438,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": [
+          "Ari"
+        ]
       }
     ]
   },
@@ -505,7 +517,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Aur"
+        ],
         "highlight": [
           {
             "id": "M36"
@@ -592,7 +606,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Boo"
+        ],
         "highlight": [
           {
             "id": "Arcturus"
@@ -643,7 +659,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": [
+          "Cae"
+        ]
       }
     ]
   },
@@ -689,7 +707,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Cam"
+        ],
         "highlight": [
           {
             "id": "NGC 2403"
@@ -742,7 +762,9 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "art": true,
+        "art": [
+          "Cnc"
+        ],
         "highlight": [
           {
             "id": "Beehive (M44)",
@@ -813,7 +835,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "CVn"
+        ],
         "highlight": [
           {
             "id": "Whirlpool Galaxy"
@@ -879,7 +903,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "CMa"
+        ],
         "highlight": [
           {
             "id": "Sirius"
@@ -935,7 +961,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "CMi"
+        ],
         "highlight": [
           {
             "id": "Procyon"
@@ -1013,7 +1041,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Cap"
+        ],
         "highlight": [
           {
             "id": "Deneb Algedi"
@@ -1064,7 +1094,11 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Car",
+          "Vel",
+          "Pup"
+        ],
         "rotation": 3
       },
       {
@@ -1195,7 +1229,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": [
+          "Cas"
+        ]
       }
     ]
   },
@@ -1259,7 +1295,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Cen"
+        ],
         "highlight": [
           {
             "id": "Menkent"
@@ -1346,7 +1384,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Cep"
+        ],
         "highlight": [
           {
             "id": "Garnet Star"
@@ -1396,7 +1436,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true,
+        "art": [
+          "Cet"
+        ],
         "highlight": [
           {
             "id": "Diphda"
@@ -1499,7 +1541,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": [
+          "Cha"
+        ]
       }
     ]
   },
@@ -1545,7 +1589,9 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "art": true
+        "art": [
+          "Cir"
+        ]
       },
       {
         "title": "The Circinus Galaxy",
@@ -1703,7 +1749,9 @@
         "diagram": true,
         "names": true,
         "bounds": true,
-        "art": true
+        "art": [
+          "Com"
+        ]
       }
     ]
   },
