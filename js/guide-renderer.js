@@ -262,8 +262,8 @@ function _guideApplySettings(step) {
   if (step.lines?.length && _gs?.catalog) {
     explore.guideLinesDef     = step.lines;
     explore.guideLinesCatalog = _gs.catalog;
-    explore.guideLinesColor   = step.lineColor || 'rgba(80,145,230,0.52)';
-    explore.guideLinesWidth   = step.lineWidth || 1.5;
+    explore.guideLinesColor   = step.lineColor || 'rgba(140,200,255,0.9)';
+    explore.guideLinesWidth   = step.lineWidth || 5;
   } else {
     explore.guideLinesDef = null;
   }

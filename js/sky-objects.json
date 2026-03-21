@@ -320,6 +320,26 @@
     "color": "#c8d8ff",
     "r": 11
   },
+  "ε Leo": {
+    "ra": 146.463,
+    "dec": 23.774,
+    "color": "#ffd080"
+  },
+  "Rasalas": {
+    "ra": 148.191,
+    "dec": 26.007,
+    "color": "#ff9060"
+  },
+  "Adhafera": {
+    "ra": 154.173,
+    "dec": 23.417,
+    "color": "#c8d8ff"
+  },
+  "η Leo": {
+    "ra": 151.833,
+    "dec": 16.763,
+    "color": "#c8d8ff"
+  },
   "Denebola": {
     "ra": 177.265,
     "dec": 14.572,
@@ -471,7 +491,7 @@
     "r": 10,
     "arcmin": 20
   },
-  "BL Lac": {
+  "BL Lacertae": {
     "ra": 330.68,
     "dec": 42.278,
     "color": "#c8d8ff"
@@ -628,6 +648,11 @@
     "color": "#ff9060",
     "r": 12
   },
+  "Hind's Crimson Star": {
+    "ra": 74.901,
+    "dec": -14.806,
+    "color": "#ff4040"
+  },
   "Nusakan": {
     "ra": 239.39691,
     "dec": 26.87788,
@@ -721,6 +746,12 @@
     "dec": 11.967,
     "color": "#90c8ff",
     "r": 15
+  },
+  "Saiph": {
+    "ra": 86.939,
+    "dec": -9.670,
+    "color": "#90c8ff",
+    "r": 14
   },
   "Rigel": {
     "ra": 78.634,
@@ -907,6 +938,17 @@
     "color": "#90c8ff",
     "r": 12
   },
+  "SN 1006": {
+    "ra": 225.592,
+    "dec": -41.95,
+    "color": "#ffa060",
+    "arcmin": 30
+  },
+  "Methuselah Star": {
+    "ra": 235.763,
+    "dec": -10.933,
+    "color": "#ffd080"
+  },
   "Zubeneschamali": {
     "ra": 229.251735,
     "dec": -9.382917,
@@ -1019,6 +1061,12 @@
     "dec": 34.393,
     "color": "#ff9060",
     "r": 12
+  },
+  "Intergalactic Wanderer": {
+    "ra": 114.535,
+    "dec": 38.882,
+    "color": "#ffe8b0",
+    "arcmin": 4
   },
   "α Mus": {
     "ra": 189.296,
@@ -1145,6 +1193,12 @@
     "dec": -7.033,
     "color": "#90c8ff",
     "r": 12
+  },
+  "Rosette Nebula": {
+    "ra": 97.875,
+    "dec": 4.84,
+    "color": "#ff7070",
+    "arcmin": 95
   },
   "β Mus": {
     "ra": 191.57,
@@ -1442,6 +1496,12 @@
   "Megrez": {
     "ra": 183.856,
     "dec": 57.033,
+    "color": "#c8d8ff",
+    "r": 10
+  },
+  "Phecda": {
+    "ra": 178.457,
+    "dec": 53.695,
     "color": "#c8d8ff",
     "r": 10
   },

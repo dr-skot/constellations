@@ -2186,9 +2186,7 @@
             "Sadr",
             "Aljanah"
           ]
-        ],
-        "lineColor": "rgba(140,200,255,0.9)",
-        "lineWidth": 5
+        ]
       },
       {
         "title": "Deneb",
@@ -2924,9 +2922,7 @@
             "ζ Her",
             "ε Her"
           ]
-        ],
-        "lineColor": "rgba(140,200,255,0.9)",
-        "lineWidth": 5
+        ]
       },
       {
         "title": "M13 — the Great Globular",
@@ -3246,7 +3242,7 @@
           "Lac"
         ],
         "highlight": [
-          {"id": "BL Lac"}
+          {"id": "BL Lacertae"}
         ]
       }
     ]
@@ -3255,7 +3251,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Leo — the Lion, a spring constellation with one of the sky's most distinctive head shapes, anchored by bright Regulus.",
+        "caption": "Let's find Leo, the Lion — one of the sky's most recognizable constellations, anchored by bright Regulus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3264,84 +3260,64 @@
         "bounds": false
       },
       {
-        "title": "Look south in spring",
-        "caption": "Turn to the southern sky on a spring evening. Leo is the most prominent constellation of the spring sky for northern observers, riding high in the south in March and April.",
-        "ra": 160,
-        "dec": 20,
-        "fov": 80,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "The Sickle",
-        "caption": "The lion's head and mane form a backward question mark called the Sickle. Regulus — a hot blue-white star sitting almost exactly on the ecliptic — anchors the base of the hook. It is the brightest star in Leo and impossible to miss once you know the shape.",
-        "ra": 153,
-        "dec": 17,
-        "fov": 28,
+        "title": "The Pointer Stars",
+        "caption": "The Big Dipper's Pointer Stars — Dubhe and Merak — point toward Polaris in one direction and Regulus in the other.",
+        "ra": 159,
+        "dec": 45,
+        "fov": 100,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Regulus"
-          },
-          {
-            "id": "Algieba"
-          }
+          {"id": "Polaris"},
+          {"id": "Dubhe"},
+          {"id": "Merak"},
+          {"id": "Regulus"}
         ]
       },
       {
-        "title": "The full Lion",
-        "caption": "The Sickle forms Leo's head; a right-angled triangle of stars to the east traces the haunches and tail. Denebola marks the tail tip. The whole figure does evoke a crouching lion facing west, sickle raised like a mane.",
-        "ra": 163,
+        "title": "The Sickle and the Lion",
+        "caption": "Leo's head and mane form a backward question mark called the Sickle. Regulus, a hot blue-white star, anchors the base. A triangle of stars traces the haunches and tail, with Denebola at the tip.",
+        "ra": 160,
         "dec": 17,
         "fov": 52,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": ["Leo"],
+        "art": false,
         "highlight": [
-          {
-            "id": "Regulus"
-          },
-          {
-            "id": "Denebola"
-          }
+          {"id": "Regulus"},
+          {"id": "Denebola"}
+        ],
+        "lines": [
+          ["Regulus", "η Leo"],
+          ["η Leo", "Algieba"],
+          ["Algieba", "Adhafera"],
+          ["Adhafera", "Rasalas"],
+          ["Rasalas", "ε Leo"]
         ]
       },
       {
-        "title": "Found by the Pointers",
-        "caption": "A useful trick: extend the Big Dipper's Pointer Stars southward — opposite the direction to Polaris — and you land on Regulus. The same two stars that find the North Star also find the Lion's heart.",
-        "ra": 159,
-        "dec": 36,
-        "fov": 76,
+        "title": "The Nemean Lion",
+        "caption": "Leo represents the Nemean Lion, a beast whose hide no weapon could pierce. Heracles tracked it to its cave, blocked one entrance, and strangled it with his bare hands. He wore the lion's pelt as armor for the rest of his labors.",
+        "ra": 160,
+        "dec": 17,
+        "fov": 44,
         "photo": true,
         "diagram": true,
-        "names": true,
+        "names": false,
         "bounds": false,
-        "highlight": [
-          {
-            "id": "Dubhe"
-          },
-          {
-            "id": "Merak"
-          },
-          {
-            "id": "Regulus"
-          }
-        ]
+        "art": ["Leo"]
       }
     ]
   },
   "Leo Minor": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Leo Minor — the Lesser Lion, a faint constellation wedged between the large Leo and the Big Dipper's bowl in the spring sky.",
+        "caption": "Let's find Leo Minor, the Lesser Lion — a faint constellation wedged between Leo and the Big Dipper.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3350,35 +3326,32 @@
         "bounds": false
       },
       {
-        "title": "Between Leo and Ursa Major",
-        "caption": "Leo Minor lies halfway between Regulus (the bright blue-white forepaw of Leo) and the Big Dipper's bowl. Praecipua is the sole easily visible star in the region. Best seen March–April.",
-        "ra": 155,
+        "title": "Between Leo and the Dipper",
+        "caption": "Leo Minor lies between Regulus and the Big Dipper's bowl. Praecipua is the only easily visible star in the gap.",
+        "ra": 158,
         "dec": 37,
         "fov": 60,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Regulus"
-          },
-          {
-            "id": "Praecipua"
-          }
-        ]
+          {"id": "Regulus"},
+          {"id": "Praecipua"}
+        ],
+        "lines": [["Alkaid", "Mizar"], ["Mizar", "Alioth"], ["Alioth", "Megrez"], ["Megrez", "Dubhe"], ["Dubhe", "Merak"], ["Merak", "Phecda"], ["Phecda", "Megrez"]]
       },
       {
         "title": "Filling the gap",
-        "caption": "Leo Minor was introduced by Hevelius in 1687 from stars he felt were too isolated to belong to Leo. It has no mythology. Despite its faintness, the constellation contains several background galaxies accessible in backyard telescopes.",
-        "ra": 150,
+        "caption": "Polish astronomer Johannes Hevelius created Leo Minor in 1687 from unclaimed stars between Leo and Ursa Major. It has no mythology — just a small lion keeping the big one company.",
+        "ra": 153,
         "dec": 35,
         "fov": 28,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "names": ["LMi"],
+        "bounds": ["LMi"],
+        "art": ["LMi"]
       }
     ]
   },
@@ -3386,7 +3359,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lepus — the Hare, a small constellation that crouches directly beneath Orion's feet in the winter sky.",
+        "caption": "Let's find Lepus — the Hare, a small constellation crouching directly beneath Orion.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3395,48 +3368,50 @@
         "bounds": false
       },
       {
-        "title": "Look below Orion",
-        "caption": "In January and February evenings, Orion dominates the southern sky for northern observers. This makes Lepus one of the easiest secondary constellations to find: just look under Orion's feet.",
+        "title": "Below Orion's feet",
+        "caption": "Lepus sits just below Orion's feet — Saiph and Rigel point the way. Look for a compact group of stars immediately below the hunter.",
         "ra": 83,
         "dec": -12,
         "fov": 55,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false
+        "bounds": false,
+        "highlight": [
+          {"id": "Saiph"},
+          {"id": "Rigel"}
+        ]
       },
       {
-        "title": "Find Arneb and the main quad",
-        "caption": "Arneb (mag 2.6) is a luminous white supergiant — the brightest star of the Hare. Nihal (mag 2.8) is an orange giant paired with Arneb to form the most obvious two-star anchor.",
+        "title": "Arneb and Nihal",
+        "caption": "Arneb and Nihal are the two brightest stars in Lepus, forming the Hare's neck. The Hare was placed at Orion's feet as his quarry, forever fleeing the hunter across the sky.",
         "ra": 83,
         "dec": -19,
         "fov": 26,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
+        "names": false,
+        "bounds": ["Lep"],
+        "art": ["Lep"],
         "highlight": [
-          {
-            "id": "Arneb"
-          },
-          {
-            "id": "Nihal"
-          }
+          {"id": "Arneb"},
+          {"id": "Nihal"}
         ]
       },
       {
-        "title": "Mira",
-        "caption": "Hind's Crimson Star (R Leporis) is a famous Mira variable near the northwestern boundary — when near maximum brightness it is one of the deepest red stars visible to the naked eye.",
-        "ra": 84,
+        "title": "Hind's Crimson Star",
+        "caption": "Hind's Crimson Star, near the edge of Lepus, is one of the deepest red stars visible to the naked eye — a pulsating carbon star nearing the end of its life.",
+        "ra": 80,
         "dec": -18,
         "fov": 22,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "notes": "highlight the Mira variable",
-        "highlight": []
+        "names": ["Lep"],
+        "bounds": false,
+        "art": false,
+        "highlight": [
+          {"id": "Hind's Crimson Star"}
+        ]
       }
     ]
   },
@@ -3453,58 +3428,52 @@
         "bounds": false
       },
       {
-        "title": "Look east of Spica in spring",
-        "caption": "In May and June evenings, Libra is due south at midnight for northern observers. Start at brilliant blue-white Spica in Virgo and move east-southeast to find it. Its brightest stars, Zubenelgenubi and Zubeneschamali, form an obvious pair.",
+        "title": "Between Spica and Antares",
+        "caption": "Libra sits between Spica in Virgo and Antares in Scorpius. Its two brightest stars, Zubenelgenubi and Zubeneschamali, form an obvious pair between these landmarks.",
         "ra": 218,
         "dec": -16,
         "fov": 65,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Spica"
-          },
-          {
-            "id": "Zubenelgenubi"
-          },
-          {
-            "id": "Zubeneschamali"
-          }
+          {"id": "Spica"},
+          {"id": "Antares"},
+          {"id": "Zubenelgenubi"},
+          {"id": "Zubeneschamali"}
         ]
       },
       {
         "title": "The scorpion's old claws",
-        "caption": "Zubeneschamali is one of the few stars that has been consistently described as greenish by observers. Zubenelgenubi is a wide naked-eye double, easily split with binoculars into a white pair. Their Arabic names mean 'the northern claw' and 'the southern claw,' recalling a time when they were considered part of Scorpius.",
-        "ra": 226,
-        "dec": -17,
-        "fov": 28,
+        "caption": "Zubeneschamali is one of the few stars consistently described as greenish by observers. Zubenelgenubi is a wide naked-eye double, easily split with binoculars into a white pair. Their Arabic names mean 'northern claw' and 'southern claw,' recalling a time when they were considered part of Scorpius.",
+        "ra": 240,
+        "dec": -25,
+        "fov": 50,
+        "rotation": -0.2618,
         "photo": true,
         "diagram": true,
-        "names": true,
+        "names": ["Lib", "Sco"],
         "bounds": false,
         "highlight": [
-          {
-            "id": "Zubeneschamali"
-          },
-          {
-            "id": "Zubenelgenubi"
-          }
+          {"id": "Zubeneschamali"},
+          {"id": "Zubenelgenubi"}
         ]
       },
       {
         "title": "The scales of the zodiac",
-        "caption": "The full constellation outlines a rough balance, with fainter stars to the south completing the scale pans. Libra lies on the ecliptic; planets are frequently found passing through it.",
+        "caption": "The Methuselah Star, inside Libra's boundary, is one of the oldest known stars — nearly as old as the universe itself at around 13.7 billion years. It's faint but visible in binoculars, a relic from a time before the Milky Way had fully formed.",
         "ra": 228,
-        "dec": -18,
-        "fov": 30,
+        "dec": -16,
+        "fov": 34,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "highlight": []
+        "names": false,
+        "bounds": ["Lib"],
+        "art": ["Lib"],
+        "highlight": [
+          {"id": "Methuselah Star"}
+        ]
       }
     ]
   },
@@ -3513,7 +3482,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lupus — the Wolf, a moderately bright southern constellation adjacent to Centaurus, with several 2nd and 3rd magnitude stars in a rich Milky Way stretch.",
+        "caption": "Let's find Lupus — the Wolf, a southern constellation nestled between Centaurus and Scorpius along the Milky Way.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3522,58 +3491,47 @@
         "bounds": false
       },
       {
-        "title": "East of Centaurus",
-        "caption": "Lupus lies between Centaurus and Scorpius along the southern Milky Way. From Hadar move east-northeast to reach Alpha Lupi, the constellation's brightest star. Best seen April–June from the southern hemisphere.",
-        "notes": "are these directions right??",
+        "title": "Between Centaurus and Scorpius",
+        "caption": "Lupus sits between Centaurus and Scorpius along the Milky Way. Look up from the Southern Pointers, Rigil Kentaurus and Hadar, to find Alpha Lupi, the Wolf's brightest star.",
         "ra": 228,
         "dec": -42,
         "fov": 65,
+        "rotation": 0.3491,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "α Lup"
-          },
-          {
-            "id": "Hadar"
-          }
+          {"id": "α Lup"},
+          {"id": "Hadar"},
+          {"id": "Rigil Kentaurus"}
         ]
       },
       {
-        "title": "Alpha and Eta Lupi",
-        "caption": "Alpha Lupi (mag 2.3) is a blue giant about 460 light-years away. The constellation has no single memorable shape but its brightest stars are genuinely bright, making it one of the more conspicuous southern constellations despite lacking a well-known asterism.",
+        "title": "The Wolf",
+        "caption": "Lupus has a generous scattering of bright stars but no single memorable shape. The Greeks saw it as a wild animal impaled on a spear held by Centaurus — the two constellations were often depicted together.",
         "ra": 227,
         "dec": -44,
         "fov": 35,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Lup"
-          }
-        ]
+        "names": false,
+        "bounds": ["Lup"],
+        "art": ["Lup"]
       },
       {
         "title": "Supernova 1006",
-        "caption": "A naked-eye supernova blazed in Lupus in 1006 AD — the brightest ever recorded, estimated at magnitude −7.5 and bright enough to cast shadows at night. Its expanding remnant SN 1006 is now a faint X-ray and radio shell.",
+        "caption": "In 1006 AD, a supernova blazed in Lupus — the brightest stellar event in recorded history. Egyptian astrologer Ali ibn Ridwan described it as a quarter the brightness of the Moon; Chinese astronomers tracked the 'guest star' for over a year. Its expanding remnant is now a faint X-ray and radio shell.",
         "ra": 228,
         "dec": -44,
         "fov": 22,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
+        "art": false,
         "highlight": [
-          {
-            "id": "α Lup"
-          },
-          {
-            "id": "δ Lup"
-          }
+          {"id": "SN 1006"}
         ]
       }
     ]
@@ -3583,7 +3541,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lynx — a long, faint northern constellation so named by Hevelius because only someone with the eyes of a lynx could see it, filling the gap between Auriga and Ursa Major.",
+        "caption": "Let's find Lynx — a long, faint northern constellation so named by Polish astronomer Johannes Hevelius because only someone with the eyes of a lynx could see it, filling the gap between Auriga and Ursa Major.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3592,8 +3550,8 @@
         "bounds": false
       },
       {
-        "title": "Between Capella and the Big Dipper",
-        "caption": "Lynx occupies the large, sparse region between bright Capella to the southwest and the Big Dipper to the northeast. Identify those two landmarks and scan the relatively empty stretch between them. Best seen January–March.",
+        "title": "Between Capella and the Dipper",
+        "caption": "Lynx fills a large, empty gap between bright Capella and the Big Dipper's bowl. Scan the relatively barren stretch between them.",
         "ra": 130,
         "dec": 47,
         "fov": 90,
@@ -3602,42 +3560,38 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Capella"
-          }
-        ]
+          {"id": "Capella"}
+        ],
+        "lines": [["Alkaid", "Mizar"], ["Mizar", "Alioth"], ["Alioth", "Megrez"], ["Megrez", "Dubhe"], ["Dubhe", "Merak"], ["Merak", "Phecda"], ["Phecda", "Megrez"]]
       },
       {
         "title": "Alpha Lyncis",
-        "caption": "Alpha Lyncis (mag 3.1) is a red-orange giant about 222 light-years away and the sole beacon of the constellation. The long chain requires very dark skies to trace completely.",
-        "ra": 131,
-        "dec": 42,
-        "fov": 45,
+        "caption": "Alpha Lyncis is the sole beacon of the constellation — an orange-red giant and the only star here brighter than fourth magnitude. The long chain of fainter stars requires dark skies to trace.",
+        "ra": 120,
+        "dec": 46,
+        "fov": 55,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
+        "names": false,
+        "bounds": ["Lyn"],
+        "art": ["Lyn"],
         "highlight": [
-          {
-            "id": "α Lyn"
-          }
+          {"id": "α Lyn"}
         ]
       },
       {
         "title": "The Intergalactic Wanderer",
-        "caption": "NGC 2419, the so-called Intergalactic Wanderer, is a remote globular cluster about 300,000 light-years away — farther than the Magellanic Clouds — yet still a gravitationally bound member of the Milky Way's halo.",
-        "notes": "explainn the wanderer name; highlight the wanderer",
-        "ra": 136,
+        "caption": "NGC 2419, the Intergalactic Wanderer, is a globular cluster about 300,000 light-years away — farther than the Magellanic Clouds. It orbits so far from the galactic center that astronomers once doubted it was bound to the Milky Way at all, earning it the name.",
+        "ra": 120,
         "dec": 38,
         "fov": 28,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
+        "art": false,
         "highlight": [
-          {
-            "id": "α Lyn"
-          }
+          {"id": "Intergalactic Wanderer"}
         ]
       }
     ]
@@ -3646,7 +3600,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lyra — a small constellation but home to Vega, the fifth-brightest star in the sky and the dominant beacon of summer nights.",
+        "caption": "Let's find Lyra — a small constellation home to Vega, the fifth-brightest star in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3655,24 +3609,8 @@
         "bounds": false
       },
       {
-        "title": "The summer sky",
-        "caption": "Look overhead on a summer evening. From mid-northern latitudes Vega passes nearly directly overhead in August — impossible to miss. In the southern hemisphere it skims the northern horizon in winter.",
-        "ra": 285,
-        "dec": 38,
-        "fov": 80,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Vega"
-          }
-        ]
-      },
-      {
         "title": "The Summer Triangle",
-        "caption": "Vega is the brightest corner of the Summer Triangle — an asterism formed with Deneb in Cygnus and Altair in Aquila.",
+        "caption": "Vega is the brightest corner of the Summer Triangle, an asterism it shares with Deneb in Cygnus and Altair in Aquila. Vega is the brightest of the three — impossible to miss.",
         "ra": 296,
         "dec": 30,
         "fov": 56,
@@ -3681,48 +3619,39 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Vega"
-          },
-          {
-            "id": "Deneb"
-          },
-          {
-            "id": "Altair"
-          }
+          {"id": "Vega"},
+          {"id": "Deneb"},
+          {"id": "Altair"}
         ]
       },
       {
-        "title": "The magnitude standard",
-        "caption": "Vega blazes brilliant blue-white at magnitude 0 (the magnitude scale uses it as a base value). It was the north pole star around 12,000 BCE and will be again around 13,700 CE.",
+        "title": "Vega",
+        "caption": "Vega was the original magnitude standard — astronomers defined it as exactly zero, the reference point for all stellar brightness. It was the north pole star around 12,000 BCE and will be again around 13,700 CE.",
         "ra": 283,
         "dec": 37,
         "fov": 30,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
+        "names": false,
+        "bounds": ["Lyr"],
+        "art": ["Lyr"],
         "highlight": [
-          {
-            "id": "Vega"
-          }
+          {"id": "Vega"}
         ]
       },
       {
         "title": "The Lyre",
-        "caption": "Just south of Vega, four fainter stars form a small parallelogram — the frame of the lyre. The Ring Nebula (M57), easily found in a small telescope, lies between the two southern stars of the parallelogram.",
+        "caption": "Just below Vega, four fainter stars form a small parallelogram — the frame of the lyre. The Ring Nebula, easily found in a small telescope, lies between the two lower stars of the parallelogram.",
         "ra": 281,
         "dec": 36,
         "fov": 18,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
+        "names": false,
+        "bounds": false,
+        "art": false,
         "highlight": [
-          {
-            "id": "Ring Nebula"
-          }
+          {"id": "Ring Nebula"}
         ]
       }
     ]
@@ -3732,7 +3661,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Mensa — the Table Mountain, the intrinsically faintest of all 88 constellations, notable mainly because the southern edge of the Large Magellanic Cloud overlaps it.",
+        "caption": "Let's find Mensa — the Table Mountain, notable mainly because the southern edge of the Large Magellanic Cloud overlaps it.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3741,8 +3670,8 @@
         "bounds": false
       },
       {
-        "title": "South of Dorado, under the LMC",
-        "caption": "Mensa lies directly south of Dorado, and the southern portion of the LMC extends into it. All five of Mensa's naked-eye stars are below the threshold of most suburban observers. Best seen November–January; circumpolar south of 40°S.",
+        "title": "Under the LMC",
+        "caption": "Mensa sits just below the Large Magellanic Cloud — the LMC's edge actually spills across the boundary into Mensa. None of Mensa's stars are bright, so the Cloud is the easiest way to find it.",
         "ra": 82,
         "dec": -71,
         "fov": 55,
@@ -3750,19 +3679,21 @@
         "diagram": true,
         "names": true,
         "bounds": false,
-        "notes": "highlight the LMC"
+        "highlight": [
+          {"id": "LMC"}
+        ]
       },
       {
-        "title": "The faintest constellation",
-        "caption": "The constellation was named by Lacaille after Table Mountain near Cape Town, the flat-topped landmark overlooking his observing site during his 1751–52 southern sky survey.",
+        "title": "Table Mountain",
+        "caption": "French astronomer Nicolas-Louis de Lacaille named this constellation after Table Mountain near Cape Town — the flat-topped landmark overlooking his observing site during his 1751–52 survey of the southern sky. It is the faintest of all 88 constellations.",
         "ra": 82,
         "dec": -73,
         "fov": 28,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "names": false,
+        "bounds": ["Men"],
+        "art": ["Men"]
       }
     ]
   },
@@ -3771,7 +3702,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Microscopium — the Microscope, a faint southern constellation south of Capricornus with no star brighter than magnitude 4.7.",
+        "caption": "Let's find Microscopium — the Microscope, a faint constellation tucked below Capricornus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3780,32 +3711,31 @@
         "bounds": false
       },
       {
-        "title": "South of Capricornus",
-        "caption": "Microscopium lies about 20° south of the Capricornus arrowhead, or about 15° north of Alnair in Grus, in a rather empty patch of southern autumn sky. There is no distinctive asterism.",
-        "ra": 315,
+        "title": "Below Capricornus",
+        "caption": "Microscopium sits below Capricornus, not far from Fomalhaut, in an empty stretch of sky with no bright stars. Follow the point of Capricornus's arrowhead to find its faint pattern.",
+        "ra": 321,
         "dec": -30,
         "fov": 55,
+        "rotation": 0.2618,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Alnair"
-          }
+          {"id": "Fomalhaut"}
         ]
       },
       {
         "title": "Lacaille's microscope",
-        "caption": "Lacaille named this constellation after the compound microscope — the revolutionary instrument of 17th-century science.",
+        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled the gaps between ancient constellations with 14 new ones, all named after instruments of the Enlightenment. Microscopium honors the compound microscope — the revolutionary instrument that opened the invisible world to science.",
         "ra": 315,
-        "dec": -33,
-        "fov": 14,
+        "dec": -35,
+        "fov": 24,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "names": false,
+        "bounds": ["Mic"],
+        "art": ["Mic"]
       }
     ]
   },
@@ -3814,7 +3744,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Monoceros — the Unicorn, a faint constellation in the heart of the Winter Triangle, filling the rich Milky Way between Orion, Canis Major, and Canis Minor.",
+        "caption": "Let's find Monoceros — the Unicorn, a faint constellation filling the space between Orion, Canis Major, and Canis Minor.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3824,57 +3754,48 @@
       },
       {
         "title": "Inside the Winter Triangle",
-        "caption": "Monoceros fills the interior of the Winter Triangle formed by Sirius, Procyon, and Betelgeuse — three of the brightest stars in the sky. The unicorn's own stars are all 4th magnitude or fainter.",
+        "caption": "Monoceros fills the interior of the Winter Triangle formed by Sirius, Procyon, and Betelgeuse — three of the brightest stars in the sky. The Unicorn's own stars are faint, but the landmarks around it are unmistakable.",
         "ra": 107,
         "dec": 0,
         "fov": 70,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Betelgeuse"
-          },
-          {
-            "id": "Sirius"
-          },
-          {
-            "id": "Procyon"
-          }
+          {"id": "Betelgeuse"},
+          {"id": "Sirius"},
+          {"id": "Procyon"}
         ]
       },
       {
         "title": "Beta Monocerotis",
-        "caption": "Beta Monocerotis is one of the finest triple star systems in the sky — three blue-white components resolvable in any small telescope. The Christmas Tree Cluster (NGC 2264) and the spectacular Cone Nebula appear near the unicorn's head.",
+        "caption": "Monoceros was invented around 1612 by Dutch cartographer Petrus Plancius to fill the gap between Orion's dogs. The unicorn may come from the biblical 're'em' — really a wild ox, but mistranslated as 'unicorn' in the King James Bible. Beta Monocerotis, its finest treasure, is a triple star system resolvable in any small telescope.",
         "ra": 104,
         "dec": -1,
         "fov": 38,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
-        "art": true,
+        "names": false,
+        "bounds": ["Mon"],
+        "art": ["Mon"],
         "highlight": [
-          {
-            "id": "β Mon"
-          }
+          {"id": "β Mon"}
         ]
       },
       {
         "title": "The Rosette Nebula",
-        "caption": "The Rosette Nebula (NGC 2237) surrounds the open cluster NGC 2244 in northern Monoceros. In long-exposure photographs it appears as a full-moon-sized glowing ring about 5,200 light-years away; the central cluster is visible in binoculars.",
+        "caption": "The Rosette Nebula, one of the sky's most photogenic objects, appears as a full-moon-sized glowing ring about 5,200 light-years away. The star cluster at its center blew a cavity in the surrounding gas and is visible in binoculars.",
         "ra": 98,
         "dec": 4,
         "fov": 22,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
+        "art": false,
         "highlight": [
-          {
-            "id": "β Mon"
-          }
+          {"id": "Rosette Nebula"}
         ]
       }
     ]
