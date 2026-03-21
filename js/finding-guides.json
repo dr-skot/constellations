@@ -2964,11 +2964,10 @@
     ]
   },
   "Horologium": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Horologium — the Pendulum Clock, a long, thin, very faint southern constellation stretching north-south between Eridanus and Reticulum.",
+        "caption": "Let's find Horologium, the Pendulum Clock — a faint constellation tucked between Eridanus and Reticulum.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2977,14 +2976,14 @@
         "bounds": false
       },
       {
-        "title": "East of Achernar",
-        "caption": "Horologium stretches east-southeast of Achernar, the brilliant blue star at the end of the river Eridanus. Alpha Horologii is the only remotely conspicuous star, sitting near the constellation's northern tip. Best seen October–December from the southern hemisphere.",
+        "title": "Find it near Achernar",
+        "caption": "Look for Achernar, the brilliant blue star at the end of Eridanus. Alpha Horologii, an orange giant and the clock's only conspicuous star, sits nearby. The rest are so faint they're a challenge even from dark sites.",
         "ra": 54,
         "dec": -50,
         "fov": 65,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -2996,32 +2995,17 @@
         ]
       },
       {
-        "title": "A thin strip of faint stars",
-        "caption": "Alpha Horologii (mag 3.9) is an orange giant about 117 light-years away. The remaining stars are at the limit of naked-eye visibility even from dark sites.",
-        "ra": 51,
-        "dec": -53,
-        "fov": 42,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Hor"
-          }
-        ]
-      },
-      {
-        "title": "Huygens' clock",
-        "caption": "Horologium was named by Lacaille after Christiaan Huygens's 17th-century invention of the pendulum clock, which revolutionized time-keeping and navigation.",
+        "title": "Lacaille's instruments",
+        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled the gaps between ancient constellations with 14 new ones, all named after instruments of the Enlightenment. Horologium honors Huygens's pendulum clock, which made accurate navigation at sea possible for the first time.",
         "ra": 48,
-        "dec": -55,
-        "fov": 28,
+        "dec": -50,
+        "fov": 30,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "art": [
+          "Hor"
+        ],
+        "rotation": -2.18
       }
     ]
   },
@@ -3029,7 +3013,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Hydra — the Water Snake, winding across a vast stretch of the spring sky anchored by the bright lone star Alphard.",
+        "caption": "Let's find Hydra, the Water Snake — the largest constellation in the sky, winding across more than a hundred degrees.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3038,27 +3022,8 @@
         "bounds": false
       },
       {
-        "title": "Look south in spring",
-        "caption": "Hydra sprawls across the southern sky in March and April, south of Virgo and Leo. Its brightest star Alphard is the easiest entry point. From Procyon (in Canis Minor), drop about 20° south to find orange Alphard glowing alone in an otherwise starless region.",
-        "ra": 160,
-        "dec": -18,
-        "fov": 112,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Alphard"
-          },
-          {
-            "id": "Procyon"
-          }
-        ]
-      },
-      {
-        "title": "Find Alphard",
-        "caption": "Alphard (Alpha Hydrae, mag 2.0) is so conspicuously alone in its part of the sky that its name means 'the solitary one' in Arabic. It is an orange giant about 177 light-years away. An alternative hop: extend a line from Castor through Pollux in Gemini southward about 40° and you land near Alphard.",
+        "title": "The solitary one",
+        "caption": "Look for Alphard, a lonely orange star glowing in an otherwise empty stretch of sky. Its Arabic name means 'the solitary one.' Follow a line from Castor through Pollux to find it.",
         "ra": 132,
         "dec": 10,
         "fov": 65,
@@ -3079,30 +3044,32 @@
         ]
       },
       {
-        "title": "The head and the long tail",
-        "caption": "West of Alphard, a ring of six faint stars (magnitudes 3.4–4.5) forms Hydra's head. Eastward the snake's body continues for another 60°, ending near the border of Libra. The Crow and the Cup sit on Hydra's back.",
+        "title": "The longest snake",
+        "caption": "A ring of faint stars marks the snake's head, and the body winds on and on with the Crow and the Cup riding on its back. Apollo sent the crow to fetch water in the cup, but it dawdled eating figs and brought back a water snake as an excuse. Apollo flung all three into the sky.",
         "ra": 170,
         "dec": -18,
         "fov": 100,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "highlight": [
-          {
-            "id": "Alphard"
-          }
+        "names": [
+          "Crv",
+          "Crt",
+          "Hya"
+        ],
+        "bounds": false,
+        "art": [
+          "Hya",
+          "Crv",
+          "Crt"
         ]
       }
     ]
   },
   "Hydrus": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Hydrus — the Lesser Water Snake, a southern triangle of stars between the Large and Small Magellanic Clouds, not to be confused with the much larger Hydra.",
+        "caption": "Let's find Hydrus, the Lesser Water Snake — a small triangle of stars near the Magellanic Clouds, not to be confused with the much larger Hydra.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3111,8 +3078,8 @@
         "bounds": false
       },
       {
-        "title": "Between the Magellanic Clouds",
-        "caption": "Hydrus forms a triangle between Achernar (the bright blue end of Eridanus) and the south pole region. Beta Hydri, the nearest bright star to the south celestial pole, is the anchor. Find it in the gap between the two Magellanic Clouds.",
+        "title": "Between the Clouds",
+        "caption": "In the area dominated by Achernar and the two Magellanic Clouds you'll find a triangle of three stars. Beta Hydri, the one near the Small Cloud, is the nearest bright star to the south celestial pole.",
         "ra": 28,
         "dec": -68,
         "fov": 60,
@@ -3120,57 +3087,67 @@
         "diagram": true,
         "names": false,
         "bounds": false,
-        "notes": "highlight the Magellanic clouds; placement of beta, or language of the caption, is wrong",
         "highlight": [
           {
             "id": "Achernar"
           },
           {
             "id": "β Hyi"
+          },
+          {
+            "id": "LMC"
+          },
+          {
+            "id": "SMC"
+          },
+          {
+            "id": "south pole",
+            "crosshair": true,
+            "label": "South Celestial Pole"
           }
         ]
       },
       {
-        "title": "Our sun's future",
-        "caption": "Beta Hydri is old enough to have evolved slightly off the main sequence — making it a near-perfect preview of what our own Sun will look like in about 1.5 billion years. At just 24 light-years it is one of the most studied solar analogs.",
+        "title": "Our Sun's future",
+        "caption": "At just 24 light-years away, Beta Hydri is one of the nearest Sun-like stars. It's old enough to have evolved slightly off the main sequence — a preview of what our own Sun will look like in about a billion years.",
         "ra": 27,
         "dec": -68,
         "fov": 35,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "notes": "alpha and beta locations seem reversed; only highlight beta, if it's really the sun-like one",
+        "bounds": [
+          "Hyi"
+        ],
         "highlight": [
           {
             "id": "β Hyi"
-          },
-          {
-            "id": "α Hyi"
           }
         ]
       },
       {
-        "title": "Our Sun's future",
-        "caption": "Hydrus was introduced by Keyser and de Houtman in the late 16th century to fill the southern sky between the Clouds.",
-        "note": "needs new title",
-        "ra": 45,
-        "dec": -70,
-        "fov": 28,
+        "title": "Charting new stars",
+        "caption": "In 1595, Dutch navigator Pieter Keyser began charting stars invisible from Europe during a trade voyage to the East Indies. He died at sea, but his colleague Frederick de Houtman completed the catalog — adding twelve new constellations to the southern sky, Hydrus among them.",
+        "ra": 27,
+        "dec": -71,
+        "fov": 24,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "names": [
+          "Hyi"
+        ],
+        "bounds": false,
+        "art": [
+          "Hyi"
+        ]
       }
     ]
   },
   "Indus": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Indus — the Indian, a faint southern constellation lying between Pavo and Grus in the southern autumn sky.",
+        "caption": "Let's find Indus, the Indian — a faint constellation between Pavo and Grus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3179,14 +3156,14 @@
         "bounds": false
       },
       {
-        "title": "Between Pavo and Grus",
-        "caption": "Indus lies between Pavo to the south-southwest and Grus to the east. From Alnair in Grus, move about 15° northwest to locate Alpha Indi, the constellation's most distinctive star. Best seen August–October.",
+        "title": "Find it near Alnair",
+        "caption": "Look for Alnair in Grus, then find Alpha Indi nearby — an orange giant and the constellation's only conspicuous star.",
         "ra": 314,
         "dec": -51,
         "fov": 60,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -3198,43 +3175,36 @@
         ]
       },
       {
-        "title": "Alpha and Theta Indi",
-        "caption": "Alpha Indi (mag 3.1) is an orange giant about 98 light-years away. The constellation's five visible stars range from magnitude 3.1 to 4.4, with no distinctive shape.",
-        "ra": 312,
-        "dec": -52,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Ind"
-          }
-        ]
-      },
-      {
-        "title": "Epsilon Indi — a nearby neighbor",
-        "caption": "Indus was introduced by Keyser and de Houtman to represent indigenous peoples encountered on Dutch voyages. Epsilon Indi, one of the nearest Sun-like stars, hosts a pair of T-dwarf brown dwarfs discovered in 2003.",
+        "title": "A nearby neighbor",
+        "caption": "Epsilon Indi is one of the nearest Sun-like stars at just 12 light-years. It hosts a pair of brown dwarfs — objects too small to sustain hydrogen fusion but larger than any planet.",
         "ra": 316,
-        "dec": -51,
+        "dec": -50,
         "fov": 25,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
-        "notes": "highlight epsilon",
-        "highlight": []
+        "names": [
+          "Ind"
+        ],
+        "bounds": [
+          "Ind"
+        ],
+        "art": [
+          "Ind"
+        ],
+        "rotation": 2.924,
+        "highlight": [
+          {
+            "id": "ε Ind"
+          }
+        ]
       }
     ]
   },
   "Lacerta": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lacerta — the Lizard, a small autumn constellation sandwiched between Cygnus to the west and Andromeda/Cassiopeia to the east.",
+        "caption": "Let's find Lacerta, the Lizard — a small constellation sandwiched between Cygnus and Cassiopeia.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3243,8 +3213,8 @@
         "bounds": false
       },
       {
-        "title": "Between Cygnus and Andromeda",
-        "caption": "Lacerta fills the gap between Cygnus and the northern tip of Andromeda. Identify Deneb (the tail of Cygnus) and the W of Cassiopeia, then look for the faint zigzag of stars between them. Best seen August–October for northern observers.",
+        "title": "A faint zigzag",
+        "caption": "Look for a meandering chain of faint stars in the gap between Deneb and the W of Cassiopeia, embedded in a rich stretch of the Milky Way.",
         "ra": 336,
         "dec": 47,
         "fov": 60,
@@ -3259,33 +3229,25 @@
         ]
       },
       {
-        "title": "A meandering chain",
-        "caption": "Alpha Lacertae (mag 3.8) is a blue-white star about 102 light-years away and the constellation's brightest. The other stars form a meandering chain of about 8 stars embedded in a rich section of the autumn Milky Way.",
+        "title": "BL Lacertae",
+        "caption": "Lacerta gives its name to BL Lacertae objects — a class of active galactic nuclei whose jets point nearly straight at Earth. BL Lac itself was first cataloged as a variable star before its extragalactic nature was discovered.",
         "ra": 336,
-        "dec": 47,
-        "fov": 25,
+        "dec": 46,
+        "fov": 26,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
+        "names": [
+          "Lac"
+        ],
+        "bounds": [
+          "Lac"
+        ],
+        "art": [
+          "Lac"
+        ],
         "highlight": [
-          {
-            "id": "α Lac"
-          }
+          {"id": "BL Lac"}
         ]
-      },
-      {
-        "title": "BL Lacertae objects",
-        "caption": "Lacerta gives its name to BL Lacertae objects — a class of violently variable active galactic nuclei whose jets point nearly straight at us. BL Lac itself was initially catalogued as a variable star before its extragalactic nature was discovered.",
-        "ra": 336,
-        "dec": 47,
-        "fov": 16,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "notes": "highlight the objects",
-        "highlight": []
       }
     ]
   },
