@@ -1317,6 +1317,18 @@
             "label": "Omega Cen"
           }
         ]
+      },
+      {
+        "title": "A forgotten sky",
+        "caption": "Centaurus is one of the oldest constellations — the Babylonians mapped a centaur figure over 3,000 years ago, and the Greeks associated it with Chiron, the wise teacher of heroes. Precession has since carried it below the European horizon; stars the ancients knew by heart are now a purely southern sight.",
+        "ra": 201,
+        "dec": -48,
+        "fov": 55,
+        "photo": true,
+        "diagram": true,
+        "names": false,
+        "bounds": false,
+        "art": ["Cen"]
       }
     ]
   },
