@@ -132,6 +132,7 @@
         <div id="fg-nav-row">
           <button id="fg-btn-prev">← Back</button>
           <button id="fg-btn-toggle-diag" style="display:none">Show overlays</button>
+          <button id="fg-btn-copy-view" style="font-size:.75rem;padding:3px 10px;border:1px solid var(--border);background:transparent;color:var(--dim);border-radius:6px;cursor:pointer">Copy View</button>
           <button id="fg-btn-next">Next →</button>
         </div>
       </div>
@@ -215,6 +216,24 @@
       document.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') document.getElementById('fg-btn-next').click();
         if (e.key === 'ArrowLeft') document.getElementById('fg-btn-prev').click();
+      });
+
+      document.getElementById('fg-btn-copy-view').addEventListener('click', () => {
+        const { ra, dec } = vecToRaDec(explore.P);
+        const northUpR = guideNorthUpR(explore.P);
+        const obj = {
+          ra: Math.round(ra * 100) / 100,
+          dec: Math.round(dec * 100) / 100,
+          fov: Math.round(explore.fov * 100) / 100
+        };
+        const guideR = explore.R - northUpR;
+        if (Math.abs(guideR) > 0.001) obj.rotation = Math.round(guideR * 10000) / 10000;
+        const lines = Object.entries(obj).map(([k, v]) => `        "${k}": ${JSON.stringify(v)},`);
+        navigator.clipboard.writeText(lines.join('\n')).then(() => {
+          const btn = document.getElementById('fg-btn-copy-view');
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy View'; }, 1500);
+        });
       });
 
       document.getElementById('back-link').addEventListener('click', e => {
