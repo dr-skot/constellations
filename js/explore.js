@@ -5,6 +5,20 @@ const explorePhotoCache = {};
 let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null, animFrame: null };
 let exploreDragMoved = false;
 
+// Alternate diagram sources, keyed by abbreviation
+const _diagSources = {
+  iau: null,  // default — use C directly
+  rey: typeof REY !== 'undefined' ? Object.fromEntries(REY.map(c => [c.abbr, c])) : {},
+  stellarium: typeof SC !== 'undefined' ? Object.fromEntries(SC.map(c => [c.abbr, c])) : {},
+  ford: typeof FORD !== 'undefined' ? Object.fromEntries(FORD.map(c => [c.abbr, c])) : {},
+};
+let _diagSource = 'iau';
+function _diagFor(con) {
+  if (_diagSource === 'iau') return con;
+  const alt = _diagSources[_diagSource]?.[con.abbr];
+  return alt || con;
+}
+
 // Throttled constellation name placement — returns {ra, dec} for label position.
 // Caches results and only recomputes after `interval` ms.
 const _conNameCache = {};  // abbr -> {ra, dec, time}
@@ -207,7 +221,7 @@ function drawExplore() {
       glCanvas.style.width = cssW; glCanvas.style.height = cssH;
       glCanvas._sized = true;
     }
-    console.log('canvas sized:', w, h, 'from wrap:', sz, wrap.offsetHeight, 'dpr:', dpr);
+
   }
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
@@ -376,10 +390,11 @@ function drawExplore() {
     // Pass 1: diagram lines only
     for (const con of visible) {
       if (diagFilter && !diagFilter.includes(con.abbr)) continue;
-      if (con.lines && showLines) {
-        const fullProj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
+      const dcon = _diagFor(con);
+      if (dcon.lines && showLines) {
+        const fullProj = projectStarsCamera(dcon.stars, camP, camUp, explore.fov, W, H)
           .map(p => p.d > 0 ? p : null);
-        drawLines(ctx, fullProj, con);
+        drawLines(ctx, fullProj, dcon);
       }
     }
   }
@@ -416,8 +431,9 @@ function drawExplore() {
     const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
     for (const con of visible) {
       if (diagFilter && !diagFilter.includes(con.abbr)) continue;
-      const proj = projectStarsCamera(con.stars, camP, camUp, explore.fov, W, H)
-        .map((p, i) => ({ ...p, _orig: con.stars[i] }))
+      const dcon = _diagFor(con);
+      const proj = projectStarsCamera(dcon.stars, camP, camUp, explore.fov, W, H)
+        .map((p, i) => ({ ...p, _orig: dcon.stars[i] }))
         .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
       if (showStars) drawStars(ctx, proj, explore.fov);
       if (showStarLabels) drawLabels(ctx, proj, W);

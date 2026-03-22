@@ -186,3 +186,24 @@
 }
 #fg-btn-toggle-diag:hover { border-color: var(--accent); color: var(--text); }
 
+.diag-source-group {
+  display: inline-flex;
+  gap: 0;
+  margin-left: 2px;
+}
+.diag-src-btn {
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  font-size: .72rem;
+  transition: all .18s;
+}
+.diag-src-btn { border-radius: 0; }
+.diag-src-btn:first-child { border-radius: 5px 0 0 5px; }
+.diag-src-btn:last-child { border-radius: 0 5px 5px 0; }
+.diag-src-btn + .diag-src-btn { border-left: none; }
+.diag-src-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(91,138,245,.12); }
+.diag-src-btn:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+

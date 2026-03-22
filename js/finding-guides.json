@@ -4486,7 +4486,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Pyxis is Lacaille's mariner's compass — la Boussole in his original French. Despite sitting right next to the three pieces of Argo Navis, it was never part of the ship. Lacaille created it as a separate instrument constellation.",
+        "caption": "Let's find Pyxis — the Compass (la Boussole in the original French). It was created in the 1750s by Nicolas-Louis de Lacaille, who stole its stars from Argo Navis to make one of his 14 instrument constellations.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4496,7 +4496,7 @@
       },
       {
         "title": "Between Naos and Regor",
-        "caption": "Look for the faint stars of Pyxis between Naos in Puppis and Regor in Vela. Both are bright blue stars in the Milky Way — Pyxis sits in the gap between them.",
+        "caption": "Sirius and Canopus, the two brightest stars in the sky, frame this region. Between them, look for Naos in Puppis and Regor in Vela — Pyxis sits in the gap between those two blue stars.",
         "ra": 115.91,
         "dec": -35.21,
         "fov": 52.17,
@@ -4519,17 +4519,52 @@
         ]
       },
       {
+        "title": "The mast that became a compass",
+        "caption": "The stars of Pyxis were originally part of Argo Navis, the great ship. When Lacaille carved up the southern sky in the 1750s, he repurposed them for his mariner's compass. In 1844, John Herschel proposed renaming the constellation Malus (the mast), reclaiming it as a fourth subdivision of the old ship. The idea had support, but ultimately Lacaille's compass won out.",
+        "ra": 129.34,
+        "dec": -45.25,
+        "fov": 55,
+        "rotation": 0.5576,
+        "photo": true,
+        "diagram": [
+          "Car",
+          "Vel",
+          "Pup",
+          "Pyx"
+        ],
+        "names": [
+          "Car",
+          "Vel",
+          "Pup",
+          "Pyx"
+        ],
+        "bounds": [
+          "Pyx"
+        ],
+        "art": [
+          "Car",
+          "Vel",
+          "Pup",
+          "Pyx"
+        ]
+      },
+      {
         "title": "A repeating nova",
         "caption": "Pyxis is home to T Pyxidis, a white dwarf that steals matter from a companion star and erupts as a nova every couple of decades. It has flared six times since 1890, each time brightening dramatically before fading back to obscurity.",
-        "ra": 130.5,
-        "dec": -34.5,
-        "fov": 18,
+        "ra": 129.91,
+        "dec": -30.16,
+        "fov": 25.96,
+        "rotation": 0.2066,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": [
+        "diagram": [
           "Pyx"
+        ],
+        "names": false,
+        "bounds": [
+          "Pyx"
+        ],
+        "highlight": [
+          "T Pyxidis"
         ]
       }
     ]

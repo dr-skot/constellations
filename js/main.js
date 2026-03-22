@@ -200,6 +200,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Diagram source button group
+  const savedSrc = localStorage.getItem('diag-source');
+  if (savedSrc && _diagSources[savedSrc]) {
+    _diagSource = savedSrc;
+    document.querySelectorAll('.diag-src-btn').forEach(b => b.classList.toggle('active', b.dataset.src === savedSrc));
+  }
+  document.querySelectorAll('.diag-src-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _diagSource = btn.dataset.src;
+      localStorage.setItem('diag-source', _diagSource);
+      document.querySelectorAll('.diag-src-btn').forEach(b => b.classList.toggle('active', b === btn));
+      drawExplore();
+    });
+  });
+
   // Infinite roll dial — drag left/right to rotate continuously
   const rollStrip = document.getElementById('explore-roll-strip');
   let rollDragX = null;
@@ -240,6 +255,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const btn = document.getElementById('btn-copy-view');
       btn.textContent = 'Copied!';
       setTimeout(() => { btn.textContent = 'Copy View'; }, 1500);
+    });
+  });
+
+  // Paste View button — reads RA/Dec/FOV/rotation JSON from clipboard and applies it
+  document.getElementById('btn-paste-view').addEventListener('click', () => {
+    navigator.clipboard.readText().then(text => {
+      // Accept either a JSON object or bare key:value lines from Copy View
+      let clean = text.trim();
+      if (!clean.startsWith('{')) clean = '{' + clean + '}';
+      // Strip trailing commas before closing brace
+      clean = clean.replace(/,\s*}/g, '}');
+      const obj = JSON.parse(clean);
+      if (typeof obj.ra === 'number' && typeof obj.dec === 'number') {
+        explore.P = raDecToVec(obj.ra, obj.dec);
+        if (typeof obj.fov === 'number') explore.fov = obj.fov;
+        const northUpR = guideNorthUpR(explore.P);
+        explore.R = northUpR + (typeof obj.rotation === 'number' ? obj.rotation : 0);
+        drawExplore();
+        const btn = document.getElementById('btn-paste-view');
+        btn.textContent = 'Pasted!';
+        setTimeout(() => { btn.textContent = 'Paste View'; }, 1500);
+      }
+    }).catch(() => {
+      const btn = document.getElementById('btn-paste-view');
+      btn.textContent = 'Error';
+      setTimeout(() => { btn.textContent = 'Paste View'; }, 1500);
     });
   });
 
