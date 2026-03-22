@@ -4486,7 +4486,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pyxis — the Compass (la Boussole in the original French). It was created in the 1750s by Nicolas-Louis de Lacaille, who stole its stars from Argo Navis to make one of his 14 instrument constellations.",
+        "caption": "Let's find Pyxis — the Compass (la Boussole in the original French). It was created in the 1750s by Nicolas-Louis de Lacaille, who stole stars from Argo Navis to make one of his 14 instrument constellations.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4520,7 +4520,7 @@
       },
       {
         "title": "The mast that became a compass",
-        "caption": "The stars of Pyxis were originally part of Argo Navis, the great ship. When Lacaille carved up the southern sky in the 1750s, he repurposed them for his mariner's compass. In 1844, John Herschel proposed renaming the constellation Malus (the mast), reclaiming it as a fourth subdivision of the old ship. The idea had support, but ultimately Lacaille's compass won out.",
+        "caption": "The stars of Pyxis were originally part of the great ship Argo Navis. When Lacaille carved up the southern sky in the 1750s, he repurposed them for his mariner's compass. In 1844, John Herschel proposed renaming the constellation Malus (the mast), reclaiming it as a fourth subdivision of the old ship. The idea had support, but ultimately Lacaille's compass won out.",
         "ra": 129.34,
         "dec": -45.25,
         "fov": 55,
@@ -4574,7 +4574,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Reticulum — the Reticle, a a small southern constellation near the Large Magellanic Cloud. Its most recognizable feature is a small rhombus (diamond) of four stars.",
+        "caption": "Let's find Reticulum — the Reticle, a small southern constellation whose four main stars form a compact diamond near the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4583,8 +4583,8 @@
         "bounds": false
       },
       {
-        "title": "Find Reticulum",
-        "caption": "Locate the LMC and look about 20° southeast of it. Alpha Reticuli (mag 3.4) and Beta Reticuli (mag 3.8) are the two brightest stars of the small diamond shape.",
+        "title": "Near the LMC",
+        "caption": "Find the Large Magellanic Cloud, then look nearby for a small diamond of faint stars. Alpha and Beta Reticuli are the brightest two.",
         "ra": 60,
         "dec": -63,
         "fov": 40,
@@ -4599,32 +4599,22 @@
         ]
       },
       {
-        "title": "The rhombus shape",
-        "caption": "The four stars form a compact rhombus — one of the more recognizable patterns among the southern minor constellations. Alpha is brightest at the east vertex.",
-        "ra": 60,
-        "dec": -63,
+        "title": "The diamond",
+        "caption": "Four stars form a tidy rhombus — one of the more recognizable patterns among the small southern constellations. Lacaille named it for the crosshair reticle in his telescope eyepiece.",
+        "ra": 59.95,
+        "dec": -61.02,
         "fov": 18,
+        "rotation": 0.0023,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          "α Ret",
-          "β Ret"
-        ]
-      },
-      {
-        "title": "Reticulum's extent",
-        "caption": "Reticulum is best seen October–January from the southern hemisphere. Northern observers above 23°N cannot see it.",
-        "ra": 60,
-        "dec": -63,
-        "fov": 18,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          "α Ret"
+        "diagram": [
+          "Ret"
+        ],
+        "names": false,
+        "bounds": [
+          "Ret"
+        ],
+        "art": [
+          "Ret"
         ]
       }
     ]
