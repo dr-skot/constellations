@@ -4711,11 +4711,10 @@
     ]
   },
   "Pictor": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pictor — the Painter's Easel, which lies between brilliant Canopus and Achernar in the deep southern sky. Its brightest star, Alpha Pictoris (mag 3.2), is barely conspicuous without context.",
+        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled gaps between the classical constellations with instruments of art and science. He called this one le Chevalet et la Palette — the painter's easel and palette.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4724,59 +4723,42 @@
         "bounds": false
       },
       {
-        "title": "Find Pictor's region",
-        "caption": "Look roughly 30° east of Canopus along the southern sky. Alpha Pictoris is the faint star in that region. Beta Pictoris (mag 3.9) is famous for its debris disk and imaged planets.",
+        "title": "Near Canopus",
+        "caption": "Look for the faint stars of Pictor between Canopus and the Large Magellanic Cloud. Canopus, the second-brightest star in the sky, is the landmark here — Pictor's stars are dim.",
         "ra": 95,
         "dec": -55,
         "fov": 55,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
             "id": "Canopus"
           },
           {
-            "id": "α Pic"
-          },
-          {
-            "id": "β Pic"
+            "id": "LMC"
           }
         ]
       },
       {
-        "title": "Pictor's stars",
-        "caption": "The constellation is a simple line of faint stars. Alpha Pictoris anchors the south end; Beta Pictoris (the famous planet-forming star) is to the northwest.",
-        "ra": 95,
-        "dec": -56,
-        "fov": 28,
+        "title": "A planet-forming star",
+        "caption": "Beta Pictoris is one of the most studied stars in astronomy. In 1984 it became the first star found to have a debris disk, and two giant planets have since been photographed orbiting within it — a solar system caught in the act of forming.",
+        "ra": 84.94,
+        "dec": -54.5,
+        "fov": 23.95,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
+        "bounds": [
+          "Pic"
+        ],
+        "art": [
+          "Pic"
+        ],
         "highlight": [
-          {
-            "id": "α Pic"
-          },
           {
             "id": "β Pic"
-          }
-        ]
-      },
-      {
-        "title": "Pictor's full extent",
-        "caption": "Pictor is best seen December–February from the southern hemisphere. Northern observers above 26°N cannot see it.",
-        "ra": 95,
-        "dec": -56,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "α Pic"
           }
         ]
       }
@@ -4786,7 +4768,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pisces — the Fish, a faint zodiacal constellation south of Andromeda with no star brighter than magnitude 3.7, representing two fish tied together by their tails.",
+        "caption": "Pisces is a faint zodiac constellation below the Great Square of Pegasus. Its stars are dim, but its mythology is vivid: two fish tied together by a cord, swimming through the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4795,43 +4777,67 @@
         "bounds": false
       },
       {
-        "title": "Look south of Andromeda in autumn",
-        "caption": "In October and November, Pisces is high in the sky for northern observers. The Great Square of Pegasus is the key landmark — Pisces lies south and east of the Square. The Circlet of Pisces, a ring of five faint stars (the western fish's head), sits about 15° south-southwest of the Square's southeastern corner, Markab.",
+        "title": "Below the Great Square",
+        "caption": "Look below the Great Square of Pegasus for a faint ring of stars called the Circlet. This is the head of one fish. The whole constellation sprawls across a large area, but the Circlet is the easiest piece to spot.",
         "ra": 12,
         "dec": 14,
         "fov": 70,
         "photo": true,
         "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Markab"
-          }
+        "lines": [
+          [
+            "Scheat",
+            "Alpheratz"
+          ],
+          [
+            "Alpheratz",
+            "Algenib"
+          ],
+          [
+            "Algenib",
+            "Markab"
+          ],
+          [
+            "Markab",
+            "Scheat"
+          ],
+          [
+            "γ Psc",
+            "θ Psc"
+          ],
+          [
+            "θ Psc",
+            "ι Psc"
+          ],
+          [
+            "ι Psc",
+            "λ Psc"
+          ],
+          [
+            "λ Psc",
+            "κ Psc"
+          ],
+          [
+            "κ Psc",
+            "γ Psc"
+          ]
         ]
       },
       {
-        "title": "Find the Circlet",
-        "caption": "The Circlet of Pisces is a ring of five stars (magnitudes 4–5) about 4° across, forming the most identifiable sub-pattern in the constellation. It represents the head of the western fish. Under suburban skies the Circlet can be difficult; look for it as a faint loop of stars south of the Great Square.",
-        "ra": -6,
-        "dec": 8,
-        "fov": 25,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": []
-      },
-      {
-        "title": "Two fish and the knot",
-        "caption": "Alrescha is the 'Knot' where the two fish are tied together, located in the eastern part of the constellation. Pisces currently hosts the vernal equinox due to precession from its historical location in Aries.",
+        "title": "Fleeing the monster",
+        "caption": "When the serpent-monster Typhon attacked the gods, Aphrodite and Eros leapt into the Euphrates and transformed into fish. They tied themselves together with a cord so they wouldn't lose each other. Alrescha, whose name is Arabic for 'the cord,' marks the knot where the two fish are bound.",
         "ra": 10,
         "dec": 14,
         "fov": 62,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "Psc"
+        ],
+        "art": [
+          "Psc"
+        ],
         "highlight": [
           {
             "id": "Alrescha"
@@ -4844,7 +4850,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Piscis Austrinus — the Southern Fish, whose one brilliant star Fomalhaut stands completely alone in the autumn sky, earning it the name 'the Lonely Star of Autumn.'",
+        "caption": "Piscis Austrinus is one of Ptolemy's original 48 constellations, older than its zodiac neighbor Pisces. It has one bright star surrounded by faint ones — look for it below Aquarius.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4853,42 +4859,53 @@
         "bounds": false
       },
       {
-        "title": "Look south in autumn",
-        "caption": "In September and October evenings, Fomalhaut is the brightest star low in the southern sky for northern observers — there are no other first-magnitude stars anywhere near it. From the Great Square of Pegasus, extend its western side southward about 45° and you land almost exactly on Fomalhaut. From the southern hemisphere it is well-placed and high in the sky.",
-        "ra": 336,
-        "dec": -28,
-        "fov": 70,
+        "title": "The lonely star",
+        "caption": "Fomalhaut is unmistakable: a bright star with nothing else like it nearby. Its name is Arabic for 'mouth of the fish,' and that's where it sits in the constellation. Extend the right side of the Great Square of Pegasus downward to find it.",
+        "ra": 343.63,
+        "dec": -5.65,
+        "fov": 71.25,
+        "rotation": -0.05,
         "photo": true,
         "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Find Fomalhaut",
-        "caption": "Fomalhaut (Alpha PsA, mag 1.2) is a blue-white A-type star about 25 light-years away — one of the Sun's relatively close neighbors. It is famous for hosting one of the first directly imaged debris disks, and a candidate exoplanet (Fomalhaut b) was detected orbiting within this disk. The star's isolation in the sky is striking: the nearest comparably bright star is hundreds of degrees away.",
-        "ra": 344,
-        "dec": -29,
-        "fov": 25,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
         "highlight": [
           {
             "id": "Fomalhaut"
           }
+        ],
+        "lines": [
+          [
+            "Scheat",
+            "Alpheratz"
+          ],
+          [
+            "Alpheratz",
+            "Algenib"
+          ],
+          [
+            "Algenib",
+            "Markab"
+          ],
+          [
+            "Markab",
+            "Scheat"
+          ]
         ]
       },
       {
-        "title": "The southern fish",
-        "caption": "The rest of Piscis Austrinus consists of a curved arc of faint stars (magnitudes 4–5) arranged in a fish shape around Fomalhaut. The full constellation fits within about 20° and is not particularly prominent beyond its one bright star. Fomalhaut's isolation makes it useful as an autumn benchmark: when you can see it, the southern sky is reasonably transparent.",
+        "title": "The sacred fish",
+        "caption": "The constellation is linked to Atargatis, a Syrian goddess who threw herself into a lake and was transformed into a fish. Fomalhaut is ringed by a vast debris disk where a planetesimal collision was caught on camera — what astronomers first thought was a planet turned out to be an expanding cloud of dust.",
         "ra": 336,
         "dec": -30,
         "fov": 22,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "PsA"
+        ],
+        "art": [
+          "PsA"
+        ],
         "highlight": [
           {
             "id": "Fomalhaut"
