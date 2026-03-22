@@ -3,6 +3,7 @@
 
 // ── Catalog lookup ────────────────────────────────────────────────────────────
 function guideResolveHighlight(h, catalog) {
+  if (typeof h === 'string') h = { id: h };
   if (!h.id) return h;
   const obj = catalog && catalog[h.id];
   if (!obj) return null;
@@ -45,6 +46,7 @@ function guideDrawAnnotation(step, catalog) {
     if (raw.capsule) {
       // Resolve each capsule point: catalog lookup, project, carry label
       const pts = raw.capsule.map(e => {
+        if (typeof e === 'string') e = { id: e };
         const obj = e.id ? (catalog && catalog[e.id]) : e;
         if (!obj) return null;
         const p = projectStarsCamera([[obj.ra, obj.dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
