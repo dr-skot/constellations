@@ -215,29 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Infinite roll dial — drag left/right to rotate continuously
-  const rollStrip = document.getElementById('explore-roll-strip');
-  let rollDragX = null;
-  rollStrip.addEventListener('mousedown', e => { rollDragX = e.clientX; e.preventDefault(); });
-  window.addEventListener('mousemove', e => {
-    if (rollDragX === null) return;
-    const dx = e.clientX - rollDragX;
-    explore.R += dx * (Math.PI / 180);
-    rollDragX = e.clientX;
-    drawExplore();
-  });
-  window.addEventListener('mouseup', () => { rollDragX = null; });
-  rollStrip.addEventListener('touchstart', e => { rollDragX = e.touches[0].clientX; e.preventDefault(); }, { passive: false });
-  rollStrip.addEventListener('touchmove', e => {
-    if (rollDragX === null) return;
-    const dx = e.touches[0].clientX - rollDragX;
-    explore.R += dx * (Math.PI / 180);
-    rollDragX = e.touches[0].clientX;
-    drawExplore();
-    e.preventDefault();
-  }, { passive: false });
-  rollStrip.addEventListener('touchend', () => { rollDragX = null; });
-
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
   document.getElementById('btn-copy-view').addEventListener('click', () => {
     const { ra, dec } = vecToRaDec(explore.P);

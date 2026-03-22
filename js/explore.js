@@ -736,5 +736,28 @@ function initExploreDrag() {
     wheelTimer = setTimeout(() => { if (typeof saveExploreState === 'function') saveExploreState(); drawExplore(); }, 300);
   }, { passive: false });
 
+  // Roll strip (if present)
+  const rollStrip = document.getElementById('explore-roll-strip');
+  if (rollStrip) {
+    let rollDragX = null;
+    rollStrip.addEventListener('mousedown', e => { rollDragX = e.clientX; e.preventDefault(); });
+    window.addEventListener('mousemove', e => {
+      if (rollDragX === null) return;
+      explore.R += (e.clientX - rollDragX) * (Math.PI / 180);
+      rollDragX = e.clientX;
+      drawExplore();
+    });
+    window.addEventListener('mouseup', () => { rollDragX = null; });
+    rollStrip.addEventListener('touchstart', e => { rollDragX = e.touches[0].clientX; e.preventDefault(); }, { passive: false });
+    rollStrip.addEventListener('touchmove', e => {
+      if (rollDragX === null) return;
+      explore.R += (e.touches[0].clientX - rollDragX) * (Math.PI / 180);
+      rollDragX = e.touches[0].clientX;
+      drawExplore();
+      e.preventDefault();
+    }, { passive: false });
+    rollStrip.addEventListener('touchend', () => { rollDragX = null; });
+  }
+
   return { clientToCanvas };
 }
