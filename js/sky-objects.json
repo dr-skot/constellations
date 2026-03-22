@@ -156,6 +156,11 @@
     "dec": -17.822289,
     "color": "#c8d8ff"
   },
+  "Ascella": {
+    "ra": 285.653,
+    "dec": -29.88,
+    "color": "#c8d8ff"
+  },
   "Asellus Australis": {
     "ra": 131.17125,
     "dec": 18.154309,
@@ -361,6 +366,12 @@
     "dec": -29.622236,
     "color": "#90c8ff"
   },
+  "Galactic Center": {
+    "ra": 266.417,
+    "dec": -29.008,
+    "color": "#ffe8b0",
+    "arcmin": 600
+  },
   "Gacrux": {
     "ra": 187.791,
     "dec": -57.113,
@@ -469,6 +480,12 @@
     "dec": 35.86,
     "color": "#ffe8b0",
     "arcmin": 20
+  },
+  "M71": {
+    "ra": 298.44,
+    "dec": 18.78,
+    "color": "#ffe8b0",
+    "arcmin": 7
   },
   "Markeb": {
     "ra": 140.53,
@@ -644,6 +661,11 @@
     "dec": -34.074,
     "color": "#90c8ff"
   },
+  "Phi Sgr": {
+    "ra": 281.414,
+    "dec": -26.991,
+    "color": "#90c8ff"
+  },
   "Pherkad": {
     "ra": 230.182,
     "dec": 71.834,
@@ -742,6 +764,17 @@
     "color": "#a0e0a0",
     "arcmin": 0.7
   },
+  "South Galactic Pole": {
+    "ra": 12.85,
+    "dec": -27.13,
+    "color": "#ffffff"
+  },
+  "Sculptor Galaxy": {
+    "ra": 11.888,
+    "dec": -25.289,
+    "color": "#ffe8b0",
+    "arcmin": 25
+  },
   "Scheat": {
     "ra": 345.943515,
     "dec": 28.082789,
@@ -803,6 +836,11 @@
     "ra": 296.565,
     "dec": 10.613,
     "color": "#ffd080"
+  },
+  "Tau Sgr": {
+    "ra": 286.735,
+    "dec": -27.67,
+    "color": "#ff9060"
   },
   "Tau Ceti": {
     "ra": 26.02,
@@ -1259,6 +1297,16 @@
     "ra": 276.043,
     "dec": -34.384,
     "color": "#90c8ff"
+  },
+  "Kaus Borealis": {
+    "ra": 276.993,
+    "dec": -25.422,
+    "color": "#ff9060"
+  },
+  "Kaus Media": {
+    "ra": 275.249,
+    "dec": -29.828,
+    "color": "#ff9060"
   },
   "Alnilam": {
     "ra": 84.053,

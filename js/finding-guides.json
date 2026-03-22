@@ -4624,7 +4624,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Sagitta — the Arrow, which is tiny but unmistakable — it genuinely looks like an arrow in the summer Milky Way between Cygnus and Aquila.",
+        "caption": "Let's find Sagitta — the Arrow. It's tiny but unmistakable, one of the few constellations that genuinely looks like its namesake.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4633,8 +4633,8 @@
         "bounds": false
       },
       {
-        "title": "Find Sagitta",
-        "caption": "Find Sagitta between Albireo (the colorful head star of Cygnus) and Altair in Aquila. The arrow points eastward.",
+        "title": "Between Albireo and Altair",
+        "caption": "Look between Albireo, the colorful double at the head of Cygnus, and Altair in Aquila. Sagitta sits in the gap between them, embedded in the Milky Way.",
         "ra": 297,
         "dec": 19,
         "fov": 40,
@@ -4648,17 +4648,19 @@
         ]
       },
       {
-        "title": "The arrow stars",
-        "caption": "Delta Sagittae is the brightest star in the arrow. Sagitta is one of the smallest constellations. Globular cluster M71 lies along the arrow shaft — an easy binocular target. Best seen August–September.",
-        "ra": 297.5,
-        "dec": 18.5,
-        "fov": 18,
+        "title": "A globular on the shaft",
+        "caption": "Globular cluster M71 sits right along the arrow's shaft — an easy binocular target. It's a loose, sparse globular, and for a long time astronomers debated whether it was really a globular or just a dense open cluster.",
+        "ra": 297.72,
+        "dec": 18.91,
+        "fov": 10.75,
+        "rotation": -0.0072,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "art": [
+          "Sge"
+        ],
         "highlight": [
-          "δ Sge"
+          "M71"
         ]
       }
     ]
@@ -4676,87 +4678,119 @@
         "bounds": false
       },
       {
-        "title": "Face south in summer",
-        "caption": "Turn to the southern sky on a summer night. The Milky Way arcs through this region — the bright, hazy band is our galaxy seen edge-on. Sagittarius sits right along it, near the galactic core.",
-        "ra": 275,
-        "dec": -8,
-        "fov": 80,
+        "title": "Along the Milky Way",
+        "caption": "The Milky Way runs through this region — the bright, hazy band is our galaxy seen edge-on. Sagittarius sits right along it, near the Galactic Center.",
+        "ra": 266.23,
+        "dec": -24.09,
+        "fov": 74.9,
+        "rotation": -0.0625,
         "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
+        "highlight": [
+          "Galactic Center"
+        ]
       },
       {
         "title": "Find Scorpius first",
-        "caption": "Start with Scorpius — its distinctive fishhook curve is easy to recognise. Antares, the bright orange-red star at its heart, is one of the biggest stars in the sky. From Antares the tail curves down and east to a stinging pair of stars.",
-        "ra": 252,
-        "dec": -26,
+        "caption": "Start with Scorpius — its distinctive fishhook curve is easy to recognise. Antares, the bright orange-red star at its heart, marks the scorpion's body. From there the tail curves away to a stinging pair of stars.",
+        "ra": 252.45,
+        "dec": -31.98,
         "fov": 48,
+        "rotation": -0.4683,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
+        "diagram": [
+          "Sco"
+        ],
+        "names": [
+          "Sco"
+        ],
         "highlight": [
           "Antares",
-          {
-            "id": "Shaula",
-            "label": "Shaula (sting)"
-          }
+          "Shaula"
         ]
       },
       {
-        "title": "Look east of Scorpius",
-        "caption": "Now shift your gaze to the left (east) of Scorpius's tail. Sagittarius sits right beside it — the spout of its Teapot asterism aims directly back toward Scorpius. If you can find the scorpion, the teapot is right next door.",
-        "ra": 268,
-        "dec": -26,
-        "fov": 54,
+        "title": "The Teapot",
+        "caption": "Look past Scorpius's tail to find the Teapot — eight bright stars whose spout aims back at the scorpion. Kaus Australis at the base of the spout is the brightest star in Sagittarius, and Nunki marks the top of the handle. Find those two and the rest of the teapot follows.",
+        "ra": 272.05,
+        "dec": -30.92,
+        "fov": 38.67,
+        "rotation": 0.1519,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false
-      },
-      {
-        "title": "The Teapot asterism",
-        "caption": "Here's the Teapot — eight stars of 2nd and 3rd magnitude forming the outline of a teapot. The spout (three stars, left) points west toward Scorpius. The handle (two stars, right) points east. A triangular lid sits on top.",
-        "ra": 282,
-        "dec": -27,
-        "fov": 34,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "Alnasl",
-            "label": "spout tip"
-          }
-        ]
-      },
-      {
-        "title": "Key stars",
-        "caption": "Kaus Australis (ε Sgr, mag 1.8) is the brightest star in Sagittarius — it sits at the bottom of the spout. Nunki (σ Sgr, mag 2.0) marks the top of the handle at upper right. Memorise these two and the rest follows.",
-        "ra": 280,
-        "dec": -29,
-        "fov": 26,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
+        "diagram": [
+          "Sgr",
+          "Sco"
+        ],
+        "names": [
+          "Sgr",
+          "Sco"
+        ],
         "highlight": [
           "Kaus Australis",
           "Nunki"
+        ],
+        "lines": [
+          [
+            "Alnasl",
+            "Kaus Media"
+          ],
+          [
+            "Kaus Media",
+            "Kaus Australis"
+          ],
+          [
+            "Kaus Australis",
+            "Ascella"
+          ],
+          [
+            "Ascella",
+            "Phi Sgr"
+          ],
+          [
+            "Phi Sgr",
+            "Nunki"
+          ],
+          [
+            "Nunki",
+            "Tau Sgr"
+          ],
+          [
+            "Tau Sgr",
+            "Ascella"
+          ],
+          [
+            "Kaus Media",
+            "Kaus Borealis"
+          ],
+          [
+            "Kaus Borealis",
+            "Phi Sgr"
+          ],
+          [
+            "Alnasl",
+            "Kaus Australis"
+          ],
+          [
+            "Kaus Media",
+            "Phi Sgr"
+          ]
         ]
       },
       {
         "title": "Steam from the spout",
-        "caption": "Pull back and look at the big picture. The 'steam' rising from the Teapot's spout is the brightest part of the Milky Way — the galactic core. Now you can find it without any guides.",
-        "ra": 278,
-        "dec": -18,
-        "fov": 62,
+        "caption": "Pull back and look at the big picture. The 'steam' rising from the Teapot's spout is the brightest part of the Milky Way — the Galactic Center.",
+        "ra": 283.85,
+        "dec": -27.27,
+        "fov": 53.86,
+        "rotation": -0.0411,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false
+        "bounds": [
+          "Sgr"
+        ],
+        "art": [
+          "Sgr"
+        ]
       }
     ]
   },
@@ -4764,7 +4798,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Scorpius — one of the most magnificent constellations, shaped unmistakably like a scorpion curling through the summer Milky Way.",
+        "caption": "Let's find Scorpius — one of the most recognizable constellations, shaped unmistakably like a scorpion curling through the Milky Way.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4773,58 +4807,51 @@
         "bounds": false
       },
       {
-        "title": "Look south in summer",
-        "caption": "Look low to the southern sky on a summer evening. In July, Scorpius hugs the southern horizon for northern observers. In the southern hemisphere it rides high overhead, fully revealing its spectacular curved tail.",
-        "ra": 252,
-        "dec": -15,
-        "fov": 82,
+        "title": "In the Milky Way",
+        "caption": "Scorpius lies in a rich stretch of the Milky Way. Look for a bright orange-red star — that's Antares, the scorpion's heart, and your anchor for finding the rest.",
+        "ra": 255.77,
+        "dec": -30.42,
+        "fov": 63.76,
+        "rotation": -0.1346,
         "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Find Antares",
-        "caption": "The easiest entry point is Antares — a brilliant red-orange supergiant marking the scorpion's heart. It is one of the largest stars visible to the naked eye, and its distinctly reddish colour is obvious at a glance.",
-        "ra": 248,
-        "dec": -26,
-        "fov": 30,
-        "photo": true,
-        "diagram": true,
         "names": true,
-        "bounds": false,
+        "diagram": true,
         "highlight": [
           "Antares"
         ]
       },
       {
         "title": "The scorpion's curve",
-        "caption": "Stars arc north of Antares to form the head and claws, while the tail sweeps south and east, curling back on itself through the Milky Way. Shaula marks the tip of the sting — best seen from latitudes below about 35°N where the tail clears the horizon.",
-        "ra": 253,
-        "dec": -31,
-        "fov": 52,
+        "caption": "Stars arc from Antares to form the head and claws, while the tail sweeps away in a long curve through the Milky Way. Shaula marks the sting.",
+        "ra": 252.13,
+        "dec": -30.99,
+        "fov": 36.3,
+        "rotation": 0.0142,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
+        "diagram": [
+          "Sco"
+        ],
+        "art": [
+          "Sco"
+        ],
         "highlight": [
           "Antares",
-          {
-            "id": "Shaula",
-            "label": "Shaula (sting)"
-          }
+          "Shaula"
         ]
       },
       {
         "title": "Hunter and scorpion",
-        "caption": "Scorpius rides the Milky Way with the galactic core glowing just to its east in Sagittarius. Ancient myth says Scorpius and Orion the Hunter chase each other across the sky — when one rises in the east, the other sets in the west.",
-        "ra": 252,
-        "dec": -22,
-        "fov": 65,
+        "caption": "Scorpius rides the Milky Way with the Galactic Center glowing nearby in Sagittarius. Ancient myth says Scorpius and Orion the Hunter chase each other across the sky — when one rises, the other sets.",
+        "ra": 255.76,
+        "dec": -29.19,
+        "fov": 52.54,
+        "rotation": -0.013,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false
+        "bounds": [
+          "Sco"
+        ]
       }
     ]
   },
@@ -4842,48 +4869,62 @@
         "bounds": false
       },
       {
-        "title": "Find Sculptor's region",
-        "caption": "Find the area about 25° south of Fomalhaut (the bright Lonely Star of Autumn in Piscis Austrinus). The faint stars of Sculptor are in that sparse southern region.",
-        "ra": 10,
-        "dec": -32,
-        "fov": 55,
+        "title": "Between Fomalhaut and Achernar",
+        "caption": "Draw a line from Fomalhaut to Achernar — Sculptor's faint stars lie near that line, opposite Alnair in Grus.",
+        "ra": 0,
+        "dec": -40,
+        "fov": 65,
         "photo": true,
-        "diagram": true,
-        "names": false,
+        "diagram": [
+          "Scl",
+          "Gru",
+          "PsA",
+          "Eri"
+        ],
+        "names": [
+          "Scl",
+          "Gru",
+          "PsA",
+          "Eri"
+        ],
         "bounds": false,
         "highlight": [
           "Fomalhaut",
-          "α Scl"
+          "Achernar",
+          "Alnair"
         ]
       },
       {
-        "title": "Sculptor's stars",
-        "caption": "Alpha Sculptoris (mag 4.3, blue) is the brightest. Gamma and Delta are spread to the west. The constellation is faint but its area contains the south galactic pole.",
+        "title": "Lacaille's workshop",
+        "caption": "Sculptor is one of 14 constellations Lacaille created in the 1750s, all named after instruments and tools of the arts and sciences. Its full original name was l'Atelier du Sculpteur — the Sculptor's Workshop.",
+        "ra": 5,
+        "dec": -33,
+        "fov": 42.08,
+        "rotation": -1.651,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": [
+          "Scl"
+        ],
+        "art": [
+          "Scl"
+        ]
+      },
+      {
+        "title": "A window out of the galaxy",
+        "caption": "Sculptor contains the south galactic pole — the view straight out the bottom of the Milky Way's disk. That's why the sky here is so dark and empty — and a prime window for studying distant galaxies. NGC 253, the Sculptor Galaxy, is one of the nearest and brightest spirals, spectacular in binoculars.",
         "ra": 5,
         "dec": -33,
         "fov": 28,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
         "highlight": [
-          "α Scl",
-          "γ Scl",
-          "δ Scl"
-        ]
-      },
-      {
-        "title": "Sculptor's extent",
-        "caption": "Despite its faintness, Sculptor holds NGC 253 (Sculptor Galaxy), one of the nearest and brightest spirals — spectacular in binoculars. Best seen October–November.",
-        "ra": 5,
-        "dec": -33,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          "α Scl"
+          "Sculptor Galaxy",
+          {
+            "id": "South Galactic Pole",
+            "crosshair": true
+          }
         ]
       }
     ]
