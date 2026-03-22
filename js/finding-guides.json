@@ -1328,7 +1328,9 @@
         "diagram": true,
         "names": false,
         "bounds": false,
-        "art": ["Cen"]
+        "art": [
+          "Cen"
+        ]
       }
     ]
   },
@@ -3254,7 +3256,9 @@
           "Lac"
         ],
         "highlight": [
-          {"id": "BL Lacertae"}
+          {
+            "id": "BL Lacertae"
+          }
         ]
       }
     ]
@@ -3282,10 +3286,18 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Polaris"},
-          {"id": "Dubhe"},
-          {"id": "Merak"},
-          {"id": "Regulus"}
+          {
+            "id": "Polaris"
+          },
+          {
+            "id": "Dubhe"
+          },
+          {
+            "id": "Merak"
+          },
+          {
+            "id": "Regulus"
+          }
         ]
       },
       {
@@ -3297,18 +3309,39 @@
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": ["Leo"],
+        "bounds": [
+          "Leo"
+        ],
         "art": false,
         "highlight": [
-          {"id": "Regulus"},
-          {"id": "Denebola"}
+          {
+            "id": "Regulus"
+          },
+          {
+            "id": "Denebola"
+          }
         ],
         "lines": [
-          ["Regulus", "η Leo"],
-          ["η Leo", "Algieba"],
-          ["Algieba", "Adhafera"],
-          ["Adhafera", "Rasalas"],
-          ["Rasalas", "ε Leo"]
+          [
+            "Regulus",
+            "η Leo"
+          ],
+          [
+            "η Leo",
+            "Algieba"
+          ],
+          [
+            "Algieba",
+            "Adhafera"
+          ],
+          [
+            "Adhafera",
+            "Rasalas"
+          ],
+          [
+            "Rasalas",
+            "ε Leo"
+          ]
         ]
       },
       {
@@ -3321,7 +3354,9 @@
         "diagram": true,
         "names": false,
         "bounds": false,
-        "art": ["Leo"]
+        "art": [
+          "Leo"
+        ]
       }
     ]
   },
@@ -3348,10 +3383,43 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Regulus"},
-          {"id": "Praecipua"}
+          {
+            "id": "Regulus"
+          },
+          {
+            "id": "Praecipua"
+          }
         ],
-        "lines": [["Alkaid", "Mizar"], ["Mizar", "Alioth"], ["Alioth", "Megrez"], ["Megrez", "Dubhe"], ["Dubhe", "Merak"], ["Merak", "Phecda"], ["Phecda", "Megrez"]]
+        "lines": [
+          [
+            "Alkaid",
+            "Mizar"
+          ],
+          [
+            "Mizar",
+            "Alioth"
+          ],
+          [
+            "Alioth",
+            "Megrez"
+          ],
+          [
+            "Megrez",
+            "Dubhe"
+          ],
+          [
+            "Dubhe",
+            "Merak"
+          ],
+          [
+            "Merak",
+            "Phecda"
+          ],
+          [
+            "Phecda",
+            "Megrez"
+          ]
+        ]
       },
       {
         "title": "Filling the gap",
@@ -3361,9 +3429,15 @@
         "fov": 28,
         "photo": true,
         "diagram": true,
-        "names": ["LMi"],
-        "bounds": ["LMi"],
-        "art": ["LMi"]
+        "names": [
+          "LMi"
+        ],
+        "bounds": [
+          "LMi"
+        ],
+        "art": [
+          "LMi"
+        ]
       }
     ]
   },
@@ -3390,8 +3464,12 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Saiph"},
-          {"id": "Rigel"}
+          {
+            "id": "Saiph"
+          },
+          {
+            "id": "Rigel"
+          }
         ]
       },
       {
@@ -3403,11 +3481,19 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Lep"],
-        "art": ["Lep"],
+        "bounds": [
+          "Lep"
+        ],
+        "art": [
+          "Lep"
+        ],
         "highlight": [
-          {"id": "Arneb"},
-          {"id": "Nihal"}
+          {
+            "id": "Arneb"
+          },
+          {
+            "id": "Nihal"
+          }
         ]
       },
       {
@@ -3418,11 +3504,15 @@
         "fov": 22,
         "photo": true,
         "diagram": true,
-        "names": ["Lep"],
+        "names": [
+          "Lep"
+        ],
         "bounds": false,
         "art": false,
         "highlight": [
-          {"id": "Hind's Crimson Star"}
+          {
+            "id": "Hind's Crimson Star"
+          }
         ]
       }
     ]
@@ -3450,10 +3540,18 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Spica"},
-          {"id": "Antares"},
-          {"id": "Zubenelgenubi"},
-          {"id": "Zubeneschamali"}
+          {
+            "id": "Spica"
+          },
+          {
+            "id": "Antares"
+          },
+          {
+            "id": "Zubenelgenubi"
+          },
+          {
+            "id": "Zubeneschamali"
+          }
         ]
       },
       {
@@ -3465,11 +3563,18 @@
         "rotation": -0.2618,
         "photo": true,
         "diagram": true,
-        "names": ["Lib", "Sco"],
+        "names": [
+          "Lib",
+          "Sco"
+        ],
         "bounds": false,
         "highlight": [
-          {"id": "Zubeneschamali"},
-          {"id": "Zubenelgenubi"}
+          {
+            "id": "Zubeneschamali"
+          },
+          {
+            "id": "Zubenelgenubi"
+          }
         ]
       },
       {
@@ -3481,10 +3586,16 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Lib"],
-        "art": ["Lib"],
+        "bounds": [
+          "Lib"
+        ],
+        "art": [
+          "Lib"
+        ],
         "highlight": [
-          {"id": "Methuselah Star"}
+          {
+            "id": "Methuselah Star"
+          }
         ]
       }
     ]
@@ -3514,9 +3625,15 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "α Lup"},
-          {"id": "Hadar"},
-          {"id": "Rigil Kentaurus"}
+          {
+            "id": "α Lup"
+          },
+          {
+            "id": "Hadar"
+          },
+          {
+            "id": "Rigil Kentaurus"
+          }
         ]
       },
       {
@@ -3528,8 +3645,12 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Lup"],
-        "art": ["Lup"]
+        "bounds": [
+          "Lup"
+        ],
+        "art": [
+          "Lup"
+        ]
       },
       {
         "title": "Supernova 1006",
@@ -3543,7 +3664,9 @@
         "bounds": false,
         "art": false,
         "highlight": [
-          {"id": "SN 1006"}
+          {
+            "id": "SN 1006"
+          }
         ]
       }
     ]
@@ -3572,9 +3695,40 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Capella"}
+          {
+            "id": "Capella"
+          }
         ],
-        "lines": [["Alkaid", "Mizar"], ["Mizar", "Alioth"], ["Alioth", "Megrez"], ["Megrez", "Dubhe"], ["Dubhe", "Merak"], ["Merak", "Phecda"], ["Phecda", "Megrez"]]
+        "lines": [
+          [
+            "Alkaid",
+            "Mizar"
+          ],
+          [
+            "Mizar",
+            "Alioth"
+          ],
+          [
+            "Alioth",
+            "Megrez"
+          ],
+          [
+            "Megrez",
+            "Dubhe"
+          ],
+          [
+            "Dubhe",
+            "Merak"
+          ],
+          [
+            "Merak",
+            "Phecda"
+          ],
+          [
+            "Phecda",
+            "Megrez"
+          ]
+        ]
       },
       {
         "title": "Alpha Lyncis",
@@ -3585,10 +3739,16 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Lyn"],
-        "art": ["Lyn"],
+        "bounds": [
+          "Lyn"
+        ],
+        "art": [
+          "Lyn"
+        ],
         "highlight": [
-          {"id": "α Lyn"}
+          {
+            "id": "α Lyn"
+          }
         ]
       },
       {
@@ -3603,7 +3763,9 @@
         "bounds": false,
         "art": false,
         "highlight": [
-          {"id": "Intergalactic Wanderer"}
+          {
+            "id": "Intergalactic Wanderer"
+          }
         ]
       }
     ]
@@ -3631,9 +3793,15 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Vega"},
-          {"id": "Deneb"},
-          {"id": "Altair"}
+          {
+            "id": "Vega"
+          },
+          {
+            "id": "Deneb"
+          },
+          {
+            "id": "Altair"
+          }
         ]
       },
       {
@@ -3645,10 +3813,16 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Lyr"],
-        "art": ["Lyr"],
+        "bounds": [
+          "Lyr"
+        ],
+        "art": [
+          "Lyr"
+        ],
         "highlight": [
-          {"id": "Vega"}
+          {
+            "id": "Vega"
+          }
         ]
       },
       {
@@ -3663,7 +3837,9 @@
         "bounds": false,
         "art": false,
         "highlight": [
-          {"id": "Ring Nebula"}
+          {
+            "id": "Ring Nebula"
+          }
         ]
       }
     ]
@@ -3692,7 +3868,9 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "LMC"}
+          {
+            "id": "LMC"
+          }
         ]
       },
       {
@@ -3704,8 +3882,12 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Men"],
-        "art": ["Men"]
+        "bounds": [
+          "Men"
+        ],
+        "art": [
+          "Men"
+        ]
       }
     ]
   },
@@ -3734,7 +3916,9 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Fomalhaut"}
+          {
+            "id": "Fomalhaut"
+          }
         ]
       },
       {
@@ -3746,8 +3930,12 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Mic"],
-        "art": ["Mic"]
+        "bounds": [
+          "Mic"
+        ],
+        "art": [
+          "Mic"
+        ]
       }
     ]
   },
@@ -3775,9 +3963,15 @@
         "names": true,
         "bounds": false,
         "highlight": [
-          {"id": "Betelgeuse"},
-          {"id": "Sirius"},
-          {"id": "Procyon"}
+          {
+            "id": "Betelgeuse"
+          },
+          {
+            "id": "Sirius"
+          },
+          {
+            "id": "Procyon"
+          }
         ]
       },
       {
@@ -3789,10 +3983,16 @@
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": ["Mon"],
-        "art": ["Mon"],
+        "bounds": [
+          "Mon"
+        ],
+        "art": [
+          "Mon"
+        ],
         "highlight": [
-          {"id": "β Mon"}
+          {
+            "id": "β Mon"
+          }
         ]
       },
       {
@@ -3807,7 +4007,9 @@
         "bounds": false,
         "art": false,
         "highlight": [
-          {"id": "Rosette Nebula"}
+          {
+            "id": "Rosette Nebula"
+          }
         ]
       }
     ]
@@ -3817,7 +4019,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Musca — the Fly, a small compact southern constellation lying just south of the Southern Cross.",
+        "caption": "Let's find Musca — the Fly, a small, compact southern constellation just past the Southern Cross.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3826,8 +4028,8 @@
         "bounds": false
       },
       {
-        "title": "Just south of Crux",
-        "caption": "Find the Southern Cross — its bottom star is Acrux — then look about 5–8° further south. The compact diamond of Musca stars will be there.",
+        "title": "Past the Southern Cross",
+        "caption": "Find the Southern Cross and look just beyond Acrux, at the foot of the Cross. Musca's compact diamond of stars sits right there.",
         "ra": 185,
         "dec": -64,
         "fov": 55,
@@ -3843,39 +4045,64 @@
       },
       {
         "title": "A compact diamond",
-        "caption": "Alpha Muscae is a blue giant and the brightest of the diamond's western stars. Beta Muscae is a visual binary of two blue-white stars. Together they define the western edge, which spans only about 6°. All four main stars fit in a single binocular field.",
+        "caption": "Dutch explorers Keyser and de Houtman mapped Musca in the 1590s and named it the Fly, but their illustration on Plancius's globe was unlabeled. When Bayer copied the unnamed insect into his influential 1603 star atlas, he guessed wrong and called it Apis — the Bee. The mistake stuck for two centuries until Lacaille corrected it.",
         "ra": 188,
         "dec": -69,
         "fov": 22,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "α Mus"
-          },
-          {
-            "id": "β Mus"
-          }
+        "names": false,
+        "bounds": [
+          "Mus"
+        ],
+        "art": [
+          "Mus"
         ]
       },
       {
-        "title": "The southern fly",
-        "caption": "Musca was originally called Musca Australis (Southern Fly) to distinguish it from a former northern fly asterism in Aries, long since abolished. It contains the globular cluster NGC 4372, visible in binoculars.",
-        "ra": 188,
-        "dec": -69,
-        "fov": 14,
+        "title": "The Dark Doodad",
+        "caption": "Musca is home to the Dark Doodad — a narrow lane of interstellar dust named for its squiggly shape. About 700 light-years away and 30 light-years long, this molecular cloud blocks the light of countless stars behind it.",
+        "ra": 189,
+        "dec": -71,
+        "fov": 6.5,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
+        "art": false,
         "highlight": [
           {
-            "id": "NGC 4372"
+            "capsule": [
+              {
+                "id": "Dark Doodad 1"
+              },
+              {
+                "id": "Dark Doodad 2"
+              },
+              {
+                "id": "Dark Doodad 3"
+              },
+              {
+                "id": "Dark Doodad 4"
+              },
+              {
+                "id": "Dark Doodad 5"
+              },
+              {
+                "id": "Dark Doodad 6"
+              },
+              {
+                "id": "Dark Doodad 7"
+              },
+              {
+                "id": "Dark Doodad 8"
+              }
+            ],
+            "color": "rgba(140,110,70,0.6)",
+            "margin": 0,
+            "label": "  Dark Doodad"
           }
-        ],
-        "art": true
+        ]
       }
     ]
   },
@@ -3894,7 +4121,7 @@
       },
       {
         "title": "Between Scorpius and Centaurus",
-        "caption": "Norma lies just northwest of the tail of Scorpius. Find Shaula at the scorpion's stinger, then look about 12° to the west-northwest. The region is embedded in a spectacular stretch of the southern Milky Way — no star in Norma is brighter than magnitude 4 after boundary revisions reassigned its original brightest stars to Scorpius.",
+        "caption": "Norma sits between the scorpion's tail and the centaur's foot. Scan from the Southern Pointers toward Shaula on the scorpion's stinger. Norma is a faint group in between, embedded in a spectacular stretch of Milky Way.",
         "ra": 244,
         "dec": -47,
         "fov": 60,
@@ -3905,47 +4132,54 @@
         "highlight": [
           {
             "id": "Shaula"
+          },
+          {
+            "capsule": [
+              {
+                "id": "Rigil Kentaurus"
+              },
+              {
+                "id": "Hadar",
+                "label": "Southern Pointers"
+              }
+            ],
+            "color": "#c8d8ff"
           }
         ]
       },
       {
-        "title": "Gamma-2 Normae",
-        "caption": "Gamma-2 Normae is the brightest remaining star after the IAU boundary revision. Epsilon Normae and other 4th-magnitude stars complete the right-angle shape spanning about 8°. Despite the faintness of individual stars, the region is a spectacular Milky Way star field rich in open clusters.",
+        "title": "Lacaille's square",
+        "caption": "French astronomer Nicolas-Louis de Lacaille named this constellation l'Équerre et la Règle — a draughtsman's set square and rule. Its two brightest stars, representing the rule, were transferred to Scorpius when constellation boundaries were redrawn in 1930, leaving only the faint shape of the square.",
         "ra": 244,
         "dec": -50,
         "fov": 25,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "γ² Nor"
-          },
-          {
-            "id": "ε Nor"
-          }
+        "names": false,
+        "bounds": [
+          "Nor"
+        ],
+        "art": [
+          "Nor"
         ]
       },
       {
-        "title": "The Norma Star Cloud",
-        "caption": "Norma sits atop the brilliant Norma Star Cloud, one of the brightest sections of the southern Milky Way. The open cluster NGC 6067 is a rich binocular cluster of about 100 stars within the constellation. The Norma Galaxy Cluster — one of the most massive nearby clusters, partially hidden by the Milky Way — also lies within Norma's boundaries.",
+        "title": "The Great Attractor",
+        "caption": "This brilliant star cloud hides one of the great mysteries in cosmology. Somewhere behind all this gas and dust lies the Great Attractor — a concentration of mass equivalent to a million billion suns, pulling the Milky Way and everything around it toward this spot at 600 km/s. We can barely see it because it's in the Zone of Avoidance, the band of sky obscured by our own galaxy's disk. The Norma Galaxy Cluster, near its center, was only confirmed through X-ray and radio observations that can peer through the dust.",
         "ra": 244,
-        "dec": -50,
-        "fov": 16,
+        "dec": -55,
+        "fov": 22,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
+        "art": false,
         "highlight": [
           {
-            "id": "NGC 6067"
-          },
-          {
-            "id": "γ² Nor"
+            "id": "Norma Galaxy Cluster",
+            "label": "Norma Galaxy Cluster"
           }
-        ],
-        "art": true
+        ]
       }
     ]
   },
@@ -3954,7 +4188,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Octans — the Octant, the constellation that contains the south celestial pole, though it holds no bright star near that pole unlike the northern sky's convenient Polaris.",
+        "caption": "Let's find Octans — the Octant, the constellation that contains the south celestial pole. Unlike the north, where Polaris serves as a convenient landmark, the south has no bright star to mark the spot.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3964,53 +4198,75 @@
       },
       {
         "title": "Finding the south celestial pole",
-        "caption": "The south celestial pole lies within Octans, but Sigma Octantis — the nearest naked-eye star to it — is only magnitude 5.4 and barely visible under ideal conditions. The practical way to find the pole is to extend the long axis of Crux about 4.5 cross-lengths past Acrux, or bisect the line between the Southern Pointers perpendicularly.",
-        "ra": 295,
-        "dec": -84,
-        "fov": 65,
+        "caption": "The practical way to find the south celestial pole is through the Southern Cross. Extend the long axis of Crux past Acrux and it points almost straight to the pole. You can also draw a line perpendicular to the Southern Pointers — the two lines intersect near the pole.",
+        "ra": 204.85,
+        "dec": -79.8,
+        "fov": 51.5,
+        "rotation": 0.1143,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Acrux",
-            "label": "Acrux (Crux)"
+            "id": "Acrux"
+          },
+          {
+            "capsule": [
+              {
+                "id": "Rigil Kentaurus"
+              },
+              {
+                "id": "Hadar",
+                "label": "Southern Pointers"
+              }
+            ],
+            "color": "#c8d8ff"
+          },
+          {
+            "id": "south pole",
+            "crosshair": true,
+            "label": "South Celestial Pole"
           }
         ]
       },
       {
-        "title": "Nu Octantis",
-        "caption": "Nu Octantis is the constellation's brightest star — an orange giant — but it lies far from the pole itself. The three main stars form a right triangle spread across about 20°. Sigma Octantis, the dim pole star at magnitude 5.4, is less than 1° from the south celestial pole.",
-        "ra": 295,
-        "dec": -84,
-        "fov": 30,
+        "title": "Waiting for a pole star",
+        "caption": "Sigma Octantis, the nearest naked-eye star to the pole, is so dim it's invisible from any light-polluted site — a poor substitute for Polaris. The south pole's lack of a bright marker is a temporary cosmic accident. Precession is slowly shifting Earth's axis, and around 9250 AD, Delta Velorum will come within 0.2° of the south pole — closer than Polaris ever gets to the north pole.",
+        "ra": 144.59,
+        "dec": -73.81,
+        "fov": 45.82,
+        "rotation": 0.4369,
         "photo": true,
         "diagram": true,
-        "names": true,
+        "names": false,
         "bounds": false,
         "highlight": [
           {
-            "id": "ν Oct"
+            "id": "σ Oct"
+          },
+          {
+            "id": "Delta Velorum",
+            "label": "Delta Velorum"
           }
         ]
       },
       {
-        "title": "No southern Polaris",
-        "caption": "Octans was named by Lacaille after the reflecting octant — a forerunner of the sextant. Unlike Polaris (less than 1° from the north pole and easy to see), the south pole is marked only by dim Sigma Octantis at magnitude 5.4 — invisible from light-polluted sites. The south pole will gain a brighter pole star as precession shifts the axis, but not for thousands of years.",
-        "ra": 295,
-        "dec": -85,
-        "fov": 20,
+        "title": "Lacaille's octant",
+        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled the gaps between ancient constellations with 14 new ones, all named after instruments of the Enlightenment. Octans honors the reflecting octant, a navigation instrument that preceded the sextant.",
+        "ra": 309.77,
+        "dec": -83.89,
+        "fov": 25.63,
+        "rotation": -2.2791,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "ν Oct"
-          }
+        "bounds": [
+          "Oct"
         ],
-        "art": true
+        "art": [
+          "Oct"
+        ]
       }
     ]
   },
@@ -4018,7 +4274,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Ophiuchus — the Serpent Bearer, a large summer constellation that straddles the celestial equator between Scorpius and Hercules, and notably through which the ecliptic also passes.",
+        "caption": "Let's find Ophiuchus — the Serpent Bearer, a large constellation straddling the celestial equator between Scorpius and Hercules.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4027,8 +4283,8 @@
         "bounds": false
       },
       {
-        "title": "Look north of Scorpius in summer",
-        "caption": "In June and July, Ophiuchus is due south at midnight for northern observers. Start at brilliant red Antares in Scorpius and move north about 23°. Rasalhague, Ophiuchus's brightest star, is a clear beacon at that point. The large hexagonal outline of the constellation spans about 20° from side to side.",
+        "title": "Above Antares",
+        "caption": "Start at brilliant Antares in Scorpius and scan above it, with the Milky Way on your left. Five stars there define the central pentagon of the serpent bearer's body. The topmost and brightest, Rasalhague, locates the head.",
         "ra": 258,
         "dec": -3,
         "fov": 75,
@@ -4039,47 +4295,46 @@
         "highlight": [
           {
             "id": "Antares"
-          }
-        ]
-      },
-      {
-        "title": "Find Rasalhague",
-        "caption": "Rasalhague marks the serpent bearer's head — a blue-white star about 47 light-years away. It is easy to spot as the brightest star in the region north of Scorpius and south of the Keystone of Hercules.",
-        "ra": 263,
-        "dec": 10,
-        "fov": 30,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
+          },
           {
             "id": "Rasalhague"
           }
         ]
       },
       {
-        "title": "The serpent bearer's extent",
-        "caption": "The constellation's hexagonal outline encloses a large area, with Sabik marking the lower center of the figure. The ecliptic passes through the southern part of Ophiuchus — more so than through Scorpius — making it technically the 'thirteenth zodiac constellation.' The star fields along the Ophiuchus–Scorpius border are rich with globular clusters and nebulae.",
+        "title": "Bearer and serpent",
+        "caption": "Ophiuchus represents Asclepius, the Greek god of medicine, holding a serpent — the origin of the Rod of Asclepius still used as a medical symbol. What you see here is actually two constellations drawn as one figure: the serpent is Serpens, the only constellation split into two disconnected pieces — its head and tail separated by the body of Ophiuchus.",
         "ra": 257,
         "dec": -4,
         "fov": 58,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "Oph",
+          "Ser"
+        ],
+        "art": [
+          "Oph",
+          "Ser"
+        ]
+      },
+      {
+        "title": "Kepler's Star",
+        "caption": "In October 1604, a new star appeared in Ophiuchus, outshining Jupiter and remaining visible in daylight for three weeks. Kepler, Galileo, and astronomers in Korea and China all recorded it. It was the last supernova observed in our galaxy — and over four centuries later, no one has seen another.",
+        "ra": 262,
+        "dec": -15,
+        "fov": 30,
+        "photo": true,
+        "diagram": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
           {
-            "id": "Rasalhague"
-          },
-          {
-            "id": "Sabik"
-          },
-          {
-            "id": "Yed Prior"
+            "id": "SN 1604",
+            "label": "Kepler's Star"
           }
-        ],
-        "art": true
+        ]
       }
     ]
   },
@@ -4097,8 +4352,8 @@
         "bounds": false
       },
       {
-        "title": "Face south in winter",
-        "caption": "Look to the southern sky on a winter evening. In the northern hemisphere Orion rides high in the south; in the southern hemisphere he's high in the north. Best seen January through March.",
+        "title": "The Belt",
+        "caption": "Orion straddles the celestial equator, so it's visible from almost everywhere on Earth. Start with the Belt — three bright stars of nearly equal brightness in a perfectly straight row. Nothing else in the sky looks quite like it.",
         "ra": 83,
         "dec": 5,
         "fov": 82,
@@ -4108,8 +4363,8 @@
         "bounds": false
       },
       {
-        "title": "Three stars in a row",
-        "caption": "The Belt is unmistakable — three bright stars of nearly equal magnitude in a perfectly straight row. Nothing else in the sky looks quite like it. Alnitak, Alnilam and Mintaka span just three degrees, yet stand out from dozens of degrees away.",
+        "title": "Three in a row",
+        "caption": "Alnitak, Alnilam, and Mintaka — the Belt stars are a tight, unmistakable line that stands out from far across the sky. Once you've found them, the rest of the Hunter falls into place around them.",
         "ra": 84,
         "dec": -1,
         "fov": 22,
@@ -4131,7 +4386,7 @@
       },
       {
         "title": "The Hunter",
-        "caption": "With the Belt found, the rest of the Hunter falls into place. At the upper-left shoulder glows Betelgeuse (α Ori, mag 0.4) — a red supergiant nearing the end of its life. At the lower-right foot blazes Rigel (β Ori, mag 0.1) — brilliant blue-white, one of the most luminous stars in the galaxy. The colour contrast is visible to the naked eye.",
+        "caption": "At one shoulder glows Betelgeuse — a red supergiant nearing the end of its life. At the opposite foot blazes Rigel — brilliant blue-white and one of the most luminous stars in the galaxy. The color contrast between them is visible to the naked eye.",
         "ra": 84,
         "dec": -1,
         "fov": 48,
@@ -4146,11 +4401,12 @@
           {
             "id": "Rigel"
           }
-        ]
+        ],
+        "art": true
       },
       {
-        "title": "A compass for winter",
-        "caption": "The Belt is the most useful signpost in the winter sky. Follow it to the right (northwest) and you reach the Pleiades and Aldebaran, the red eye of Taurus. Follow it to the left (southeast) and you reach Sirius — the brightest star in the entire night sky.",
+        "title": "The sky's signpost",
+        "caption": "The Belt is one of the most useful landmarks in the sky. Follow it one way and you reach Aldebaran, the red eye of Taurus, and the Pleiades beyond it. Follow it the other way and you reach Sirius — the brightest star in the entire night sky.",
         "ra": 83,
         "dec": 2,
         "fov": 68,
@@ -4177,7 +4433,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pavo — the Peacock. It contains Peacock (Alpha Pavonis, mag 1.9), one of the brightest southern stars. Start by getting your bearings in the southern sky.",
+        "caption": "Let's find Pavo — the Peacock, one of the \"Southern Birds\" created by Dutch navigators Keyser and de Houtman during their 1595 voyage to the East Indies.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4186,14 +4442,14 @@
         "bounds": false
       },
       {
-        "title": "Find Peacock",
-        "caption": "Peacock sits about 20° south-southeast of Alnair in Grus. Look for the isolated bright blue-white star in the southern sky.",
+        "title": "Near the Crane",
+        "caption": "Look for a bright, isolated blue-white star not far from Alnair in Grus. That's Peacock, the constellation's brightest star — a name it only got in the 1930s, when the Royal Air Force insisted that all navigation stars must have proper names.",
         "ra": 306.41,
         "dec": -56.74,
         "fov": 60,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -4205,38 +4461,21 @@
         ]
       },
       {
-        "title": "Pavo's kite shape",
-        "caption": "From Peacock, look for Beta and Delta Pavonis which form a modest kite or fan shape to the south.",
-        "ra": 306,
-        "dec": -62,
-        "fov": 28,
+        "title": "Hera's sacred bird",
+        "caption": "In Greek myth, the peacock was sacred to Hera. When she set the hundred-eyed giant Argus to guard Zeus's lover Io, Hermes killed him — and Hera placed Argus's eyes on her peacock's tail. The constellation itself probably depicts the green peafowl that Keyser and de Houtman encountered in Java, not the blue peacock the Greeks knew.",
+        "ra": 294.83,
+        "dec": -64.78,
+        "fov": 32.76,
+        "rotation": -0.5185,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          {
-            "id": "Peacock"
-          },
-          {
-            "id": "β Pav"
-          },
-          {
-            "id": "δ Pav"
-          }
+        "names": false,
+        "bounds": [
+          "Pav"
+        ],
+        "art": [
+          "Pav"
         ]
-      },
-      {
-        "title": "Pavo's extent",
-        "caption": "The constellation is best seen July–September from southern latitudes.",
-        "ra": 306,
-        "dec": -62,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
       }
     ]
   },
@@ -4244,7 +4483,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pegasus — the Winged Horse, whose four bright stars form the Great Square of Pegasus, one of the most recognizable asterisms of the autumn sky.",
+        "caption": "Let's find Pegasus — the Winged Horse, whose four bright stars form the Great Square of Pegasus, one of the most recognizable asterisms in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4253,58 +4492,66 @@
         "bounds": false
       },
       {
-        "title": "Look high in the autumn sky",
-        "caption": "In September and October, the Great Square of Pegasus passes nearly overhead at midnight for mid-northern observers. Each side of the Square is about 15° long, and the interior is strikingly empty of stars — this very emptiness makes it a sky transparency test. From the Summer Triangle's Altair, move north-northeast about 50° to find the Square.",
+        "title": "The Great Square",
+        "caption": "Look for a large, empty square of four stars. The interior is strikingly bare — this emptiness is what makes it so easy to spot. One corner, Alpheratz, is shared with Andromeda.",
         "ra": 345,
         "dec": 20,
         "fov": 75,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "The Great Square",
-        "caption": "The four corners of the Square are Markab (Alpha Peg, mag 2.5), Scheat (Beta Peg, mag 2.4), Algenib (Gamma Peg, mag 2.8), and Alpheratz (shared with Andromeda, mag 2.1). Scheat is a red giant variable, fluctuating between magnitudes 2.4 and 2.8. The northeast corner (Alpheratz) is technically the starting point of Andromeda.",
-        "ra": 344,
-        "dec": 22,
-        "fov": 38,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
           {
-            "id": "Scheat"
-          },
-          {
-            "id": "Markab"
-          },
-          {
             "id": "Alpheratz"
           }
+        ],
+        "lines": [
+          [
+            "Scheat",
+            "Alpheratz"
+          ],
+          [
+            "Alpheratz",
+            "Algenib"
+          ],
+          [
+            "Algenib",
+            "Markab"
+          ],
+          [
+            "Markab",
+            "Scheat"
+          ]
         ]
       },
       {
-        "title": "Pegasus beyond the Square",
-        "caption": "South and west of the Square, fainter stars trace the horse's neck and head, ending at Enif (Epsilon Pegasi, mag 2.4), a bright orange supergiant about 690 light-years away. The Great Square is also used as a pointer: extend the western side southward about 45° and you land on Fomalhaut, the lonely bright star of Piscis Austrinus.",
-        "ra": 341,
-        "dec": 18,
-        "fov": 58,
+        "title": "The myth of Andromeda",
+        "caption": "Pegasus sprang from the blood of Medusa when Perseus beheaded her. It's part of the largest mythological group in the sky — six neighboring constellations tell the story of Andromeda's rescue from a sea monster.",
+        "ra": 8,
+        "dec": 30,
+        "fov": 90,
+        "rotation": 3.14,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          {
-            "id": "Scheat"
-          },
-          {
-            "id": "Markab"
-          },
-          {
-            "id": "Enif"
-          }
+        "names": [
+          "Peg",
+          "And",
+          "Cas",
+          "Cep",
+          "Per",
+          "Cet"
+        ],
+        "bounds": false,
+        "art": [
+          "Peg",
+          "And",
+          "Cas",
+          "Cep",
+          "Per",
+          "Cet"
+        ],
+        "diagram": [
+          "Peg"
         ]
       }
     ]
@@ -4313,7 +4560,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Perseus — the Hero, sitting in the winter Milky Way between Cassiopeia and Taurus, home to the famous variable star Algol and a spectacular double star cluster.",
+        "caption": "Let's find Perseus — the Hero, lying in the Milky Way between Cassiopeia and Taurus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4322,22 +4569,11 @@
         "bounds": false
       },
       {
-        "title": "Look south of Cassiopeia in autumn",
-        "caption": "In November and December, Perseus is high overhead for northern observers, sitting directly below the W of Cassiopeia. Star-hop from Cassiopeia's brightest star southward about 25° to reach Mirfak. Perseus stretches between Cassiopeia above and Taurus below, rich in Milky Way star fields.",
+        "title": "Below Cassiopeia",
+        "caption": "Look below Cassiopeia's W shape for a bright star embedded in the Milky Way. That's Mirfak, Perseus's brightest star, surrounded by a loose cluster of young blue-white stars visible in binoculars.",
         "ra": 46,
         "dec": 43,
         "fov": 70,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Find Mirfak",
-        "caption": "Mirfak (Alpha Persei, mag 1.8) is the brightest star and sits at the center of a loose association of young stars — the Alpha Persei Cluster (Melotte 20) — visible in binoculars as a beautiful spread of blue-white stars. Mirfak is a yellow-white supergiant about 510 light-years away, intrinsically over 5,000 times more luminous than the Sun.",
-        "ra": 50,
-        "dec": 48,
-        "fov": 35,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -4349,32 +4585,84 @@
         ]
       },
       {
-        "title": "Algol and the Double Cluster",
-        "caption": "Algol (Beta Persei, mag normally 2.1) is the 'Demon Star' — an eclipsing binary that dims to magnitude 3.4 for about 10 hours every 2.87 days when its fainter companion passes in front. The famous Double Cluster (NGC 869 and 884) lies between Perseus and Cassiopeia, a stunning naked-eye and binocular object — two rich clusters separated by less than half a degree.",
-        "ra": 46,
-        "dec": 43,
-        "fov": 43,
+        "title": "The myth of Andromeda",
+        "caption": "Perseus is the hero who slew the Gorgon Medusa and rescued Princess Andromeda from the sea monster Cetus — riding in on the winged horse Pegasus, born from Medusa's blood. Six constellations in this part of the sky represent figures in the story.",
+        "ra": 14.39,
+        "dec": 31.72,
+        "fov": 90.27,
+        "rotation": -1.1188,
+        "photo": true,
+        "diagram": [
+          "Per"
+        ],
+        "names": [
+          "Per",
+          "And",
+          "Cas",
+          "Cep",
+          "Peg",
+          "Cet"
+        ],
+        "bounds": false,
+        "art": [
+          "Per",
+          "And",
+          "Cas",
+          "Cep",
+          "Peg",
+          "Cet"
+        ]
+      },
+      {
+        "title": "The Demon Star",
+        "caption": "Algol is the \"Demon Star\" — it dims noticeably every 2.87 days when a fainter companion star passes in front of it. Ancient Arabic astronomers named it Ra's al-Ghul, the demon's head, and it marks the severed head of Medusa in Perseus's hand. It was one of the first variable stars recognized by modern astronomy.",
+        "ra": 49.39,
+        "dec": 46.14,
+        "fov": 36.75,
+        "rotation": -0.3056,
         "photo": true,
         "diagram": true,
+        "art": [
+          "Per"
+        ],
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "Per"
+        ],
         "highlight": [
           {
-            "id": "Mirfak"
-          },
-          {
             "id": "Algol"
+          }
+        ]
+      },
+      {
+        "title": "The Double Cluster",
+        "caption": "Between Perseus and Cassiopeia lies one of the finest sights in the sky — the Double Cluster, two rich star clusters side by side, visible as a fuzzy patch to the naked eye and spectacular through binoculars. Each cluster contains hundreds of young blue and red supergiants.",
+        "ra": 40.04,
+        "dec": 50.33,
+        "fov": 22.55,
+        "rotation": -0.4379,
+        "photo": true,
+        "diagram": [
+          "Per"
+        ],
+        "names": false,
+        "bounds": [
+          "Per"
+        ],
+        "highlight": [
+          {
+            "id": "Double Cluster"
           }
         ]
       }
     ]
   },
   "Phoenix": {
-    "rotation": null,
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Phoenix — it contains Ankaa, a useful southern hemisphere guide star in a sparse region between Fomalhaut and Achernar.",
+        "caption": "Phoenix is one of a flock of southern birds mapped by Keyser and de Houtman in the 1590s, alongside Grus, Pavo, and Tucana. Look for it in the sparse stretch of sky between Fomalhaut and Achernar.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4383,8 +4671,8 @@
         "bounds": false
       },
       {
-        "title": "Find Ankaa",
-        "caption": "Find Ankaa about 30° south of Fomalhaut (the bright Lonely Star of Autumn). It is the brightest star in this area of sky.",
+        "title": "Between two bright stars",
+        "caption": "Ankaa is the brightest star in the gap between Fomalhaut and Achernar. Its name comes from the Arabic al-ʽanqāʼ, meaning 'the phoenix.' It marks the head of the bird.",
         "ra": 6.57,
         "dec": -42.31,
         "fov": 55,
@@ -4405,16 +4693,20 @@
         ]
       },
       {
-        "title": "Phoenix's full extent",
-        "caption": "Phoenix spans a wide area south of the celestial equator. It is best seen October–December from the southern hemisphere.",
+        "title": "Rising from the ashes",
+        "caption": "The phoenix descends from the Egyptian Bennu, a solar bird linked to Ra. Herodotus tells the story: every 500 years the bird builds a nest of cinnamon and myrrh at the Temple of the Sun in Heliopolis, sets it alight, and is reborn from the ashes.",
         "ra": 14,
-        "dec": -44,
-        "fov": 32,
+        "dec": -48,
+        "fov": 35,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true
+        "names": false,
+        "bounds": [
+          "Phe"
+        ],
+        "art": [
+          "Phe"
+        ]
       }
     ]
   },

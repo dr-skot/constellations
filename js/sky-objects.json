@@ -3,32 +3,27 @@
     "ra": 6.02,
     "dec": -72.08,
     "color": "#c8d8ff",
-    "r": 12,
     "arcmin": 44
   },
   "Achernar": {
     "ra": 24.42834,
     "dec": -57.236757,
-    "color": "#90c8ff",
-    "r": 17
+    "color": "#90c8ff"
   },
   "Acrux": {
     "ra": 186.649,
     "dec": -63.099,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Acubens": {
     "ra": 124.12884,
     "dec": 9.185545,
-    "color": "#ff7060",
-    "r": 8
+    "color": "#ff7060"
   },
   "Adhara": {
     "ra": 104.656,
     "dec": -28.972,
-    "color": "#90c8ff",
-    "r": 10
+    "color": "#90c8ff"
   },
   "Aljanah": {
     "ra": 311.553,
@@ -38,220 +33,189 @@
   "Albireo": {
     "ra": 292.680345,
     "dec": 27.959681,
-    "color": "#ffd080",
-    "r": 9
+    "color": "#ffd080"
   },
   "Aldebaran": {
     "ra": 68.98,
     "dec": 16.509,
-    "color": "#ff9060",
-    "r": 14
+    "color": "#ff9060"
   },
   "Alderamin": {
     "ra": 319.64445,
     "dec": 62.585573,
-    "color": "#c8d8ff",
-    "r": 12
+    "color": "#c8d8ff"
   },
   "Algedi": {
     "ra": 304.51356,
     "dec": -12.544852,
-    "color": "#ffe8b0",
-    "r": 9
+    "color": "#ffe8b0"
   },
   "Algedi (α1)": {
     "ra": 304.41195,
     "dec": -12.508212,
-    "color": "#ffe8b0",
-    "r": 8
+    "color": "#ffe8b0"
   },
   "Algieba": {
     "ra": 154.993,
     "dec": 19.841,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Algol": {
     "ra": 47.04222,
     "dec": 40.955648,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "Algorab": {
     "ra": 183.95155499999998,
     "dec": -17.541929,
-    "color": "#90c8ff",
-    "r": 10
+    "color": "#90c8ff"
   },
   "Alkaid": {
     "ra": 206.885,
     "dec": 49.313,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "Almach": {
     "ra": 30.975,
     "dec": 42.33,
-    "color": "#ff7060",
-    "r": 12
+    "color": "#ff7060"
   },
   "Alnair": {
     "ra": 332.058,
     "dec": -46.961,
-    "color": "#90c8ff",
-    "r": 15
+    "color": "#90c8ff"
   },
   "Alphard": {
     "ra": 141.89685,
     "dec": -8.658603,
-    "color": "#ff9060",
-    "r": 14
+    "color": "#ff9060"
   },
   "Alphecca": {
     "ra": 233.67192,
     "dec": 26.714693,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
+  },
+  "Algenib": {
+    "ra": 3.3,
+    "dec": 15.18,
+    "color": "#90c8ff"
   },
   "Alpheratz": {
     "ra": 2.096865,
     "dec": 29.090432,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Alrescha": {
     "ra": 30.5117,
     "dec": 2.7638,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Alsephina": {
     "ra": 131.175885,
     "dec": -54.708821,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "Alshain": {
     "ra": 298.828,
     "dec": 6.407,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "Altair": {
     "ra": 297.696,
     "dec": 8.868,
-    "color": "#ffe8b0",
-    "r": 16
+    "color": "#ffe8b0"
   },
   "Andromeda Galaxy": {
     "ra": 10.68,
     "dec": 41.27,
     "color": "#ffe8b0",
-    "r": 40,
     "arcmin": 200
   },
   "Ankaa": {
     "ra": 6.57,
     "dec": -42.31,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Anser": {
     "ra": 292.18,
     "dec": 24.66,
-    "color": "#ff9060",
-    "r": 8
+    "color": "#ff9060"
   },
   "Antares": {
     "ra": 247.352,
     "dec": -26.432,
-    "color": "#ff7060",
-    "r": 16
+    "color": "#ff7060"
   },
   "Arcturus": {
     "ra": 213.91545,
     "dec": 19.18241,
-    "color": "#ff9060",
-    "r": 16
+    "color": "#ff9060"
   },
   "Arneb": {
     "ra": 83.18256,
     "dec": -17.822289,
-    "color": "#c8d8ff",
-    "r": 13
+    "color": "#c8d8ff"
   },
   "Asellus Australis": {
     "ra": 131.17125,
     "dec": 18.154309,
-    "color": "#ffd080",
-    "r": 9
+    "color": "#ffd080"
   },
   "Aspidiske": {
     "ra": 139.273,
     "dec": -59.275,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "Atria": {
     "ra": 252.166,
     "dec": -69.028,
-    "color": "#ff9060",
-    "r": 14
+    "color": "#ff9060"
   },
   "Avior": {
     "ra": 125.629,
     "dec": -59.51,
-    "color": "#ffd080",
-    "r": 14
+    "color": "#ffd080"
   },
   "Beehive (M44)": {
     "ra": 130.1,
     "dec": 19.67,
     "color": "#ffe8b0",
-    "r": 14,
     "arcmin": 95
   },
   "Betelgeuse": {
     "ra": 88.793,
     "dec": 7.407,
-    "color": "#ff7060",
-    "r": 14
+    "color": "#ff7060"
   },
   "Canopus": {
     "ra": 95.988,
     "dec": -52.696,
-    "color": "#c8d8ff",
-    "r": 20
+    "color": "#c8d8ff"
   },
   "Capella": {
     "ra": 79.17225,
     "dec": 45.997991,
-    "color": "#ffd080",
-    "r": 17
+    "color": "#ffd080"
   },
   "Caph": {
     "ra": 2.293,
     "dec": 59.15,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "Castor": {
     "ra": 113.65,
     "dec": 31.888,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Chara": {
     "ra": 188.436,
     "dec": 41.357,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "Cih": {
     "ra": 14.177,
     "dec": 60.717,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Circinus Galaxy": {
     "ra": 213.291,
@@ -268,40 +232,40 @@
     "ra": 192.5,
     "dec": -62.5,
     "color": "#aaaaaa",
-    "r": 55,
     "arcmin": 420
+  },
+  "Double Cluster": {
+    "ra": 34.75,
+    "dec": 57.13,
+    "color": "#c8d8ff",
+    "arcmin": 60
   },
   "Coma Galaxy Cluster": {
     "ra": 194.935,
     "dec": 27.912,
     "color": "#ffe8b0",
-    "r": 8,
     "arcmin": 30
   },
   "Coma Star Cluster": {
     "ra": 185.625,
     "dec": 25.85,
     "color": "#ffe8b0",
-    "r": 14,
     "arcmin": 450
   },
   "Cor Caroli": {
     "ra": 194.007,
     "dec": 38.318,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "Cursa": {
     "ra": 76.962435,
     "dec": -5.086446,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "Dabih": {
     "ra": 305.25280499999997,
     "dec": -14.781367,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Fawaris": {
     "ra": 296.244,
@@ -311,14 +275,12 @@
   "Deneb": {
     "ra": 310.35798,
     "dec": 45.280338,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Deneb Algedi": {
     "ra": 326.760165,
     "dec": -16.127286,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "ε Leo": {
     "ra": 146.463,
@@ -343,152 +305,128 @@
   "Denebola": {
     "ra": 177.265,
     "dec": 14.572,
-    "color": "#c8d8ff",
-    "r": 13
+    "color": "#c8d8ff"
   },
   "Diadem": {
     "ra": 197.497,
     "dec": 17.529,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Diphda": {
     "ra": 10.897,
     "dec": -17.987,
-    "color": "#ffd080",
-    "r": 14
+    "color": "#ffd080"
   },
   "Dubhe": {
     "ra": 165.932,
     "dec": 61.751,
-    "color": "#ff9060",
-    "r": 12
+    "color": "#ff9060"
   },
   "Eltanin": {
     "ra": 269.151555,
     "dec": 51.488895,
-    "color": "#ff7060",
-    "r": 13
+    "color": "#ff7060"
   },
   "Enif": {
     "ra": 326.04649500000005,
     "dec": 9.875011,
-    "color": "#ff9060",
-    "r": 12
+    "color": "#ff9060"
   },
   "Eta Carinae Nebula": {
     "ra": 161.25,
     "dec": -59.87,
     "color": "#ffe0c0",
-    "r": 30,
     "arcmin": 120
   },
   "Fornax A": {
     "ra": 50.674,
     "dec": -37.208,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 13
   },
   "Fornax Galaxy Cluster": {
     "ra": 54.0,
     "dec": -35.5,
     "color": "#a0c0ff",
-    "r": 10,
     "arcmin": 360
   },
   "Great Barred Spiral": {
     "ra": 53.402,
     "dec": -36.141,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 11
   },
   "Fomalhaut": {
     "ra": 344.41256999999996,
     "dec": -29.622236,
-    "color": "#90c8ff",
-    "r": 16
+    "color": "#90c8ff"
   },
   "Gacrux": {
     "ra": 187.791,
     "dec": -57.113,
-    "color": "#ff9060",
-    "r": 10
+    "color": "#ff9060"
   },
   "Gienah": {
     "ra": 187.466085,
     "dec": -16.515432,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "Gomeisa": {
     "ra": 111.78768,
     "dec": 8.289315,
-    "color": "#90c8ff",
-    "r": 10
+    "color": "#90c8ff"
   },
   "Garnet Star": {
     "ra": 325.88,
     "dec": 58.78,
-    "color": "#ff7060",
-    "r": 9
+    "color": "#ff7060"
   },
   "Grus Quartet": {
     "ra": 349.5,
     "dec": -42.4,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 50
   },
   "Hadar": {
     "ra": 210.955935,
     "dec": -60.373039,
-    "color": "#90c8ff",
-    "r": 15
+    "color": "#90c8ff"
   },
   "Hamal": {
     "ra": 31.793325,
     "dec": 23.462423,
-    "color": "#ffd080",
-    "r": 13
+    "color": "#ffd080"
   },
   "Helix Nebula": {
     "ra": 337.41,
     "dec": -20.84,
     "color": "#a0e0a0",
-    "r": 15,
     "arcmin": 13
   },
   "Izar": {
     "ra": 221.24676,
     "dec": 27.074222,
-    "color": "#ff9060",
-    "r": 10
+    "color": "#ff9060"
   },
   "Kitalpha": {
     "ra": 318.956,
     "dec": 5.248,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "Kochab": {
     "ra": 222.677,
     "dec": 74.156,
-    "color": "#ff7060",
-    "r": 11
+    "color": "#ff7060"
   },
   "Kraz": {
     "ra": 188.596815,
     "dec": -23.396759,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "M13": {
     "ra": 250.423,
     "dec": 36.461,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 20
   },
   "BL Lacertae": {
@@ -500,7 +438,6 @@
     "ra": 80.89,
     "dec": -69.76,
     "color": "#c8d8ff",
-    "r": 16,
     "arcmin": 323
   },
   "SMC": {
@@ -513,140 +450,164 @@
     "ra": 299.9,
     "dec": 22.72,
     "color": "#c8d8ff",
-    "r": 8,
     "arcmin": 7
   },
   "M36": {
     "ra": 84.075,
     "dec": 34.14,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 120
   },
   "M37": {
     "ra": 88.075,
     "dec": 32.55,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 19
   },
   "M38": {
     "ra": 82.175,
     "dec": 35.86,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 20
   },
   "Markeb": {
     "ra": 140.53,
     "dec": -55.01,
-    "color": "#90c8ff",
-    "r": 11
+    "color": "#90c8ff"
   },
   "Markab": {
     "ra": 346.19022,
     "dec": 15.205264,
-    "color": "#90c8ff",
-    "r": 11
+    "color": "#90c8ff"
   },
   "Menkalinan": {
     "ra": 89.882,
     "dec": 44.947,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "Menkar": {
     "ra": 45.57,
     "dec": 4.09,
-    "color": "#ff9060",
-    "r": 13
+    "color": "#ff9060"
   },
   "Mira": {
     "ra": 34.84,
     "dec": -2.98,
-    "color": "#ff7060",
-    "r": 10
+    "color": "#ff7060"
   },
   "Menkent": {
     "ra": 211.670925,
     "dec": -36.369954,
-    "color": "#ffd080",
-    "r": 11
+    "color": "#ffd080"
   },
   "Merak": {
     "ra": 165.46,
     "dec": 56.382,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "Mesarthim": {
     "ra": 28.38,
     "dec": 19.29,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "Miaplacidus": {
     "ra": 160.739,
     "dec": -64.394,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Mimosa": {
     "ra": 191.93,
     "dec": -59.689,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "Minkar": {
     "ra": 182.53119,
     "dec": -22.619766,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Mirach": {
     "ra": 17.433,
     "dec": 35.621,
-    "color": "#ff7060",
-    "r": 12
+    "color": "#ff7060"
   },
   "Mirfak": {
     "ra": 51.08067,
     "dec": 49.86118,
-    "color": "#ffe8b0",
-    "r": 13
+    "color": "#ffe8b0"
   },
   "Naos": {
     "ra": 120.896055,
     "dec": -40.003148,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "NGC 2997": {
     "ra": 146.41,
     "dec": -31.19,
     "color": "#c8d8ff",
-    "r": 10,
+    "arcmin": 10
+  },
+  "Dark Doodad 1": {
+    "ra": 188.953,
+    "dec": -70.487,
+    "arcmin": 9
+  },
+  "Dark Doodad 2": {
+    "ra": 188.301,
+    "dec": -70.792,
+    "arcmin": 20
+  },
+  "Dark Doodad 3": {
+    "ra": 187.656,
+    "dec": -71.138,
+    "arcmin": 14
+  },
+  "Dark Doodad 4": {
+    "ra": 186.944,
+    "dec": -71.482,
+    "arcmin": 18
+  },
+  "Dark Doodad 5": {
+    "ra": 186.435,
+    "dec": -71.832,
+    "arcmin": 12
+  },
+  "Dark Doodad 6": {
+    "ra": 185.964,
+    "dec": -72.143,
+    "arcmin": 10
+  },
+  "Dark Doodad 7": {
+    "ra": 185.693,
+    "dec": -72.501,
+    "arcmin": 15
+  },
+  "Dark Doodad 8": {
+    "ra": 185.558,
+    "dec": -72.68,
     "arcmin": 10
   },
   "NGC 4372": {
     "ra": 186.6,
     "dec": -72.65,
     "color": "#c8d8ff",
-    "r": 10,
     "arcmin": 24
   },
   "NGC 6067": {
     "ra": 243.3,
     "dec": -54.2,
     "color": "#c8d8ff",
-    "r": 10,
     "arcmin": 13
+  },
+  "Norma Galaxy Cluster": {
+    "ra": 243.9,
+    "dec": -60.9,
+    "color": "#ffe8b0",
+    "arcmin": 60
   },
   "Nihal": {
     "ra": 82.06134,
     "dec": -20.759441,
-    "color": "#ff9060",
-    "r": 12
+    "color": "#ff9060"
   },
   "Hind's Crimson Star": {
     "ra": 74.901,
@@ -656,8 +617,7 @@
   "Nusakan": {
     "ra": 239.39691,
     "dec": 26.87788,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "Alchiba": {
     "ra": 182.103,
@@ -677,272 +637,240 @@
   "Peacock": {
     "ra": 306.41,
     "dec": -56.74,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Phact": {
     "ra": 84.912,
     "dec": -34.074,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Pherkad": {
     "ra": 230.182,
     "dec": 71.834,
-    "color": "#d8e2ff",
-    "r": 11
+    "color": "#d8e2ff"
   },
   "Pleiades": {
     "ra": 56.75,
     "dec": 24.12,
     "color": "#c8d8ff",
-    "r": 14,
     "arcmin": 110
   },
   "Polaris": {
     "ra": 37.955,
     "dec": 89.264,
-    "color": "#ffe8b0",
-    "r": 14
+    "color": "#ffe8b0"
   },
   "Pollux": {
     "ra": 116.329,
     "dec": 28.026,
-    "color": "#ff9060",
-    "r": 14
+    "color": "#ff9060"
   },
   "Porrima": {
     "ra": 190.415175,
     "dec": -1.449375,
-    "color": "#ffe8b0",
-    "r": 10
+    "color": "#ffe8b0"
   },
   "Praecipua": {
     "ra": 163.328,
     "dec": 34.215,
-    "color": "#ffd080",
-    "r": 12
+    "color": "#ffd080"
   },
   "Procyon": {
     "ra": 114.825495,
     "dec": 5.224993,
-    "color": "#c8d8ff",
-    "r": 15
+    "color": "#c8d8ff"
   },
   "Rasalhague": {
     "ra": 263.733615,
     "dec": 12.560035,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "Regor": {
     "ra": 136.99902,
     "dec": -43.432589,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "Regulus": {
     "ra": 152.093,
     "dec": 11.967,
-    "color": "#90c8ff",
-    "r": 15
+    "color": "#90c8ff"
   },
   "Saiph": {
     "ra": 86.939,
-    "dec": -9.670,
-    "color": "#90c8ff",
-    "r": 14
+    "dec": -9.67,
+    "color": "#90c8ff"
   },
   "Rigel": {
     "ra": 78.634,
     "dec": -8.202,
-    "color": "#90c8ff",
-    "r": 16
+    "color": "#90c8ff"
   },
   "Rigil Kentaurus": {
     "ra": 219.911475,
     "dec": -60.833976,
-    "color": "#ffe8b0",
-    "r": 16
+    "color": "#ffe8b0"
   },
   "Ring Nebula": {
     "ra": 283.396,
     "dec": 33.029,
     "color": "#aaddff",
-    "r": 8,
     "arcmin": 1.2
   },
   "Rotanev": {
     "ra": 309.38724,
     "dec": 14.595087,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Sabik": {
     "ra": 257.59452,
     "dec": -15.72491,
-    "color": "#90c8ff",
-    "r": 11
+    "color": "#90c8ff"
   },
   "Sadalsud": {
     "ra": 322.89,
     "dec": -5.571,
-    "color": "#ffd080",
-    "r": 12
+    "color": "#ffd080"
   },
   "Sadr": {
     "ra": 305.557095,
     "dec": 40.256679,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Saturn Nebula": {
     "ra": 316.05,
     "dec": -11.36,
     "color": "#a0e0a0",
-    "r": 9,
     "arcmin": 0.7
   },
   "Scheat": {
     "ra": 345.943515,
     "dec": 28.082789,
-    "color": "#ff7060",
-    "r": 12
+    "color": "#ff7060"
   },
   "Schedar": {
     "ra": 10.127,
     "dec": 56.537,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Shaula": {
     "ra": 263.402,
     "dec": -37.104,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Sheratan": {
     "ra": 28.66002,
     "dec": 20.808035,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Sirius": {
     "ra": 101.287,
     "dec": -16.716,
-    "color": "#90c8ff",
-    "r": 18
+    "color": "#90c8ff"
   },
   "south pole": {
     "ra": 189,
     "dec": -90,
-    "color": "#ffffff",
-    "r": 12
+    "color": "#ffffff"
   },
   "Spica": {
     "ra": 201.298245,
     "dec": -11.161322,
-    "color": "#90c8ff",
-    "r": 15
+    "color": "#90c8ff"
   },
   "Southern Pleiades": {
     "ra": 160.8,
     "dec": -64.4,
     "color": "#c8d8ff",
-    "r": 20,
     "arcmin": 80
   },
   "Sualocin": {
     "ra": 309.909525,
     "dec": 15.912072,
-    "color": "#90c8ff",
-    "r": 9
+    "color": "#90c8ff"
   },
   "Suhail": {
     "ra": 161.69232,
     "dec": -49.420255,
-    "color": "#ff9060",
-    "r": 12
+    "color": "#ff9060"
   },
   "Tarantula Nebula": {
     "ra": 84.673,
     "dec": -69.101,
     "color": "#ff88aa",
-    "r": 12,
     "arcmin": 40
   },
   "Tarazed": {
     "ra": 296.565,
     "dec": 10.613,
-    "color": "#ffd080",
-    "r": 9
+    "color": "#ffd080"
   },
   "Tau Ceti": {
     "ra": 26.02,
     "dec": -15.94,
-    "color": "#ffd080",
-    "r": 8
+    "color": "#ffd080"
   },
   "Thuban": {
     "ra": 211.097,
     "dec": 64.376,
-    "color": "#d8e2ff",
-    "r": 11
+    "color": "#d8e2ff"
   },
   "Tiaki": {
     "ra": 340.667,
     "dec": -46.885,
-    "color": "#ff9060",
-    "r": 14
+    "color": "#ff9060"
   },
   "Unukalhai": {
     "ra": 236.06697,
     "dec": 6.425627,
-    "color": "#ff9060",
-    "r": 13
+    "color": "#ff9060"
   },
   "Vega": {
     "ra": 279.235,
     "dec": 38.784,
-    "color": "#90c8ff",
-    "r": 16
+    "color": "#90c8ff"
+  },
+  "Delta Velorum": {
+    "ra": 131.18,
+    "dec": -54.71,
+    "color": "#c8d8ff"
   },
   "Vindemiatrix": {
     "ra": 195.54416999999998,
     "dec": 10.95915,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Water Jar": {
     "ra": 336.985,
     "dec": -0.371,
     "color": "#c8d8ff",
-    "r": 32,
     "arcmin": 225
   },
   "Wazn": {
     "ra": 87.74,
     "dec": -35.768,
-    "color": "#ffd080",
-    "r": 12
+    "color": "#ffd080"
   },
   "Yed Prior": {
     "ra": 243.58641,
     "dec": -3.694323,
-    "color": "#ff7060",
-    "r": 10
+    "color": "#ff7060"
   },
   "Zubenelgenubi": {
     "ra": 222.719655,
     "dec": -16.041778,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "SN 1006": {
     "ra": 225.592,
     "dec": -41.95,
     "color": "#ffa060",
     "arcmin": 30
+  },
+  "SN 1604": {
+    "ra": 262.67,
+    "dec": -21.49,
+    "color": "#ffa060",
+    "arcmin": 4
   },
   "Methuselah Star": {
     "ra": 235.763,
@@ -952,80 +880,67 @@
   "Zubeneschamali": {
     "ra": 229.251735,
     "dec": -9.382917,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "α Ant": {
     "ra": 156.788,
     "dec": -31.068,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "α Aps": {
     "ra": 221.966,
     "dec": -79.045,
-    "color": "#ff9060",
-    "r": 11
+    "color": "#ff9060"
   },
   "α Ara": {
     "ra": 261.325,
     "dec": -55.53,
-    "color": "#ff9060",
-    "r": 13
+    "color": "#ff9060"
   },
   "α Cae": {
     "ra": 70.141,
     "dec": -41.864,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α Cam": {
     "ra": 74.322,
     "dec": 53.752,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α Cen": {
     "ra": 210.96,
     "dec": -60.83,
-    "color": "#ffd080",
-    "r": 16
+    "color": "#ffd080"
   },
   "α Cha": {
     "ra": 124.631,
     "dec": -76.92,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α Cir": {
     "ra": 220.627,
     "dec": -64.975,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "α CrA": {
     "ra": 287.507,
     "dec": -39.341,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α Crt": {
     "ra": 164.944,
     "dec": -18.299,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α For": {
     "ra": 48.019,
     "dec": -28.988,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "α Hor": {
     "ra": 63.5,
     "dec": -42.294,
-    "color": "#ffd080",
-    "r": 11
+    "color": "#ffd080"
   },
   "ε Ind": {
     "ra": 330.832,
@@ -1035,32 +950,27 @@
   "α Hyi": {
     "ra": 29.692,
     "dec": -61.57,
-    "color": "#c8d8ff",
-    "r": 13
+    "color": "#c8d8ff"
   },
   "α Ind": {
     "ra": 309.392,
     "dec": -47.292,
-    "color": "#ffd080",
-    "r": 12
+    "color": "#ffd080"
   },
   "α Lac": {
     "ra": 337.823,
     "dec": 50.282,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "α Lup": {
     "ra": 220.482,
     "dec": -47.388,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "α Lyn": {
     "ra": 140.264,
     "dec": 34.393,
-    "color": "#ff9060",
-    "r": 12
+    "color": "#ff9060"
   },
   "Intergalactic Wanderer": {
     "ra": 114.535,
@@ -1071,128 +981,107 @@
   "α Mus": {
     "ra": 189.296,
     "dec": -69.136,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "α Pic": {
     "ra": 102.05,
     "dec": -61.94,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α Pyx": {
     "ra": 130.9,
     "dec": -33.19,
-    "color": "#90c8ff",
-    "r": 10
+    "color": "#90c8ff"
   },
   "α Ret": {
     "ra": 63.61,
     "dec": -62.47,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "α Scl": {
     "ra": 14.65,
     "dec": -29.36,
-    "color": "#90c8ff",
-    "r": 8
+    "color": "#90c8ff"
   },
   "α Sct": {
     "ra": 281.79,
     "dec": -4.75,
-    "color": "#ffd080",
-    "r": 7
+    "color": "#ffd080"
   },
   "α Sge": {
     "ra": 295.02,
     "dec": 18.01,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "α Tel": {
     "ra": 276.74,
     "dec": -45.97,
-    "color": "#90c8ff",
-    "r": 10
+    "color": "#90c8ff"
   },
   "α Tri": {
     "ra": 28.27,
     "dec": 29.58,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "α Tuc": {
     "ra": 334.63,
     "dec": -60.26,
-    "color": "#ff9060",
-    "r": 12
+    "color": "#ff9060"
   },
   "β Aps": {
     "ra": 248.364,
     "dec": -78.897,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "β Ara": {
     "ra": 262.96,
     "dec": -49.876,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "β Cae": {
     "ra": 76.102,
     "dec": -35.483,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "β Cam": {
     "ra": 75.855,
     "dec": 60.442,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "β Cen": {
     "ra": 211.67,
     "dec": -60.37,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "β Cha": {
     "ra": 158.867,
     "dec": -78.608,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "β Cir": {
     "ra": 229.379,
     "dec": -58.801,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "β CrA": {
     "ra": 287.368,
     "dec": -37.904,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "β Dor": {
     "ra": 68.499,
     "dec": -55.045,
-    "color": "#90c8ff",
-    "r": 13
+    "color": "#90c8ff"
   },
   "β Hyi": {
     "ra": 6.419,
     "dec": -77.254,
-    "color": "#c8d8ff",
-    "r": 14
+    "color": "#c8d8ff"
   },
   "β Mon": {
     "ra": 97.204,
     "dec": -7.033,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "Rosette Nebula": {
     "ra": 97.875,
@@ -1203,170 +1092,147 @@
   "β Mus": {
     "ra": 191.57,
     "dec": -68.108,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "β Pav": {
     "ra": 302.18,
     "dec": -66.18,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "β Phe": {
     "ra": 16.52,
     "dec": -46.72,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "β Pic": {
     "ra": 86.82,
     "dec": -51.07,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "β Pyx": {
     "ra": 130.03,
     "dec": -35.31,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "β Ret": {
     "ra": 56.05,
     "dec": -64.81,
-    "color": "#ffd080",
-    "r": 8
+    "color": "#ffd080"
   },
   "β Sct": {
     "ra": 278.8,
     "dec": -8.24,
-    "color": "#ffd080",
-    "r": 8
+    "color": "#ffd080"
   },
   "β Sex": {
     "ra": 151.98,
     "dec": -0.37,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "β TrA": {
     "ra": 238.79,
     "dec": -63.43,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "β Tri": {
     "ra": 32.39,
     "dec": 34.99,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "β Vol": {
     "ra": 126.43,
     "dec": -66.14,
-    "color": "#ffd080",
-    "r": 7
+    "color": "#ffd080"
   },
   "γ Phe": {
     "ra": 22.09,
     "dec": -43.32,
-    "color": "#ff9060",
-    "r": 8
+    "color": "#ff9060"
   },
   "γ Scl": {
     "ra": 349.71,
     "dec": -32.53,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "γ Sge": {
     "ra": 296.85,
     "dec": 18.53,
-    "color": "#ffd080",
-    "r": 8
+    "color": "#ffd080"
   },
   "γ Tri": {
     "ra": 34.33,
     "dec": 33.85,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "γ Vol": {
     "ra": 135.61,
     "dec": -66.4,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "γ² Nor": {
     "ra": 244.96,
     "dec": -50.156,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "δ Crt": {
     "ra": 169.835,
     "dec": -14.779,
-    "color": "#ffd080",
-    "r": 12
+    "color": "#ffd080"
   },
   "δ Lup": {
     "ra": 233.785,
     "dec": -41.167,
-    "color": "#90c8ff",
-    "r": 11
+    "color": "#90c8ff"
   },
   "δ Pav": {
     "ra": 311.24,
     "dec": -66.2,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "δ Scl": {
     "ra": 353.24,
     "dec": -37.82,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "δ Sge": {
     "ra": 299.69,
     "dec": 19.49,
-    "color": "#ff9060",
-    "r": 10
+    "color": "#ff9060"
   },
   "δ TrA": {
     "ra": 229.73,
     "dec": -68.68,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "ε Aur": {
     "ra": 75.492,
     "dec": 43.823,
-    "color": "#c8d8ff",
-    "r": 8
+    "color": "#c8d8ff"
   },
   "ε Nor": {
     "ra": 246.796,
     "dec": -47.555,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "ζ Tel": {
     "ra": 272.81,
     "dec": -45.95,
-    "color": "#c8d8ff",
-    "r": 7
+    "color": "#c8d8ff"
   },
   "ν Oct": {
     "ra": 325.369,
     "dec": -77.39,
-    "color": "#ffd080",
-    "r": 12
+    "color": "#ffd080"
+  },
+  "σ Oct": {
+    "ra": 317.2,
+    "dec": -88.96,
+    "color": "#c8d8ff"
   },
   "Corona Australis": {
     "ra": 243.86,
     "dec": -26.43,
-    "color": "#c8d8ff",
-    "r": 14
+    "color": "#c8d8ff"
   },
   "Corona Australis Nebula": {
     "ra": 285.41,
@@ -1377,50 +1243,42 @@
   "κ Vel": {
     "ra": 140.528,
     "dec": -55.011,
-    "color": "#90c8ff",
-    "r": 10
+    "color": "#90c8ff"
   },
   "Alnasl": {
     "ra": 271.452,
     "dec": -30.424,
-    "color": "#ffd080",
-    "r": 10
+    "color": "#ffd080"
   },
   "Kaus Australis": {
     "ra": 276.043,
     "dec": -34.384,
-    "color": "#90c8ff",
-    "r": 14
+    "color": "#90c8ff"
   },
   "Alnilam": {
     "ra": 84.053,
     "dec": -1.202,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Alnitak": {
     "ra": 85.19,
     "dec": -1.943,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Mintaka": {
     "ra": 83.002,
     "dec": -0.299,
-    "color": "#c8d8ff",
-    "r": 9
+    "color": "#c8d8ff"
   },
   "Nunki": {
     "ra": 283.816,
     "dec": -26.297,
-    "color": "#90c8ff",
-    "r": 11
+    "color": "#90c8ff"
   },
   "δ Cep": {
     "ra": 333.75816,
     "dec": 57.043587,
-    "color": "#ffe8b0",
-    "r": 9
+    "color": "#ffe8b0"
   },
   "ε Her": {
     "ra": 255.072,
@@ -1430,33 +1288,28 @@
   "η Her": {
     "ra": 250.7239949999999,
     "dec": 38.922254,
-    "color": "#ffe8b0",
-    "r": 9
+    "color": "#ffe8b0"
   },
   "ω Cen": {
     "ra": 201.697,
     "dec": -47.48,
     "color": "#ffe8b0",
-    "r": 14,
     "arcmin": 36
   },
   "π Pup": {
     "ra": 122.38314,
     "dec": -47.336588,
-    "color": "#90c8ff",
-    "r": 12
+    "color": "#90c8ff"
   },
   "ξ Ser": {
     "ra": 275.32750500000003,
     "dec": -2.898825,
-    "color": "#ffe8b0",
-    "r": 9
+    "color": "#ffe8b0"
   },
   "ζ Cep": {
     "ra": 337.292745,
     "dec": 58.415198,
-    "color": "#ffe8b0",
-    "r": 9
+    "color": "#ffe8b0"
   },
   "π Her": {
     "ra": 258.762,
@@ -1466,27 +1319,23 @@
   "ζ Her": {
     "ra": 250.32169500000003,
     "dec": 31.602726,
-    "color": "#ffe8b0",
-    "r": 11
+    "color": "#ffe8b0"
   },
   "NGC 6397": {
     "ra": 265.175,
     "dec": -53.674,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 26
   },
   "Alioth": {
     "ra": 193.507,
     "dec": 55.96,
-    "color": "#c8d8ff",
-    "r": 12
+    "color": "#c8d8ff"
   },
   "Mizar": {
     "ra": 200.981,
     "dec": 54.925,
-    "color": "#c8d8ff",
-    "r": 11
+    "color": "#c8d8ff"
   },
   "Mu Columbae": {
     "ra": 86.5,
@@ -1496,34 +1345,29 @@
   "Megrez": {
     "ra": 183.856,
     "dec": 57.033,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "Phecda": {
     "ra": 178.457,
     "dec": 53.695,
-    "color": "#c8d8ff",
-    "r": 10
+    "color": "#c8d8ff"
   },
   "NGC 2403": {
     "ra": 114.214,
     "dec": 65.603,
     "color": "#ffe8b0",
-    "r": 12,
     "arcmin": 10
   },
   "M3": {
     "ra": 205.548,
     "dec": 28.377,
     "color": "#ffe8b0",
-    "r": 10,
     "arcmin": 16
   },
   "Whirlpool Galaxy": {
     "ra": 202.47,
     "dec": 47.195,
     "color": "#ffe8b0",
-    "r": 12,
     "arcmin": 9
   }
 }

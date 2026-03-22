@@ -216,6 +216,13 @@ function drawExplore() {
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const celDash = 6, celGap = 5;
 
+  const _readout = document.getElementById('explore-readout');
+  if (_readout) {
+    const nr = guideNorthUpR(explore.P);
+    const gr = explore.R - nr;
+    _readout.textContent = `RA ${ra.toFixed(2)}  Dec ${dec.toFixed(2)}  FOV ${explore.fov.toFixed(2)}  Rot ${gr.toFixed(4)}`;
+  }
+
   if (gl) {
     glClear(W, H);
     ctx.clearRect(0, 0, W, H);

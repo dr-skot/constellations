@@ -43,24 +43,23 @@ function guideDrawAnnotation(step, catalog) {
   ctx.save();
   for (const raw of (step.highlight || [])) {
     if (raw.capsule) {
-      const ends = raw.capsule.map(e => {
+      // Resolve each capsule point: catalog lookup, project, carry label
+      const pts = raw.capsule.map(e => {
         const obj = e.id ? (catalog && catalog[e.id]) : e;
-        return obj || null;
+        if (!obj) return null;
+        const p = projectStarsCamera([[obj.ra, obj.dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
+        if (!p || p.d <= 0) return null;
+        return { x: p.x, y: p.y, obj, label: e.label };
       }).filter(Boolean);
-      if (ends.length < 2) continue;
-      const pts = ends.map(e => {
-        const p = projectStarsCamera([[e.ra, e.dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
-        return (p && p.d > 0) ? p : null;
-      });
-      if (pts.some(p => !p)) continue;
-      const maxObjR = Math.max(...ends.map(objRadius));
-      const r     = maxObjR + margin;
+      if (pts.length < 2) continue;
+      const maxObjR = Math.max(...pts.map(p => objRadius(p.obj)));
+      const r     = maxObjR + (raw.margin != null ? raw.margin * scale : margin);
       const color = raw.color || '#fff';
       const lw    = Math.max(1.5, 1.5 * scale);
-      const drawPath = () => {
-        ctx.beginPath();
-        ctx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      const drawPath = (c) => {
+        c.beginPath();
+        c.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) c.lineTo(pts[i].x, pts[i].y);
       };
       // Draw capsule to offscreen canvas, then composite with glow
       const tmp = document.createElement('canvas');
@@ -68,27 +67,26 @@ function guideDrawAnnotation(step, catalog) {
       const tc = tmp.getContext('2d');
       tc.lineCap = 'round'; tc.lineJoin = 'round';
       tc.strokeStyle = color; tc.lineWidth = (r + lw / 2) * 2;
-      tc.beginPath(); tc.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) tc.lineTo(pts[i].x, pts[i].y);
-      tc.stroke();
+      drawPath(tc); tc.stroke();
       tc.globalCompositeOperation = 'destination-out';
       tc.strokeStyle = 'rgba(0,0,0,1)'; tc.lineWidth = Math.max(0, (r - lw / 2) * 2);
-      tc.beginPath(); tc.moveTo(pts[0].x, pts[0].y);
-      for (let i = 1; i < pts.length; i++) tc.lineTo(pts[i].x, pts[i].y);
-      tc.stroke();
+      drawPath(tc); tc.stroke();
       // Blit with glow
       ctx.shadowColor = color; ctx.shadowBlur = r * 0.7;
       ctx.drawImage(tmp, 0, 0);
       ctx.shadowBlur = 0;
-      if (raw.label) {
-        const P1 = pts[0];
+      // Per-point labels, then fallback to capsule-level label at first point
+      const labels = [];
+      for (const p of pts) { if (p.label) labels.push([p, p.label]); }
+      if (!labels.length && raw.label) labels.push([pts[0], raw.label]);
+      for (const [P, text] of labels) {
         const fs = Math.round(13 * scale);
         ctx.font = `bold ${fs}px system-ui, sans-serif`;
         ctx.textBaseline = 'middle';
-        const lx = P1.x + r + 6 * scale, ly = P1.y;
+        const lx = P.x + r + 6 * scale, ly = P.y;
         ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
-        ctx.strokeText(raw.label, lx, ly);
-        ctx.fillStyle = color; ctx.fillText(raw.label, lx, ly);
+        ctx.strokeText(text, lx, ly);
+        ctx.fillStyle = color; ctx.fillText(text, lx, ly);
       }
       continue;
     }
