@@ -377,9 +377,13 @@ function guideGoTo(i, immediate) {
   _gs.idx = i;
   const s = _gs.steps[i];
 
-  // Skip animation if we're not actually moving
-  if (!immediate && prevStep && s.ra === prevStep.ra && s.dec === prevStep.dec && s.fov === prevStep.fov && (s.rotation ?? null) === (prevStep.rotation ?? null)) {
-    immediate = true;
+  // Skip animation only if current view already matches the target step
+  if (!immediate) {
+    const { ra: curRa, dec: curDec } = vecToRaDec(explore.P);
+    const targetR = _stepR(s);
+    const atTarget = Math.abs(curRa - s.ra) < 0.01 && Math.abs(curDec - s.dec) < 0.01
+                  && Math.abs(explore.fov - s.fov) < 0.01 && Math.abs(explore.R - targetR) < 0.001;
+    if (atTarget) immediate = true;
   }
 
   _gs.animating = !immediate;

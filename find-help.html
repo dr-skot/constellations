@@ -202,6 +202,7 @@
 
     function init(guide, catalog) {
       initExploreGL(document.getElementById('explore-gl-canvas'));
+      initExploreDrag();
 
       const steps = guide.steps.map(s => Object.assign({}, s));
       const startRa = Math.random() * 360;
