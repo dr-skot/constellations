@@ -481,6 +481,18 @@
     "color": "#ffe8b0",
     "arcmin": 20
   },
+  "Scutum Star Cloud": {
+    "ra": 280.5,
+    "dec": -6.3,
+    "color": "#ffe8b0",
+    "arcmin": 240
+  },
+  "Wild Duck Cluster": {
+    "ra": 282.775,
+    "dec": -6.27,
+    "color": "#ffe8b0",
+    "arcmin": 14
+  },
   "M71": {
     "ra": 298.44,
     "dec": 18.78,
@@ -1447,5 +1459,11 @@
     "ra": 355.51,
     "dec": 1.78,
     "color": "#ffd080"
+  },
+  "Eagle Nebula": {
+    "ra": 274.688,
+    "dec": -13.792,
+    "color": "#ff8080",
+    "arcmin": 35
   }
 }

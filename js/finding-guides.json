@@ -4934,7 +4934,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Scutum — the Shield, which sits in one of the richest parts of the Milky Way, just south of Aquila. The Scutum Star Cloud makes this region visibly bright to the naked eye.",
+        "caption": "Let's find Scutum — the Shield. It sits in one of the richest parts of the Milky Way, near Aquila. The Scutum Star Cloud makes this region visibly bright to the naked eye.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4943,50 +4943,52 @@
         "bounds": false
       },
       {
-        "title": "Find Scutum",
-        "caption": "Find Scutum about 10° south of Altair in Aquila. Look for the noticeably bright patch of the Milky Way — the Scutum Star Cloud — in that region.",
-        "ra": 279,
-        "dec": -7,
+        "title": "Near Altair",
+        "caption": "Look down the eagle's body from Altair for a noticeably bright patch of the Milky Way — the Scutum Star Cloud. Scutum's faint stars are embedded in it.",
+        "ra": 284.92,
+        "dec": -2.07,
         "fov": 40,
+        "rotation": -0.0221,
         "photo": true,
         "diagram": true,
         "names": false,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Altair",
-            "label": "Altair (Aql)"
-          },
-          "β Sct"
+          "Altair",
+          "Scutum Star Cloud"
         ]
       },
       {
-        "title": "Scutum's stars",
-        "caption": "Beta Scuti (mag 3.9, orange) and Alpha (mag 4.2) are the main stars, but the star cloud background is more impressive than any individual star here.",
-        "ra": 280,
-        "dec": -6.5,
-        "fov": 16,
+        "title": "Sobieski's Shield",
+        "caption": "Scutum was created by Polish astronomer Johannes Hevelius in 1684 as Scutum Sobiescianum — the Shield of Sobieski, honoring King John III of Poland after his victory at the Battle of Vienna. It's the only constellation commemorating a specific historical event.",
+        "ra": 280.36,
+        "dec": -11.36,
+        "fov": 24.26,
+        "rotation": 0.0021,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          "β Sct",
-          "α Sct"
+        "diagram": [
+          "Sct"
+        ],
+        "bounds": [
+          "Sct"
+        ],
+        "art": [
+          "Sct"
         ]
       },
       {
-        "title": "Scutum's extent",
-        "caption": "The Wild Duck Cluster (M11) is one of the richest open clusters in the sky — a dense, spectacular swarm. Best seen July–August from both hemispheres.",
-        "ra": 280,
-        "dec": -6.5,
-        "fov": 16,
+        "title": "The Wild Duck Cluster",
+        "caption": "Scutum's real treasure is M11 — the Wild Duck Cluster, one of the richest open clusters in the sky. It's a dense, spectacular swarm easily seen in binoculars.",
+        "ra": 281.88,
+        "dec": -7.24,
+        "fov": 11.54,
+        "rotation": -0.0066,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
+        "diagram": [
+          "Sct"
+        ],
         "highlight": [
-          "β Sct"
+          "Wild Duck Cluster"
         ]
       }
     ]
@@ -4995,7 +4997,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Serpens — the Serpent, the only constellation split into two separate parts in the sky, divided by the large figure of Ophiuchus the Serpent Bearer.",
+        "caption": "Let's find Serpens — the giant serpent held by Ophiuchus the Serpent Bearer.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5004,46 +5006,52 @@
         "bounds": false
       },
       {
-        "title": "Look in the summer sky",
-        "caption": "In June and July, Serpens is well-placed for northern observers. Serpens Caput (the head) lies west of Ophiuchus, visible as a small bent chain of stars below Corona Borealis. Serpens Cauda (the tail) is on the opposite side of Ophiuchus, in the summer Milky Way east of Rasalhague.",
-        "ra": 250,
-        "dec": 8,
-        "fov": 75,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Find Unukalhai in the head",
-        "caption": "Unukalhai (Alpha Serpentis, mag 2.6) is the constellation's brightest star and belongs to Serpens Caput. It is an orange giant about 74 light-years away. From Arcturus in Boötes, move about 30° to the south-southeast to find Unukalhai. A small bent chain of stars — the serpent's head and neck — extends east from it toward Ophiuchus.",
-        "ra": 237,
-        "dec": 10,
-        "fov": 32,
+        "title": "Find Serpens Caput",
+        "caption": "Serpens Caput (the head) is the easier half to find. Look for Unukalhai, the serpent's brightest star, between Arcturus and Ophiuchus. A small bent chain of stars forms the serpent's head and neck around it.",
+        "ra": 245.93,
+        "dec": 6.21,
+        "fov": 85.31,
+        "rotation": -0.1558,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
-          "Unukalhai"
+          "Unukalhai",
+          "Arcturus"
         ]
       },
       {
-        "title": "Caput and Cauda",
-        "caption": "Serpens Cauda contains the Eagle Nebula (M16), a famous star-forming region 7,000 light-years away famous from Hubble's 'Pillars of Creation' image — visible in binoculars as a fuzzy patch. The full serpent, connecting the head and tail across Ophiuchus, is one of the most unusual and mythologically rich constellations in the sky.",
-        "ra": 258,
-        "dec": 6,
-        "fov": 60,
+        "title": "Bearer and serpent",
+        "caption": "Ophiuchus represents Asclepius, the Greek god of medicine, holding a serpent — the origin of the Rod of Asclepius still used as a medical symbol. Serpens is the only constellation split into two disconnected pieces: its head (Caput) and tail (Cauda) separated by the body of Ophiuchus.",
+        "ra": 257,
+        "dec": -4,
+        "fov": 58,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "Oph",
+          "Ser"
+        ],
+        "art": [
+          "Oph",
+          "Ser"
+        ]
+      },
+      {
+        "title": "The Eagle Nebula",
+        "caption": "Serpens Cauda contains the Eagle Nebula (M16), a star-forming region made iconic by Hubble's \"Pillars of Creation\" image. It appears as a fuzzy patch in binoculars.",
+        "ra": 271.14,
+        "dec": -11.09,
+        "fov": 37.29,
+        "rotation": 0.0319,
+        "photo": true,
+        "diagram": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
-          "Unukalhai",
-          {
-            "id": "ξ Ser",
-            "label": "Xi Ser (Cauda)"
-          }
+          "Eagle Nebula"
         ]
       }
     ]
@@ -5053,7 +5061,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Sextans — the Sextant, a a faint equatorial constellation south of Leo. No star is brighter than mag 4.5, so use nearby bright Regulus as your anchor.",
+        "caption": "Let's find Sextans — the Sextant, a faint equatorial constellation south of Leo. Its stars are all quite dim, so use nearby Regulus as your anchor.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5063,13 +5071,13 @@
       },
       {
         "title": "Find Sextans",
-        "caption": "Move about 15° due south of Regulus (the bright heart of Leo). Sextans occupies the sparse area between Leo and Hydra along the celestial equator.",
+        "caption": "Look below Regulus, the bright heart of Leo. Sextans occupies the sparse area between Leo and Hydra along the celestial equator.",
         "ra": 153,
         "dec": -2,
         "fov": 45,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           {
@@ -5080,22 +5088,8 @@
         ]
       },
       {
-        "title": "Sextans's stars",
-        "caption": "The stars of Sextans are all faint (mag 4.5 or dimmer). Beta Sextantis anchors the northern edge. The constellation is best seen by its position between Regulus and Hydra.",
-        "ra": 153,
-        "dec": -2,
-        "fov": 22,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          "β Sex"
-        ]
-      },
-      {
-        "title": "Sextans's extent",
-        "caption": "Sextans is a modern constellation (Hevelius, 1687) with no mythology and no memorable pattern. Best seen March–April for northern observers.",
+        "title": "Sextans up close",
+        "caption": "Sextans is another of Polish astronomer Johannes Hevelius's creations from 1687, named for his favorite observing instrument. Its stars are faint and form no memorable pattern — it is best found by its position between brighter neighbors.",
         "ra": 153,
         "dec": -2,
         "fov": 22,
@@ -5103,6 +5097,7 @@
         "diagram": true,
         "names": true,
         "bounds": true,
+        "art": true,
         "highlight": [
           "β Sex"
         ]
