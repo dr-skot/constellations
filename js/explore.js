@@ -520,6 +520,52 @@ function drawExplore() {
   }
   ctx.restore();
 
+  // North arrow — points along meridian toward north celestial pole
+  {
+    const cx = W / 2, cy = H / 2;
+    const np = vecToPixel([0, 0, 1], camP, camUp, explore.fov, W, H);
+    const sp = vecToPixel([0, 0, -1], camP, camUp, explore.fov, W, H);
+    // Pick whichever pole is in front; arrow points toward north, away from south
+    let angle = null;
+    if (np) {
+      const poleDistDeg = Math.acos(Math.max(-1, Math.min(1, camP[2]))) * 180 / Math.PI;
+      if (poleDistDeg > 10) angle = Math.atan2(np.x - cx, -(np.y - cy));
+    } else if (sp) {
+      const poleDistDeg = Math.acos(Math.max(-1, Math.min(1, -camP[2]))) * 180 / Math.PI;
+      if (poleDistDeg > 10) angle = Math.atan2(-(sp.x - cx), sp.y - cy);
+    }
+    if (angle !== null) {
+      const s = Math.max(1, W / 640);  // DPR scale
+      const len = 18 * s, headW = 6 * s, headL = 10 * s;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      // Shaft
+      ctx.strokeStyle = 'rgba(220,180,80,0.7)';
+      ctx.lineWidth = 1.5 * s;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -len);
+      ctx.stroke();
+      // Arrowhead
+      ctx.fillStyle = 'rgba(220,180,80,0.7)';
+      ctx.beginPath();
+      ctx.moveTo(0, -len - headL);
+      ctx.lineTo(-headW, -len);
+      ctx.lineTo(headW, -len);
+      ctx.closePath();
+      ctx.fill();
+      // "N" label
+      const fs = Math.round(10 * s);
+      ctx.font = `bold ${fs}px system-ui, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = 'rgba(220,180,80,0.7)';
+      ctx.fillText('N', 0, -len - headL - 2 * s);
+      ctx.restore();
+    }
+  }
+
   // Redraw guide annotations so highlights follow drag/zoom
   if (_gs && !_gs.animating) {
     guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
