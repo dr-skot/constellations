@@ -1465,5 +1465,11 @@
     "dec": -13.792,
     "color": "#ff8080",
     "arcmin": 35
+  },
+  "Spindle Galaxy": {
+    "ra": 151.308,
+    "dec": -7.719,
+    "color": "#ffe8b0",
+    "arcmin": 7
   }
 }

@@ -5006,11 +5006,12 @@
         "bounds": false
       },
       {
-        "title": "Find Serpens Caput",
-        "caption": "Serpens Caput (the head) is the easier half to find. Look for Unukalhai, the serpent's brightest star, between Arcturus and Ophiuchus. A small bent chain of stars forms the serpent's head and neck around it.",
-        "ra": 245.93,
-        "dec": 6.21,
-        "fov": 85.31,
+        "title": "Find the serpent's head",
+        "caption": "Look for Unukalhai, the Serpent's brightest star, on a line from Arcturus to the Milky Way. From here the serpent's head reaches up toward the crown of Corona Borealis.",
+        "ra": 245.52,
+        "dec": 5.8,
+        "fov": 75.22,
+        "rotation": -0.1547,
         "rotation": -0.1558,
         "photo": true,
         "diagram": true,
@@ -5022,16 +5023,16 @@
         ]
       },
       {
-        "title": "Bearer and serpent",
-        "caption": "Ophiuchus represents Asclepius, the Greek god of medicine, holding a serpent — the origin of the Rod of Asclepius still used as a medical symbol. Serpens is the only constellation split into two disconnected pieces: its head (Caput) and tail (Cauda) separated by the body of Ophiuchus.",
-        "ra": 257,
-        "dec": -4,
-        "fov": 58,
+        "title": "The serpent and its bearer",
+        "caption": "The serpent's body snakes down to the Milky Way and then alongside it, held by Ophiuchus the Serpent Bearer, who represents Asclepius, the Greek god of medicine — the Rod of Asclepius, twined with a serpent, still serves as a medical symbol. Serpens is the only constellation divided into disconnected regions — its head (Serpens Caput) and tail (Serpens Cauda) on either side of Ophiuchus.",
+        "ra": 255.72,
+        "dec": 3.26,
+        "fov": 59.23,
+        "rotation": -0.0438,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": [
-          "Oph",
           "Ser"
         ],
         "art": [
@@ -5042,14 +5043,16 @@
       {
         "title": "The Eagle Nebula",
         "caption": "Serpens Cauda contains the Eagle Nebula (M16), a star-forming region made iconic by Hubble's \"Pillars of Creation\" image. It appears as a fuzzy patch in binoculars.",
-        "ra": 271.14,
-        "dec": -11.09,
-        "fov": 37.29,
-        "rotation": 0.0319,
+        "ra": 271.82,
+        "dec": -6.27,
+        "fov": 28.31,
+        "rotation": 0.0283,
         "photo": true,
         "diagram": true,
         "names": false,
-        "bounds": false,
+        "bounds": [
+          "Ser"
+        ],
         "highlight": [
           "Eagle Nebula"
         ]
@@ -5071,35 +5074,49 @@
       },
       {
         "title": "Find Sextans",
-        "caption": "Look below Regulus, the bright heart of Leo. Sextans occupies the sparse area between Leo and Hydra along the celestial equator.",
-        "ra": 153,
-        "dec": -2,
-        "fov": 45,
+        "caption": "Follow the line of Leo's foreleg to find Beta Sextantis. Sextans occupies the sparse area between Leo and Hydra along the celestial equator.",
+        "ra": 152.22,
+        "dec": 2.49,
+        "fov": 57.01,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
-          {
-            "id": "Regulus",
-            "label": "Regulus (Leo)"
-          },
+          "Regulus",
+          "η Leo",
           "β Sex"
         ]
       },
       {
-        "title": "Sextans up close",
-        "caption": "Sextans is another of Polish astronomer Johannes Hevelius's creations from 1687, named for his favorite observing instrument. Its stars are faint and form no memorable pattern — it is best found by its position between brighter neighbors.",
-        "ra": 153,
-        "dec": -2,
-        "fov": 22,
+        "title": "Hevelius's memorial",
+        "caption": "Sextans was created by Polish astronomer Johannes Hevelius in 1687, named for his beloved brass sextant that was destroyed when his observatory burned down in 1679. He rebuilt and kept observing — the constellation is a memorial to the lost instrument.",
+        "ra": 154.18,
+        "dec": -3.15,
+        "fov": 30.22,
+        "rotation": -1.5442,
+        "photo": true,
+        "bounds": [
+          "Sex"
+        ],
+        "art": [
+          "Sex"
+        ],
+        "diagram": true
+      },
+      {
+        "title": "The Spindle Galaxy",
+        "caption": "The Spindle Galaxy (NGC 3115) is a bright edge-on lenticular galaxy in Sextans, and one of the nearest galaxies confirmed to harbor a supermassive black hole.",
+        "ra": 152.18,
+        "dec": -5.6,
+        "fov": 13.77,
+        "rotation": -0.0354,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
-        "art": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
-          "β Sex"
+          "Spindle Galaxy"
         ]
       }
     ]
