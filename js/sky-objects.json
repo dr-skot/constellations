@@ -1468,6 +1468,18 @@
     "color": "#ff8080",
     "arcmin": 7
   },
+  "Vela Supernova Remnant": {
+    "ra": 128.836,
+    "dec": -45.176,
+    "color": "#ff8080",
+    "arcmin": 480
+  },
+  "Virgo Cluster": {
+    "ra": 187.7,
+    "dec": 12.3,
+    "color": "#ffe8b0",
+    "arcmin": 480
+  },
   "κ Sco": {
     "ra": 265.622,
     "dec": -39.03,

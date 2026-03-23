@@ -2305,14 +2305,14 @@
         "bounds": false
       },
       {
-        "title": "Start near Orion",
-        "caption": "The river begins at Cursa, a bright star next to Rigel in Orion. From there it meanders a long way across the sky, ending at Achernar, one of the brightest stars in the southern sky.",
+        "title": "From Orion to Achernar",
+        "caption": "The river begins at Cursa, next to Rigel in Orion, and meanders all the way to Achernar deep in the southern sky. Eridanus is the sixth-largest constellation and one of the longest, spanning nearly a third of the sky from end to end.",
         "ra": 55,
         "dec": -30,
         "fov": 80,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
           "Cursa",
@@ -2321,45 +2321,13 @@
         ]
       },
       {
-        "title": "The river's source",
-        "caption": "Cursa sits next to Rigel and marks where the river pours from Orion's foot. The northern section of Eridanus is a chain of faint stars that wind away from Orion.",
-        "ra": 68,
-        "dec": -10,
-        "fov": 35,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          "Cursa",
-          "Rigel"
-        ]
-      },
-      {
-        "title": "Achernar — end of the river",
-        "caption": "Achernar marks the end of the river. It's the ninth-brightest star in the sky, spinning so fast it bulges visibly at its equator.",
-        "ra": 25,
-        "dec": -55,
-        "fov": 30,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          "Achernar"
-        ]
-      },
-      {
-        "title": "The full river",
-        "caption": "Eridanus is the sixth-largest constellation, stretching so far across the sky that it's impossible to see in full from any single latitude.",
+        "title": "Phaethon's fall",
+        "caption": "In Greek myth, Eridanus is the path scorched across the sky by Phaethon, son of the sun god Helios, who lost control of the sun chariot. Zeus struck him down with a thunderbolt, and he fell into the river below. The winding chain of stars traces his fiery arc from Orion to the southern horizon.",
         "ra": 55,
         "dec": -32,
         "fov": 60,
         "photo": true,
         "diagram": true,
-        "names": [
-          "Eri"
-        ],
         "art": [
           "Eri"
         ]
@@ -5664,7 +5632,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Vela — the Sails, a southern Milky Way constellation that forms part of the ancient ship Argo and contains the famous False Cross asterism.",
+        "caption": "Let's find Vela — the Sails, a southern Milky Way constellation that was once part of the great ship Argo Navis.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5673,51 +5641,78 @@
         "bounds": false
       },
       {
-        "title": "Look in the southern Milky Way",
-        "caption": "Vela is best seen from the southern hemisphere in February through April, sitting in the brilliant southern Milky Way between Puppis to the west and Centaurus to the east. From northern latitudes above about 30°N only the northern edge is visible. Look east of Sirius, past Puppis, to enter the rich Vela star fields.",
-        "ra": 143,
-        "dec": -47,
-        "fov": 70,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
         "title": "The False Cross",
-        "caption": "The False Cross is formed by Gamma Velorum, Delta Velorum, Epsilon Carinae, and Iota Carinae — four stars that resemble the Southern Cross but are larger, less bright, and oriented differently. Gamma Velorum (Regor, mag 1.8) is the brightest Wolf-Rayet star visible to the naked eye — a massive star shedding its outer layers. The False Cross can confuse Southern Cross–seekers as it is more easily found in some orientations.",
-        "ra": 138,
-        "dec": -46,
-        "fov": 38,
+        "caption": "Along the Milky Way between Crux and Canopus, four stars form the False Cross — a larger, dimmer echo of the Southern Cross that can confuse seekers. Two of these, Alsephina and Markeb, are part of Vela.",
+        "ra": 136.12,
+        "dec": -63.67,
+        "fov": 52.83,
+        "rotation": -0.6024,
         "photo": true,
-        "diagram": true,
-        "names": true,
+        "diagram": [
+          "Cru",
+          "Vel"
+        ],
+        "names": [
+          "Cru",
+          "Vel"
+        ],
         "bounds": false,
         "highlight": [
           {
-            "id": "Regor",
-            "label": "Regor (Gamma Vel)"
+            "id": "Avior",
+            "label": ""
           },
           {
-            "id": "Alsephina",
-            "label": "Alsephina (Delta Vel)"
-          }
+            "id": "Aspidiske",
+            "label": ""
+          },
+          "Alsephina",
+          "Markeb",
+          "Canopus"
         ]
       },
       {
-        "title": "Vela's full sail",
-        "caption": "Suhail (Lambda Velorum, mag 2.2) is the second-brightest star in Vela — a distant orange supergiant about 545 light-years away. The eight main stars of Vela trace a rough pentagon of sail. The Vela Supernova Remnant, at about 800 light-years, is the nearest known supernova remnant to Earth and covers nearly 8° of sky, though it requires nebula filters to see photographically.",
-        "ra": 142,
+        "title": "The Ship Argo",
+        "caption": "Vela was once part of Argo Navis — the great ship of Jason and the Argonauts, and the largest of Ptolemy's original 48 constellations. French astronomer Nicolas-Louis de Lacaille split it into three parts in 1755: Carina (the keel), Vela (the sails), and Puppis (the stern).",
+        "ra": 130,
         "dec": -48,
-        "fov": 38,
+        "fov": 55,
+        "photo": true,
+        "diagram": [
+          "Car",
+          "Vel",
+          "Pup"
+        ],
+        "names": [
+          "Car",
+          "Vel",
+          "Pup"
+        ],
+        "bounds": [
+          "Car",
+          "Vel",
+          "Pup"
+        ],
+        "art": [
+          "Car",
+          "Vel",
+          "Pup"
+        ],
+        "rotation": 0.557
+      },
+      {
+        "title": "The Vela Supernova Remnant",
+        "caption": "The Vela Supernova Remnant is the nearest known supernova remnant to Earth, covering nearly 8° of sky. The star exploded about 11,000 years ago — recent enough that early humans may have witnessed it.",
+        "ra": 128.5,
+        "dec": -45.5,
+        "fov": 45.31,
+        "rotation": -0.2286,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "names": false,
+        "bounds": false,
         "highlight": [
-          "Regor",
-          "Alsephina",
-          "Suhail"
+          "Vela Supernova Remnant"
         ]
       }
     ]
@@ -5726,7 +5721,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Virgo — the Maiden, the second-largest constellation overall and the largest zodiacal constellation, anchored by brilliant Spica.",
+        "caption": "Let's find Virgo — the Maiden, the second-largest constellation and the largest in the zodiac, anchored by brilliant blue-white Spica.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5736,43 +5731,103 @@
       },
       {
         "title": "Arc to Arcturus, speed on to Spica",
-        "caption": "In April and May, Virgo is well-placed in the south for northern observers. The classic mnemonic guides you: follow the arc of the Big Dipper's handle to orange Arcturus in Boötes, then continue that same curve south for another 30° to arrive at blue-white Spica. No other first-magnitude star is nearby, so Spica is unmistakable.",
-        "ra": 200,
-        "dec": 0,
-        "fov": 80,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Find Spica",
-        "caption": "Spica (Alpha Virginis, mag 1.0) is one of the closest massive binary stars to Earth at about 250 light-years. It consists of two blue giants so close together they distort each other into egg shapes via tidal forces, orbiting every 4 days. Its blue-white color is obvious compared to nearby orange Arcturus.",
-        "ra": 200,
-        "dec": -3,
-        "fov": 30,
+        "caption": "Follow the arc of the Big Dipper's handle to orange Arcturus, then continue that same curve onward to arrive at Spica. No other bright star is nearby, so Spica is unmistakable.",
+        "ra": 194.59,
+        "dec": 26.28,
+        "fov": 97.58,
+        "rotation": -0.0426,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
+          "Arcturus",
           "Spica"
+        ],
+        "lines": [
+          [
+            "Alkaid",
+            "Mizar"
+          ],
+          [
+            "Mizar",
+            "Alioth"
+          ],
+          [
+            "Alioth",
+            "Megrez"
+          ],
+          [
+            "Megrez",
+            "Dubhe"
+          ],
+          [
+            "Dubhe",
+            "Merak"
+          ],
+          [
+            "Merak",
+            "Phecda"
+          ],
+          [
+            "Phecda",
+            "Megrez"
+          ]
         ]
       },
       {
-        "title": "The outstretched maiden",
-        "caption": "The full outline of Virgo stretches from Spica in the south to Zavijava (Beta Vir, mag 3.6) in the northwest and Vindemiatrix (Epsilon Vir, mag 2.9) in the northeast — arms extended as if holding sheaves of wheat. Porrima (Gamma Vir, mag 2.7) is a famous visual double star just north of the constellation's center. The northern portion of Virgo overlaps with the Virgo Cluster of galaxies — thousands of galaxies some 65 million light-years away.",
+        "title": "The Grain Goddess",
+        "caption": "Virgo is one of the oldest constellations, long associated with the harvest. Spica means \"ear of grain,\" and she is traditionally depicted holding a sheaf of wheat. The Greeks identified her with Demeter, goddess of the harvest, and Vindemiatrix — \"the grape gatherer\" — ties her to the vine as well.",
         "ra": 199,
         "dec": 0,
         "fov": 60,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "Vir"
+        ],
+        "art": [
+          "Vir"
+        ],
         "highlight": [
           "Spica",
-          "Porrima",
           "Vindemiatrix"
+        ]
+      },
+      {
+        "title": "The Last Immortal",
+        "caption": "In another tradition, Virgo is Astraea, the goddess of justice. During the Golden Age she lived among mortals, but as humanity grew corrupt she was the last immortal to abandon the earth, taking her place in the sky. She once held the scales of justice in her outstretched hand — those scales later became Libra, the constellation next door.",
+        "ra": 208.3,
+        "dec": -8.6,
+        "fov": 74.07,
+        "rotation": -0.2176,
+        "photo": true,
+        "names": [
+          "Vir",
+          "Lib"
+        ],
+        "art": [
+          "Vir",
+          "Lib"
+        ],
+        "diagram": [
+          "Vir",
+          "Lib"
+        ]
+      },
+      {
+        "title": "The Virgo Cluster",
+        "caption": "The northern reaches of Virgo contain the Virgo Cluster — over a thousand galaxies some 65 million light-years away, the heart of the nearest large galaxy supercluster. In a telescope, this region is dense with faint smudges of light, each an entire galaxy.",
+        "ra": 187,
+        "dec": 12,
+        "fov": 25,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": false,
+        "highlight": [
+          "Virgo Cluster"
         ]
       }
     ]
@@ -5782,7 +5837,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Volans — the Flying Fish, a a small, faint southern constellation wedged between Carina and the Large Magellanic Cloud.",
+        "caption": "Let's find Volans — the Flying Fish, a small, faint southern constellation wedged between Carina and the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5792,47 +5847,41 @@
       },
       {
         "title": "Find Volans",
-        "caption": "Find it about 25° north-northeast of Canopus, or between the LMC to the south and the bright star fields of Carina to the north. Gamma and Beta Volantis are the two brightest stars.",
-        "ra": 130,
-        "dec": -66,
+        "caption": "Look for a faint double triangle shape between the Large Magellanic Cloud and the bright Eta Carinae Nebula near the Southern Cross.",
+        "ra": 146.3,
+        "dec": -67.18,
         "fov": 50,
+        "rotation": 0.1912,
         "photo": true,
-        "diagram": true,
-        "names": false,
+        "diagram": [
+          "Vol",
+          "Cru"
+        ],
+        "names": [
+          "Vol",
+          "Cru"
+        ],
         "bounds": false,
         "highlight": [
-          "Canopus",
-          "LMC",
-          "γ Vol"
+          "Eta Carinae Nebula",
+          "LMC"
         ]
       },
       {
-        "title": "Volans's stars",
-        "caption": "Gamma Volantis (mag 3.8, orange) and Beta (mag 4.0) are the two main stars. There is no striking pattern, but Volans marks the region between Carina and the LMC.",
-        "ra": 131,
-        "dec": -66.5,
-        "fov": 18,
+        "title": "The Flying Fish",
+        "caption": "Volans represents a type of tropical flying fish. It was created by Dutch navigators Keyser and de Houtman at the end of the 16th century, part of their suite of exotic southern animals.",
+        "ra": 117.39,
+        "dec": -69.2,
+        "fov": 30.77,
+        "rotation": 0.379,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "highlight": [
-          "γ Vol",
-          "β Vol"
-        ]
-      },
-      {
-        "title": "Volans's extent",
-        "caption": "Volans is best seen January–March from the southern hemisphere. Northern observers above 14°N cannot see it.",
-        "ra": 131,
-        "dec": -66.5,
-        "fov": 18,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          "γ Vol"
+        "bounds": [
+          "Vol"
+        ],
+        "art": [
+          "Vol"
         ]
       }
     ]
@@ -5842,7 +5891,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Vulpecula — the Fox, a a small, faint constellation in the summer Milky Way between Cygnus and Aquila, straddling the shaft of Sagitta the Arrow.",
+        "caption": "Let's find Vulpecula — the Little Fox, a small, faint constellation tucked into the Milky Way between Cygnus and Sagitta.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5852,7 +5901,7 @@
       },
       {
         "title": "Find Vulpecula",
-        "caption": "Find Sagitta (the tiny arrow south of Albireo in Cygnus) and look just north of it. Anser is the faint brightest star in that region.",
+        "caption": "Find Sagitta, the tiny arrow below Albireo in Cygnus. Vulpecula sprawls just above it. Its brightest star Anser is faint but marks the fox's position.",
         "ra": 295,
         "dec": 24,
         "fov": 40,
@@ -5866,16 +5915,35 @@
         ]
       },
       {
-        "title": "Anser and Vulpecula",
-        "caption": "The Dumbbell Nebula (M27) lies to the east — the largest and brightest planetary nebula in the sky. Vulpecula is best seen July–September for northern observers.",
-        "ra": 295,
-        "dec": 23.5,
-        "fov": 18,
+        "title": "The Fox and the Goose",
+        "caption": "Polish astronomer Johannes Hevelius created this constellation in 1687, originally calling it Vulpecula cum Ansere — the Little Fox with the Goose. The goose was eventually dropped, but its name lives on in the brightest star, Anser.",
+        "ra": 294.39,
+        "dec": 24.19,
+        "fov": 21.61,
+        "rotation": -0.423,
+        "photo": true,
+        "diagram": true,
+        "names": true,
+        "bounds": [
+          "Vul"
+        ],
+        "art": [
+          "Vul"
+        ],
+        "highlight": [
+          "Anser"
+        ]
+      },
+      {
+        "title": "The Dumbbell Nebula",
+        "caption": "The Dumbbell Nebula sits inside Vulpecula's borders — the first planetary nebula ever discovered, found by Charles Messier in 1764. It is one of the largest and brightest planetary nebulae in the sky.",
+        "ra": 299.9,
+        "dec": 22.72,
+        "fov": 8,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
-        "art": true,
         "highlight": [
           "M27 Dumbbell"
         ]
