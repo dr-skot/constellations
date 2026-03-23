@@ -220,21 +220,7 @@
       });
 
       document.getElementById('fg-btn-copy-view').addEventListener('click', () => {
-        const { ra, dec } = vecToRaDec(explore.P);
-        const northUpR = guideNorthUpR(explore.P);
-        const obj = {
-          ra: Math.round(ra * 100) / 100,
-          dec: Math.round(dec * 100) / 100,
-          fov: Math.round(explore.fov * 100) / 100
-        };
-        const guideR = explore.R - northUpR;
-        if (Math.abs(guideR) > 0.001) obj.rotation = Math.round(guideR * 10000) / 10000;
-        const lines = Object.entries(obj).map(([k, v]) => `        "${k}": ${JSON.stringify(v)},`);
-        navigator.clipboard.writeText(lines.join('\n')).then(() => {
-          const btn = document.getElementById('fg-btn-copy-view');
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy View'; }, 1500);
-        });
+        copyViewToClipboard(document.getElementById('fg-btn-copy-view'));
       });
 
       document.getElementById('back-link').addEventListener('click', e => {

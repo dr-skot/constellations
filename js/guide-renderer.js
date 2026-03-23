@@ -20,6 +20,19 @@ function guideNorthUpR(P) {
   return Math.atan2(q[0], q[1]);
 }
 
+function _stepHasOverlays(step) {
+  return !!(step.diagram || step.art || step.names || step.bounds || step.highlight?.length || step.lines?.length);
+}
+
+function _drawOutlinedLabel(ctx, text, x, y, color, scale) {
+  const fs = Math.round(13 * scale);
+  ctx.font = `bold ${fs}px system-ui, sans-serif`;
+  ctx.textBaseline = 'middle';
+  ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
+  ctx.strokeText(text, x, y);
+  ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
+
 // ── Annotation drawing ────────────────────────────────────────────────────────
 function guideDrawAnnotation(step, catalog) {
   const ann = document.getElementById('annotation-canvas');
@@ -130,13 +143,8 @@ function guideDrawAnnotation(step, catalog) {
       for (const p of pts) { if (p.label) labels.push([p, p.label]); }
       if (!labels.length && raw.label) labels.push([pts[0], raw.label]);
       for (const [P, text] of labels) {
-        const fs = Math.round(13 * scale);
-        ctx.font = `bold ${fs}px system-ui, sans-serif`;
-        ctx.textBaseline = 'middle';
         const lx = P.x + r + 6 * scale, ly = P.y;
-        ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
-        ctx.strokeText(text, lx, ly);
-        ctx.fillStyle = color; ctx.fillText(text, lx, ly);
+        _drawOutlinedLabel(ctx, text, lx, ly, color, scale);
       }
       continue;
     }
@@ -191,13 +199,7 @@ function guideDrawAnnotation(step, catalog) {
       ctx.shadowBlur = 0;
       if (h.label && valid.length) {
         const first = valid[0];
-        const fs = Math.round(13 * scale);
-        ctx.font = `bold ${fs}px system-ui, sans-serif`;
-        ctx.textBaseline = 'middle';
-        const lx = first.x + 6 * scale, ly = first.y - 10 * scale;
-        ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
-        ctx.strokeText(h.label, lx, ly);
-        ctx.fillStyle = h.color; ctx.fillText(h.label, lx, ly);
+        _drawOutlinedLabel(ctx, h.label, first.x + 6 * scale, first.y - 10 * scale, h.color, scale);
       }
     } else if (h.crosshair) {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
@@ -205,7 +207,6 @@ function guideDrawAnnotation(step, catalog) {
       if (!p || p.d <= 0) continue;
       const celDash = 6, celGap = 5;
       const arm = 0.5 * (3 * celDash + 2 * celGap);
-      const fs = Math.round(13 * scale);
       ctx.strokeStyle = 'rgba(220,180,80,0.55)';
       ctx.lineWidth = Math.max(1, W / 640);
       ctx.setLineDash([celDash, celGap]);
@@ -215,30 +216,19 @@ function guideDrawAnnotation(step, catalog) {
       ctx.stroke();
       ctx.setLineDash([]);
       if (h.label) {
-        ctx.font = `bold ${fs}px system-ui, sans-serif`;
-        ctx.textBaseline = 'middle';
-        const lx = p.x + arm + 6 * scale, ly = p.y;
-        ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
-        ctx.strokeText(h.label, lx, ly);
-        ctx.fillStyle = 'rgba(220,180,80,0.55)'; ctx.fillText(h.label, lx, ly);
+        _drawOutlinedLabel(ctx, h.label, p.x + arm + 6 * scale, p.y, 'rgba(220,180,80,0.55)', scale);
       }
     } else {
       const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
       const p = pts[0];
       if (!p || p.d <= 0) continue;
       const r  = objRadius(h) + margin;
-      const fs = Math.round(13 * scale);
       ctx.strokeStyle = h.color;
       ctx.lineWidth   = Math.max(1.5, 1.5 * scale);
       ctx.shadowColor = h.color; ctx.shadowBlur = r * 0.7;
       ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.stroke();
       ctx.shadowBlur = 0;
-      ctx.font = `bold ${fs}px system-ui, sans-serif`;
-      ctx.textBaseline = 'middle';
-      const lx = p.x + r + 6 * scale, ly = p.y;
-      ctx.strokeStyle = '#010208'; ctx.lineWidth = 3 * scale; ctx.lineJoin = 'round';
-      ctx.strokeText(h.label, lx, ly);
-      ctx.fillStyle = h.color; ctx.fillText(h.label, lx, ly);
+      _drawOutlinedLabel(ctx, h.label, p.x + r + 6 * scale, p.y, h.color, scale);
     }
   }
   ctx.restore();
@@ -374,7 +364,7 @@ function _guideRenderUI() {
   document.getElementById('fg-btn-prev').disabled = idx === 0 || animating;
   const isLast = idx === n - 1;
   const step = steps[idx];
-  const hasOverlays = !!(step.diagram || step.art || step.names || step.bounds || step.highlight?.length || step.lines?.length);
+  const hasOverlays = _stepHasOverlays(step);
   const toggleBtn = document.getElementById('fg-btn-toggle-diag');
   toggleBtn.style.display = hasOverlays ? '' : 'none';
   toggleBtn.textContent   = diagVisible ? 'Hide overlays' : 'Show overlays';
@@ -435,33 +425,32 @@ function guideGoTo(i, immediate) {
   }
 
   _gs.animating = !immediate;
-  _gs.diagVisible = !!(s.diagram || s.art || s.names || s.bounds || s.highlight?.length || s.lines?.length);
+  _gs.diagVisible = _stepHasOverlays(s);
   if (_gs.stepKey) localStorage.setItem(_gs.stepKey, i);
-  const step = s;
   _guideRenderUI();
 
   if (immediate) {
-    _guideApplySettings(step);
-    explore.P   = raDecToVec(step.ra, step.dec);
-    explore.fov = step.fov;
-    explore.R   = _stepR(step);
+    _guideApplySettings(s);
+    explore.P   = raDecToVec(s.ra, s.dec);
+    explore.fov = s.fov;
+    explore.R   = _stepR(s);
     _guideDraw();
-    guideDrawAnnotation(step, _gs.catalog);
+    guideDrawAnnotation(s, _gs.catalog);
     _gs.animating = false;
     _guideRenderUI();
   } else {
     // Before animation: apply intersection settings, clear departing elements
-    const midSettings = prevStep ? _guideIntersectSettings(prevStep, step) : step;
-    const midAnnotation = _guideIntersectAnnotation(prevStep, step);
+    const midSettings = prevStep ? _guideIntersectSettings(prevStep, s) : s;
+    const midAnnotation = _guideIntersectAnnotation(prevStep, s);
     _guideApplySettings(midSettings);
     _guideDraw();
     guideDrawAnnotation(midAnnotation, _gs.catalog);
 
-    guideAnimateTo(step, null, _guideDraw, () => guideDrawAnnotation(midAnnotation, _gs.catalog), () => {
+    guideAnimateTo(s, null, _guideDraw, () => guideDrawAnnotation(midAnnotation, _gs.catalog), () => {
       if (!_gs) return;
-      _guideApplySettings(step);
+      _guideApplySettings(s);
       _guideDraw();
-      guideDrawAnnotation(step, _gs.catalog);
+      guideDrawAnnotation(s, _gs.catalog);
       _gs.animating = false;
       _guideRenderUI();
     }, () => !!_gs);

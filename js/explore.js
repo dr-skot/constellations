@@ -2,8 +2,26 @@
 // EXPLORE MODE
 // ═══════════════════════════════════════════════════════════
 const explorePhotoCache = {};
+const FOV_MIN = 10, FOV_MAX = 110;
 let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null, animFrame: null };
 let exploreDragMoved = false;
+
+function copyViewToClipboard(btn) {
+  const { ra, dec } = vecToRaDec(explore.P);
+  const northUpR = guideNorthUpR(explore.P);
+  const obj = {
+    ra: Math.round(ra * 100) / 100,
+    dec: Math.round(dec * 100) / 100,
+    fov: Math.round(explore.fov * 100) / 100
+  };
+  const guideR = explore.R - northUpR;
+  if (Math.abs(guideR) > 0.001) obj.rotation = Math.round(guideR * 10000) / 10000;
+  const lines = Object.entries(obj).map(([k, v]) => `        "${k}": ${JSON.stringify(v)},`);
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy View'; }, 1500);
+  });
+}
 
 // Alternate diagram sources, keyed by abbreviation
 const _diagSources = {
@@ -715,7 +733,7 @@ function initExploreDrag() {
     if (e.touches.length === 2 && pinchStartDist) {
       showNorthArrow();
       const dist = touchDist(e.touches);
-      explore.fov = Math.max(10, Math.min(110, pinchStartFov * pinchStartDist / dist));
+      explore.fov = Math.max(FOV_MIN, Math.min(FOV_MAX, pinchStartFov * pinchStartDist / dist));
       drawExplore();
     } else if (e.touches.length === 1) {
       dragMove(e.touches[0].clientX, e.touches[0].clientY);
@@ -739,7 +757,7 @@ function initExploreDrag() {
     e.preventDefault();
     showNorthArrow();
     const factor = e.ctrlKey ? Math.pow(1.03, e.deltaY) : Math.pow(1.003, e.deltaY);
-    explore.fov = Math.max(10, Math.min(110, explore.fov * factor));
+    explore.fov = Math.max(FOV_MIN, Math.min(FOV_MAX, explore.fov * factor));
     drawExplore();
     clearTimeout(wheelTimer);
     wheelTimer = setTimeout(() => { hideNorthArrow(); if (typeof saveExploreState === 'function') saveExploreState(); drawExplore(); }, 300);

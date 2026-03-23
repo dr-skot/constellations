@@ -102,7 +102,7 @@ function startLessonFindQuestion(q) {
     const fovMul = 1.0 + Math.random() * 1.0;
     explore.P = raDecToVec(q.con.ra  + Math.cos(angle) * dist,
                            q.con.dec + Math.sin(angle) * dist);
-    explore.fov = Math.min((q.searchRadius || 60) * fovMul, 120);
+    explore.fov = Math.min((q.searchRadius || 60) * fovMul, FOV_MAX);
   }
   explore.R = 0;
   explore.quiz = {

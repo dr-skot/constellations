@@ -130,9 +130,10 @@ function glBuildPhotoMesh(con) {
 }
 
 function glBuildArtMesh(con) {
-  const art = ART[con.abbr];
+  const src = artSrc(con.abbr);
+  const art = ART[src];
   if (!art || art.anchors.length < 3) return null;
-  const img = artCache[con.abbr];
+  const img = artCache[src];
   if (!(img instanceof HTMLImageElement)) return null;
   const iw = img.naturalWidth, ih = img.naturalHeight;
   const REF = 1000, G = MESH_GRID, gw = G + 1;
@@ -240,24 +241,25 @@ function drawExplorePhotoLayerGL(con, camP, camUp, fov) {
 // ── Public: draw art layer ─────────────────────────────────
 function drawExploreArtLayerGL(con, camP, camUp, fov) {
   if (!gl) return;
-  const art = ART[con.abbr];
+  const src = artSrc(con.abbr);
+  const art = ART[src];
   if (!art || art.anchors.length < 3) return;
 
   // Ensure art image loaded (artCache shared with render.js)
-  if (!artCache[con.abbr]) {
-    artCache[con.abbr] = 'loading';
+  if (!artCache[src]) {
+    artCache[src] = 'loading';
     const img = new Image();
     img.onload = () => {
-      artCache[con.abbr] = img;
-      glArtTex[con.abbr] = glUploadTex(img);
+      artCache[src] = img;
+      glArtTex[src] = glUploadTex(img);
       if (document.getElementById('screen-explore').classList.contains('active')) drawExplore();
     };
-    img.onerror = () => { artCache[con.abbr] = 'error'; };
+    img.onerror = () => { artCache[src] = 'error'; };
     img.src = art.url;
     return;
   }
-  if (!(artCache[con.abbr] instanceof HTMLImageElement)) return;
-  if (!glArtTex[con.abbr]) glArtTex[con.abbr] = glUploadTex(artCache[con.abbr]);
+  if (!(artCache[src] instanceof HTMLImageElement)) return;
+  if (!glArtTex[src]) glArtTex[src] = glUploadTex(artCache[src]);
   if (!glArtMesh[con.abbr]) glArtMesh[con.abbr] = glBuildArtMesh(con);
 
   glSetCamera(camP, camUp, fov);

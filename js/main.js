@@ -216,22 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
   document.getElementById('btn-copy-view').addEventListener('click', () => {
-    const { ra, dec } = vecToRaDec(explore.P);
-    const northUpR = guideNorthUpR(explore.P);
-    const obj = {
-      ra: Math.round(ra * 100) / 100,
-      dec: Math.round(dec * 100) / 100,
-      fov: Math.round(explore.fov * 100) / 100
-    };
-    const guideR = explore.R - northUpR;
-    if (Math.abs(guideR) > 0.001) obj.rotation = Math.round(guideR * 10000) / 10000;
-    const lines = Object.entries(obj).map(([k, v]) => `        "${k}": ${JSON.stringify(v)},`);
-    const text = lines.join('\n');
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById('btn-copy-view');
-      btn.textContent = 'Copied!';
-      setTimeout(() => { btn.textContent = 'Copy View'; }, 1500);
-    });
+    copyViewToClipboard(document.getElementById('btn-copy-view'));
   });
 
   // Paste View button — reads RA/Dec/FOV/rotation JSON from clipboard and applies it
