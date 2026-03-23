@@ -3767,14 +3767,15 @@
       {
         "title": "Waiting for a pole star",
         "caption": "Sigma Octantis, the nearest naked-eye star to the pole, is so dim it's invisible from any light-polluted site — a poor substitute for Polaris. The south pole's lack of a bright marker is a temporary cosmic accident. Precession is slowly shifting Earth's axis, and around 9250 AD, Delta Velorum will come within 0.2° of the south pole — closer than Polaris ever gets to the north pole.",
-        "ra": 144.59,
-        "dec": -73.81,
-        "fov": 45.82,
-        "rotation": 0.4369,
+        "ra": 87.61,
+        "dec": -67.43,
+        "fov": 58.4,
+        "rotation": 1.1481,
         "photo": true,
         "diagram": true,
         "names": false,
         "bounds": false,
+        "precessionCircle": "south",
         "highlight": [
           "σ Oct",
           {
@@ -5125,7 +5126,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Taurus — the Bull, a winter constellation anchored by brilliant orange-red Aldebaran and the iconic Pleiades star cluster.",
+        "caption": "Let's find Taurus — the Bull, anchored by brilliant orange Aldebaran and the iconic Pleiades star cluster.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5134,67 +5135,83 @@
         "bounds": false
       },
       {
-        "title": "The winter sky",
-        "caption": "Turn to the southern sky on a winter evening. Taurus lies northwest of Orion in the same brilliant winter star field, prominent from November through February and visible from both hemispheres.",
-        "ra": 75,
-        "dec": 12,
-        "fov": 82,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false
-      },
-      {
         "title": "Follow the Belt",
-        "caption": "If you can find Orion's Belt, Aldebaran is easy: follow the three belt stars northwest about 20° and you run straight into it. Aldebaran's distinctly orange-red colour makes it unmistakable — it is the angry eye of the charging bull.",
-        "ra": 76,
-        "dec": 8,
-        "fov": 42,
+        "caption": "Follow the line of Orion's Belt and you run straight into Aldebaran, the angry eye of the charging bull. Its distinctly orange color makes it unmistakable.",
+        "ra": 73.85,
+        "dec": 6.07,
+        "fov": 73.85,
+        "rotation": 0.1409,
         "photo": true,
-        "diagram": true,
-        "names": true,
+        "diagram": false,
+        "names": false,
         "bounds": false,
         "highlight": [
           {
-            "id": "Mintaka",
-            "label": "Orion's belt"
-          },
-          {
-            "id": "Alnilam",
-            "label": ""
-          },
-          {
-            "id": "Alnitak",
-            "label": ""
+            "capsule": [
+              {
+                "id": "Mintaka",
+                "label": "Orion's belt"
+              },
+              {
+                "id": "Alnilam",
+                "label": ""
+              },
+              {
+                "id": "Alnitak",
+                "label": ""
+              }
+            ]
           },
           "Aldebaran"
         ]
       },
       {
-        "title": "The V-face and the Pleiades",
-        "caption": "Aldebaran sits at the tip of the V-shaped Hyades cluster — the bull's face. Although it looks like part of the V, Aldebaran is a foreground star at just 65 light-years, while the Hyades lie 150 light-years away. The Pleiades jewel-box glitters to the northwest, marking the bull's shoulder.",
-        "ra": 64,
-        "dec": 20,
+        "title": "Zeus and Europa",
+        "caption": "In Greek myth, Taurus is Zeus disguised as a white bull to abduct Europa across the sea to Crete. Only the front half appears in the sky — the hindquarters hidden beneath the waves. The V of the Hyades cluster traces his face, with orange Aldebaran as his glaring eye.",
+        "ra": 69.01,
+        "dec": 16.44,
         "fov": 44,
+        "rotation": -0.0452,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": true,
+        "bounds": [
+          "Tau"
+        ],
+        "art": [
+          "Tau"
+        ],
         "highlight": [
-          "Aldebaran",
+          "Aldebaran"
+        ]
+      },
+      {
+        "title": "The Pleiades",
+        "caption": "The Pleiades, or Seven Sisters, are the daughters of the titan Atlas in Greek myth. This young star cluster is one of the nearest to Earth and has been recognized by cultures worldwide — from the Subaru logo to Matariki in Polynesia. Count how many you can see unaided — most people spot six or seven, though sharp eyes find more.",
+        "ra": 56.6,
+        "dec": 24.1,
+        "fov": 16,
+        "photo": true,
+        "diagram": [
+          "Tau"
+        ],
+        "highlight": [
           "Pleiades"
         ]
       },
       {
-        "title": "The Bull",
-        "caption": "Taurus rewards slow looking: the Hyades V, orange Aldebaran, the Pleiades jewel-box, and the long horns extending northeast. On a clear night, count how many Pleiades you can see unaided — most people spot six or seven, though sharp eyes find more.",
-        "ra": 67,
-        "dec": 18,
-        "fov": 60,
+        "title": "The Crab Nebula",
+        "caption": "Near the tip of the bull's lower horn lies the Crab Nebula (M1) — the remnant of a supernova recorded by Chinese and Japanese astronomers in 1054. It was bright enough to see in daylight for weeks. The expanding cloud of debris is still visible in binoculars.",
+        "ra": 83.63,
+        "dec": 22.02,
+        "fov": 16,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false
+        "diagram": [
+          "Tau"
+        ],
+        "highlight": [
+          "Crab Nebula"
+        ]
       }
     ]
   },
@@ -5203,7 +5220,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Telescopium — the Telescope, a a small, faint southern constellation between Corona Australis and Pavo. Alpha Telescopii (mag 3.5, blue) is its sole reasonable landmark.",
+        "caption": "Let's find Telescopium — the Telescope, a small, faint southern constellation tucked below the tail of Scorpius.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5212,46 +5229,49 @@
         "bounds": false
       },
       {
-        "title": "Find Telescopium",
-        "caption": "Find it about 20° south of Corona Australis (which sits below Sagittarius), or about 15° north of Peacock to the south.",
-        "ra": 275,
-        "dec": -48,
+        "title": "Follow the scorpion's tail",
+        "caption": "Where the scorpion's tail curls back into the Milky Way, follow the line of the three stars to Alpha Telescopii, the constellation's only bright star.",
+        "ra": 261.22,
+        "dec": -39.87,
         "fov": 50,
+        "rotation": 0.1853,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
         "highlight": [
-          "Peacock"
-        ]
-      },
-      {
-        "title": "Telescopium's stars",
-        "caption": "Alpha Telescopii (mag 3.5, blue) and Zeta (mag 4.5) are the two main stars. The constellation forms a thin triangular arc of faint stars.",
-        "ra": 275,
-        "dec": -47,
-        "fov": 20,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          "α Tel",
-          "ζ Tel"
-        ]
-      },
-      {
-        "title": "Telescopium's extent",
-        "caption": "Telescopium is best seen July–August from the southern hemisphere. Northern observers above 33°N cannot see it.",
-        "ra": 275,
-        "dec": -47,
-        "fov": 20,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
+          {
+            "capsule": [
+              {
+                "id": "Shaula"
+              },
+              {
+                "id": "κ Sco"
+              },
+              {
+                "id": "ι Sco"
+              }
+            ]
+          },
           "α Tel"
+        ]
+      },
+      {
+        "title": "Lacaille's telescope",
+        "caption": "Telescopium was created by French astronomer Nicolas-Louis de Lacaille in the 1750s, one of several constellations of the Enlightenment he named after instruments of science and the arts. Its stars are faint and form no striking pattern — it is best located by its brighter neighbors.",
+        "ra": 286.03,
+        "dec": -49.51,
+        "fov": 26.03,
+        "rotation": -1.802,
+        "photo": true,
+        "diagram": [
+          "Tel"
+        ],
+        "bounds": [
+          "Tel"
+        ],
+        "art": [
+          "Tel"
         ]
       }
     ]
@@ -5261,7 +5281,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Triangulum — the Triangle, a a small northern constellation forming an obvious narrow elongated triangle between Andromeda and Aries.",
+        "caption": "Let's find Triangulum — the Triangle, a small northern constellation forming a narrow elongated triangle between Andromeda and Aries.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5271,51 +5291,57 @@
       },
       {
         "title": "Find Triangulum",
-        "caption": "Find Triangulum about 20° south of Andromeda's main chain, or 12° northwest of the Pleiades. Beta Trianguli (mag 3.0) is the brightest of the three triangle stars.",
-        "ra": 31,
-        "dec": 33,
-        "fov": 40,
+        "caption": "Look between the Andromeda Galaxy and the Pleiades. Three stars form Triangulum's neat narrow triangle — it's one of the simplest shapes to recognize once you spot it.",
+        "ra": 34.97,
+        "dec": 33.31,
+        "fov": 61.02,
+        "rotation": 0.0434,
         "photo": true,
-        "diagram": true,
-        "names": false,
+        "diagram": [
+          "Tri"
+        ],
+        "names": [
+          "Tri"
+        ],
         "bounds": false,
         "highlight": [
           {
             "id": "Andromeda Galaxy",
             "label": "Andromeda"
           },
-          "Pleiades",
-          "β Tri"
+          "Pleiades"
         ]
       },
       {
-        "title": "The triangle stars",
-        "caption": "Three stars form the narrow triangle: Beta (mag 3.0, west), Gamma (mag 4.0, east tip), and Alpha Mothallah (mag 3.4, south). The elongated shape points east-northeast.",
-        "ra": 31.5,
-        "dec": 32.5,
-        "fov": 16,
+        "title": "Deltoton",
+        "caption": "Triangulum is one of Ptolemy's original 48 constellations from the 2nd century. The Greeks called it Deltoton, after the letter delta (Δ). It was sometimes said to represent Sicily — the famously triangular island whose ancient name Trinacria means \"three points\" — placed in the sky by Zeus at the request of Demeter, patron goddess of the island.",
+        "ra": 32.65,
+        "dec": 31.92,
+        "fov": 18.36,
+        "rotation": 0.0333,
         "photo": true,
         "diagram": true,
         "names": true,
-        "bounds": false,
-        "highlight": [
-          "β Tri",
-          "α Tri",
-          "γ Tri"
+        "bounds": [
+          "Tri"
+        ],
+        "art": [
+          "Tri"
         ]
       },
       {
-        "title": "Triangulum's extent",
-        "caption": "M33 (the Triangulum Galaxy) is the third-largest Local Group member — a large faint glow under excellent dark skies. Best seen October–December.",
-        "ra": 31.5,
-        "dec": 32.5,
-        "fov": 16,
+        "title": "The Triangulum Galaxy",
+        "caption": "M33, the Triangulum Galaxy, is the third-largest member of the Local Group — our neighborhood of galaxies that includes the Milky Way and Andromeda. Under excellent dark skies it appears as a large faint glow, one of the most distant objects visible to the naked eye.",
+        "ra": 24.93,
+        "dec": 30.65,
+        "fov": 10,
+        "rotation": -0.0305,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
+        "diagram": [
+          "Tri"
+        ],
         "highlight": [
-          "β Tri"
+          "Triangulum Galaxy"
         ]
       }
     ]
@@ -5325,7 +5351,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Triangulum Australe — the Southern Triangle, which is one of the most easily recognized far-southern constellations — a compact, bright equilateral triangle with Atria (mag 1.9) at the south vertex.",
+        "caption": "Let's find Triangulum Australe — the Southern Triangle, a compact, bright equilateral triangle easily recognized in the far south.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5335,46 +5361,49 @@
       },
       {
         "title": "Find the Southern Triangle",
-        "caption": "Find it about 25° east of the Southern Pointers (Alpha and Beta Centauri). Atria at mag 1.9 is the brightest and southernmost vertex of the compact triangle.",
-        "ra": 245,
-        "dec": -66,
-        "fov": 45,
+        "caption": "Look near the Southern Pointers at the foot of Centaurus. The bright orange star Atria marks one vertex of the triangle — the other two are nearly as bright, making the shape unmistakable.",
+        "ra": 223.53,
+        "dec": -65.78,
+        "fov": 43.46,
+        "rotation": 0.2235,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": true,
         "bounds": false,
         "highlight": [
-          "α Cen",
-          "β Cen",
+          {
+            "capsule": [
+              "Rigil Kentaurus",
+              {
+                "id": "Hadar",
+                "label": "Southern Pointers"
+              }
+            ],
+            "color": "#c8d8ff"
+          },
           "Atria"
         ]
       },
       {
-        "title": "The southern triangle",
-        "caption": "Three bright stars form a compact equilateral triangle: Atria (Alpha, mag 1.9, red, south), Beta (mag 2.8, northwest), and Delta (mag 2.9, northeast).",
-        "ra": 247,
-        "dec": -66,
+        "title": "The southern counterpart",
+        "caption": "Triangulum Australe was first depicted on a celestial globe by Petrus Plancius in 1589, one of the earliest constellations added from European voyages to the southern seas. It serves as a southern counterpart to the ancient northern Triangle.",
+        "ra": 240.98,
+        "dec": -66.76,
         "fov": 18,
+        "rotation": 0.2088,
         "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": false,
-        "highlight": [
-          "Atria",
-          "β TrA",
-          "δ TrA"
-        ]
-      },
-      {
-        "title": "Triangulum Australe's extent",
-        "caption": "The Southern Triangle is entirely invisible north of about 25°N. Best seen April–June from the southern hemisphere.",
-        "ra": 247,
-        "dec": -66,
-        "fov": 18,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
+        "diagram": [
+          "Tra"
+        ],
+        "names": [
+          "TrA"
+        ],
+        "bounds": [
+          "TrA"
+        ],
+        "art": [
+          "TrA"
+        ],
         "highlight": [
           "Atria"
         ]
@@ -5386,7 +5415,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Tucana — the Toucan, which is best known for hosting the Small Magellanic Cloud (SMC) and the brilliant globular cluster 47 Tucanae, which appears as a fuzzy star right beside the SMC.",
+        "caption": "Let's find Tucana — the Toucan, best known for hosting the Small Magellanic Cloud and the brilliant globular cluster 47 Tucanae.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5396,50 +5425,57 @@
       },
       {
         "title": "Find Tucana",
-        "caption": "Locate the SMC — a detached glowing cloud visible to the naked eye in the far south, about 20° east of Achernar in Eridanus. Alpha Tucanae (mag 2.9) anchors the stellar part of the constellation.",
-        "ra": 355,
-        "dec": -63,
+        "caption": "Follow the line from the Large Magellanic Cloud through the Small one to arrive at Tucana. Bright Achernar burns nearby.",
+        "ra": 5.98,
+        "dec": -71.6,
         "fov": 55,
+        "rotation": -0.1313,
         "photo": true,
         "diagram": true,
-        "names": false,
+        "names": [
+          "Tuc"
+        ],
         "bounds": false,
         "highlight": [
           "Achernar",
-          "α Tuc",
-          {
-            "id": "47 Tuc",
-            "label": "47 Tuc / SMC"
-          }
+          "SMC",
+          "LMC"
         ]
       },
       {
-        "title": "Alpha Tucanae and 47 Tuc",
-        "caption": "Alpha Tucanae (mag 2.9, orange-red) is the main stellar anchor. 47 Tucanae (NGC 104) appears to the naked eye as a fuzzy star nestled against the edge of the SMC — a magnificent globular.",
+        "title": "The Toucan",
+        "caption": "Tucana was introduced by Dutch cartographer Petrus Plancius in 1598, based on observations from the first Dutch expeditions to the East Indies. It is one of several southern birds Plancius created from those voyages, along with the Crane, the Peacock, the Phoenix, and the Bird of Paradise.",
         "ra": 355,
         "dec": -64,
         "fov": 28,
         "photo": true,
-        "diagram": true,
-        "names": true,
+        "diagram": [
+          "Tuc"
+        ],
+        "names": false,
+        "bounds": [
+          "Tuc"
+        ],
+        "art": [
+          "Tuc"
+        ]
+      },
+      {
+        "title": "47 Tucanae",
+        "caption": "The fuzzy star nestled against the edge of the SMC is 47 Tucanae — one of the largest and brightest globular clusters in the sky, a dense swarm of millions of stars some 13,000 light-years away. It is not related to the SMC; the two just happen to lie along the same line of sight.",
+        "ra": 6.02,
+        "dec": -72.08,
+        "fov": 16,
+        "rotation": -0.2527,
+        "photo": true,
+        "diagram": [
+          "Tuc"
+        ],
+        "names": false,
         "bounds": false,
         "highlight": [
-          "α Tuc",
-          "47 Tuc"
-        ]
-      },
-      {
-        "title": "Tucana's extent",
-        "caption": "Tucana is best seen September–November from southern latitudes. The SMC sits within the constellation boundaries — one of the sky's finest showpieces.",
-        "ra": 355,
-        "dec": -64,
-        "fov": 28,
-        "photo": true,
-        "diagram": true,
-        "names": true,
-        "bounds": true,
-        "highlight": [
-          "α Tuc"
+          "47 Tuc",
+          "SMC"
         ]
       }
     ]
@@ -5449,22 +5485,11 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Ursa Major — home of the Big Dipper, one of the most recognisable star patterns in the northern sky.",
+        "caption": "Let's find Ursa Major — home of the Big Dipper, one of the most recognizable star patterns in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
         "diagram": false,
-        "names": false,
-        "bounds": false
-      },
-      {
-        "title": "Look north",
-        "caption": "Turn to the northern sky. Ursa Major is circumpolar for most northern hemisphere observers — it never sets, wheeling around the pole through the night and seasons. In spring it rides highest overhead.",
-        "ra": 170,
-        "dec": 55,
-        "fov": 80,
-        "photo": true,
-        "diagram": true,
         "names": false,
         "bounds": false
       },
@@ -5481,14 +5506,45 @@
         "highlight": [
           "Dubhe",
           "Merak"
+        ],
+        "lines": [
+          [
+            "Alkaid",
+            "Mizar"
+          ],
+          [
+            "Mizar",
+            "Alioth"
+          ],
+          [
+            "Alioth",
+            "Megrez"
+          ],
+          [
+            "Megrez",
+            "Dubhe"
+          ],
+          [
+            "Dubhe",
+            "Merak"
+          ],
+          [
+            "Merak",
+            "Phecda"
+          ],
+          [
+            "Phecda",
+            "Megrez"
+          ]
         ]
       },
       {
         "title": "Follow the Pointers",
-        "caption": "Draw a line from Merak through Dubhe and keep going about 29° — five times the gap between them — and you land on Polaris, the North Star. Polaris marks the celestial north pole and barely moves all night while every other star circles around it.",
-        "ra": 164,
-        "dec": 76,
-        "fov": 44,
+        "caption": "Draw a line from Merak through Dubhe and keep going — about five times the gap between them — and you land on Polaris, the North Star. Polaris marks the celestial north pole and barely moves all night while every other star circles around it.",
+        "ra": 176.52,
+        "dec": 71.25,
+        "fov": 52.04,
+        "rotation": -0.0973,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -5501,14 +5557,37 @@
       },
       {
         "title": "The Great Bear",
-        "caption": "The Big Dipper is just the back and tail of Ursa Major — the Great Bear. Fainter stars extend outward to trace the head, shoulders and paws. It is the third-largest constellation in the sky and one of the oldest recognised star figures in human history.",
-        "ra": 170,
-        "dec": 52,
-        "fov": 70,
+        "caption": "The Big Dipper is just the tail of Ursa Major — the Great Bear, the third-largest constellation in the sky. Bear constellations appear in traditions across the globe — Greek, Native American, Siberian — suggesting the pattern may date back thousands of years, possibly carried by early peoples crossing the Bering land bridge. Few star figures have such deep roots in human history.",
+        "ra": 168.22,
+        "dec": 54.92,
+        "fov": 58.31,
+        "rotation": 0.7997,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": false
+        "bounds": [
+          "UMa"
+        ],
+        "art": [
+          "UMa"
+        ]
+      },
+      {
+        "title": "Callisto's punishment",
+        "caption": "In Greek myth, Ursa Major is Callisto, a nymph transformed into a bear by the jealous goddess Hera. When Zeus placed her in the sky, Hera asked the sea gods to forbid the bear from ever bathing in the ocean — and so she never sets below the horizon, circling the pole endlessly.",
+        "ra": 161.89,
+        "dec": 62.66,
+        "fov": 88.13,
+        "rotation": -2.8183,
+        "photo": true,
+        "art": [
+          "UMa"
+        ],
+        "highlight": [
+          {
+            "id": "North Celestial Pole",
+            "crosshair": true
+          }
+        ]
       }
     ]
   },
@@ -5525,25 +5604,12 @@
         "bounds": false
       },
       {
-        "title": "Look north, any night of the year",
-        "caption": "Face north from anywhere in the northern hemisphere and you can find Polaris, which sits within 1° of the true celestial pole and barely moves throughout the night. The Little Dipper is circumpolar and always above the horizon at any northern latitude, though its faint stars require reasonably dark skies.",
-        "ra": 100,
-        "dec": 75,
-        "fov": 80,
-        "photo": true,
-        "diagram": true,
-        "names": false,
-        "bounds": false,
-        "highlight": [
-          "Polaris"
-        ]
-      },
-      {
-        "title": "Use the Big Dipper as a pointer",
-        "caption": "The two 'Pointer Stars' at the outer edge of the Big Dipper's bowl — Merak (mag 2.4) and Dubhe (mag 1.8) — point directly to Polaris. Extend the line from Merak through Dubhe about five times the distance between them and you land on Polaris (mag 2.0). Polaris is not the brightest star, so many beginners are surprised by how modest it looks.",
-        "ra": 120,
-        "dec": 68,
-        "fov": 55,
+        "title": "Use the Big Dipper",
+        "caption": "The two Pointer Stars at the outer edge of the Big Dipper's bowl — Merak and Dubhe — point directly to Polaris. Extend the line about five times the distance between them. Polaris is not the brightest star in the sky, so many beginners are surprised by how modest it looks.",
+        "ra": 170.66,
+        "dec": 67.15,
+        "fov": 80.22,
+        "rotation": 0.0486,
         "photo": true,
         "diagram": true,
         "names": true,
@@ -5556,14 +5622,19 @@
       },
       {
         "title": "The Little Dipper",
-        "caption": "Polaris marks the tip of the Little Dipper's handle. The bowl opens toward Kochab (mag 2.1) and Pherkad (mag 3.0), the two brightest bowl stars and the most visible parts of the Little Bear in suburban skies. The handle curves from Polaris back toward a dim arc of stars.",
-        "ra": 200,
-        "dec": 80,
+        "caption": "Polaris marks the tip of the Little Dipper's handle. The bowl opens toward Kochab and Pherkad, the two brightest bowl stars. The rest of the dipper is faint and needs reasonably dark skies.",
+        "ra": 220.98,
+        "dec": 76.47,
         "fov": 32,
+        "rotation": -0.7325,
         "photo": true,
         "diagram": true,
-        "names": true,
-        "bounds": true,
+        "bounds": [
+          "UMi"
+        ],
+        "art": [
+          "UMi"
+        ],
         "highlight": [
           "Polaris",
           "Kochab",
@@ -5571,15 +5642,17 @@
         ]
       },
       {
-        "title": "The ancient pole star",
-        "caption": "Due to Earth's precession, the celestial pole slowly traces a circle among the stars over 26,000 years. Around 2700 BC, the star Thuban in Draco was the pole star; Polaris will reach its closest approach to the true pole around 2100 AD before slowly drifting away. Polaris is actually a triple star system about 433 light-years distant.",
-        "ra": 180,
-        "dec": 78,
-        "fov": 60,
+        "title": "The wandering pole",
+        "caption": "Due to Earth's precession, the celestial pole slowly traces a circle among the stars over 26,000 years. Around 2700 BC, Thuban in Draco was the pole star. Polaris will reach its closest approach to the true pole around 2100 before slowly drifting away.",
+        "ra": 270.11,
+        "dec": 66.57,
+        "fov": 56.68,
+        "rotation": 1.0292,
         "photo": true,
         "diagram": true,
         "names": true,
         "bounds": false,
+        "precessionCircle": "north",
         "highlight": [
           "Thuban",
           "Polaris"

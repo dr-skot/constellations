@@ -30,9 +30,57 @@ function guideDrawAnnotation(step, catalog) {
   ann.style.height = src.style.height;
   const ctx = ann.getContext('2d');
   ctx.clearRect(0, 0, W, H);
-  if (!step?.highlight?.length) return;
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+
+  // Precession circle — centered on ecliptic pole, radius = obliquity
+  if (step?.precessionCircle) {
+    const south = step.precessionCircle === 'south';
+    const obliquity = 23.44 * Math.PI / 180;
+    const epRA = (south ? 90 : 270) * Math.PI / 180;
+    const epDec = (south ? -(90 - 23.44) : (90 - 23.44)) * Math.PI / 180;
+    // Ecliptic pole unit vector
+    const epole = [
+      Math.cos(epDec) * Math.cos(epRA),
+      Math.cos(epDec) * Math.sin(epRA),
+      Math.sin(epDec)
+    ];
+    const npts = 120;
+    // Build two orthonormal vectors in the plane perpendicular to epole
+    const up = [0, 0, 1];
+    let u = [up[1]*epole[2] - up[2]*epole[1], up[2]*epole[0] - up[0]*epole[2], up[0]*epole[1] - up[1]*epole[0]];
+    const uLen = Math.sqrt(u[0]*u[0] + u[1]*u[1] + u[2]*u[2]);
+    u = [u[0]/uLen, u[1]/uLen, u[2]/uLen];
+    const v = [epole[1]*u[2] - epole[2]*u[1], epole[2]*u[0] - epole[0]*u[2], epole[0]*u[1] - epole[1]*u[0]];
+    const sinO = Math.sin(obliquity), cosO = Math.cos(obliquity);
+    const projected = [];
+    for (let i = 0; i <= npts; i++) {
+      const t = (i / npts) * 2 * Math.PI;
+      const pt = [
+        cosO * epole[0] + sinO * (Math.cos(t) * u[0] + Math.sin(t) * v[0]),
+        cosO * epole[1] + sinO * (Math.cos(t) * u[1] + Math.sin(t) * v[1]),
+        cosO * epole[2] + sinO * (Math.cos(t) * u[2] + Math.sin(t) * v[2])
+      ];
+      const p = vecToPixel(pt, explore.P, camUp, explore.fov, W, H);
+      projected.push(p);
+    }
+    const dpr = window.devicePixelRatio || 1;
+    const s = W / (ann.offsetWidth || W / dpr);
+    ctx.strokeStyle = 'rgba(220,180,80,0.4)';
+    ctx.lineWidth = Math.max(1, 1.5 * s);
+    ctx.setLineDash([6 * s, 5 * s]);
+    ctx.beginPath();
+    let started = false;
+    for (const p of projected) {
+      if (!p) { started = false; continue; }
+      if (!started) { ctx.moveTo(p.x, p.y); started = true; }
+      else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  if (!step?.highlight?.length) return;
   const dpr   = window.devicePixelRatio || 1;
   const scale = W / (src.offsetWidth || W / dpr);
   const fovS = 40 / explore.fov;  // FOV scale factor (same as drawStars)

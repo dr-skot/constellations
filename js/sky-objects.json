@@ -962,11 +962,6 @@
     "dec": 53.752,
     "color": "#c8d8ff"
   },
-  "α Cen": {
-    "ra": 210.96,
-    "dec": -60.83,
-    "color": "#ffd080"
-  },
   "α Cha": {
     "ra": 124.631,
     "dec": -76.92,
@@ -1102,11 +1097,6 @@
     "ra": 75.855,
     "dec": 60.442,
     "color": "#c8d8ff"
-  },
-  "β Cen": {
-    "ra": 211.67,
-    "dec": -60.37,
-    "color": "#90c8ff"
   },
   "β Cha": {
     "ra": 158.867,
@@ -1471,5 +1461,32 @@
     "dec": -7.719,
     "color": "#ffe8b0",
     "arcmin": 7
+  },
+  "Crab Nebula": {
+    "ra": 83.632,
+    "dec": 22.017,
+    "color": "#ff8080",
+    "arcmin": 7
+  },
+  "κ Sco": {
+    "ra": 265.622,
+    "dec": -39.03,
+    "color": "#90c8ff"
+  },
+  "ι Sco": {
+    "ra": 266.896,
+    "dec": -40.127,
+    "color": "#c8d8ff"
+  },
+  "Triangulum Galaxy": {
+    "ra": 23.462,
+    "dec": 30.66,
+    "color": "#ffe8b0",
+    "arcmin": 70
+  },
+  "North Celestial Pole": {
+    "ra": 0,
+    "dec": 90,
+    "color": "#c8d8ff"
   }
 }
