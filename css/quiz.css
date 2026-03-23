@@ -351,18 +351,3 @@ canvas {
   background: rgba(91, 138, 245, .2)
 }
 
-.btn-explore {
-  align-self: center;
-  padding: 10px 32px;
-  border: 1px solid var(--accent);
-  background: rgba(91, 138, 245, .1);
-  color: #b0ccff;
-  border-radius: 12px;
-  font-size: .95rem;
-  cursor: pointer;
-  transition: all .18s
-}
-
-.btn-explore:hover {
-  background: rgba(91, 138, 245, .2)
-}

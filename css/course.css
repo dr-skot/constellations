@@ -12,19 +12,6 @@
 /* Course map */
 .course-header { text-align:center; padding:20px 0 8px; }
 .course-header h1 { font-size:1.4rem; }
-.course-phase { margin-bottom:24px; }
-.course-phase.locked { opacity:0.4; }
-.phase-hdr { display:flex; justify-content:space-between; align-items:center;
-             font-size:.72rem; text-transform:uppercase; letter-spacing:.13em;
-             color:var(--dim); margin-bottom:8px; }
-.phase-stages { display:flex; gap:8px; flex-wrap:wrap; }
-.stage-btn { padding:7px 14px; border:1px solid var(--border); border-radius:8px;
-             background:transparent; color:var(--text); cursor:pointer; font-size:.82rem;
-             transition:border-color .15s; }
-.stage-btn:not(.locked):hover { border-color:var(--accent); color:var(--accent); }
-.stage-btn.mastered { border-color:#6f8; color:#6f8; }
-.stage-btn.locked { opacity:0.5; cursor:default; pointer-events:none; }
-.stage-check { margin-left:5px; }
 #canvas-wrap.quiz-circle { border-radius: 50%; }
 #art-credit { position:absolute; bottom:6px; right:8px; font-size:.65rem;
               color:rgba(255,255,255,0.35); pointer-events:none;

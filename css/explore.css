@@ -95,19 +95,6 @@
 #explore-search-go { padding:5px 10px; border:1px solid var(--border); background:transparent;
                      color:var(--text); border-radius:8px; cursor:pointer; font-size:.8rem; }
 #explore-search-go:hover { border-color:var(--accent); color:var(--accent); }
-.btn-explore-quiz {
-  padding: 4px 12px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--dim);
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: .78rem;
-  transition: all .18s
-}
-.btn-explore-quiz:hover { border-color: var(--accent); color: var(--text) }
-.btn-explore-quiz.active { border-color: var(--accent); color: var(--accent) }
-
 #find-help-btn {
   display: block;
   margin: 2px auto 4px;
