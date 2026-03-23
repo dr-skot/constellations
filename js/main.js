@@ -34,7 +34,6 @@ window.addEventListener('popstate', () => handleRoute(location.hash.slice(1) || 
 // INIT
 // ═══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  loadBounds();
   try { initExploreGL(document.getElementById('explore-gl-canvas')); } catch(e) { console.error('GL init failed:', e); }
 
   // Populate constellation viewer search datalist and viewer select

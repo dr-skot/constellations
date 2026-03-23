@@ -164,43 +164,6 @@ function rotateByFromTo(c, from, to) {
   ];
 }
 
-// ═══════════════════════════════════════════════════════════
-// PROJECTION  (RA/Dec → canvas x/y)
-// ═══════════════════════════════════════════════════════════
-
-// Compute projection parameters from a constellation's star array.
-// Returns {cRA, cDec, cosD, scale, wrapped} — reusable for any RA/Dec point.
-function getProjection(stars, W, H) {
-  const PAD = 0.12;
-  let ras = stars.map(s => s[0]);
-  const wrapped = Math.max(...ras) - Math.min(...ras) > 180;
-  if (wrapped) ras = ras.map(r => r < 180 ? r + 360 : r);
-  const decs = stars.map(s => s[1]);
-  const cRA = (Math.min(...ras) + Math.max(...ras)) / 2;
-  const cDec = (Math.min(...decs) + Math.max(...decs)) / 2;
-  const cosD = Math.cos(cDec * Math.PI / 180);
-  const raSky = (Math.max(...ras) - Math.min(...ras)) * cosD;
-  const decSp = Math.max(...decs) - Math.min(...decs);
-  const scale = Math.max(raSky, decSp) / (1 - 2 * PAD) || 1;
-  return { cRA, cDec, cosD, scale, wrapped, W, H };
-}
-
-// Project a single RA/Dec point using pre-computed projection params.
-function projectPoint(ra, dec, p) {
-  let r = ra;
-  if (p.wrapped && r < 180) r += 360;
-  return {
-    x: p.W / 2 + (p.cRA - r) * p.cosD / p.scale * p.W,
-    y: p.H / 2 - (dec - p.cDec) / p.scale * p.H
-  };
-}
-
-// Project all stars in a constellation to canvas coords.
-function projectStars(stars, W, H) {
-  const p = getProjection(stars, W, H);
-  return stars.map(s => ({ ...projectPoint(s[0], s[1], p), mag: s[2], hint: s[3], name: s[4] }));
-}
-
 function solveAffine(src, dst) {
   const [[x1, y1], [x2, y2], [x3, y3]] = src;
   const [[u1, v1], [u2, v2], [u3, v3]] = dst;
@@ -214,27 +177,3 @@ function solveAffine(src, dst) {
   return [a, b, c, d, e, f];
 }
 
-function pointInPolygon(ra, dec, poly) {
-  // Ray-casting in RA/Dec space. RA is circular (0–360), so we normalize all
-  // polygon vertices to within ±180° of the test point before testing. Without
-  // this, a polygon near RA=0 (vertices spanning e.g. 350°–10°) would be split
-  // across the 0/360 seam and the ray would miss it.
-  //
-  // NOTE: always pre-filter by angular distance before calling this. The RA
-  // normalization maps far-away polygon vertices to large-but-finite RA values,
-  // and the rightward ray from the test point can cross those phantom vertices,
-  // producing false positives for constellations on the opposite side of the sky.
-  const norm = poly.map(([r, d]) => {
-    let dr = r - ra;
-    if (dr > 180) dr -= 360;
-    if (dr < -180) dr += 360;
-    return [ra + dr, d];
-  });
-  let inside = false;
-  for (let i = 0, j = norm.length - 1; i < norm.length; j = i++) {
-    const [xi, yi] = norm[i], [xj, yj] = norm[j];
-    if (((yi > dec) !== (yj > dec)) && ra < (xj - xi) * (dec - yi) / (yj - yi) + xi)
-      inside = !inside;
-  }
-  return inside;
-}

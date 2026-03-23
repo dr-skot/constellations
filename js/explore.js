@@ -146,61 +146,6 @@ function loadExplorePhoto(con) {
   img.src = photoUrl(con);
 }
 
-// Draw one triangle of a source image at a destination triangle, using affine + clip.
-function drawImageTriangle(ctx, img, src, dst) {
-  const cross = (dst[1][0] - dst[0][0]) * (dst[2][1] - dst[0][1])
-              - (dst[1][1] - dst[0][1]) * (dst[2][0] - dst[0][0]);
-  if (Math.abs(cross) < 0.5) return; // degenerate
-  const xform = solveAffine(src, dst);
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(dst[0][0], dst[0][1]);
-  ctx.lineTo(dst[1][0], dst[1][1]);
-  ctx.lineTo(dst[2][0], dst[2][1]);
-  ctx.closePath();
-  ctx.clip();
-  ctx.setTransform(...xform);
-  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
-  ctx.restore();
-}
-
-function drawExplorePhotoLayer(ctx, con, camP, camUp, fov, W, H) {
-  const img = explorePhotoCache[con.abbr];
-  if (!(img instanceof HTMLImageElement)) { loadExplorePhoto(con); return; }
-
-  // Subdivide the photo into a GRID×GRID mesh. For each vertex compute the
-  // exact sky position (via TAN inverse of the photo projection) then re-project
-  // into the explore canvas. Each cell is drawn as 2 affine-warped triangles.
-  const GRID = 8, IW = 640, IH = 640;
-  const gw = GRID + 1;
-  const verts = new Array(gw * gw);
-  for (let gy = 0; gy <= GRID; gy++) {
-    for (let gx = 0; gx <= GRID; gx++) {
-      const px = gx / GRID * IW, py = gy / GRID * IH;
-      const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
-      const ep = projectStarsCamera([[rd.ra, rd.dec, 0]], camP, camUp, fov, W, H)[0];
-      verts[gy * gw + gx] = ep.d > 0 ? [px, py, ep.x, ep.y] : null;
-    }
-  }
-  for (let gy = 0; gy < GRID; gy++) {
-    for (let gx = 0; gx < GRID; gx++) {
-      const p00 = verts[gy * gw + gx];
-      const p10 = verts[gy * gw + gx + 1];
-      const p01 = verts[(gy + 1) * gw + gx];
-      const p11 = verts[(gy + 1) * gw + gx + 1];
-      if (p00 && p10 && p01)
-        drawImageTriangle(ctx, img,
-          [[p00[0], p00[1]], [p10[0], p10[1]], [p01[0], p01[1]]],
-          [[p00[2], p00[3]], [p10[2], p10[3]], [p01[2], p01[3]]]);
-      if (p10 && p11 && p01)
-        drawImageTriangle(ctx, img,
-          [[p10[0], p10[1]], [p11[0], p11[1]], [p01[0], p01[1]]],
-          [[p10[2], p10[3]], [p11[2], p11[3]], [p01[2], p01[3]]]);
-    }
-  }
-}
-
-
 function drawExplore() {
   const canvas = document.getElementById('explore-canvas');
   if (!canvas) return;

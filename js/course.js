@@ -7,8 +7,6 @@
 // with the same id — so we accumulate into an array rather than overwriting.
 // All boundary draw and hit-test code must iterate over all rings.
 // ═══════════════════════════════════════════════════════════
-function loadBounds() {} // BOUNDS is now inlined in data.js
-
 // ═══════════════════════════════════════════════════════════
 // PER-CONSTELLATION EXPOSURE TRACKING
 // ═══════════════════════════════════════════════════════════
