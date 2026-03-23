@@ -520,49 +520,43 @@ function drawExplore() {
   }
   ctx.restore();
 
-  // North arrow — points along meridian toward north celestial pole
-  {
+  // Compass arrow — N or S depending on hemisphere (fades in/out on interaction)
+  if (explore._northAlpha > 0.01) {
     const cx = W / 2, cy = H / 2;
-    const np = vecToPixel([0, 0, 1], camP, camUp, explore.fov, W, H);
-    const sp = vecToPixel([0, 0, -1], camP, camUp, explore.fov, W, H);
-    // Pick whichever pole is in front; arrow points toward north, away from south
-    let angle = null;
-    if (np) {
-      const poleDistDeg = Math.acos(Math.max(-1, Math.min(1, camP[2]))) * 180 / Math.PI;
-      if (poleDistDeg > 10) angle = Math.atan2(np.x - cx, -(np.y - cy));
-    } else if (sp) {
-      const poleDistDeg = Math.acos(Math.max(-1, Math.min(1, -camP[2]))) * 180 / Math.PI;
-      if (poleDistDeg > 10) angle = Math.atan2(-(sp.x - cx), sp.y - cy);
-    }
-    if (angle !== null) {
-      const s = Math.max(1, W / 640);  // DPR scale
-      const len = 18 * s, headW = 6 * s, headL = 10 * s;
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(angle);
-      // Shaft
-      ctx.strokeStyle = 'rgba(220,180,80,0.7)';
-      ctx.lineWidth = 1.5 * s;
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(0, -len);
-      ctx.stroke();
-      // Arrowhead
-      ctx.fillStyle = 'rgba(220,180,80,0.7)';
-      ctx.beginPath();
-      ctx.moveTo(0, -len - headL);
-      ctx.lineTo(-headW, -len);
-      ctx.lineTo(headW, -len);
-      ctx.closePath();
-      ctx.fill();
-      // "N" label
-      const fs = Math.round(10 * s);
-      ctx.font = `bold ${fs}px system-ui, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillStyle = 'rgba(220,180,80,0.7)';
-      ctx.fillText('N', 0, -len - headL - 2 * s);
-      ctx.restore();
+    const south = camP[2] < 0; // center point south of celestial equator
+    const pole = south ? [0, 0, -1] : [0, 0, 1];
+    const s = Math.max(1, W / 640);
+    const na = explore._northAlpha * 0.35;
+    const label = south ? 'S' : 'N';
+    const fs = Math.round(20 * s);
+    // Label — always shown upright at center
+    ctx.save();
+    ctx.font = `bold ${fs}px system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = `rgba(220,180,80,${na})`;
+    ctx.fillText(label, cx, cy);
+    ctx.restore();
+    // Arrow — only when pole is far enough from center
+    const pp = vecToPixel(pole, camP, camUp, explore.fov, W, H);
+    if (pp) {
+      const poleDistDeg = Math.acos(Math.max(-1, Math.min(1, south ? -camP[2] : camP[2]))) * 180 / Math.PI;
+      if (poleDistDeg > explore.fov * 0.075) {
+        const angle = Math.atan2(pp.x - cx, -(pp.y - cy));
+        const headW = 6 * s, headL = 20 * s;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        const gap = fs * 0.9;
+        ctx.fillStyle = `rgba(220,180,80,${na})`;
+        ctx.beginPath();
+        ctx.moveTo(0, -gap - headL);
+        ctx.lineTo(-headW, -gap);
+        ctx.lineTo(headW, -gap);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
     }
   }
 
@@ -672,8 +666,28 @@ function initExploreDrag() {
     const rect = ec.getBoundingClientRect();
     return { px: (cx - rect.left) * dpr, py: (cy - rect.top) * dpr };
   }
+  explore._northAlpha = 0;
+  let _northFading = 0, _northFrame = null;
+  function _northTick() {
+    _northFrame = null;
+    const target = _northFading > 0 ? 1 : 0;
+    const speed = _northFading > 0 ? 0.15 : 0.08; // fade in fast, fade out slower
+    explore._northAlpha += (target - explore._northAlpha) * speed;
+    if (Math.abs(explore._northAlpha - target) < 0.01) explore._northAlpha = target;
+    drawExplore();
+    if (explore._northAlpha !== target) _northFrame = requestAnimationFrame(_northTick);
+  }
+  function showNorthArrow() {
+    _northFading = 1;
+    if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
+  }
+  function hideNorthArrow() {
+    _northFading = -1;
+    if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
+  }
   function dragStart(cx, cy) {
     if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
+    showNorthArrow();
     const { px, py } = clientToCanvas(cx, cy);
     const up0 = cameraReverse(explore.P, explore.R, [0, 1, 0]);
     const vStart = pixelToVec(px, py, explore.P, up0, explore.fov, ec.width, ec.height);
@@ -719,6 +733,7 @@ function initExploreDrag() {
   function dragEnd() {
     explore.drag = null;
     ew.classList.remove('dragging');
+    hideNorthArrow();
     if (typeof saveExploreState === 'function') saveExploreState();
     drawExplore();
   }
@@ -753,6 +768,7 @@ function initExploreDrag() {
   ec.addEventListener('touchmove', e => {
     e.preventDefault();
     if (e.touches.length === 2 && pinchStartDist) {
+      showNorthArrow();
       const dist = touchDist(e.touches);
       explore.fov = Math.max(10, Math.min(110, pinchStartFov * pinchStartDist / dist));
       drawExplore();
@@ -763,6 +779,7 @@ function initExploreDrag() {
   ec.addEventListener('touchend', e => {
     if (pinchStartDist && e.touches.length < 2) {
       pinchStartDist = null;
+      hideNorthArrow();
       if (typeof saveExploreState === 'function') saveExploreState();
       return;
     }
@@ -775,26 +792,27 @@ function initExploreDrag() {
   });
   ec.addEventListener('wheel', e => {
     e.preventDefault();
+    showNorthArrow();
     const factor = e.ctrlKey ? Math.pow(1.03, e.deltaY) : Math.pow(1.003, e.deltaY);
     explore.fov = Math.max(10, Math.min(110, explore.fov * factor));
     drawExplore();
     clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { if (typeof saveExploreState === 'function') saveExploreState(); drawExplore(); }, 300);
+    wheelTimer = setTimeout(() => { hideNorthArrow(); if (typeof saveExploreState === 'function') saveExploreState(); drawExplore(); }, 300);
   }, { passive: false });
 
   // Roll strip (if present)
   const rollStrip = document.getElementById('explore-roll-strip');
   if (rollStrip) {
     let rollDragX = null;
-    rollStrip.addEventListener('mousedown', e => { rollDragX = e.clientX; e.preventDefault(); });
+    rollStrip.addEventListener('mousedown', e => { rollDragX = e.clientX; showNorthArrow(); e.preventDefault(); });
     window.addEventListener('mousemove', e => {
       if (rollDragX === null) return;
       explore.R += (e.clientX - rollDragX) * (Math.PI / 180);
       rollDragX = e.clientX;
       drawExplore();
     });
-    window.addEventListener('mouseup', () => { rollDragX = null; });
-    rollStrip.addEventListener('touchstart', e => { rollDragX = e.touches[0].clientX; e.preventDefault(); }, { passive: false });
+    window.addEventListener('mouseup', () => { if (rollDragX !== null) hideNorthArrow(); rollDragX = null; });
+    rollStrip.addEventListener('touchstart', e => { rollDragX = e.touches[0].clientX; showNorthArrow(); e.preventDefault(); }, { passive: false });
     rollStrip.addEventListener('touchmove', e => {
       if (rollDragX === null) return;
       explore.R += (e.touches[0].clientX - rollDragX) * (Math.PI / 180);
@@ -802,7 +820,7 @@ function initExploreDrag() {
       drawExplore();
       e.preventDefault();
     }, { passive: false });
-    rollStrip.addEventListener('touchend', () => { rollDragX = null; });
+    rollStrip.addEventListener('touchend', () => { hideNorthArrow(); rollDragX = null; });
   }
 
   return { clientToCanvas };
