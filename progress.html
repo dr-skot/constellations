@@ -126,25 +126,19 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/course.js"></script>
 <script>
   const TIERS = [
-    { key: 'identify/diagram',    short: 'iD', label: 'Identify by diagram' },
-    { key: 'find/diagram',        short: 'fD', label: 'Find by diagram' },
-    { key: 'find/diagram-nb',     short: 'nD', label: 'Find by diagram (no bounds)' },
-    { key: 'identify/stars',      short: 'iS', label: 'Identify by stars' },
-    { key: 'find/stars',          short: 'fS', label: 'Find by stars' },
-    { key: 'find/stars-nb',       short: 'nS', label: 'Find by stars (no bounds)' },
-    { key: 'identify/photo',      short: 'iP', label: 'Identify by photo' },
-    { key: 'find/photo',          short: 'fP', label: 'Find by photo' },
-    { key: 'find/photo-nb',       short: 'nP', label: 'Find by photo (no bounds)' },
-    { key: 'identify/diagram-ac', short: 'aD', label: 'Recall name (diagram)' },
-    { key: 'identify/stars-ac',   short: 'aS', label: 'Recall name (stars)' },
-    { key: 'identify/photo-ac',   short: 'aP', label: 'Recall name (photo)' },
+    { key: 'identify/diagram', short: 'iD', label: 'Identify by diagram' },
+    { key: 'find/diagram',     short: 'fD', label: 'Find by diagram' },
+    { key: 'identify/stars',   short: 'iS', label: 'Identify by stars' },
+    { key: 'find/stars',       short: 'fS', label: 'Find by stars' },
+    { key: 'identify/photo',   short: 'iP', label: 'Identify by photo' },
+    { key: 'find/photo',       short: 'fP', label: 'Find by photo' },
+    { key: 'find/photo-nb',    short: 'nP', label: 'Find by photo (no bounds)' },
   ];
 
-  const exp = (() => {
-    try { return JSON.parse(localStorage.getItem('con-exposure')) || {}; } catch { return {}; }
-  })();
+  const exp = loadExposure();
 
   function tierClass(abbr, key) {
     const t = exp[abbr]?.[key];
@@ -161,14 +155,14 @@
 
   const statsEl = document.getElementById('stats');
   const statRows = [
-    ['Introduced',        introduced],
-    ['id/diagram',        countPassed('identify/diagram')],
-    ['find/diagram',      countPassed('find/diagram')],
-    ['find/diag no-bnds', countPassed('find/diagram-nb')],
-    ['id/stars',          countPassed('identify/stars')],
-    ['id/photo',          countPassed('identify/photo')],
-    ['find/photo',        countPassed('find/photo')],
-    ['find/photo no-bnds',countPassed('find/photo-nb')],
+    ['Introduced',         introduced],
+    ['Diagram identified', countPassed('identify/diagram')],
+    ['Located by diagram', countPassed('find/diagram')],
+    ['Stars identified',   countPassed('identify/stars')],
+    ['Located by stars',   countPassed('find/stars')],
+    ['Photo identified',   countPassed('identify/photo')],
+    ['Located by photo',   countPassed('find/photo')],
+    ['Master navigator',   countPassed('find/photo-nb')],
   ];
   statsEl.innerHTML = statRows.map(([lbl, val]) =>
     `<div class="stat-card"><div class="stat-val">${val}<span style="font-size:.9rem;color:var(--dim)">/${total}</span></div>
@@ -270,7 +264,7 @@
     lines.push('');
 
     // Per-constellation detail
-    lines.push('DETAIL (tiers: iD fD fD° iS fS fS° iP fP fP° iD-ac iS-ac iP-ac)');
+    lines.push('DETAIL (tiers: iD fD iS fS iP fP nP)');
     lines.push('  ✓=passed  ○=seen  ·=unseen');
     lines.push('');
     for (const con of sorted) {
