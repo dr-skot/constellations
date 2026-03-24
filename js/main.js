@@ -179,40 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(id).addEventListener('change', () => drawExplore());
   });
 
-  const exploreCheckboxIds = ['chk-ex-photo', 'chk-ex-stars', 'chk-ex-lines', 'chk-ex-starlabels', 'chk-ex-connames', 'chk-ex-equator', 'chk-ex-bounds', 'chk-ex-art', 'chk-ex-phototiles'];
-  // Restore saved checkbox states
-  exploreCheckboxIds.forEach(id => {
-    const saved = localStorage.getItem(id);
-    if (saved !== null) {
-      const el = document.getElementById(id);
-      if (!el) console.error('Missing checkbox element:', id);
-      else el.checked = saved === '1';
-    }
-  });
-  // Save on change and redraw
-  exploreCheckboxIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) { console.error('Missing checkbox element for listener:', id); return; }
-    el.addEventListener('change', () => {
-      localStorage.setItem(id, el.checked ? '1' : '0');
-      drawExplore();
-    });
-  });
-
-  // Diagram source button group
-  const savedSrc = localStorage.getItem('diag-source');
-  if (savedSrc && _diagSources[savedSrc]) {
-    _diagSource = savedSrc;
-    document.querySelectorAll('.diag-src-btn').forEach(b => b.classList.toggle('active', b.dataset.src === savedSrc));
-  }
-  document.querySelectorAll('.diag-src-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      _diagSource = btn.dataset.src;
-      localStorage.setItem('diag-source', _diagSource);
-      document.querySelectorAll('.diag-src-btn').forEach(b => b.classList.toggle('active', b === btn));
-      drawExplore();
-    });
-  });
+  // Initialize toggle groups and rotate dial for explore mode
+  initExploreToggles();
 
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
   document.getElementById('btn-copy-view').addEventListener('click', () => {

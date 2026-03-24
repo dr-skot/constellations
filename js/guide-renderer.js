@@ -292,11 +292,12 @@ window.addEventListener('resize', () => {
 });
 
 function _guideApplySettings(step) {
-  document.getElementById('chk-ex-photo'     ).checked = !!step.photo;
+  explore.photo   = step.photo || false;
   explore.diagram = step.diagram || false;
   explore.art     = step.art || false;
   explore.names   = step.names || false;
   explore.bounds  = step.bounds || false;
+  explore.equator = step.equator || false;
   if (step.lines?.length && _gs?.catalog) {
     explore.guideLinesDef     = step.lines;
     explore.guideLinesCatalog = _gs.catalog;
@@ -305,13 +306,6 @@ function _guideApplySettings(step) {
   } else {
     explore.guideLinesDef = null;
   }
-  document.getElementById('chk-ex-stars'     ).checked = !!explore.diagram;
-  document.getElementById('chk-ex-lines'     ).checked = !!explore.diagram;
-  document.getElementById('chk-ex-art'       ).checked = !!explore.art;
-  document.getElementById('chk-ex-connames'  ).checked = !!explore.names;
-  document.getElementById('chk-ex-bounds'    ).checked = !!explore.bounds;
-  document.getElementById('chk-ex-starlabels').checked = false;
-  document.getElementById('chk-ex-equator'   ).checked = !!step.equator;
 }
 
 function _guideIntersectSettings(a, b) {
@@ -469,10 +463,12 @@ function guideStart(steps, catalog, options = {}) {
 function guideStop() {
   if (_gs?.stepKey) localStorage.removeItem(_gs.stepKey);
   _gs = null;
+  delete explore.photo;
   delete explore.diagram;
   delete explore.art;
   delete explore.names;
   delete explore.bounds;
+  delete explore.equator;
   explore.guideLinesDef = null;
   const ann = document.getElementById('annotation-canvas');
   if (ann) { const c = ann.getContext('2d'); c.clearRect(0, 0, ann.width, ann.height); }

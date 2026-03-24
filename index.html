@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/quiz.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/explore.css">
   <link rel="stylesheet" href="css/course.css">
 </head>
@@ -125,21 +126,10 @@
       </div>
       <div class="screen-body">
         <div class="explore-layers">
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-photo" checked> Photo</label>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-stars" checked> Stars</label>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-lines" checked> Lines</label>
-          <span class="diag-source-group">
-            <button class="diag-src-btn active" data-src="iau">IAU</button>
-            <button class="diag-src-btn" data-src="rey">Rey</button>
-            <button class="diag-src-btn" data-src="stellarium">Stel</button>
-            <button class="diag-src-btn" data-src="ford">Ford</button>
-          </span>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-starlabels" checked> Star names</label>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-connames" checked> Con. names</label>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-equator" checked> Equator</label>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-bounds" checked> Bounds</label>
-          <label class="rev-chk"><input type="checkbox" id="chk-ex-art" checked> Art</label>
-          <label class="rev-chk" style="display:none"><input type="checkbox" id="chk-ex-phototiles"> Tiles</label>
+          <div class="toggle-group" id="tg-layers"></div>
+          <div class="toggle-group" id="tg-diagram"></div>
+          <div class="toggle-group" id="tg-labels"></div>
+          <div class="toggle-group" id="tg-reference"></div>
         </div>
         <div id="explore-area">
           <div id="explore-wrap">
@@ -149,12 +139,15 @@
           </div>
           <div id="explore-art-credit"></div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;padding:4px 8px">
-          <div id="explore-roll-strip" style="flex:1;padding:4px;text-align:center;font-size:12px;color:#aaa;cursor:ew-resize;user-select:none;letter-spacing:0.05em">Rotate</div>
-          <button id="btn-copy-view" style="font-size:11px;padding:3px 8px;border:1px solid #555;background:transparent;color:#aaa;border-radius:4px;cursor:pointer;white-space:nowrap">Copy View</button>
-          <button id="btn-paste-view" style="font-size:11px;padding:3px 8px;border:1px solid #555;background:transparent;color:#aaa;border-radius:4px;cursor:pointer;white-space:nowrap">Paste View</button>
+        <div class="dial-group">
+          <div class="dial-wrap" id="explore-dial"><canvas class="dial-track" id="explore-dial-canvas"></canvas></div>
+          <div id="explore-dial-readout" class="angle-readout">Rotate</div>
         </div>
-        <div id="explore-readout" style="padding:2px 8px;font-size:11px;color:#666;font-family:monospace;text-align:center"></div>
+        <div style="display:none">
+          <button id="btn-copy-view">Copy View</button>
+          <button id="btn-paste-view">Paste View</button>
+        </div>
+        <div id="explore-readout" style="display:none"></div>
         <div id="explore-quiz-bar" style="display:none">
           <button id="find-help-btn" style="display:none">? Help</button>
           <div id="eq-label-area">
@@ -226,6 +219,7 @@
   <script src="js/render.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/explore-gl.js"></script>
+  <script src="js/components.js"></script>
   <script src="js/explore.js"></script>
   <script src="js/guide-renderer.js"></script>
   <script src="js/find-guide.js"></script>

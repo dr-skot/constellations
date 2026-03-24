@@ -1,0 +1,95 @@
+/* ── Toggle Button ─────────────────────────────── */
+
+.toggle-group {
+  display: inline-block;
+}
+
+.toggle-group-buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.toggle-group-buttons .toggle-btn {
+  border-radius: 0;
+  margin-left: -1px;
+}
+.toggle-group-buttons .toggle-btn:first-child {
+  border-radius: 6px 0 0 6px;
+  margin-left: 0;
+}
+.toggle-group-buttons .toggle-btn:last-child {
+  border-radius: 0 6px 6px 0;
+}
+.toggle-group-buttons .toggle-btn:first-child:last-child {
+  border-radius: 6px;
+}
+.toggle-group-buttons .toggle-btn[aria-pressed="true"] {
+  z-index: 1;
+}
+
+.toggle-group-caption {
+  display: block;
+  font-size: .7rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+
+.toggle-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%);
+  color: var(--dim);
+  font-family: inherit;
+  font-size: .78rem;
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s ease;
+  position: relative;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.toggle-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text);
+}
+
+.toggle-btn[aria-pressed="true"] {
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 100%);
+  border-color: var(--accent);
+  color: var(--text);
+  box-shadow:
+    inset 0 1px 3px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(91, 138, 245, 0.15);
+}
+
+.toggle-btn:active {
+  transform: translateY(0.5px);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* ── Rotate Dial ──────────────────────────────── */
+
+.dial-wrap {
+  width: 50%;
+  margin: 0 auto;
+  height: 32px;
+  position: relative;
+  cursor: ew-resize;
+  user-select: none;
+  overflow: hidden;
+}
+
+.dial-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

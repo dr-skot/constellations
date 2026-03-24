@@ -31,6 +31,120 @@ const _diagSources = {
   ford: typeof FORD !== 'undefined' ? Object.fromEntries(FORD.map(c => [c.abbr, c])) : {},
 };
 let _diagSource = 'iau';
+
+// ── Explore UI state (driven by toggle groups) ──
+const exState = {
+  photo: true, stars: true, art: true, bounds: true,
+  diagram: 'iau',   // string or null (allowNone)
+  starLabels: true, conNames: true,
+  reference: 'always',  // 'always' | 'moving' | null
+};
+let _exToggleGroups = {};
+let _exDial = null;
+
+function initExploreToggles() {
+  // Restore saved states
+  const saved = k => localStorage.getItem('ex-' + k);
+  const toBool = (k, def) => { const v = saved(k); return v !== null ? v === '1' : def; };
+  exState.photo = toBool('photo', true);
+  exState.stars = toBool('stars', true);
+  exState.art = toBool('art', true);
+  exState.bounds = toBool('bounds', true);
+  exState.starLabels = toBool('starLabels', true);
+  exState.conNames = toBool('conNames', true);
+  const savedDiag = saved('diagram');
+  if (savedDiag !== null) {
+    exState.diagram = savedDiag === 'null' ? null : savedDiag;
+    _diagSource = exState.diagram || 'iau';
+  }
+  const savedRef = saved('reference');
+  if (savedRef !== null) exState.reference = savedRef === 'null' ? null : savedRef;
+
+  function persist(k, v) { localStorage.setItem('ex-' + k, typeof v === 'boolean' ? (v ? '1' : '0') : String(v)); }
+  function redraw() { drawExplore(); }
+
+  _exToggleGroups.layers = createToggleGroup(document.getElementById('tg-layers'), {
+    caption: 'Layers',
+    buttons: [
+      { label: 'Photo', value: 'photo', on: exState.photo },
+      { label: 'Stars', value: 'stars', on: exState.stars },
+      { label: 'Art', value: 'art', on: exState.art },
+      { label: 'Bounds', value: 'bounds', on: exState.bounds },
+    ],
+    onChange(value, on) {
+      exState[value] = on;
+      persist(value, on);
+      redraw();
+    },
+  });
+
+  _exToggleGroups.diagram = createToggleGroup(document.getElementById('tg-diagram'), {
+    exclusive: true,
+    allowNone: true,
+    caption: 'Diagrams',
+    buttons: [
+      { label: 'IAU', value: 'iau', on: exState.diagram === 'iau' },
+      { label: 'Rey', value: 'rey', on: exState.diagram === 'rey' },
+      { label: 'Stel', value: 'stellarium', on: exState.diagram === 'stellarium' },
+      { label: 'Ford', value: 'ford', on: exState.diagram === 'ford' },
+    ],
+    onChange(value, on, all) {
+      exState.diagram = all.length ? all[0] : null;
+      _diagSource = exState.diagram || 'iau';
+      persist('diagram', exState.diagram === null ? 'null' : exState.diagram);
+      redraw();
+    },
+  });
+
+  _exToggleGroups.labels = createToggleGroup(document.getElementById('tg-labels'), {
+    caption: 'Labels',
+    buttons: [
+      { label: 'Stars', value: 'starLabels', on: exState.starLabels },
+      { label: 'Cons', value: 'conNames', on: exState.conNames },
+    ],
+    onChange(value, on) {
+      exState[value] = on;
+      persist(value, on);
+      redraw();
+    },
+  });
+
+  _exToggleGroups.reference = createToggleGroup(document.getElementById('tg-reference'), {
+    exclusive: true,
+    allowNone: true,
+    caption: 'Orientation Guides',
+    buttons: [
+      { label: 'Always', value: 'always', on: exState.reference === 'always' },
+      { label: 'When Moving', value: 'moving', on: exState.reference === 'moving' },
+    ],
+    onChange(value, on, all) {
+      exState.reference = all.length ? all[0] : null;
+      persist('reference', exState.reference === null ? 'null' : exState.reference);
+      redraw();
+    },
+  });
+
+  // Rotate dial
+  const dialReadout = document.getElementById('explore-dial-readout');
+  _exDial = createRotateDial(document.getElementById('explore-dial'), {
+    onAngle(deg) {
+      explore.R = deg * Math.PI / 180;
+      if (dialReadout) {
+        const northR = guideNorthUpR(explore.P);
+        const offsetDeg = (explore.R - northR) * 180 / Math.PI;
+        let display = ((offsetDeg % 360) + 540) % 360 - 180;
+        dialReadout.textContent = display.toFixed(1) + '\u00B0';
+      }
+      drawExplore();
+    },
+    onDragStart() { showNorthArrow(); },
+    onDragEnd() {
+      hideNorthArrow();
+      if (dialReadout) dialReadout.textContent = 'Rotate';
+      if (typeof saveExploreState === 'function') saveExploreState();
+    },
+  });
+}
 function _diagFor(con) {
   if (_diagSource === 'iau') return con;
   const alt = _diagSources[_diagSource]?.[con.abbr];
@@ -200,6 +314,11 @@ function drawExplore() {
     _readout.textContent = `RA ${ra.toFixed(2)}  Dec ${dec.toFixed(2)}  FOV ${explore.fov.toFixed(2)}  Rot ${gr.toFixed(4)}`;
   }
 
+  // Sync dial to current rotation when not being dragged by the user
+  if (_exDial && !_exDial.isDragging()) {
+    _exDial.setAngle(explore.R * 180 / Math.PI);
+  }
+
   if (gl) {
     glClear(W, H);
     ctx.clearRect(0, 0, W, H);
@@ -212,15 +331,17 @@ function drawExplore() {
   const q = explore.quiz;
   const cm = q?.stageMode;  // course mode active?
   const isAnswered = !!(q?.answered);
-  const showPhoto      = cm ? (isAnswered ? document.getElementById('chk-eq-photo').checked    : cm === 'photo')   : document.getElementById('chk-ex-photo').checked;
+  const showPhoto      = cm ? (isAnswered ? document.getElementById('chk-eq-photo').checked    : cm === 'photo')   : explore.photo !== undefined ? !!explore.photo : exState.photo;
   const showDiag       = cm ? (isAnswered ? document.getElementById('chk-eq-diagram').checked  : cm !== 'photo')   : true;
-  const showStars      = cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : document.getElementById('chk-ex-stars').checked;
-  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : document.getElementById('chk-ex-lines').checked;
-  const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : document.getElementById('chk-ex-bounds').checked;
-  const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : explore.art !== undefined ? !!explore.art : document.getElementById('chk-ex-art').checked;
-  const showStarLabels = cm ? false : document.getElementById('chk-ex-starlabels').checked;
-  const showConNames   = cm ? false : explore.names !== undefined ? !!explore.names : document.getElementById('chk-ex-connames').checked;
-  const showEquator    = cm ? true  : document.getElementById('chk-ex-equator').checked;
+  const showStars      = cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : exState.stars;
+  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram !== null;
+  const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : exState.bounds;
+  const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : explore.art !== undefined ? !!explore.art : exState.art;
+  const showStarLabels = cm ? false : exState.starLabels;
+  const showConNames   = cm ? false : explore.names !== undefined ? !!explore.names : exState.conNames;
+  const _refMode       = cm ? 'always' : explore.equator !== undefined ? (explore.equator ? 'always' : null) : exState.reference;
+  const _refAlpha      = _refMode === 'always' ? 1 : _refMode === 'moving' ? (explore._northAlpha || 0) : 0;
+  const showEquator    = _refAlpha > 0.01;
 
   // Photo layer (WebGL)
   if (showPhoto) {
@@ -263,7 +384,7 @@ function drawExplore() {
     for (let ra = 0; ra <= 360; ra += 0.5) eqPts.push([ra, 0, 0]);
     const pts = projectStarsCamera(eqPts, camP, camUp, explore.fov, W, H);
     ctx.save();
-    ctx.strokeStyle = 'rgba(220,180,80,0.55)';
+    ctx.strokeStyle = `rgba(220,180,80,${0.35 * _refAlpha})`;
     ctx.lineWidth = Math.max(1, W / 640);
     ctx.setLineDash([celDash, celGap]);
     ctx.beginPath();
@@ -468,28 +589,31 @@ function drawExplore() {
   }
 
   // Crosshairs at celestial poles
-  const arm = 0.5 * (3 * celDash + 2 * celGap);
-  ctx.save();
-  ctx.strokeStyle = 'rgba(220,180,80,0.55)';
-  ctx.lineWidth = Math.max(1, W / 640);
-  ctx.setLineDash([celDash, celGap]);
-  for (const pole of [[0, 0, 1], [0, 0, -1]]) {
-    const p = vecToPixel(pole, camP, camUp, explore.fov, W, H);
-    if (!p) continue;
-    ctx.beginPath();
-    ctx.moveTo(p.x - arm, p.y); ctx.lineTo(p.x + arm, p.y);
-    ctx.moveTo(p.x, p.y - arm); ctx.lineTo(p.x, p.y + arm);
-    ctx.stroke();
+  if (_refAlpha > 0.01) {
+    const arm = 0.5 * (3 * celDash + 2 * celGap);
+    ctx.save();
+    ctx.strokeStyle = `rgba(220,180,80,${0.35 * _refAlpha})`;
+    ctx.lineWidth = Math.max(1, W / 640);
+    ctx.setLineDash([celDash, celGap]);
+    for (const pole of [[0, 0, 1], [0, 0, -1]]) {
+      const p = vecToPixel(pole, camP, camUp, explore.fov, W, H);
+      if (!p) continue;
+      ctx.beginPath();
+      ctx.moveTo(p.x - arm, p.y); ctx.lineTo(p.x + arm, p.y);
+      ctx.moveTo(p.x, p.y - arm); ctx.lineTo(p.x, p.y + arm);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
-  ctx.restore();
 
   // Compass arrow — N or S depending on hemisphere (fades in/out on interaction)
-  if (explore._northAlpha > 0.01) {
+  const _compassAlpha = _refMode === 'always' ? 0.35 : _refMode === 'moving' ? (explore._northAlpha || 0) * 0.35 : 0;
+  if (_compassAlpha > 0.005) {
     const cx = W / 2, cy = H / 2;
     const south = camP[2] < 0; // center point south of celestial equator
     const pole = south ? [0, 0, -1] : [0, 0, 1];
     const s = Math.max(1, W / 640);
-    const na = explore._northAlpha * 0.35;
+    const na = _compassAlpha;
     const label = south ? 'S' : 'N';
     const fs = Math.round(20 * s);
     // Label — always shown upright at center
@@ -533,8 +657,9 @@ function startExploreQuiz() {
   const pool = C.filter(c => BOUNDS[c.abbr]).sort(() => Math.random() - 0.5);
   explore.quiz = { pool, idx: 0, score: 0, total: 0, target: null, answered: false };
   document.getElementById('explore-quiz-bar').style.display = '';
-  document.getElementById('chk-ex-bounds').checked = true;
-  localStorage.setItem('chk-ex-bounds', '1');
+  exState.bounds = true;
+  if (_exToggleGroups.layers) _exToggleGroups.layers.setValue('bounds', true);
+  localStorage.setItem('ex-bounds', '1');
   nextExploreQuestion();
 }
 
@@ -617,6 +742,26 @@ function handleExploreClick(px, py) {
   drawExplore();
 }
 
+// ── North arrow fade (used by drag, dial, and zoom) ──────────────
+let _northFading = 0, _northFrame = null;
+function _northTick() {
+  _northFrame = null;
+  const target = _northFading > 0 ? 1 : 0;
+  const speed = _northFading > 0 ? 0.15 : 0.08;
+  explore._northAlpha += (target - explore._northAlpha) * speed;
+  if (Math.abs(explore._northAlpha - target) < 0.01) explore._northAlpha = target;
+  drawExplore();
+  if (explore._northAlpha !== target) _northFrame = requestAnimationFrame(_northTick);
+}
+function showNorthArrow() {
+  _northFading = 1;
+  if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
+}
+function hideNorthArrow() {
+  _northFading = -1;
+  if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
+}
+
 // ── Drag & zoom setup (shared by main.js and find-help.html) ──────────────
 function initExploreDrag() {
   const ew = document.getElementById('explore-wrap');
@@ -629,24 +774,6 @@ function initExploreDrag() {
     return { px: (cx - rect.left) * dpr, py: (cy - rect.top) * dpr };
   }
   explore._northAlpha = 0;
-  let _northFading = 0, _northFrame = null;
-  function _northTick() {
-    _northFrame = null;
-    const target = _northFading > 0 ? 1 : 0;
-    const speed = _northFading > 0 ? 0.15 : 0.08; // fade in fast, fade out slower
-    explore._northAlpha += (target - explore._northAlpha) * speed;
-    if (Math.abs(explore._northAlpha - target) < 0.01) explore._northAlpha = target;
-    drawExplore();
-    if (explore._northAlpha !== target) _northFrame = requestAnimationFrame(_northTick);
-  }
-  function showNorthArrow() {
-    _northFading = 1;
-    if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
-  }
-  function hideNorthArrow() {
-    _northFading = -1;
-    if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
-  }
   function dragStart(cx, cy) {
     if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
     showNorthArrow();
@@ -761,29 +888,6 @@ function initExploreDrag() {
     clearTimeout(wheelTimer);
     wheelTimer = setTimeout(() => { hideNorthArrow(); if (typeof saveExploreState === 'function') saveExploreState(); drawExplore(); }, 300);
   }, { passive: false });
-
-  // Roll strip (if present)
-  const rollStrip = document.getElementById('explore-roll-strip');
-  if (rollStrip) {
-    let rollDragX = null;
-    rollStrip.addEventListener('mousedown', e => { rollDragX = e.clientX; showNorthArrow(); e.preventDefault(); });
-    window.addEventListener('mousemove', e => {
-      if (rollDragX === null) return;
-      explore.R += (e.clientX - rollDragX) * (Math.PI / 180);
-      rollDragX = e.clientX;
-      drawExplore();
-    });
-    window.addEventListener('mouseup', () => { if (rollDragX !== null) hideNorthArrow(); rollDragX = null; });
-    rollStrip.addEventListener('touchstart', e => { rollDragX = e.touches[0].clientX; showNorthArrow(); e.preventDefault(); }, { passive: false });
-    rollStrip.addEventListener('touchmove', e => {
-      if (rollDragX === null) return;
-      explore.R += (e.touches[0].clientX - rollDragX) * (Math.PI / 180);
-      rollDragX = e.touches[0].clientX;
-      drawExplore();
-      e.preventDefault();
-    }, { passive: false });
-    rollStrip.addEventListener('touchend', () => { hideNorthArrow(); rollDragX = null; });
-  }
 
   return { clientToCanvas };
 }

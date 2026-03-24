@@ -7,9 +7,23 @@
 
 .explore-layers {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  align-items: start;
+}
+
+.dial-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.angle-readout {
+  text-align: center;
+  font-size: .75rem;
+  color: var(--dim);
+  line-height: 1;
 }
 
 #explore-area {
@@ -173,24 +187,4 @@
 }
 #fg-btn-toggle-diag:hover { border-color: var(--accent); color: var(--text); }
 
-.diag-source-group {
-  display: inline-flex;
-  gap: 0;
-  margin-left: 2px;
-}
-.diag-src-btn {
-  padding: 2px 7px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--dim);
-  cursor: pointer;
-  font-size: .72rem;
-  transition: all .18s;
-}
-.diag-src-btn { border-radius: 0; }
-.diag-src-btn:first-child { border-radius: 5px 0 0 5px; }
-.diag-src-btn:last-child { border-radius: 0 5px 5px 0; }
-.diag-src-btn + .diag-src-btn { border-left: none; }
-.diag-src-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(91,138,245,.12); }
-.diag-src-btn:hover:not(.active) { border-color: var(--accent); color: var(--text); }
 
