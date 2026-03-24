@@ -86,6 +86,30 @@ function check(name, ok, detail) {
 
 console.log('── Unit tests ──────────────────────────────────');
 
+// Difficulty level distribution
+{
+  const counts = {};
+  C.forEach(c => { counts[c.diff] = (counts[c.diff] || 0) + 1; });
+  check('Diff levels: 8 levels used',
+    Object.keys(counts).length === 8,
+    `got ${Object.keys(counts).length} levels: ${JSON.stringify(counts)}`);
+  check('Diff levels: all constellations assigned 1–8',
+    C.every(c => c.diff >= 1 && c.diff <= 8),
+    C.filter(c => c.diff < 1 || c.diff > 8).map(c => c.abbr).join(', '));
+  check('Diff 1 = 5 (instant recognition)',
+    counts[1] === 5, `got ${counts[1]}`);
+  check('Diff <= 2 >= 13 (distractor pool)',
+    (counts[1] || 0) + (counts[2] || 0) >= 13,
+    `got ${(counts[1] || 0) + (counts[2] || 0)}`);
+
+  // Spot-check iconic assignments
+  const lookup = abbr => C.find(c => c.abbr === abbr).diff;
+  check('Orion is diff 1', lookup('Ori') === 1);
+  check('Scorpius is diff 1', lookup('Sco') === 1);
+  check('Leo is diff 2', lookup('Leo') === 2);
+  check('Antlia is diff 8', lookup('Ant') === 8);
+}
+
 // Suppress inner logging from applyKnobs/reviewSpec during unit tests
 console.log = quiet;
 console.table = quiet;
