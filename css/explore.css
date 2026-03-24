@@ -110,18 +110,16 @@
                      color:var(--text); border-radius:8px; cursor:pointer; font-size:.8rem; }
 #explore-search-go:hover { border-color:var(--accent); color:var(--accent); }
 #find-help-btn {
-  display: block;
-  margin: 2px auto 4px;
-  padding: 4px 16px;
+  padding: 8px 20px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--dim);
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: .78rem;
-  transition: all .18s;
+  font-size: .85rem;
+  display: none;
 }
-#find-help-btn:hover { border-color: var(--accent); color: var(--text); }
+#find-help-btn:hover { border-color: var(--dim); color: var(--text); }
 
 #find-guide-overlay {
   padding: 8px 12px 6px;
@@ -175,7 +173,6 @@
   transition: all .18s;
 }
 #fg-btn-prev:hover, #fg-btn-next:hover { background: rgba(91,138,245,.22); }
-#fg-btn-prev:disabled, #fg-btn-next:disabled { opacity: .4; cursor: default; }
 #fg-btn-toggle-diag {
   padding: 5px 12px;
   border: 1px solid var(--border);

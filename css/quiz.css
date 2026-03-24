@@ -198,11 +198,11 @@ canvas {
   cursor: pointer;
   font-size: .9rem;
   transition: all .18s;
-  display: none
+  visibility: hidden
 }
 
 .btn-next.show {
-  display: block
+  visibility: visible
 }
 
 .btn-next:hover {
@@ -211,8 +211,7 @@ canvas {
 
 .nav-row {
   display: flex;
-  gap: 12px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center
 }
 
@@ -225,11 +224,11 @@ canvas {
   cursor: pointer;
   font-size: .9rem;
   transition: all .18s;
-  display: none
+  visibility: hidden
 }
 
 .btn-prev.show {
-  display: block
+  visibility: visible
 }
 
 .btn-prev:hover {

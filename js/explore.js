@@ -739,7 +739,6 @@ function handleExploreClick(px, py) {
   fb.className = correct ? 'correct' : 'wrong';
   document.getElementById('eq-label-area').classList.add('answered');
   document.getElementById('eq-next').classList.add('show');
-  document.getElementById('find-help-btn').style.display = 'none';
   // Set reveal defaults and show controls
   eqRevealReset(q.stageMode === 'photo');
   document.getElementById('eq-reveal-controls').style.display = '';

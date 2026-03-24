@@ -186,7 +186,6 @@ function startLessonFindQuestion(q) {
     fb.className = hist.wasCorrect ? 'correct' : 'wrong';
     document.getElementById('eq-label-area').classList.add('answered');
     document.getElementById('eq-next').classList.add('show');
-    document.getElementById('find-help-btn').style.display = 'none';
     document.getElementById('eq-reveal-controls').style.display = '';
   } else {
     document.getElementById('eq-feedback').textContent = '';

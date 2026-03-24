@@ -355,7 +355,8 @@ function _guideRenderUI() {
   document.getElementById('fg-step-count').textContent = `${idx + 1} / ${n}`;
   document.getElementById('fg-caption-label').textContent = steps[idx].title;
   document.getElementById('fg-caption-text').textContent  = steps[idx].caption;
-  document.getElementById('fg-btn-prev').disabled = idx === 0 || animating;
+  const prevBtn = document.getElementById('fg-btn-prev');
+  prevBtn.style.visibility = (idx === 0 || animating) ? 'hidden' : 'visible';
   const isLast = idx === n - 1;
   const step = steps[idx];
   const hasOverlays = _stepHasOverlays(step);
@@ -364,7 +365,7 @@ function _guideRenderUI() {
   toggleBtn.textContent   = diagVisible ? 'Hide overlays' : 'Show overlays';
   const nextBtn = document.getElementById('fg-btn-next');
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
-  nextBtn.disabled    = animating;
+  nextBtn.style.visibility = animating ? 'hidden' : 'visible';
 }
 
 let _guideListenersAdded = false;

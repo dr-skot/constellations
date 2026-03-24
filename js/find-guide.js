@@ -26,7 +26,7 @@ function updateFindHelpBtn(con) {
   const btn = document.getElementById('find-help-btn');
   btn.style.display = 'none';
   _loadGuides().then(guides => {
-    btn.style.display = (guides[con.name]?.steps?.length) ? '' : 'none';
+    btn.style.display = (guides[con.name]?.steps?.length) ? 'block' : 'none';
   }).catch(() => {});
 }
 
@@ -41,7 +41,6 @@ function startFindGuide(con) {
 
     document.getElementById('explore-quiz-bar').style.display    = 'none';
     document.getElementById('find-nav-row').style.display        = 'none';
-    document.getElementById('find-help-btn').style.display       = 'none';
     document.getElementById('find-guide-overlay').style.display  = '';
 
     const steps = guide.steps.map(s => Object.assign({}, s));
