@@ -191,7 +191,13 @@
       gridEl.className = 'grid';
       const hdr = document.createElement('div');
       hdr.className = 'diff-header';
-      hdr.textContent = con.diff === 1 ? 'Famous' : con.diff === 2 ? 'Familiar' : 'Faint';
+      const diffLabels = {
+        1: 'Instant Recognition', 2: 'Bright & Distinctive',
+        3: 'Prominent', 4: 'Moderate',
+        5: 'Faint Zodiac & Medium Southern', 6: 'Regional Familiarity',
+        7: 'Faint or Deep South', 8: 'The Invisible',
+      };
+      hdr.textContent = diffLabels[con.diff] || `Difficulty ${con.diff}`;
       wrap.appendChild(hdr);
       wrap.appendChild(gridEl);
     }

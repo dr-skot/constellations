@@ -136,13 +136,13 @@ function showLessonQuestion() {
     if (!hist) acInput.focus();
   }
 
-  // Distractor pool: the 12 famous (diff:1) constellations are always included;
+  // Distractor pool: diff 1–2 (13 well-known constellations) are always included;
   // others must have been introduced already or appear in this lesson.
   const exp = loadExposure();
   const lessonAbbrs = new Set(session.questions.map(q => q.con.abbr));
   const distractorPool = C.filter(c =>
     c.stars.length > 0 &&
-    (c.diff === 1 || lessonAbbrs.has(c.abbr) || (exp[c.abbr]?.['identify/diagram']?.seen || 0) > 0)
+    (c.diff <= 2 || lessonAbbrs.has(c.abbr) || (exp[c.abbr]?.['identify/diagram']?.seen || 0) > 0)
   );
 
   if (hist) {
