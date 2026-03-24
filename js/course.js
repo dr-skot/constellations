@@ -208,7 +208,8 @@ function renderCourseMap() {
 
 function viewConstellation(con) {
   settings.mode = 'diagram';
-  document.getElementById('chk-rev-photo').checked = false;
+  revState.photo = false;
+  if (_revToggleGroup) _revToggleGroup.setValue('photo', false);
   session.questions = [{ con, type: 'identify', mode: 'diagram' }];
   session.idx = 0;
   session.answered = true;

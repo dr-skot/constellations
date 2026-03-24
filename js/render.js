@@ -4,6 +4,36 @@
 
 const artCache = {};  // abbr -> HTMLImageElement | 'loading' | 'error'
 
+// ── Reveal controls state (driven by toggle group) ──
+const revState = { photo: true, diagram: true, art: true, boundary: true };
+let _revToggleGroup = null;
+
+function initRevealToggles() {
+  _revToggleGroup = createToggleGroup(document.getElementById('reveal-controls'), {
+    buttons: [
+      { label: 'Photo', value: 'photo', on: true },
+      { label: 'Diagram', value: 'diagram', on: true },
+      { label: 'Art', value: 'art', on: true },
+      { label: 'Bounds', value: 'boundary', on: true },
+    ],
+    onChange(value, on) {
+      revState[value] = on;
+      const con = currentCon();
+      if (!con || !session.answered) return;
+      if (value === 'photo') {
+        const img = document.getElementById('photo-img');
+        if (!img.complete || img.naturalWidth === 0) {
+          img.onload = () => redrawReveal(con);
+        } else {
+          redrawReveal(con);
+        }
+      } else {
+        redrawReveal(con);
+      }
+    },
+  });
+}
+
 function drawBackground(ctx, W, H, con, starField) {
   const bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.hypot(W, H) / 2);
   bg.addColorStop(0, '#0b0e1e'); bg.addColorStop(1, '#020408');
@@ -276,9 +306,9 @@ function pointInPoly2D(px, py, pts) {
 
 function redrawReveal(con) {
   const origAbbr = con.abbr;
-  const showBound = document.getElementById('chk-rev-boundary').checked;
-  const showDiag = document.getElementById('chk-rev-diagram').checked;
-  const showArt = document.getElementById('chk-rev-artwork').checked;
+  const showBound = revState.boundary;
+  const showDiag = revState.diagram;
+  const showArt = revState.art;
   const creditEl = document.getElementById('art-credit');
   if (creditEl) creditEl.textContent = '';
   const canvas = document.getElementById('quiz-canvas');
@@ -294,7 +324,7 @@ function redrawReveal(con) {
     ctx.translate(-W/2, -H/2);
   }
 
-  const showPhoto = document.getElementById('chk-rev-photo').checked;
+  const showPhoto = revState.photo;
   let revealProj = null;
   // Background
   const photoImg = document.getElementById('photo-img');
@@ -502,12 +532,14 @@ function startReveal(con) {
     img.style.transform = '';
     document.getElementById('quiz-canvas').style.display = 'block';
   }
-  // Show/hide checkboxes
-  const artChk = document.getElementById('chk-rev-artwork').closest('label');
-  artChk.style.display = ART[artSrc(con.abbr)] ? '' : 'none';
-  const boundChk = document.getElementById('chk-rev-boundary').closest('label');
-  boundChk.style.display = BOUNDS[con.abbr] ? '' : 'none';
-  document.getElementById('lbl-rev-photo').style.display = '';
+  // Show/hide toggle buttons for unavailable layers
+  if (_revToggleGroup) {
+    const btns = _revToggleGroup.getButtons();
+    for (const b of btns) {
+      if (b.dataset.value === 'art') b.style.display = ART[artSrc(con.abbr)] ? '' : 'none';
+      if (b.dataset.value === 'boundary') b.style.display = BOUNDS[con.abbr] ? '' : 'none';
+    }
+  }
   const photoImg = document.getElementById('photo-img');
   if (photoImg.dataset.abbr !== con.abbr) {
     photoImg.dataset.abbr = con.abbr;

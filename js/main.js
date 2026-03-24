@@ -112,29 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  document.getElementById('chk-rev-photo').addEventListener('change', () => {
-    const con = currentCon();
-    if (!con || !session.answered) return;
-    const img = document.getElementById('photo-img');
-    if (!img.complete || img.naturalWidth === 0) {
-      img.onload = () => redrawReveal(con);
-    } else {
-      redrawReveal(con);
-    }
-  });
-
-  document.getElementById('chk-rev-boundary').addEventListener('change', () => {
-    const con = currentCon();
-    if (con && session.answered) redrawReveal(con);
-  });
-  document.getElementById('chk-rev-diagram').addEventListener('change', () => {
-    const con = currentCon();
-    if (con && session.answered) redrawReveal(con);
-  });
-  document.getElementById('chk-rev-artwork').addEventListener('change', () => {
-    const con = currentCon();
-    if (con && session.answered) redrawReveal(con);
-  });
+  initRevealToggles();
 
   // Explore mode
   document.getElementById('eq-next').addEventListener('click', () => {
@@ -175,12 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('explore-search-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') goToConstellation();
   });
-  ['chk-eq-photo', 'chk-eq-boundary', 'chk-eq-diagram', 'chk-eq-art'].forEach(id => {
-    document.getElementById(id).addEventListener('change', () => drawExplore());
-  });
-
   // Initialize toggle groups and rotate dial for explore mode
   initExploreToggles();
+  initEqRevealToggles();
 
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
   document.getElementById('btn-copy-view').addEventListener('click', () => {

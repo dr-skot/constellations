@@ -34,13 +34,41 @@ let _diagSource = 'iau';
 
 // ── Explore UI state (driven by toggle groups) ──
 const exState = {
-  photo: true, stars: true, art: true, bounds: true,
-  diagram: 'iau',   // string or null (allowNone)
+  photo: true, stars: true, diagram: true, art: true, bounds: true,
   starLabels: true, conNames: true,
   reference: 'always',  // 'always' | 'moving' | null
 };
 let _exToggleGroups = {};
 let _exDial = null;
+
+// ── Find quiz reveal controls state ──
+const eqRevState = { photo: true, diagram: true, art: true, boundary: true };
+let _eqRevToggleGroup = null;
+
+function initEqRevealToggles() {
+  _eqRevToggleGroup = createToggleGroup(document.getElementById('eq-reveal-controls'), {
+    buttons: [
+      { label: 'Photo', value: 'photo', on: true },
+      { label: 'Diagram', value: 'diagram', on: true },
+      { label: 'Art', value: 'art', on: true },
+      { label: 'Bounds', value: 'boundary', on: true },
+    ],
+    onChange(value, on) { eqRevState[value] = on; drawExplore(); },
+  });
+}
+
+function eqRevealReset(photoOn) {
+  eqRevState.photo = !!photoOn;
+  eqRevState.diagram = true;
+  eqRevState.art = true;
+  eqRevState.boundary = true;
+  if (_eqRevToggleGroup) {
+    _eqRevToggleGroup.setValue('photo', eqRevState.photo);
+    _eqRevToggleGroup.setValue('diagram', true);
+    _eqRevToggleGroup.setValue('art', true);
+    _eqRevToggleGroup.setValue('boundary', true);
+  }
+}
 
 function initExploreToggles() {
   // Restore saved states
@@ -48,15 +76,11 @@ function initExploreToggles() {
   const toBool = (k, def) => { const v = saved(k); return v !== null ? v === '1' : def; };
   exState.photo = toBool('photo', true);
   exState.stars = toBool('stars', true);
+  exState.diagram = toBool('diagram', true);
   exState.art = toBool('art', true);
   exState.bounds = toBool('bounds', true);
   exState.starLabels = toBool('starLabels', true);
   exState.conNames = toBool('conNames', true);
-  const savedDiag = saved('diagram');
-  if (savedDiag !== null) {
-    exState.diagram = savedDiag === 'null' ? null : savedDiag;
-    _diagSource = exState.diagram || 'iau';
-  }
   const savedRef = saved('reference');
   if (savedRef !== null) exState.reference = savedRef === 'null' ? null : savedRef;
 
@@ -68,30 +92,13 @@ function initExploreToggles() {
     buttons: [
       { label: 'Photo', value: 'photo', on: exState.photo },
       { label: 'Stars', value: 'stars', on: exState.stars },
+      { label: 'Lines', value: 'diagram', on: exState.diagram },
       { label: 'Art', value: 'art', on: exState.art },
       { label: 'Bounds', value: 'bounds', on: exState.bounds },
     ],
     onChange(value, on) {
       exState[value] = on;
       persist(value, on);
-      redraw();
-    },
-  });
-
-  _exToggleGroups.diagram = createToggleGroup(document.getElementById('tg-diagram'), {
-    exclusive: true,
-    allowNone: true,
-    caption: 'Diagrams',
-    buttons: [
-      { label: 'IAU', value: 'iau', on: exState.diagram === 'iau' },
-      { label: 'Rey', value: 'rey', on: exState.diagram === 'rey' },
-      { label: 'Stel', value: 'stellarium', on: exState.diagram === 'stellarium' },
-      { label: 'Ford', value: 'ford', on: exState.diagram === 'ford' },
-    ],
-    onChange(value, on, all) {
-      exState.diagram = all.length ? all[0] : null;
-      _diagSource = exState.diagram || 'iau';
-      persist('diagram', exState.diagram === null ? 'null' : exState.diagram);
       redraw();
     },
   });
@@ -331,12 +338,12 @@ function drawExplore() {
   const q = explore.quiz;
   const cm = q?.stageMode;  // course mode active?
   const isAnswered = !!(q?.answered);
-  const showPhoto      = cm ? (isAnswered ? document.getElementById('chk-eq-photo').checked    : cm === 'photo')   : explore.photo !== undefined ? !!explore.photo : exState.photo;
-  const showDiag       = cm ? (isAnswered ? document.getElementById('chk-eq-diagram').checked  : cm !== 'photo')   : true;
+  const showPhoto      = cm ? (isAnswered ? eqRevState.photo    : cm === 'photo')   : explore.photo !== undefined ? !!explore.photo : exState.photo;
+  const showDiag       = cm ? (isAnswered ? eqRevState.diagram  : cm !== 'photo')   : true;
   const showStars      = cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : exState.stars;
-  const showLines      = cm ? (isAnswered ? showDiag                                            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram !== null;
-  const showBounds     = cm ? (isAnswered ? document.getElementById('chk-eq-boundary').checked : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : exState.bounds;
-  const showArt        = cm ? (isAnswered ? document.getElementById('chk-eq-art').checked      : false)            : explore.art !== undefined ? !!explore.art : exState.art;
+  const showLines      = cm ? (isAnswered ? showDiag            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram;
+  const showBounds     = cm ? (isAnswered ? eqRevState.boundary : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : exState.bounds;
+  const showArt        = cm ? (isAnswered ? eqRevState.art      : false)            : explore.art !== undefined ? !!explore.art : exState.art;
   const showStarLabels = cm ? false : exState.starLabels;
   const showConNames   = cm ? false : explore.names !== undefined ? !!explore.names : exState.conNames;
   const _refMode       = cm ? 'always' : explore.equator !== undefined ? (explore.equator ? 'always' : null) : exState.reference;
@@ -733,11 +740,8 @@ function handleExploreClick(px, py) {
   document.getElementById('eq-label-area').classList.add('answered');
   document.getElementById('eq-next').classList.add('show');
   document.getElementById('find-help-btn').style.display = 'none';
-  // Set reveal checkbox defaults and show controls
-  document.getElementById('chk-eq-photo').checked    = q.stageMode === 'photo';
-  document.getElementById('chk-eq-boundary').checked = true;
-  document.getElementById('chk-eq-diagram').checked  = true;
-  document.getElementById('chk-eq-art').checked      = true;
+  // Set reveal defaults and show controls
+  eqRevealReset(q.stageMode === 'photo');
   document.getElementById('eq-reveal-controls').style.display = '';
   drawExplore();
 }

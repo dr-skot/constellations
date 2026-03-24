@@ -238,11 +238,6 @@ canvas {
 }
 
 #reveal-controls {
-  display: flex;
-  flex-direction: row;
-  gap: 18px;
-  align-items: center;
-  justify-content: center;
   visibility: hidden;
   pointer-events: none
 }

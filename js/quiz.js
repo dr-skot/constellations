@@ -95,7 +95,13 @@ function showLessonQuestion() {
   document.getElementById('feedback').textContent = '';
   document.getElementById('art-credit').innerHTML = '';
   document.getElementById('reveal-controls').classList.remove('show');
-  document.getElementById('lbl-rev-photo').style.display = 'none';
+  // Reset reveal toggles to all-on for the next question
+  if (_revToggleGroup) {
+    for (const k of ['photo', 'diagram', 'art', 'boundary']) {
+      revState[k] = true;
+      _revToggleGroup.setValue(k, true);
+    }
+  }
   document.getElementById('btn-next').classList.remove('show');
 
   const canvas = document.getElementById('quiz-canvas');
