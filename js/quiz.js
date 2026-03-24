@@ -14,6 +14,7 @@ function currentCon() {
 
 function saveLessonSession() {
   if (session.lessonIdx == null) return;
+
   sessionStorage.setItem('lesson-session', JSON.stringify({
     _v: 2,
     lessonLabel: session.lessonLabel,
@@ -25,7 +26,13 @@ function saveLessonSession() {
     })),
     idx: session.idx,
     correct: session.correct,
-    history: session.history
+    revState: { ...revState },
+    eqRevState: typeof eqRevState !== 'undefined' ? { ...eqRevState } : undefined,
+    history: session.history.map(h => h ? {
+      ...h,
+      chosen: h.chosen?.abbr || null,
+      choices: (h.choices || []).map(c => c?.abbr || c)
+    } : null)
   }));
 }
 
@@ -45,11 +52,31 @@ function tryResumeLesson() {
     session.questions = questions;
     session.idx = d.idx;
     session.correct = d.correct;
-    session.history = d.history || [];
+    session.history = (d.history || []).map(h => {
+      if (!h) return null;
+      return {
+        ...h,
+        chosen: typeof h.chosen === 'string' ? C.find(c => c.abbr === h.chosen) || null : h.chosen,
+        choices: (h.choices || []).map(c => typeof c === 'string' ? C.find(con => con.abbr === c) || c : c)
+      };
+    });
     session.lessonIdx = 0;
     session.lessonLabel = d.lessonLabel;
     session.answered = false;
     session.viewMode = false;
+    // Restore reveal toggle states
+    if (d.revState) {
+      for (const k of Object.keys(d.revState)) {
+        revState[k] = d.revState[k];
+        if (_revToggleGroup) _revToggleGroup.setValue(k, d.revState[k]);
+      }
+    }
+    if (d.eqRevState) {
+      for (const k of Object.keys(d.eqRevState)) {
+        eqRevState[k] = d.eqRevState[k];
+        if (_eqRevToggleGroup) _eqRevToggleGroup.setValue(k, d.eqRevState[k]);
+      }
+    }
     document.getElementById('screen-quiz').classList.remove('viewer-mode');
     document.getElementById('quiz-breadcrumb-stage').textContent = d.lessonLabel;
     document.getElementById('quiz-breadcrumb').style.display = '';
@@ -95,8 +122,8 @@ function showLessonQuestion() {
   document.getElementById('feedback').textContent = '';
   document.getElementById('art-credit').innerHTML = '';
   document.getElementById('reveal-controls').classList.remove('show');
-  // Reset reveal toggles to all-on for the next question
-  if (_revToggleGroup) {
+  // Reset reveal toggles to all-on only for unanswered questions
+  if (!hist && _revToggleGroup) {
     for (const k of ['photo', 'diagram', 'art', 'boundary']) {
       revState[k] = true;
       _revToggleGroup.setValue(k, true);
@@ -214,6 +241,7 @@ function handleAnswer(chosen, correct) {
 
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
+  saveLessonSession();
 }
 
 function handleAutocompleteAnswer() {
@@ -243,6 +271,7 @@ function handleAutocompleteAnswer() {
   startReveal(correct);
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
+  saveLessonSession();
 }
 
 function nextLessonQuestion() {

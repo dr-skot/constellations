@@ -53,7 +53,7 @@ function initEqRevealToggles() {
       { label: 'Art', value: 'art', on: true },
       { label: 'Bounds', value: 'boundary', on: true },
     ],
-    onChange(value, on) { eqRevState[value] = on; drawExplore(); },
+    onChange(value, on) { eqRevState[value] = on; saveLessonSession(); drawExplore(); },
   });
 }
 
@@ -743,6 +743,14 @@ function handleExploreClick(px, py) {
   // Set reveal defaults and show controls
   eqRevealReset(q.stageMode === 'photo');
   document.getElementById('eq-reveal-controls').style.display = '';
+  // Save answer to lesson history for reload persistence
+  if (q.lessonMode) {
+    session.history[session.idx] = {
+      chosen: clicked, wasCorrect: correct,
+      exploreState: { P: explore.P.slice(), R: explore.R, fov: explore.fov }
+    };
+    saveLessonSession();
+  }
   drawExplore();
 }
 

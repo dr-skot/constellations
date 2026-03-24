@@ -127,27 +127,36 @@ function renderResultButtons() {
 // ═══════════════════════════════════════════════════════════
 
 function startLessonFindQuestion(q) {
-  const t = q.distanceLevel ?? 0; // 0 = nearby, 1 = full navigate-style
-  const angle = Math.random() * 2 * Math.PI;
+  const hist = session.history[session.idx];
 
-  // Interpolate between nearby and far start
-  const nearDist = 60 * (0.3 + Math.random() * 0.5);  // ~18–48°
-  const farDist  = 60 + Math.random() * 40;             // 60–100°
-  const dist = nearDist + t * (farDist - nearDist);
+  if (!hist) {
+    const t = q.distanceLevel ?? 0; // 0 = nearby, 1 = full navigate-style
+    const angle = Math.random() * 2 * Math.PI;
 
-  const nearFov = Math.min(60 * (1 + Math.random()), FOV_MAX);
-  const farFov  = 90;
-  const fov = nearFov + t * (farFov - nearFov);
+    // Interpolate between nearby and far start
+    const nearDist = 60 * (0.3 + Math.random() * 0.5);  // ~18–48°
+    const farDist  = 60 + Math.random() * 40;             // 60–100°
+    const dist = nearDist + t * (farDist - nearDist);
 
-  explore.P = raDecToVec(q.con.ra + Math.cos(angle) * dist,
-                         q.con.dec + Math.sin(angle) * dist);
-  explore.fov = Math.min(fov, FOV_MAX);
-  explore.R = 0;
-  console.log(`[find] ${q.con.name} distLevel:${t.toFixed(2)} dist:${dist.toFixed(1)}° fov:${explore.fov.toFixed(1)}° bounds:${!q.noBounds}`);
+    const nearFov = Math.min(60 * (1 + Math.random()), FOV_MAX);
+    const farFov  = 90;
+    const fov = nearFov + t * (farFov - nearFov);
+
+    explore.P = raDecToVec(q.con.ra + Math.cos(angle) * dist,
+                           q.con.dec + Math.sin(angle) * dist);
+    explore.fov = Math.min(fov, FOV_MAX);
+    explore.R = 0;
+    console.log(`[find] ${q.con.name} distLevel:${t.toFixed(2)} dist:${dist.toFixed(1)}° fov:${explore.fov.toFixed(1)}° bounds:${!q.noBounds}`);
+  } else if (hist.exploreState) {
+    explore.P = hist.exploreState.P;
+    explore.R = hist.exploreState.R;
+    explore.fov = hist.exploreState.fov;
+  }
+
   explore.quiz = {
     target: q.con,
-    answered: false,
-    clicked: null,
+    answered: !!hist,
+    clicked: hist?.chosen || null,
     stageMode: q.mode,
     bounds: !q.noBounds,
     noBounds: !!q.noBounds,
@@ -165,14 +174,29 @@ function startLessonFindQuestion(q) {
   document.getElementById('find-hud-score').textContent = `${session.correct} correct`;
   document.getElementById('find-prog-fill').style.width = `${(session.idx / total) * 100}%`;
   document.getElementById('eq-target-name').textContent = q.con.name;
-  document.getElementById('eq-feedback').textContent = '';
-  document.getElementById('eq-feedback').className = '';
-  document.getElementById('eq-label-area').classList.remove('answered');
-  document.getElementById('eq-next').classList.remove('show');
   document.getElementById('find-btn-prev').classList.toggle('show', session.idx > 0);
   document.getElementById('explore-quiz-bar').style.display = '';
-  document.getElementById('eq-reveal-controls').style.display = 'none';
-  updateFindHelpBtn(q.con);
+
+  if (hist) {
+    // Restore answered state
+    const fb = document.getElementById('eq-feedback');
+    fb.innerHTML = hist.wasCorrect
+      ? `✓ Correct! — ${conLabel(q.con)}`
+      : `✗ That was ${conLabel(hist.chosen || q.con)}`;
+    fb.className = hist.wasCorrect ? 'correct' : 'wrong';
+    document.getElementById('eq-label-area').classList.add('answered');
+    document.getElementById('eq-next').classList.add('show');
+    document.getElementById('find-help-btn').style.display = 'none';
+    document.getElementById('eq-reveal-controls').style.display = '';
+  } else {
+    document.getElementById('eq-feedback').textContent = '';
+    document.getElementById('eq-feedback').className = '';
+    document.getElementById('eq-label-area').classList.remove('answered');
+    document.getElementById('eq-next').classList.remove('show');
+    document.getElementById('eq-reveal-controls').style.display = 'none';
+    updateFindHelpBtn(q.con);
+  }
+
   showScreen('explore');
   drawExplore();
 }

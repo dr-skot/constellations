@@ -18,6 +18,7 @@ function initRevealToggles() {
     ],
     onChange(value, on) {
       revState[value] = on;
+      saveLessonSession();
       const con = currentCon();
       if (!con || !session.answered) return;
       if (value === 'photo') {
