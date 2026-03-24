@@ -22,7 +22,10 @@ function saveLessonSession() {
       abbr: q.con.abbr, type: q.type, mode: q.mode,
       answerMode: q.answerMode,
       ...(q.distanceLevel != null ? { distanceLevel: q.distanceLevel } : {}),
-      ...(q.noBounds ? { noBounds: true } : {})
+      ...(q.noBounds ? { noBounds: true } : {}),
+      ...(q.rotation != null ? { rotation: q.rotation } : {}),
+      ...(q.startP ? { startP: q.startP, startFov: q.startFov } : {}),
+      ...(q.choices ? { choices: q.choices } : {})
     })),
     idx: session.idx,
     correct: session.correct,
@@ -46,7 +49,10 @@ function tryResumeLesson() {
       return { con, type: q.type, mode: q.mode,
                answerMode: q.answerMode,
                ...(q.distanceLevel != null ? { distanceLevel: q.distanceLevel } : {}),
-               ...(q.noBounds ? { noBounds: true } : {}) };
+               ...(q.noBounds ? { noBounds: true } : {}),
+               ...(q.rotation != null ? { rotation: q.rotation } : {}),
+               ...(q.startP ? { startP: q.startP, startFov: q.startFov } : {}),
+               ...(q.choices ? { choices: q.choices } : {}) };
     }).filter(Boolean);
     if (questions.length !== d.questions.length) return false;
     session.questions = questions;
@@ -143,7 +149,11 @@ function showLessonQuestion() {
     session.rotation = hist.rotation;
   } else {
     session.answered = false;
-    session.rotation = Math.random() * Math.PI * 2;
+    if (q.rotation == null) {
+      q.rotation = Math.random() * Math.PI * 2;
+      saveLessonSession();
+    }
+    session.rotation = q.rotation;
     recordSeen(q.con.abbr, questionKey(q));
   }
 
@@ -198,8 +208,12 @@ function showLessonQuestion() {
     document.getElementById('btn-next').classList.add('show');
   } else if (!isAuto) {
     grid.innerHTML = '';
-    const wrongs = getDistractors(con, distractorPool);
-    session.choices = [con, ...wrongs].sort(() => Math.random() - .5);
+    if (!q.choices) {
+      const wrongs = getDistractors(con, distractorPool);
+      q.choices = [con, ...wrongs].sort(() => Math.random() - .5).map(c => c.abbr);
+      saveLessonSession();
+    }
+    session.choices = q.choices.map(abbr => C.find(c => c.abbr === abbr)).filter(Boolean);
     session.choices.forEach(c => {
       const btn = document.createElement('button');
       btn.className = 'ans-btn';

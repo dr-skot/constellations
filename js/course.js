@@ -130,23 +130,32 @@ function startLessonFindQuestion(q) {
   const hist = session.history[session.idx];
 
   if (!hist) {
-    const t = q.distanceLevel ?? 0; // 0 = nearby, 1 = full navigate-style
-    const angle = Math.random() * 2 * Math.PI;
+    if (!q.startP) {
+      const t = q.distanceLevel ?? 0; // 0 = nearby, 1 = full navigate-style
+      const angle = Math.random() * 2 * Math.PI;
 
-    // Interpolate between nearby and far start
-    const nearDist = 60 * (0.3 + Math.random() * 0.5);  // ~18–48°
-    const farDist  = 60 + Math.random() * 40;             // 60–100°
-    const dist = nearDist + t * (farDist - nearDist);
+      // Interpolate between nearby and far start
+      const nearDist = 60 * (0.3 + Math.random() * 0.5);  // ~18–48°
+      const farDist  = 60 + Math.random() * 40;             // 60–100°
+      const dist = nearDist + t * (farDist - nearDist);
 
-    const nearFov = Math.min(60 * (1 + Math.random()), FOV_MAX);
-    const farFov  = 90;
-    const fov = nearFov + t * (farFov - nearFov);
+      const nearFov = Math.min(60 * (1 + Math.random()), FOV_MAX);
+      const farFov  = 90;
+      const fov = nearFov + t * (farFov - nearFov);
 
-    explore.P = raDecToVec(q.con.ra + Math.cos(angle) * dist,
-                           q.con.dec + Math.sin(angle) * dist);
-    explore.fov = Math.min(fov, FOV_MAX);
-    explore.R = 0;
-    console.log(`[find] ${q.con.name} distLevel:${t.toFixed(2)} dist:${dist.toFixed(1)}° fov:${explore.fov.toFixed(1)}° bounds:${!q.noBounds}`);
+      explore.P = raDecToVec(q.con.ra + Math.cos(angle) * dist,
+                             q.con.dec + Math.sin(angle) * dist);
+      explore.fov = Math.min(fov, FOV_MAX);
+      explore.R = 0;
+      q.startP = explore.P.slice();
+      q.startFov = explore.fov;
+      saveLessonSession();
+      console.log(`[find] ${q.con.name} distLevel:${t.toFixed(2)} dist:${dist.toFixed(1)}° fov:${explore.fov.toFixed(1)}° bounds:${!q.noBounds}`);
+    } else {
+      explore.P = q.startP.slice();
+      explore.fov = q.startFov;
+      explore.R = 0;
+    }
   } else if (hist.exploreState) {
     explore.P = hist.exploreState.P;
     explore.R = hist.exploreState.R;
