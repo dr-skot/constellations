@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotate Control</title>
+  <style>
+    :root {
+      --bg: #05060f;
+      --card: #0c0f1e;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #5b8af5;
+      --text: #d8e2ff;
+      --dim: #5a6480;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    body { padding: 32px; max-width: 500px; margin: 0 auto; }
+
+    .preview {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.05s linear;
+    }
+
+    .angle-readout {
+      text-align: center;
+      font-size: .75rem;
+      color: var(--dim);
+      margin-top: 6px;
+    }
+
+    /* ── Dial ─────────────────────────────────────── */
+
+    .dial-wrap {
+      width: 100%;
+      height: 32px;
+      position: relative;
+      cursor: ew-resize;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .dial-track {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Center tick — drawn on canvas now */
+  </style>
+</head>
+<body>
+
+<div class="preview">
+  <img id="img" src="../img/Ori.jpg" alt="Preview">
+</div>
+
+<div class="dial-wrap" id="dial">
+  <canvas class="dial-track" id="dial-canvas"></canvas>
+</div>
+
+<div class="angle-readout" id="readout">0.0°</div>
+
+<script>
+const img = document.getElementById('img');
+const readout = document.getElementById('readout');
+const dial = document.getElementById('dial');
+const canvas = document.getElementById('dial-canvas');
+const ctx = canvas.getContext('2d');
+
+let angle = 0; // degrees
+
+function resize() {
+  const rect = dial.getBoundingClientRect();
+  canvas.width = rect.width * devicePixelRatio;
+  canvas.height = rect.height * devicePixelRatio;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  drawDial();
+}
+
+function drawDial() {
+  const W = canvas.width;
+  const H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw bumps/ticks as if viewing a cylindrical dial edge-on.
+  // Ticks are evenly spaced in angle on the cylinder, but projected
+  // with foreshortening: x = center + R * sin(theta), so ticks bunch
+  // toward the edges.
+
+  const cx = W / 2;
+  const cy = H / 2;
+  const R = W / 2;  // cylinder "radius" in pixels = half the strip width
+
+  // ── Barrel outline: top/bottom edges follow cosine curve ──
+  const steps = 64;
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;            // 0..1 across width
+    const theta = (t - 0.5) * Math.PI; // -π/2..π/2
+    const facing = Math.cos(theta);
+    const halfH = H * 0.15 + H * 0.225 * facing;
+    const x = cx + R * Math.sin(theta);
+    if (i === 0) ctx.moveTo(x, cy - halfH);
+    else ctx.lineTo(x, cy - halfH);
+  }
+  for (let i = steps; i >= 0; i--) {
+    const t = i / steps;
+    const theta = (t - 0.5) * Math.PI;
+    const facing = Math.cos(theta);
+    const halfH = H * 0.15 + H * 0.225 * facing;
+    const x = cx + R * Math.sin(theta);
+    ctx.lineTo(x, cy + halfH);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(12, 15, 30, 0.8)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(200, 216, 255, 0.12)';
+  ctx.lineWidth = 1 * devicePixelRatio;
+  ctx.stroke();
+
+  // ── Ticks ──
+  const tickSpacing = 6; // degrees between ticks on the cylinder
+  const offsetDeg = -(angle % tickSpacing);
+
+  const visibleArc = 180;
+  const startDeg = -visibleArc / 2;
+  const endDeg = visibleArc / 2;
+
+  for (let deg = startDeg - tickSpacing; deg <= endDeg + tickSpacing; deg += tickSpacing) {
+    const adjDeg = deg - offsetDeg;
+    const rad = adjDeg * Math.PI / 180;
+    const x = cx + R * Math.sin(rad);
+
+    const facing = Math.cos(rad);
+    if (facing <= 0) continue;
+
+    const tickH = H * 0.09 + H * 0.16 * facing;
+    const alpha = 0.06 + 0.15 * facing;
+
+    const tickW = 1 * devicePixelRatio;
+
+    ctx.fillStyle = `rgba(200, 216, 255, ${alpha})`;
+    ctx.fillRect(x - tickW / 2, cy - tickH, tickW, tickH * 2);
+  }
+
+}
+
+function updateAngle(deg) {
+  angle = deg;
+  // Normalize to -180..180 for display
+  let display = ((angle % 360) + 540) % 360 - 180;
+  readout.textContent = dragging ? display.toFixed(1) + '°' : 'Rotate';
+  img.style.transform = `rotate(${angle}deg)`;
+  drawDial();
+}
+
+// ── Drag interaction ────────────────────────────
+
+let dragging = false;
+let dragStartX = 0;
+let dragStartAngle = 0;
+
+dial.addEventListener('pointerdown', e => {
+  dragging = true;
+  dragStartX = e.clientX;
+  dragStartAngle = angle;
+  dial.setPointerCapture(e.pointerId);
+});
+
+window.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - dragStartX;
+  const sensitivity = 0.5; // degrees per pixel
+  updateAngle(dragStartAngle + dx * sensitivity);
+});
+
+window.addEventListener('pointerup', () => {
+  dragging = false;
+  readout.textContent = 'Rotate';
+  drawDial();
+});
+
+// ── Init ────────────────────────────────────────
+
+resize();
+window.addEventListener('resize', resize);
+updateAngle(0);
+readout.textContent = 'Rotate';
+</script>
+</body>
+</html>
