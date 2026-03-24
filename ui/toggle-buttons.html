@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Buttons</title>
+  <style>
+    :root {
+      --bg: #05060f;
+      --card: #0c0f1e;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #5b8af5;
+      --text: #d8e2ff;
+      --dim: #5a6480;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    body { padding: 32px; max-width: 900px; margin: 0 auto; }
+    h2 { font-size: .85rem; font-weight: 300; letter-spacing: .15em;
+         text-transform: uppercase; color: var(--dim); margin: 28px 0 12px; }
+    h2:first-child { margin-top: 0; }
+
+    /* ── Toggle Button ─────────────────────────────── */
+
+    .toggle-group {
+      display: inline-block;
+    }
+
+    .toggle-group-buttons {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .toggle-group-buttons .toggle-btn {
+      border-radius: 0;
+      margin-left: -1px;
+    }
+    .toggle-group-buttons .toggle-btn:first-child {
+      border-radius: 6px 0 0 6px;
+      margin-left: 0;
+    }
+    .toggle-group-buttons .toggle-btn:last-child {
+      border-radius: 0 6px 6px 0;
+    }
+    .toggle-group-buttons .toggle-btn:first-child:last-child {
+      border-radius: 6px;
+    }
+    .toggle-group-buttons .toggle-btn[aria-pressed="true"] {
+      z-index: 1;
+    }
+
+    .toggle-group-caption {
+      display: block;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 4px;
+    }
+
+    .toggle-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%);
+      color: var(--dim);
+      font-family: inherit;
+      font-size: .78rem;
+      padding: 5px 14px;
+      border-radius: 6px;  /* default for standalone; overridden in groups */
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.1s ease;
+      position: relative;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .toggle-btn:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: var(--text);
+    }
+
+    .toggle-btn[aria-pressed="true"] {
+      background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 100%);
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow:
+        inset 0 1px 3px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(91, 138, 245, 0.15);
+    }
+
+    .toggle-btn:active {
+      transform: translateY(0.5px);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+
+<h2>Independent toggles</h2>
+<div class="toggle-group" id="layers">
+  <span class="toggle-group-caption">Layers</span>
+</div>
+
+<h2>Exclusive group (radio-style)</h2>
+<div class="toggle-group" id="mode">
+  <span class="toggle-group-caption">Display mode</span>
+</div>
+
+<h2>Exclusive group with "none" allowed</h2>
+<div class="toggle-group" id="filter">
+  <span class="toggle-group-caption">Hemisphere</span>
+</div>
+
+<h2>No caption</h2>
+<div class="toggle-group" id="nocap"></div>
+
+<h2>Side by side groups</h2>
+<div style="display:flex; gap:16px; flex-wrap:wrap; align-items:start;">
+  <div class="toggle-group" id="sbs-mode"></div>
+  <div class="toggle-group" id="sbs-hem"></div>
+  <div class="toggle-group" id="sbs-diff"></div>
+</div>
+
+<script>
+// ── Toggle Button API ─────────────────────────────
+
+function createToggleGroup(container, options = {}) {
+  // options:
+  //   exclusive: boolean — only one can be on at a time (default false)
+  //   allowNone: boolean — in exclusive mode, clicking active button deselects it (default false)
+  //   caption: string — optional caption above buttons
+  //   buttons: [{ label, value, on }] — button definitions
+  //   onChange: (value, on, allValues) => void
+
+  const { exclusive = false, allowNone = false, caption, buttons = [], onChange } = options;
+
+  container.innerHTML = '';
+  if (caption) {
+    const cap = document.createElement('span');
+    cap.className = 'toggle-group-caption';
+    cap.textContent = caption;
+    container.appendChild(cap);
+  }
+
+  const btnWrap = document.createElement('div');
+  btnWrap.className = 'toggle-group-buttons';
+  container.appendChild(btnWrap);
+
+  const btnEls = [];
+
+  function getValues() {
+    return btnEls
+      .filter(b => b.getAttribute('aria-pressed') === 'true')
+      .map(b => b.dataset.value);
+  }
+
+  for (const def of buttons) {
+    const btn = document.createElement('button');
+    btn.className = 'toggle-btn';
+    btn.textContent = def.label;
+    btn.dataset.value = def.value ?? def.label;
+    btn.setAttribute('aria-pressed', def.on ? 'true' : 'false');
+
+    btn.addEventListener('click', () => {
+      const wasOn = btn.getAttribute('aria-pressed') === 'true';
+
+      if (exclusive) {
+        if (wasOn && allowNone) {
+          btn.setAttribute('aria-pressed', 'false');
+        } else if (!wasOn) {
+          btnEls.forEach(b => b.setAttribute('aria-pressed', 'false'));
+          btn.setAttribute('aria-pressed', 'true');
+        }
+        // wasOn && !allowNone → do nothing
+      } else {
+        btn.setAttribute('aria-pressed', wasOn ? 'false' : 'true');
+      }
+
+      if (onChange) {
+        const isOn = btn.getAttribute('aria-pressed') === 'true';
+        onChange(btn.dataset.value, isOn, getValues());
+      }
+    });
+
+    btnEls.push(btn);
+    btnWrap.appendChild(btn);
+  }
+
+  return {
+    getValues,
+    setValue(value, on) {
+      const btn = btnEls.find(b => b.dataset.value === value);
+      if (!btn) return;
+      if (exclusive && on) {
+        btnEls.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      }
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    },
+    getButtons() { return btnEls; },
+  };
+}
+
+// ── Demo ──────────────────────────────────────────
+
+createToggleGroup(document.getElementById('layers'), {
+  caption: 'Layers',
+  buttons: [
+    { label: 'Photo', on: true },
+    { label: 'Stars', on: true },
+    { label: 'Lines', on: true },
+    { label: 'Bounds', on: false },
+    { label: 'Art', on: false },
+    { label: 'Names', on: true },
+  ],
+  onChange: (val, on, all) => console.log('layers:', val, on, 'active:', all),
+});
+
+createToggleGroup(document.getElementById('mode'), {
+  exclusive: true,
+  caption: 'Display mode',
+  buttons: [
+    { label: 'Diagram', value: 'diagram', on: true },
+    { label: 'Stars', value: 'stars' },
+    { label: 'Photo', value: 'photo' },
+  ],
+  onChange: (val, on, all) => console.log('mode:', val, on, 'active:', all),
+});
+
+createToggleGroup(document.getElementById('filter'), {
+  exclusive: true,
+  allowNone: true,
+  caption: 'Hemisphere',
+  buttons: [
+    { label: 'North', value: 'N' },
+    { label: 'Both', value: 'B', on: true },
+    { label: 'South', value: 'S' },
+  ],
+  onChange: (val, on, all) => console.log('filter:', val, on, 'active:', all),
+});
+
+createToggleGroup(document.getElementById('nocap'), {
+  buttons: [
+    { label: 'Alpha', on: false },
+    { label: 'Beta', on: true },
+  ],
+  onChange: (val, on, all) => console.log('nocap:', val, on, 'active:', all),
+});
+
+// Side by side
+createToggleGroup(document.getElementById('sbs-mode'), {
+  exclusive: true,
+  caption: 'Mode',
+  buttons: [
+    { label: 'Diagram', on: true },
+    { label: 'Stars' },
+    { label: 'Photo' },
+  ],
+});
+
+createToggleGroup(document.getElementById('sbs-hem'), {
+  exclusive: true,
+  caption: 'Hemisphere',
+  buttons: [
+    { label: 'North' },
+    { label: 'Both', on: true },
+    { label: 'South' },
+  ],
+});
+
+createToggleGroup(document.getElementById('sbs-diff'), {
+  exclusive: true,
+  caption: 'Difficulty',
+  buttons: [
+    { label: 'Easy', on: true },
+    { label: 'Medium' },
+    { label: 'Hard' },
+  ],
+});
+</script>
+</body>
+</html>
