@@ -33,3 +33,11 @@ group.getValues()        // string[] of active values
 group.setValue(val, on)   // programmatic set
 group.getButtons()       // button DOM elements
 ```
+
+## Rotate Control (`rotate-control.html`)
+
+### Parts
+- **dial** — the barrel-shaped canvas element (`.dial-wrap`). Draggable left/right to change angle.
+- **tick** — foreshortened lines on the dial surface. Bunched at edges, spaced at center (cylindrical projection).
+- **barrel outline** — curved border that narrows toward the edges, following the same cosine foreshortening as the ticks.
+- **readout** — label below the dial (`.angle-readout`). Shows "Rotate" at rest, angle in degrees while dragging.
