@@ -1,5 +1,5 @@
 # Project Instructions
 
 ## Git
-- NEVER commit or push unless explicitly told to by the user.
+- Always ask the user before committing or pushing. Show what you plan to commit and wait for approval.
 - Use `git commit -F` with a temp file for commit messages, never `$()` substitution.
