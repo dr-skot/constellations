@@ -594,8 +594,7 @@ function handleExploreClick(px, py) {
   if (correct && q.lessonMode) {
     session.correct++;
     recordCorrect(q.target.abbr, questionKey({
-      type: 'find', mode: q.stageMode,
-      navigate: q.navigate, noBounds: q.noBounds
+      type: 'find', mode: q.stageMode, noBounds: q.noBounds
     }));
   }
   if (q.lessonMode) {

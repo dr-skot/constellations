@@ -637,151 +637,189 @@ const ART = {
 // ═══════════════════════════════════════════════════════════
 
 function questionKey(q) {
-  if (q.navigate && q.noBounds) return 'navigate/photo-nb';
-  if (q.navigate)               return 'navigate/' + q.mode;
-  if (q.type === 'find' && q.noBounds) return 'find/' + q.mode + '-nb';
-  if (q.type === 'find')        return 'find/' + q.mode;
-  if (q.answerMode === 'autocomplete') return 'identify/' + q.mode + '-ac';
+  // Only photo has a real no-bounds tier distinction (find/photo vs find/photo-nb).
+  // Diagram/stars noBounds is a display setting, not a separate tier.
+  if (q.type === 'find' && q.noBounds && q.mode === 'photo') return 'find/photo-nb';
+  if (q.type === 'find') return 'find/' + q.mode;
   return 'identify/' + q.mode;
 }
 
-// DAG of tier prerequisites:
-//   identify/diagram  → find/diagram → find/diagram-nb
-//   identify/diagram  → identify/stars → find/stars → find/stars-nb
-//   identify/stars    → identify/photo → find/photo → find/photo-nb
-// find-nb = find the constellation without boundary outline shown.
-// identify chain gates further identify progress; find tiers are leaf nodes.
-function targetSpec(expCon) {
-  const e = expCon || {};
-  const ok = key => (e[key]?.correct ?? 0) >= 1;
-
-  if (!ok('identify/diagram')) return { type:'identify', mode:'diagram', answerMode:'choice' };
-
-  const unlocked = [];
-
-  // find/diagram branch (after iD): bounded first, then no-bounds
-  if (!ok('find/diagram'))          unlocked.push({ type:'find', mode:'diagram', searchRadius:70 });
-  else if (!ok('find/diagram-nb'))  unlocked.push({ type:'find', mode:'diagram', searchRadius:70, noBounds:true });
-
-  // identify/diagram-ac (after iD)
-  if (!ok('identify/diagram-ac'))   unlocked.push({ type:'identify', mode:'diagram', answerMode:'autocomplete' });
-
-  // identify/stars branch (after iD)
-  if (!ok('identify/stars')) {
-    unlocked.push({ type:'identify', mode:'stars', answerMode:'choice' });
-  } else {
-    // find/stars branch (after iS)
-    if (!ok('find/stars'))          unlocked.push({ type:'find', mode:'stars', searchRadius:65 });
-    else if (!ok('find/stars-nb'))  unlocked.push({ type:'find', mode:'stars', searchRadius:65, noBounds:true });
-
-    // identify/stars-ac (after iS)
-    if (!ok('identify/stars-ac'))   unlocked.push({ type:'identify', mode:'stars', answerMode:'autocomplete' });
-
-    // identify/photo branch (after iS)
-    if (!ok('identify/photo')) {
-      unlocked.push({ type:'identify', mode:'photo', answerMode:'choice' });
-    } else {
-      // find/photo branch (after iP)
-      if (!ok('find/photo'))        unlocked.push({ type:'find', mode:'photo', searchRadius:60 });
-      else if (!ok('find/photo-nb')) unlocked.push({ type:'find', mode:'photo', searchRadius:60, noBounds:true });
-
-      // identify/photo-ac (after iP)
-      if (!ok('identify/photo-ac')) unlocked.push({ type:'identify', mode:'photo', answerMode:'autocomplete' });
-
-      // navigate tiers (after iP-ac, sequential chain)
-      if (ok('identify/photo-ac')) {
-        if (!ok('navigate/diagram'))       unlocked.push({ type:'find', mode:'diagram', searchRadius:55, navigate:true });
-        else if (!ok('navigate/stars'))    unlocked.push({ type:'find', mode:'stars',   searchRadius:50, navigate:true });
-        else if (!ok('navigate/photo'))    unlocked.push({ type:'find', mode:'photo',   searchRadius:50, navigate:true });
-        else                               unlocked.push({ type:'find', mode:'photo',   searchRadius:50, navigate:true, noBounds:true });
-      }
-    }
-  }
-
-  if (unlocked.length === 0) return { type:'find', mode:'photo', searchRadius:50, navigate:true, noBounds:true };
-  return unlocked[Math.floor(Math.random() * unlocked.length)];
-}
-
-// All passed-tier specs in display order, for reviewSpec reinforcement picks.
-// find-nb tiers are interleaved after their bounded counterparts so that
-// "highest passed" from this list naturally alternates between identify/find.
+// Linear tier progression per constellation.  Each tier unlocked by 1+ correct
+// on the previous.  Within each tier, continuous knobs (choice→autocomplete for
+// identify, starting distance for find) adapt based on accumulated correct count.
 const TIER_SPECS = [
-  ['identify/diagram',    { type:'identify', mode:'diagram', answerMode:'choice' }],
-  ['find/diagram',        { type:'find',     mode:'diagram', searchRadius:70 }],
-  ['find/diagram-nb',     { type:'find',     mode:'diagram', searchRadius:70, noBounds:true }],
-  ['identify/stars',      { type:'identify', mode:'stars',   answerMode:'choice' }],
-  ['find/stars',          { type:'find',     mode:'stars',   searchRadius:65 }],
-  ['find/stars-nb',       { type:'find',     mode:'stars',   searchRadius:65, noBounds:true }],
-  ['identify/photo',      { type:'identify', mode:'photo',   answerMode:'choice' }],
-  ['find/photo',          { type:'find',     mode:'photo',   searchRadius:60 }],
-  ['find/photo-nb',       { type:'find',     mode:'photo',   searchRadius:60, noBounds:true }],
-  ['identify/diagram-ac', { type:'identify', mode:'diagram', answerMode:'autocomplete' }],
-  ['identify/stars-ac',   { type:'identify', mode:'stars',   answerMode:'autocomplete' }],
-  ['identify/photo-ac',   { type:'identify', mode:'photo',   answerMode:'autocomplete' }],
+  ['identify/diagram', { type:'identify', mode:'diagram' }],
+  ['find/diagram',     { type:'find',     mode:'diagram' }],
+  ['identify/stars',   { type:'identify', mode:'stars' }],
+  ['find/stars',       { type:'find',     mode:'stars' }],
+  ['identify/photo',   { type:'identify', mode:'photo' }],
+  ['find/photo',       { type:'find',     mode:'photo' }],
+  ['find/photo-nb',    { type:'find',     mode:'photo', noBounds:true }],
 ];
 
-// For review slots: 60% frontier (push progression), 25% highest passed, 15% any passed.
-// Higher frontier weight ensures find-nb and other unlocked tiers get surfaced quickly.
-function reviewSpec(expCon) {
+// Return the first unpassed tier (the frontier).
+function targetSpec(expCon) {
   const e = expCon || {};
-  const passed = TIER_SPECS.filter(([key]) => (e[key]?.correct ?? 0) >= 1).map(([, spec]) => spec);
+  for (const [key, spec] of TIER_SPECS) {
+    if ((e[key]?.correct ?? 0) < 1) return { ...spec, _tierKey: key };
+  }
+  const last = TIER_SPECS[TIER_SPECS.length - 1];
+  return { ...last[1], _tierKey: last[0] };
+}
+
+// Pick a tier for review with exponential decay from frontier.
+// Frontier ~58%, one below ~17%, two below ~5%, etc.
+function reviewSpec(expCon, conName) {
+  const e = expCon || {};
+  const passed = TIER_SPECS.filter(([key]) => (e[key]?.correct ?? 0) >= 1);
   if (passed.length === 0) return targetSpec(e);
-  const r = Math.random();
-  if (r < 0.60) return targetSpec(e);                                          // frontier
-  if (r < 0.85) return passed[passed.length - 1];                              // highest passed
-  return passed[Math.floor(Math.random() * passed.length)];                    // any passed
+
+  const frontier = targetSpec(e);
+  const DECAY = 0.3;
+  const pool = [{ spec: frontier, weight: 1.0, label: frontier._tierKey + ' (frontier)' }];
+  for (let i = passed.length - 1; i >= 0; i--) {
+    const dist = passed.length - i;
+    pool.push({
+      spec: { ...passed[i][1], _tierKey: passed[i][0] },
+      weight: DECAY ** dist,
+      label: passed[i][0]
+    });
+  }
+  const total = pool.reduce((s, p) => s + p.weight, 0);
+  let r = Math.random() * total;
+  for (const p of pool) {
+    r -= p.weight;
+    if (r <= 0) {
+      console.log(`[review] ${conName || '?'} passed:${passed.length} picked:${p.label} (${(p.weight/total*100).toFixed(0)}%)`);
+      return p.spec;
+    }
+  }
+  return pool[0].spec;
+}
+
+// Compute continuous difficulty knobs based on correct count within the tier.
+// Returns a ready-to-use question spec (answerMode for identify, distanceLevel for find).
+function applyKnobs(spec, expCon, conName) {
+  const e = expCon || {};
+  const tierKey = spec._tierKey;
+  const correct = e[tierKey]?.correct ?? 0;
+  const out = { ...spec };
+  delete out._tierKey;
+
+  if (spec.type === 'identify') {
+    const prob = Math.max(0, Math.min(1, (correct - 2) / 3));
+    out.answerMode = Math.random() < prob ? 'autocomplete' : 'choice';
+    console.log(`[knobs] ${conName || '?'} ${tierKey} correct:${correct} acProb:${prob.toFixed(2)} → ${out.answerMode}`);
+  } else {
+    out.distanceLevel = Math.min(1, correct / 6);
+    if (spec.mode === 'diagram') out.noBounds = true;
+    else if (spec.mode === 'stars') out.noBounds = false;
+    if (spec.mode === 'photo' && !out.noBounds) out.noBounds = false;
+    console.log(`[knobs] ${conName || '?'} ${tierKey} correct:${correct} distLevel:${out.distanceLevel.toFixed(2)} bounds:${!out.noBounds}`);
+  }
+  return out;
+}
+
+// ═══════════════════════════════════════════════════════════
+// HEAT MODEL — recency-based scheduling for review pool
+// ═══════════════════════════════════════════════════════════
+const HEAT_HALF_LIFE = 4;   // hours until staleness reaches 50%
+const HEAT_JITTER = 0.1;    // random noise to vary ordering
+
+function conHeat(con, exp, now) {
+  const e = exp[con.abbr] || {};
+
+  // Most recent practice across all tiers
+  const timestamps = Object.values(e).map(v => v?.lastSeen || 0);
+  const lastSeen = timestamps.length > 0 ? Math.max(...timestamps) : 0;
+  const hoursSince = (now - lastSeen) / 3_600_000;
+
+  // Staleness: 0 (just seen) → 1 (long ago), exponential rise
+  const staleness = 1 - Math.exp(-hoursSince / HEAT_HALF_LIFE);
+
+  // Tier urgency: higher for earlier frontier (more to learn)
+  const tierIdx = TIER_SPECS.findIndex(([k]) => k === targetSpec(e)._tierKey);
+  const urgency = 1 - tierIdx / TIER_SPECS.length;
+
+  return staleness * (0.3 + 0.7 * urgency) + Math.random() * HEAT_JITTER;
 }
 
 function generateNextLesson() {
   const exp = loadExposure();
+  console.log('[lesson] exposure keys:', Object.keys(exp).filter(k => k !== '_v2').length, 'constellations');
   const eligible = C.filter(c => c.stars.length > 0);
 
   // Split into known (seen at least once) and never-seen
   const known  = eligible.filter(c =>  (exp[c.abbr]?.['identify/diagram']?.seen || 0) > 0);
   const unseen = eligible.filter(c => !(exp[c.abbr]?.['identify/diagram']?.seen));
+  console.log('[lesson] known:', known.length, 'unseen:', unseen.length);
 
   // New pool: diff:1 first, random within same diff
   const newPool = [...unseen].sort((a, b) => a.diff - b.diff || Math.random() - 0.5);
 
-  // Review pool: weakest first, normalized by diff so famous (diff:1) constellations
-  // aren't crowded out by newer diff:2/3 constellations that simply have fewer
-  // exposures. Dividing by (4 - diff) gives diff:1 a 3× score advantage.
-  function totalCorrect(con) {
-    const e = exp[con.abbr] || {};
-    return Object.values(e).reduce((s, v) => s + (v.correct || 0), 0);
-  }
+  // Review pool: sorted by heat (hottest first — stale + early-tier constellations
+  // get priority over recently-practiced or advanced ones).
+  const now = Date.now();
   const reviewPool = [...known]
-    .map(con => ({ con, score: totalCorrect(con) / (4 - con.diff) + Math.random() * 0.5 }))
-    .sort((a, b) => a.score - b.score)
+    .map(con => ({ con, heat: conHeat(con, exp, now) }))
+    .sort((a, b) => b.heat - a.heat)
     .map(x => x.con);
 
-  // Adaptive new slots — at most 1 new constellation per lesson.
-  // Gate introductions on average strength of known constellations so the user
-  // consolidates existing knowledge before expanding.
+  // Queue depth gating: a constellation is "in progress" until it reaches
+  // identify/stars (tier 3). Cap in-progress at 5 + floor(known/10).
+  // Under cap → introduce 1 new. At/over cap → consolidate first.
   let maxNew;
   if (known.length === 0) {
     maxNew = 4;
   } else {
-    const avgStrength = known.reduce((s, c) => s + totalCorrect(c), 0) / known.length;
-    maxNew = avgStrength < 5 ? 0 : 1;
+    const inProgress = known.filter(c => {
+      const e = exp[c.abbr] || {};
+      // Not yet passed identify/stars → still in progress
+      return (e['identify/stars']?.correct ?? 0) < 1;
+    }).length;
+    const cap = 5 + Math.floor(known.length / 10);
+    maxNew = inProgress >= cap ? 0 : 1;
+    console.log(`[lesson] inProgress: ${inProgress}, cap: ${cap}, maxNew: ${maxNew}`);
   }
   const actualNew = Math.min(maxNew, newPool.length);
   const reviewNeeded = 12 - actualNew;
+  console.log('[lesson] maxNew:', maxNew, 'actualNew:', actualNew, 'reviewNeeded:', reviewNeeded);
+
+  // Log per-constellation status for review pool
+  console.table(reviewPool.map(con => {
+    const e = exp[con.abbr] || {};
+    const t = targetSpec(e);
+    return {
+      con: con.name,
+      heat: conHeat(con, exp, now).toFixed(2),
+      frontier: t._tierKey,
+      'id/dia': e['identify/diagram']?.correct || 0,
+      'f/dia': e['find/diagram']?.correct || 0,
+      'id/sta': e['identify/stars']?.correct || 0,
+      'f/sta': e['find/stars']?.correct || 0,
+      'id/pho': e['identify/photo']?.correct || 0,
+      'f/pho': e['find/photo']?.correct || 0,
+      'f/pho-nb': e['find/photo-nb']?.correct || 0,
+    };
+  }));
 
   const questions = [];
 
   // Review slots — use reviewSpec so passed tiers get revisited occasionally
   for (const con of reviewPool) {
     if (questions.length >= reviewNeeded) break;
-    const spec = reviewSpec(exp[con.abbr]);
+    const spec = applyKnobs(reviewSpec(exp[con.abbr], con.name), exp[con.abbr], con.name);
     if (spec.type === 'find' && !BOUNDS[con.abbr]) continue;
     questions.push({ con, ...spec });
   }
 
   // New slots
+  let added = 0;
   for (const con of newPool) {
-    if (questions.length >= 12) break;
+    if (added >= actualNew || questions.length >= 12) break;
+    console.log('[lesson] new:', con.name, 'diff:', con.diff);
     questions.push({ con, type: 'identify', mode: 'diagram', answerMode: 'choice' });
+    added++;
   }
 
   while (questions.length < 12 && questions.length > 0)
@@ -791,14 +829,16 @@ function generateNextLesson() {
 
   const newCount  = questions.filter(q => !(exp[q.con.abbr]?.['identify/diagram']?.seen)).length;
   const findCount = questions.filter(q => q.type === 'find').length;
-  const navCount  = questions.filter(q => q.navigate).length;
-  const autoCount = questions.filter(q => q.answerMode === 'autocomplete').length;
-  const label = newCount >= 6    ? 'New Constellations'
-              : navCount >= 3    ? (questions.some(q => q.noBounds) ? 'Night Navigation' : 'Navigator')
-              : autoCount >= 3   ? 'Name Challenge'
-              : findCount >= 4   ? 'Sky Hunter'
-              : newCount >= 2    ? 'Mixed Practice'
+  const label = newCount >= 6  ? 'New Constellations'
+              : findCount >= 4 ? 'Sky Hunter'
+              : newCount >= 2  ? 'Mixed Practice'
               : 'Review & Advance';
+
+  console.log(`[lesson] FINAL: "${label}" ${questions.length}q (${newCount} new, ${findCount} find)`);
+  console.table(questions.map((q, i) => ({
+    '#': i, con: q.con.name, type: q.type, mode: q.mode,
+    answer: q.answerMode || '-', noBounds: !!q.noBounds, distLevel: q.distanceLevel ?? '-'
+  })));
 
   return { label, questions };
 }

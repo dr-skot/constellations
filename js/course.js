@@ -13,15 +13,50 @@
 
 // Storage: { abbr: { "identify/diagram": { seen, correct }, ... } }
 function loadExposure() {
-  try { return JSON.parse(localStorage.getItem('con-exposure')) || {}; } catch { return {}; }
+  try {
+    const raw = JSON.parse(localStorage.getItem('con-exposure')) || {};
+    if (!raw._v2) return migrateExposure(raw);
+    return raw;
+  } catch { return { _v2: true }; }
 }
 function saveExposure(data) { localStorage.setItem('con-exposure', JSON.stringify(data)); }
+
+// One-time migration: fold old 16-tier keys into new 7-tier keys.
+function migrateExposure(old) {
+  const foldMap = {
+    'identify/diagram-ac': 'identify/diagram',
+    'identify/stars-ac':   'identify/stars',
+    'identify/photo-ac':   'identify/photo',
+    'find/diagram-nb':     'find/diagram',
+    'find/stars-nb':       'find/stars',
+    'navigate/diagram':    'find/diagram',
+    'navigate/stars':      'find/stars',
+    'navigate/photo':      'find/photo',
+    'navigate/photo-nb':   'find/photo-nb',
+  };
+  for (const abbr of Object.keys(old)) {
+    const e = old[abbr];
+    if (!e || typeof e !== 'object') continue;
+    for (const [src, dst] of Object.entries(foldMap)) {
+      if (!e[src]) continue;
+      if (!e[dst]) e[dst] = { seen: 0, correct: 0 };
+      e[dst].seen    += e[src].seen    || 0;
+      e[dst].correct += e[src].correct || 0;
+      delete e[src];
+    }
+  }
+  old._v2 = true;
+  saveExposure(old);
+  return old;
+}
 
 function recordSeen(abbr, key) {
   const data = loadExposure();
   if (!data[abbr]) data[abbr] = {};
   if (!data[abbr][key]) data[abbr][key] = { seen: 0, correct: 0 };
   data[abbr][key].seen++;
+  data[abbr][key].lastSeen = Date.now();
+  console.log(`[expo] seen ${abbr} ${key} → ${data[abbr][key].seen}`);
   saveExposure(data);
 }
 
@@ -30,6 +65,7 @@ function recordCorrect(abbr, key) {
   if (!data[abbr]) data[abbr] = {};
   if (!data[abbr][key]) data[abbr][key] = { seen: 0, correct: 0 };
   data[abbr][key].correct++;
+  console.log(`[expo] correct ${abbr} ${key} → ${data[abbr][key].correct}`);
   saveExposure(data);
 }
 
@@ -47,6 +83,7 @@ function startLesson() {
   document.getElementById('screen-quiz').classList.remove('viewer-mode');
   document.getElementById('quiz-breadcrumb-stage').textContent = label;
   document.getElementById('quiz-breadcrumb').style.display = '';
+  saveLessonSession();
   showLessonQuestion();
 }
 
@@ -90,28 +127,29 @@ function renderResultButtons() {
 // ═══════════════════════════════════════════════════════════
 
 function startLessonFindQuestion(q) {
-  if (q.navigate) {
-    const angle = Math.random() * 2 * Math.PI;
-    const dist  = 60 + Math.random() * 40;
-    explore.P = raDecToVec(q.con.ra + Math.cos(angle) * dist,
-                           q.con.dec + Math.sin(angle) * dist);
-    explore.fov = 90;
-  } else {
-    const angle  = Math.random() * 2 * Math.PI;
-    const dist   = (q.searchRadius || 60) * (0.3 + Math.random() * 0.5);
-    const fovMul = 1.0 + Math.random() * 1.0;
-    explore.P = raDecToVec(q.con.ra  + Math.cos(angle) * dist,
-                           q.con.dec + Math.sin(angle) * dist);
-    explore.fov = Math.min((q.searchRadius || 60) * fovMul, FOV_MAX);
-  }
+  const t = q.distanceLevel ?? 0; // 0 = nearby, 1 = full navigate-style
+  const angle = Math.random() * 2 * Math.PI;
+
+  // Interpolate between nearby and far start
+  const nearDist = 60 * (0.3 + Math.random() * 0.5);  // ~18–48°
+  const farDist  = 60 + Math.random() * 40;             // 60–100°
+  const dist = nearDist + t * (farDist - nearDist);
+
+  const nearFov = Math.min(60 * (1 + Math.random()), FOV_MAX);
+  const farFov  = 90;
+  const fov = nearFov + t * (farFov - nearFov);
+
+  explore.P = raDecToVec(q.con.ra + Math.cos(angle) * dist,
+                         q.con.dec + Math.sin(angle) * dist);
+  explore.fov = Math.min(fov, FOV_MAX);
   explore.R = 0;
+  console.log(`[find] ${q.con.name} distLevel:${t.toFixed(2)} dist:${dist.toFixed(1)}° fov:${explore.fov.toFixed(1)}° bounds:${!q.noBounds}`);
   explore.quiz = {
     target: q.con,
     answered: false,
     clicked: null,
     stageMode: q.mode,
     bounds: !q.noBounds,
-    navigate: !!q.navigate,
     noBounds: !!q.noBounds,
     lessonMode: true,
     score: 0, total: 0,
@@ -152,10 +190,12 @@ function renderCourseMap() {
   document.getElementById('course-progress-label').textContent = `${seen} / ${total} constellations introduced`;
   document.getElementById('course-map').innerHTML = [
     ['Diagram identified',  'identify/diagram'],
+    ['Located by diagram',  'find/diagram'],
+    ['Stars identified',    'identify/stars'],
+    ['Located by stars',    'find/stars'],
     ['Photo identified',    'identify/photo'],
-    ['Located in sky',      'find/diagram'],
-    ['Name recalled',       'identify/photo-ac'],
-    ['Ultimate challenge',  'navigate/photo-nb'],
+    ['Located by photo',    'find/photo'],
+    ['Master navigator',    'find/photo-nb'],
   ].map(([label, key]) =>
     `<div class="stat-row"><span class="stat-label">${label}</span>` +
     `<span class="stat-val">${count(key)} / ${total}</span></div>`

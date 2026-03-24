@@ -15,13 +15,13 @@ function currentCon() {
 function saveLessonSession() {
   if (session.lessonIdx == null) return;
   sessionStorage.setItem('lesson-session', JSON.stringify({
+    _v: 2,
     lessonLabel: session.lessonLabel,
     questions: session.questions.map(q => ({
       abbr: q.con.abbr, type: q.type, mode: q.mode,
       answerMode: q.answerMode,
-      ...(q.searchRadius ? { searchRadius: q.searchRadius } : {}),
-      ...(q.navigate    ? { navigate: true } : {}),
-      ...(q.noBounds    ? { noBounds: true } : {})
+      ...(q.distanceLevel != null ? { distanceLevel: q.distanceLevel } : {}),
+      ...(q.noBounds ? { noBounds: true } : {})
     })),
     idx: session.idx,
     correct: session.correct,
@@ -32,15 +32,14 @@ function saveLessonSession() {
 function tryResumeLesson() {
   try {
     const d = JSON.parse(sessionStorage.getItem('lesson-session'));
-    if (!d || !d.lessonLabel) return false;
+    if (!d || !d.lessonLabel || d._v !== 2) return false;
     const questions = d.questions.map(q => {
       const con = C.find(c => c.abbr === q.abbr);
       if (!con) return null;
       return { con, type: q.type, mode: q.mode,
                answerMode: q.answerMode,
-               ...(q.searchRadius ? { searchRadius: q.searchRadius } : {}),
-               ...(q.navigate    ? { navigate: true } : {}),
-               ...(q.noBounds    ? { noBounds: true } : {}) };
+               ...(q.distanceLevel != null ? { distanceLevel: q.distanceLevel } : {}),
+               ...(q.noBounds ? { noBounds: true } : {}) };
     }).filter(Boolean);
     if (questions.length !== d.questions.length) return false;
     session.questions = questions;
@@ -73,6 +72,7 @@ function updatePrevBtn() {
 function showLessonQuestion() {
   const q = session.questions[session.idx];
   if (!q) return;
+  console.log('[quiz] question', session.idx, q.con.name, q.type, q.mode, 'answerMode:', q.answerMode, 'noBounds:', q.noBounds, 'distLevel:', q.distanceLevel);
 
   const total = session.questions.length;
   document.getElementById('hud-progress').textContent = `${session.idx + 1} / ${total}`;
