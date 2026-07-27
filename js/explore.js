@@ -292,20 +292,27 @@ function drawExplore() {
   const glCanvas = document.getElementById('explore-gl-canvas');
   const dpr = window.devicePixelRatio || 1;
   const sz = wrap.offsetWidth;
-  if (sz > 0 && (!wrap._sized || (glCanvas && !glCanvas._sized))) {
+  const wrapH = wrap.offsetHeight;
+  if (sz > 0 && wrapH > 0) {
     const w = Math.round(sz * dpr);
-    const h = Math.round(wrap.offsetHeight * dpr);
-    const cssW = Math.round(sz) + 'px';
-    const cssH = wrap.offsetHeight + 'px';
-    canvas.width = w; canvas.height = h;
-    canvas.style.width = cssW; canvas.style.height = cssH;
-    wrap._sized = true;
-    if (glCanvas) {
-      glCanvas.width = w; glCanvas.height = h;
-      glCanvas.style.width = cssW; glCanvas.style.height = cssH;
-      glCanvas._sized = true;
+    const h = Math.round(wrapH * dpr);
+    // Resize whenever the wrap's actual size no longer matches the canvas backing
+    // store. Relying on a one-shot _sized flag left the canvas locked to a stale
+    // height when the first draw happened before layout settled (screen transition,
+    // toggle-group build, font metrics) — a black margin until a window resize.
+    if (canvas.width !== w || canvas.height !== h ||
+        (glCanvas && (glCanvas.width !== w || glCanvas.height !== h))) {
+      const cssW = Math.round(sz) + 'px';
+      const cssH = wrapH + 'px';
+      canvas.width = w; canvas.height = h;
+      canvas.style.width = cssW; canvas.style.height = cssH;
+      wrap._sized = true;
+      if (glCanvas) {
+        glCanvas.width = w; glCanvas.height = h;
+        glCanvas.style.width = cssW; glCanvas.style.height = cssH;
+        glCanvas._sized = true;
+      }
     }
-
   }
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
