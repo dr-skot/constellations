@@ -344,7 +344,7 @@ function drawExplore() {
   const showLines      = cm ? (isAnswered ? showDiag            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram;
   const showBounds     = cm ? (isAnswered ? eqRevState.boundary : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : exState.bounds;
   const showArt        = cm ? (isAnswered ? eqRevState.art      : false)            : explore.art !== undefined ? !!explore.art : exState.art;
-  const showStarLabels = cm ? false : exState.starLabels;
+  const showStarLabels = (cm || _gs) ? false : exState.starLabels;
   const showConNames   = cm ? false : explore.names !== undefined ? !!explore.names : exState.conNames;
   const _refMode       = cm ? 'always' : explore.equator !== undefined ? (explore.equator ? 'always' : null) : exState.reference;
   const _refAlpha      = _refMode === 'always' ? 1 : _refMode === 'moving' ? (explore._northAlpha || 0) : 0;
