@@ -1,0 +1,8 @@
+# Commit-message scratch files (git commit -F .tmp/commit-msg.txt)
+.tmp/
+
+# Playwright MCP snapshots dropped during browser smoke tests
+.playwright-mcp/
+
+# macOS
+.DS_Store
