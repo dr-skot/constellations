@@ -159,14 +159,10 @@ function startLessonFindQuestion(q) {
       saveLessonSession();
       console.log(`[find] ${q.con.name} distLevel:${t.toFixed(2)} dist:${dist.toFixed(1)}° fov:${explore.fov.toFixed(1)}° bounds:${!q.noBounds}`);
     } else {
-      explore.P = q.startP.slice();
-      explore.fov = q.startFov;
-      explore.R = 0;
+      applyView(explore, { P: q.startP, R: 0, fov: q.startFov });
     }
   } else if (hist.exploreState) {
-    explore.P = hist.exploreState.P;
-    explore.R = hist.exploreState.R;
-    explore.fov = hist.exploreState.fov;
+    applyView(explore, hist.exploreState);
   }
 
   explore.quiz = {

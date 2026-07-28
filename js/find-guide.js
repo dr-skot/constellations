@@ -36,7 +36,7 @@ function startFindGuide(con) {
     const guide = guides[con.name];
     if (!guide?.steps?.length) return;
 
-    _guideSaved = { quiz: explore.quiz, P: explore.P.slice(), fov: explore.fov, R: explore.R };
+    _guideSaved = { quiz: explore.quiz, ...snapshotView(explore) };
     explore.quiz = null;
 
     document.getElementById('explore-quiz-bar').style.display    = 'none';
@@ -59,9 +59,7 @@ function exitFindGuide() {
   guideStop();
 
   explore.quiz = _guideSaved.quiz;
-  explore.P    = _guideSaved.P;
-  explore.fov  = _guideSaved.fov;
-  explore.R    = _guideSaved.R;
+  applyView(explore, _guideSaved);
   _guideSaved  = null;
 
   document.getElementById('find-guide-overlay').style.display  = 'none';

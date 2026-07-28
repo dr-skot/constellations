@@ -129,3 +129,19 @@ alongside the geometry primitives it uses (`pointInPoly2D`, `edgesHitRect`).
 - **conNamePosition** (`js/explore.js`) places a constellation's *own* name in the explore view; it
   stays an impure adapter (camera projection, `measureText`, throttle cache, unprojection) wrapped
   around `searchLabelSpot` + `fitLabelBox`.
+
+## View state
+
+- **view state** — the core explore camera: position `P` (a unit-vector array), rotation `R`, and
+  field of view `fov` (all on the `explore` bus). `P` is an array, so a saved copy must never share
+  its reference with the live `explore.P`.
+
+- **snapshotView(explore) / applyView(explore, snap)** (`js/explore.js`) — the copy-safe pair that
+  is the single home for that discipline. `snapshotView` returns `{ P: explore.P.slice(), R, fov }`;
+  `applyView` writes them back, copying `P` again (`explore.P = snap.P.slice()`). Every *in-memory*
+  save/restore of the view routes through them — lesson history (`session.history[i].exploreState`),
+  find-guide (`_guideSaved`), and the `q.startP`/`q.startFov` restore — so no restore can alias `P`.
+  This fixed a latent bug: `course.js` used to restore `explore.P` without a copy (safe only because
+  nothing mutates `P` in place — the contract these functions now enforce). Separate from the RA/Dec
+  `sessionStorage` round-trip (`saveExploreState`/`restoreExploreState`), which serializes sky
+  coordinates and rebuilds a fresh vector. Characterized by `test/view-snapshot.js`.

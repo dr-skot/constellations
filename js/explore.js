@@ -260,6 +260,23 @@ function animateGoTo(targetRa, targetDec) {
   explore.animFrame = requestAnimationFrame(step);
 }
 
+// Copy-safe snapshot of the core view state (camera position, rotation, fov).
+// `P` is an array, so it MUST be copied on both the capture and the apply side —
+// otherwise a saved snapshot shares its array with live `explore.P` and any future
+// in-place mutation of one silently corrupts the other. snapshotView + applyView
+// are the single home for that copy discipline; every in-memory save/restore of the
+// view (lesson history, find-guide, q.startP) routes through them so no restore can
+// alias `P`. (R and fov are primitives — copied by value.) Characterized by
+// test/view-snapshot.js.
+function snapshotView(explore) {
+  return { P: explore.P.slice(), R: explore.R, fov: explore.fov };
+}
+function applyView(explore, snap) {
+  explore.P = snap.P.slice();
+  explore.R = snap.R;
+  explore.fov = snap.fov;
+}
+
 function saveExploreState() {
   _clearConNameCache();
   const pos = vecToRaDec(explore.P);
@@ -735,7 +752,7 @@ function handleExploreClick(px, py) {
   if (q.lessonMode) {
     session.history[session.idx] = {
       chosen: clicked, wasCorrect: correct,
-      exploreState: { P: explore.P.slice(), R: explore.R, fov: explore.fov }
+      exploreState: snapshotView(explore)
     };
     saveLessonSession();
   }
