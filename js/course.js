@@ -73,6 +73,13 @@ function recordCorrect(abbr, key) {
 // LESSON FLOW
 // ═══════════════════════════════════════════════════════════
 
+// Thin impure adapter over the pure planLesson (js/lesson.js): supplies the live
+// exposure, the constellation catalog, the boundary table, real randomness, the
+// wall clock, and the console sink for the scheduler's debug dumps.
+function generateNextLesson() {
+  return planLesson(loadExposure(), C, BOUNDS, Math.random, Date.now(), console);
+}
+
 function startLesson() {
   const { label, questions } = generateNextLesson();
   session.questions = questions;

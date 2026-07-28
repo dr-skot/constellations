@@ -61,6 +61,7 @@ console.table = quiet;
 // ── Load source files ──────────────────────────────────────
 const jsDir = path.join(__dirname, '..', 'js');
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'data.js'), 'utf8'), { filename: 'data.js' });
+vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'lesson.js'), 'utf8'), { filename: 'lesson.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'course.js'), 'utf8'), { filename: 'course.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'quiz.js'), 'utf8'), { filename: 'quiz.js' });
 

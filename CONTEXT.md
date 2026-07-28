@@ -25,3 +25,27 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 - **north-up projection** — `projectStarsTAN` / `pixelToRADec` project a fixed image centred on
   a constellation with north up; roll is applied downstream by the quiz canvas via `ctx.rotate`.
   Deliberately separate from the **Camera** (which bakes roll into `up`). See ADR-0001.
+
+## Scheduling
+
+- **planLesson** — the pure lesson planner built in `js/lesson.js`:
+  `planLesson(exposure, catalog, bounds, rng, now, log?) → {label, questions}`. Given a snapshot
+  of the learner's **exposure**, the constellation **catalog** (`C`), the boundary table
+  (`BOUNDS`), a randomness source `rng` (`() → [0,1)`), and the clock reading `now`, it decides
+  the next 12-question lesson: which constellations to review (by **heat**), which to introduce
+  (queue-depth gated), and the difficulty knobs. Deterministic in its inputs — same
+  `(exposure, rng, now)` yields the same lesson. `generateNextLesson()` in course.js is the thin
+  impure adapter that supplies `loadExposure()`, `C`, `BOUNDS`, `Math.random`, `Date.now()`,
+  `console`. The optional `log` sink (`{log, table}`, default no-ops) carries the debug dumps so
+  the pure core stays silent under test.
+
+- **exposure** — the per-constellation practice record (`{abbr: {tierKey: {seen, correct,
+  lastSeen}}}`), persisted to localStorage by course.js. The input planLesson reads; never a
+  global it reaches for.
+
+- **heat** — a constellation's review priority: staleness (time since `lastSeen`, exp. rise over
+  a 4h half-life) weighted by tier urgency, plus jitter. Hotter = more overdue → sorted first
+  into the review pool.
+
+- **tier** — one rung of the 7-step `TIER_SPECS` ladder (identify/diagram → find/photo-nb).
+  A tier is passed at 1+ correct; the first unpassed tier is the **frontier**.
