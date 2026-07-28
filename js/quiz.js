@@ -29,7 +29,7 @@ function saveLessonSession() {
     })),
     idx: session.idx,
     correct: session.correct,
-    revState: { ...revState },
+    revState: typeof revState !== 'undefined' ? { ...revState } : undefined,
     eqRevState: typeof eqRevState !== 'undefined' ? { ...eqRevState } : undefined,
     history: session.history.map(h => h ? {
       ...h,
