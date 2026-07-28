@@ -23,14 +23,8 @@ function copyViewToClipboard(btn) {
   });
 }
 
-// Alternate diagram sources, keyed by abbreviation
-const _diagSources = {
-  iau: null,  // default — use C directly
-  rey: typeof REY !== 'undefined' ? Object.fromEntries(REY.map(c => [c.abbr, c])) : {},
-  stellarium: typeof SC !== 'undefined' ? Object.fromEntries(SC.map(c => [c.abbr, c])) : {},
-  ford: typeof FORD !== 'undefined' ? Object.fromEntries(FORD.map(c => [c.abbr, c])) : {},
-};
-let _diagSource = 'iau';
+// Diagram source (which star-figure set to draw) lives in js/diagram-sources.js
+// as the app-global `diagramSource`; the drawing below routes through diagramFor().
 
 // ── Explore UI state (driven by toggle groups) ──
 const exState = {
@@ -152,12 +146,6 @@ function initExploreToggles() {
     },
   });
 }
-function _diagFor(con) {
-  if (_diagSource === 'iau') return con;
-  const alt = _diagSources[_diagSource]?.[con.abbr];
-  return alt || con;
-}
-
 // Throttled constellation name placement — returns {ra, dec} for label position.
 // Caches results and only recomputes after `interval` ms.
 const _conNameCache = {};  // abbr -> {ra, dec, time}
@@ -489,7 +477,7 @@ function drawExplore() {
     // Pass 1: diagram lines only
     for (const con of visible) {
       if (diagFilter && !diagFilter.includes(con.abbr)) continue;
-      const dcon = _diagFor(con);
+      const dcon = diagramFor(con, diagramSource);
       if (dcon.lines && showLines) {
         const fullProj = cam.projectStars(dcon.stars)
           .map(p => p.facing > 0 ? p : null);
@@ -527,7 +515,7 @@ function drawExplore() {
     const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
     for (const con of visible) {
       if (diagFilter && !diagFilter.includes(con.abbr)) continue;
-      const dcon = _diagFor(con);
+      const dcon = diagramFor(con, diagramSource);
       const proj = cam.projectStars(dcon.stars)
         .map((p, i) => ({ ...p, _orig: dcon.stars[i] }))
         .filter(p => p.facing > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);

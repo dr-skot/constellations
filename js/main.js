@@ -1,4 +1,33 @@
 // ═══════════════════════════════════════════════════════════
+// DIAGRAM-SOURCE (FIGURES) PICKERS
+// ═══════════════════════════════════════════════════════════
+// One shared, persisted setting (diagramSource in js/diagram-sources.js) surfaced
+// in two places — the explorer controls and the quiz screen — kept in sync.
+let _figureGroups = [];
+
+function initFigureToggles() {
+  loadDiagramSource();
+  _figureGroups = ['tg-figures', 'quiz-figures'].map(id => {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    return createToggleGroup(el, {
+      exclusive: true,
+      caption: 'Figures',
+      buttons: DIAGRAM_SOURCES.map(s => ({ label: s.label, value: s.key, on: s.key === diagramSource })),
+      onChange(value, on) { if (on) applyDiagramSource(value); },
+    });
+  }).filter(Boolean);
+}
+
+// Switch the diagram source: persist it, sync both pickers, redraw the active view.
+function applyDiagramSource(key) {
+  setDiagramSource(key);
+  for (const g of _figureGroups) g.setValue(key, true);
+  if (typeof drawExplore === 'function') drawExplore();
+  if (typeof redrawQuizFigure === 'function') redrawQuizFigure();
+}
+
+// ═══════════════════════════════════════════════════════════
 // HASH ROUTING
 // ═══════════════════════════════════════════════════════════
 
@@ -156,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize toggle groups and rotate dial for explore mode
   initExploreToggles();
   initEqRevealToggles();
+  initFigureToggles();
 
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
   document.getElementById('btn-copy-view').addEventListener('click', () => {

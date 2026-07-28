@@ -167,8 +167,10 @@ function renderCanvas(canvas, con, mode, showLabels = false, angle = 0) {
     ctx.translate(-W/2, -H/2);
   }
   drawBackground(ctx, W, H, con, starField);
-  const proj = projectStarsTAN(con.stars, con, W, H);
-  if (mode === 'diagram' || mode === 'reveal') drawLines(ctx, proj, con);
+  // Draw the selected star-figure (dcon); frame it with con (the master catalog).
+  const dcon = diagramFor(con, diagramSource);
+  const proj = projectStarsTAN(dcon.stars, con, W, H);
+  if (mode === 'diagram' || mode === 'reveal') drawLines(ctx, proj, dcon);
   drawStars(ctx, proj);
   if (angle) ctx.restore();
   // Draw labels after restoring rotation so text stays upright
@@ -338,9 +340,10 @@ function redrawReveal(con) {
   // Artwork overlay — same for all modes
   if (showArt && artImg) drawArtwork(canvas, con, artImg, false, angle);
 
-  // Lines and stars
-  revealProj = projectStarsTAN(con.stars, con, W, H);
-  if (showDiag) drawLines(ctx, revealProj, con);
+  // Lines and stars — selected star-figure (dcon), framed by con.
+  const dcon = diagramFor(con, diagramSource);
+  revealProj = projectStarsTAN(dcon.stars, con, W, H);
+  if (showDiag) drawLines(ctx, revealProj, dcon);
   if (!showPhoto || showDiag) drawStars(ctx, revealProj);
 
   // Boundary overlay — draw all visible constellation boundaries and label neighbors.

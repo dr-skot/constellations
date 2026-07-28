@@ -12,6 +12,19 @@ function currentCon() {
   return q ? q.con : null;
 }
 
+// Redraw the current quiz question's canvas in place (e.g. after switching the
+// diagram source) without the full showLessonQuestion side effects.
+function redrawQuizFigure() {
+  const q = session.questions[session.idx];
+  if (!q) return;
+  const con = q.con;
+  if (session.answered) { redrawReveal(con); return; }
+  const canvas = document.getElementById('quiz-canvas');
+  if (!canvas) return;
+  if (settings.mode === 'photo') showPhotoMode(con, session.rotation);
+  else renderCanvas(canvas, con, settings.mode, false, session.rotation);
+}
+
 // Thin adapters over the pure round-trip in js/lesson-session.js. This layer owns
 // sessionStorage, the "only persist an active lesson" policy, and the DOM/toggle-
 // group application; sessionToJSON/sessionFromJSON own the payload shape.

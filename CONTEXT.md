@@ -57,6 +57,23 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   `revState` (quiz) and `eqRevState` (explorer). Persisted to `sessionStorage['lesson-session']`
   so a page reload resumes mid-lesson.
 
+## Diagram sources
+
+- **diagram source** — a set of constellation stick-figures (which stars, which connecting
+  lines). Four are registered in `js/diagram-sources.js`: **IAU** (the master catalog `C`, the
+  default), **Rey** (`REY`), **Stellarium** (`SC`), **Ford** (`FORD`). They share the catalog
+  schema (`{name, abbr, hem, diff, ra, dec, fov, stars[], lines[]}`) but differ in the `stars`
+  and `lines` that make up the drawn figure. IAU is authoritative for everything else.
+
+- **diagramFor(con, sourceKey)** — pure accessor: the figure to *draw* for `con` under the
+  selected source. Returns the alternate entry (looked up by abbr) or falls back to `con` when
+  the source lacks it or the key is unknown. Swaps **only the drawn stars+lines** — framing
+  (ra/dec/fov comes from `con`=`C`), answer-checking, bounds, art, and exposure all stay keyed
+  to `C`, so choosing a figure style is purely visual. `diagramSource` is the app-global selected
+  key (persisted under `ex-diagramSource`); both the explorer draw path and the quiz `renderCanvas`
+  read it. `_diagFor`/`_diagSource`/`_diagSources` in explore.js were the earlier, explore-only,
+  never-wired version this replaced.
+
 - **sessionToJSON / sessionFromJSON** — the pure round-trip in `js/lesson-session.js`:
   `sessionToJSON(session, revState, eqRevState) → payload` and
   `sessionFromJSON(payload, catalog) → restored | null`. The single home for the con↔abbr
