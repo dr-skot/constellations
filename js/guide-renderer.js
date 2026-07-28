@@ -45,6 +45,7 @@ function guideDrawAnnotation(step, catalog) {
   ctx.clearRect(0, 0, W, H);
 
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  const cam = makeCamera(explore.P, camUp, explore.fov, W, H);
 
   // Precession circle — centered on ecliptic pole, radius = obliquity
   if (step?.precessionCircle) {
@@ -74,8 +75,8 @@ function guideDrawAnnotation(step, catalog) {
         cosO * epole[1] + sinO * (Math.cos(t) * u[1] + Math.sin(t) * v[1]),
         cosO * epole[2] + sinO * (Math.cos(t) * u[2] + Math.sin(t) * v[2])
       ];
-      const p = vecToPixel(pt, explore.P, camUp, explore.fov, W, H);
-      projected.push(p);
+      const p = cam.project(pt);
+      projected.push(p.facing > 0 ? p : null);
     }
     const dpr = window.devicePixelRatio || 1;
     const s = W / (ann.offsetWidth || W / dpr);
@@ -110,8 +111,8 @@ function guideDrawAnnotation(step, catalog) {
         if (typeof e === 'string') e = { id: e };
         const obj = e.id ? (catalog && catalog[e.id]) : e;
         if (!obj) return null;
-        const p = projectStarsCamera([[obj.ra, obj.dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
-        if (!p || p.d <= 0) return null;
+        const p = cam.projectStars([[obj.ra, obj.dec, 0]])[0];
+        if (!p || p.facing <= 0) return null;
         return { x: p.x, y: p.y, obj, label: e.label };
       }).filter(Boolean);
       if (pts.length < 2) continue;
@@ -152,8 +153,8 @@ function guideDrawAnnotation(step, catalog) {
     if (!h) continue;
     if (h.line) {
       const projected = h.line.map(([ra, dec]) => {
-        const p = projectStarsCamera([[ra, dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
-        return (p && p.d > 0) ? p : null;
+        const p = cam.projectStars([[ra, dec, 0]])[0];
+        return (p && p.facing > 0) ? p : null;
       });
       const valid = projected.filter(p => p);
       ctx.strokeStyle = h.color;
@@ -202,9 +203,9 @@ function guideDrawAnnotation(step, catalog) {
         _drawOutlinedLabel(ctx, h.label, first.x + 6 * scale, first.y - 10 * scale, h.color, scale);
       }
     } else if (h.crosshair) {
-      const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
+      const pts = cam.projectStars([[h.ra, h.dec, 0]]);
       const p = pts[0];
-      if (!p || p.d <= 0) continue;
+      if (!p || p.facing <= 0) continue;
       const celDash = 6, celGap = 5;
       const arm = 0.5 * (3 * celDash + 2 * celGap);
       ctx.strokeStyle = 'rgba(220,180,80,0.55)';
@@ -219,9 +220,9 @@ function guideDrawAnnotation(step, catalog) {
         _drawOutlinedLabel(ctx, h.label, p.x + arm + 6 * scale, p.y, 'rgba(220,180,80,0.55)', scale);
       }
     } else {
-      const pts = projectStarsCamera([[h.ra, h.dec, 0]], explore.P, camUp, explore.fov, W, H);
+      const pts = cam.projectStars([[h.ra, h.dec, 0]]);
       const p = pts[0];
-      if (!p || p.d <= 0) continue;
+      if (!p || p.facing <= 0) continue;
       const r  = objRadius(h) + margin;
       ctx.strokeStyle = h.color;
       ctx.lineWidth   = Math.max(1.5, 1.5 * scale);

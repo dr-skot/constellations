@@ -154,9 +154,10 @@ function getCanvasSize() {
 function projectPts() {
   const { W, H } = getCanvasSize();
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  const cam = makeCamera(explore.P, camUp, explore.fov, W, H);
   return pts.map(([ra, dec]) => {
-    const p = projectStarsCamera([[ra, dec, 0]], explore.P, camUp, explore.fov, W, H)[0];
-    return (p && p.d > 0) ? { x: p.x, y: p.y, valid: true } : { x: 0, y: 0, valid: false };
+    const p = cam.projectStars([[ra, dec, 0]])[0];
+    return (p && p.facing > 0) ? { x: p.x, y: p.y, valid: true } : { x: 0, y: 0, valid: false };
   });
 }
 
@@ -265,7 +266,7 @@ function eventToSkyCoords(ex, ey) {
   const scale = W / overlay.offsetWidth;
   const px = ex * scale, py = ey * scale;
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
-  const v = pixelToVec(px, py, explore.P, camUp, explore.fov, W, H);
+  const v = makeCamera(explore.P, camUp, explore.fov, W, H).unproject(px, py);
   return vecToRADec(v);
 }
 

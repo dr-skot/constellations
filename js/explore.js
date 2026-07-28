@@ -179,14 +179,15 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
     return cached;
   }
 
-  const cp = projectStarsCamera([[con.ra, con.dec, 99]], camP, camUp, fov, W, H)[0];
-  if (!cp || cp.d <= 0) return null;
+  const cam = makeCamera(camP, camUp, fov, W, H);
+  const cp = cam.projectStars([[con.ra, con.dec, 99]])[0];
+  if (!cp || cp.facing <= 0) return null;
 
   const name = con.name;
   const tw = ctx.measureText(name).width;
   const hw = tw / 2 + 2, hh = fs * 0.65;
   const pRings = projBounds[con.abbr];
-  const polyPts = pRings ? pRings.flatMap(pts => pts.filter(p => p.d > 0)) : null;
+  const polyPts = pRings ? pRings.flatMap(pts => pts.filter(p => p.facing > 0)) : null;
   const canPIP = polyPts && polyPts.length >= 3;
   const valid = (tx, ty) => {
     if (tx < hw || tx > W - hw || ty < hh || ty > H - hh) return false;
@@ -211,8 +212,7 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
     }
     if (!found) return null;
   }
-  const up = cameraReverse(camP, explore.R, [0, 1, 0]);
-  const vec = pixelToVec(lx, ly, camP, up, fov, W, H);
+  const vec = cam.unproject(lx, ly);
   const rd = vecToRaDec(vec);
   const result = { ra: rd.ra, dec: rd.dec, time: now };
   _conNameCache[con.abbr] = result;
@@ -319,6 +319,7 @@ function drawExplore() {
   const { ra, dec } = vecToRaDec(explore.P);
   const camP = explore.P;
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  const cam = makeCamera(camP, camUp, explore.fov, W, H);
   const celDash = 6, celGap = 5;
 
   const _readout = document.getElementById('explore-readout');
@@ -360,7 +361,7 @@ function drawExplore() {
   // Photo layer (WebGL)
   if (showPhoto) {
     for (const con of visible) {
-      drawExplorePhotoLayerGL(con, camP, camUp, explore.fov);
+      drawExplorePhotoLayerGL(con, cam);
     }
     // Debug: red outline around each photo tile
     if (document.getElementById('chk-ex-phototiles')?.checked) {
@@ -376,12 +377,12 @@ function drawExplore() {
         for (let i = N; i >= 0; i--) edges.push([0, i/N * IH]);
         const pts = edges.map(([px, py]) => {
           const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
-          return projectStarsCamera([[rd.ra, rd.dec, 0]], camP, camUp, explore.fov, W, H)[0];
+          return cam.projectStars([[rd.ra, rd.dec, 0]])[0];
         });
         ctx.beginPath();
         let started = false;
         for (const p of pts) {
-          if (p.d <= 0) { started = false; continue; }
+          if (p.facing <= 0) { started = false; continue; }
           if (!started) { ctx.moveTo(p.x, p.y); started = true; }
           else ctx.lineTo(p.x, p.y);
         }
@@ -396,7 +397,7 @@ function drawExplore() {
   if (showEquator) {
     const eqPts = [];
     for (let ra = 0; ra <= 360; ra += 0.5) eqPts.push([ra, 0, 0]);
-    const pts = projectStarsCamera(eqPts, camP, camUp, explore.fov, W, H);
+    const pts = cam.projectStars(eqPts);
     ctx.save();
     ctx.strokeStyle = `rgba(220,180,80,${0.35 * _refAlpha})`;
     ctx.lineWidth = Math.max(1, W / 640);
@@ -404,7 +405,7 @@ function drawExplore() {
     ctx.beginPath();
     let penDown = false;
     for (const p of pts) {
-      if (p.d <= 0) { penDown = false; continue; }
+      if (p.facing <= 0) { penDown = false; continue; }
       if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
       else ctx.lineTo(p.x, p.y);
     }
@@ -420,7 +421,7 @@ function drawExplore() {
       const { ra, dec } = galToRaDec(l, 0);
       mwPts.push([ra, dec, 0]);
     }
-    const pts = projectStarsCamera(mwPts, camP, camUp, explore.fov, W, H);
+    const pts = cam.projectStars(mwPts);
     ctx.save();
     ctx.strokeStyle = 'rgba(180,200,255,0.22)';
     ctx.lineWidth = Math.max(24, W / 13);
@@ -429,7 +430,7 @@ function drawExplore() {
     ctx.beginPath();
     let penDown = false;
     for (const p of pts) {
-      if (p.d <= 0) { penDown = false; continue; }
+      if (p.facing <= 0) { penDown = false; continue; }
       if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
       else ctx.lineTo(p.x, p.y);
     }
@@ -444,7 +445,7 @@ function drawExplore() {
     const rings = BOUNDS[con.abbr];
     if (!rings) continue;
     projBounds[con.abbr] = rings.map(ring =>
-      projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, explore.fov, W, H)
+      cam.projectStars(ring.map(([ra, dec]) => [ra, dec, 0]))
     );
   }
   // Collect all visible boundary edges for label collision detection.
@@ -453,7 +454,7 @@ function drawExplore() {
     for (const pts of pRings) {
       for (let i = 0; i < pts.length; i++) {
         const a = pts[i], b = pts[(i + 1) % pts.length];
-        if (a.d > 0 && b.d > 0) allBoundEdges.push([a, b]);
+        if (a.facing > 0 && b.facing > 0) allBoundEdges.push([a, b]);
       }
     }
   }
@@ -472,7 +473,7 @@ function drawExplore() {
         ctx.beginPath();
         let penDown = false;
         for (const p of pts) {
-          if (p.d <= 0) { penDown = false; continue; }
+          if (p.facing <= 0) { penDown = false; continue; }
           if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
           else ctx.lineTo(p.x, p.y);
         }
@@ -490,8 +491,8 @@ function drawExplore() {
       if (diagFilter && !diagFilter.includes(con.abbr)) continue;
       const dcon = _diagFor(con);
       if (dcon.lines && showLines) {
-        const fullProj = projectStarsCamera(dcon.stars, camP, camUp, explore.fov, W, H)
-          .map(p => p.d > 0 ? p : null);
+        const fullProj = cam.projectStars(dcon.stars)
+          .map(p => p.facing > 0 ? p : null);
         drawLines(ctx, fullProj, dcon);
       }
     }
@@ -510,11 +511,8 @@ function drawExplore() {
       const a = explore.guideLinesCatalog[nameA];
       const b = explore.guideLinesCatalog[nameB];
       if (!a || !b) continue;
-      const pts = projectStarsCamera(
-        [[a.ra, a.dec, 0], [b.ra, b.dec, 0]],
-        camP, camUp, explore.fov, W, H
-      );
-      if (pts[0].d > 0 && pts[1].d > 0) {
+      const pts = cam.projectStars([[a.ra, a.dec, 0], [b.ra, b.dec, 0]]);
+      if (pts[0].facing > 0 && pts[1].facing > 0) {
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
         ctx.lineTo(pts[1].x, pts[1].y);
@@ -530,9 +528,9 @@ function drawExplore() {
     for (const con of visible) {
       if (diagFilter && !diagFilter.includes(con.abbr)) continue;
       const dcon = _diagFor(con);
-      const proj = projectStarsCamera(dcon.stars, camP, camUp, explore.fov, W, H)
+      const proj = cam.projectStars(dcon.stars)
         .map((p, i) => ({ ...p, _orig: dcon.stars[i] }))
-        .filter(p => p.d > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
+        .filter(p => p.facing > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
       if (showStars) drawStars(ctx, proj, explore.fov);
       if (showStarLabels) drawLabels(ctx, proj, W);
     }
@@ -551,8 +549,8 @@ function drawExplore() {
       if (namesFilter && !namesFilter.includes(con.abbr)) continue;
       const pos = conNamePosition(con, ctx, fs, camP, camUp, explore.fov, W, H, projBounds, allBoundEdges, showBounds);
       if (!pos) continue;
-      const p = projectStarsCamera([[pos.ra, pos.dec, 99]], camP, camUp, explore.fov, W, H)[0];
-      if (p && p.d > 0) ctx.fillText(con.name, p.x, p.y);
+      const p = cam.projectStars([[pos.ra, pos.dec, 99]])[0];
+      if (p && p.facing > 0) ctx.fillText(con.name, p.x, p.y);
     }
     ctx.restore();
   }
@@ -566,7 +564,7 @@ function drawExplore() {
       if (!ART[con.abbr]) continue;
       if (artFilter && !artFilter.includes(con.abbr)) continue;
       hasArt = true;
-      drawExploreArtLayerGL(con, camP, camUp, explore.fov);
+      drawExploreArtLayerGL(con, cam);
     }
     if (exploreCredit) exploreCredit.textContent = hasArt ? 'Art: Johan Meuris / Free Art Licence' : '';
   } else {
@@ -584,11 +582,11 @@ function drawExplore() {
       ctx.strokeStyle = color;
       ctx.lineWidth = lw;
       for (const ring of BOUNDS[con.abbr]) {
-        const pts = projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, explore.fov, W, H);
+        const pts = cam.projectStars(ring.map(([ra, dec]) => [ra, dec, 0]));
         ctx.beginPath();
         let penDown = false;
         for (const p of pts) {
-          if (p.d <= 0) { penDown = false; continue; }
+          if (p.facing <= 0) { penDown = false; continue; }
           if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
           else ctx.lineTo(p.x, p.y);
         }
@@ -610,8 +608,8 @@ function drawExplore() {
     ctx.lineWidth = Math.max(1, W / 640);
     ctx.setLineDash([celDash, celGap]);
     for (const pole of [[0, 0, 1], [0, 0, -1]]) {
-      const p = vecToPixel(pole, camP, camUp, explore.fov, W, H);
-      if (!p) continue;
+      const p = cam.project(pole);
+      if (p.facing <= 0) continue;
       ctx.beginPath();
       ctx.moveTo(p.x - arm, p.y); ctx.lineTo(p.x + arm, p.y);
       ctx.moveTo(p.x, p.y - arm); ctx.lineTo(p.x, p.y + arm);
@@ -639,8 +637,8 @@ function drawExplore() {
     ctx.fillText(label, cx, cy);
     ctx.restore();
     // Arrow — only when pole is far enough from center
-    const pp = vecToPixel(pole, camP, camUp, explore.fov, W, H);
-    if (pp) {
+    const pp = cam.project(pole);
+    if (pp.facing > 0) {
       const poleDistDeg = Math.acos(Math.max(-1, Math.min(1, south ? -camP[2] : camP[2]))) * 180 / Math.PI;
       if (poleDistDeg > explore.fov * 0.075) {
         const angle = Math.atan2(pp.x - cx, -(pp.y - cy));
@@ -713,6 +711,7 @@ function handleExploreClick(px, py) {
   const { ra, dec } = vecToRaDec(explore.P);
   const camP = explore.P;
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
+  const cam = makeCamera(camP, camUp, explore.fov, W, H);
   // Hit-test in canvas pixel space — avoids RA/Dec wrapping artifacts and TAN
   // projection distortion that cause mismatches between what the user sees and
   // what a sky-coordinate PIP would identify.
@@ -720,8 +719,8 @@ function handleExploreClick(px, py) {
     if (!BOUNDS[c.abbr]) return false;
     if (angularDist(ra, dec, c.ra, c.dec) > explore.fov / 2 + c.fov / 2 + 8) return false;
     return BOUNDS[c.abbr].some(ring => {
-      const pts = projectStarsCamera(ring.map(([ra, dec]) => [ra, dec, 0]), camP, camUp, explore.fov, W, H)
-        .filter(p => p.d > 0);
+      const pts = cam.projectStars(ring.map(([ra, dec]) => [ra, dec, 0]))
+        .filter(p => p.facing > 0);
       return pts.length >= 3 && pointInPoly2D(px, py, pts);
     });
   }) || null;
@@ -797,7 +796,7 @@ function initExploreDrag() {
     showNorthArrow();
     const { px, py } = clientToCanvas(cx, cy);
     const up0 = cameraReverse(explore.P, explore.R, [0, 1, 0]);
-    const vStart = pixelToVec(px, py, explore.P, up0, explore.fov, ec.width, ec.height);
+    const vStart = makeCamera(explore.P, up0, explore.fov, ec.width, ec.height).unproject(px, py);
     explore.drag = {
       startPx: px, startPy: py, prevPx: px, prevPy: py, vStart,
       P0: explore.P.slice(), R0: explore.R, up0
@@ -815,7 +814,7 @@ function initExploreDrag() {
     }
     const { P0, R0, up0, vStart } = explore.drag;
     const S1 = vStart;
-    const S2 = pixelToVec(px, py, P0, up0, explore.fov, ec.width, ec.height);
+    const S2 = makeCamera(P0, up0, explore.fov, ec.width, ec.height).unproject(px, py);
     const P1 = rotateByFromTo(P0, S2, S1);
     const ax = S1[1]*S2[2]-S1[2]*S2[1], ay = S1[2]*S2[0]-S1[0]*S2[2], az = S1[0]*S2[1]-S1[1]*S2[0];
     const crossLen = Math.sqrt(ax*ax + ay*ay + az*az);

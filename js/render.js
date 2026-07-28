@@ -356,7 +356,7 @@ function redrawReveal(con) {
   // Pre-project the current constellation's boundary for PIP + edge checks.
   const curProjRings = (BOUNDS[origAbbr] || []).map(ring =>
     projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H));
-  const curVisPts  = curProjRings.flat().filter(p => p.d > 0);
+  const curVisPts  = curProjRings.flat().filter(p => p.facing > 0);
   const curScrPts  = curVisPts.map(ptToScr);
 
   // Search in canvas space for a label centre where:
@@ -420,25 +420,25 @@ function redrawReveal(con) {
         projectStarsTAN(ring.map(([ra, dec]) => [ra, dec, 0]), con, W, H));
 
       for (const pts of projRings) {
-        const visCount = pts.reduce((n, p) => n + (p.d > 0 ? 1 : 0), 0);
+        const visCount = pts.reduce((n, p) => n + (p.facing > 0 ? 1 : 0), 0);
         if (visCount < 2) continue;
 
         // Draw.
         ctx.beginPath();
         let prevVis = false;
         for (const p of pts) {
-          if (p.d > 0) {
+          if (p.facing > 0) {
             if (!prevVis) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
             prevVis = true;
           } else { prevVis = false; }
         }
-        if (pts[0].d > 0 && pts[pts.length - 1].d > 0) ctx.closePath();
+        if (pts[0].facing > 0 && pts[pts.length - 1].facing > 0) ctx.closePath();
         ctx.stroke();
 
         // Collect screen-space edges for label collision checking.
         for (let i = 0; i < pts.length; i++) {
           const a = pts[i], b = pts[(i + 1) % pts.length];
-          if (a.d > 0 && b.d > 0) allScrEdges.push([ptToScr(a), ptToScr(b)]);
+          if (a.facing > 0 && b.facing > 0) allScrEdges.push([ptToScr(a), ptToScr(b)]);
         }
       }
 
@@ -450,18 +450,18 @@ function redrawReveal(con) {
       for (const pts of projRings) {
         for (let i = 0; i < pts.length; i++) {
           const p = pts[i], q = pts[(i + 1) % pts.length];
-          if (p.d > 0) {
+          if (p.facing > 0) {
             const dx = p.x - cirCx, dy = p.y - cirCy;
             if (dx * dx + dy * dy <= R * R) intPts.push({ x: p.x, y: p.y });
           }
-          if (p.d > 0 && q.d > 0)
+          if (p.facing > 0 && q.facing > 0)
             for (const ip of segCircleIntersections(p.x, p.y, q.x, q.y, cirCx, cirCy, R))
               intPts.push(ip);
         }
       }
 
       const surrounds = intPts.length === 0 && projRings.some(pts => {
-        const vp = pts.filter(p => p.d > 0);
+        const vp = pts.filter(p => p.facing > 0);
         return vp.length >= 3 && pointInPoly2D(cirCx, cirCy, vp);
       });
       if (intPts.length === 0 && !surrounds) continue;
@@ -473,7 +473,7 @@ function redrawReveal(con) {
       const hintY = intPts.length > 0 ? intPts.reduce((s, p) => s + p.y, 0) / intPts.length : cirCy;
 
       const fs = Math.max(9, Math.round(W * 0.026));
-      const nScrPts = projRings.flat().filter(p => p.d > 0).map(ptToScr);
+      const nScrPts = projRings.flat().filter(p => p.facing > 0).map(ptToScr);
       labelCandidates.push({
         name: neighbor.name, nScrPts,
         hintDx: hintX - cirCx, hintDy: hintY - cirCy,

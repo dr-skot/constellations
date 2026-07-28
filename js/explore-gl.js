@@ -91,17 +91,14 @@ function glClear(W, H) {
   gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
-function glSetCamera(camP, camUp, fov) {
+// Feed the shader from a Camera (projection.js). The frame and half-angle are the
+// Camera's single source of truth — the shader only uploads them, plus the GL aspect.
+function glSetCamera(cam) {
   const W = gl.canvas.width, H = gl.canvas.height;
-  const [cx, cy, cz] = camP, [ux, uy, uz] = camUp;
-  let rx = cy*uz - cz*uy, ry = cz*ux - cx*uz, rz = cx*uy - cy*ux;
-  const rl = Math.sqrt(rx*rx + ry*ry + rz*rz);
-  rx /= rl; ry /= rl; rz /= rl;
-  const upx = ry*cz - rz*cy, upy = rz*cx - rx*cz, upz = rx*cy - ry*cx;
-  gl.uniform3f(glLoc.right,  rx, ry, rz);
-  gl.uniform3f(glLoc.up,     upx, upy, upz);
-  gl.uniform3f(glLoc.center, cx, cy, cz);
-  gl.uniform1f(glLoc.tanHFov, Math.tan(fov * Math.PI / 360));
+  gl.uniform3f(glLoc.right,  cam.right[0],  cam.right[1],  cam.right[2]);
+  gl.uniform3f(glLoc.up,     cam.up[0],     cam.up[1],     cam.up[2]);
+  gl.uniform3f(glLoc.center, cam.center[0], cam.center[1], cam.center[2]);
+  gl.uniform1f(glLoc.tanHFov, cam.tanHalfFov);
   gl.uniform1f(glLoc.aspect, (W && H) ? W / H : 1.0);
 }
 
@@ -228,18 +225,18 @@ function glDrawMesh(mesh, tex, alpha, additive, camP) {
 }
 
 // ── Public: draw photo layer ───────────────────────────────
-function drawExplorePhotoLayerGL(con, camP, camUp, fov) {
+function drawExplorePhotoLayerGL(con, cam) {
   if (!gl) return;
   const img = explorePhotoCache[con.abbr];
   if (!(img instanceof HTMLImageElement)) { loadExplorePhoto(con); return; }
   if (!glPhotoTex[con.abbr]) glPhotoTex[con.abbr] = glUploadTex(img);
   if (!glPhotoMesh[con.abbr]) glPhotoMesh[con.abbr] = glBuildPhotoMesh(con);
-  glSetCamera(camP, camUp, fov);
-  glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false, camP);
+  glSetCamera(cam);
+  glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false, cam.center);
 }
 
 // ── Public: draw art layer ─────────────────────────────────
-function drawExploreArtLayerGL(con, camP, camUp, fov) {
+function drawExploreArtLayerGL(con, cam) {
   if (!gl) return;
   const src = artSrc(con.abbr);
   const art = ART[src];
@@ -262,7 +259,7 @@ function drawExploreArtLayerGL(con, camP, camUp, fov) {
   if (!glArtTex[src]) glArtTex[src] = glUploadTex(artCache[src]);
   if (!glArtMesh[con.abbr]) glArtMesh[con.abbr] = glBuildArtMesh(con);
 
-  glSetCamera(camP, camUp, fov);
+  glSetCamera(cam);
   // Additive blend ≈ screen blend on near-black background
-  glDrawMesh(glArtMesh[con.abbr], glArtTex[con.abbr], 0.5, true, camP);
+  glDrawMesh(glArtMesh[con.abbr], glArtTex[con.abbr], 0.5, true, cam.center);
 }

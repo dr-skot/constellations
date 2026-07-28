@@ -108,14 +108,14 @@ function drawDiagram() {
   const fov = con.fov;
   const ctx = d2c.getContext('2d');
   ctx.clearRect(0, 0, W, H);
-  const proj = projectStarsCamera(con.stars, camP, camUp, fov, W, H);
+  const proj = makeCamera(camP, camUp, fov, W, H).projectStars(con.stars);
 
   // Lines
   ctx.strokeStyle = 'rgba(120,160,255,0.8)';
   ctx.lineWidth = 1.5;
   for (const [a, b] of con.lines) {
     const pa = proj[a], pb = proj[b];
-    if (!pa || !pb || pa.d <= 0 || pb.d <= 0) continue;
+    if (!pa || !pb || pa.facing <= 0 || pb.facing <= 0) continue;
     ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
   }
 
@@ -123,7 +123,7 @@ function drawDiagram() {
   ctx.font = '11px sans-serif';
   for (let i = 0; i < proj.length; i++) {
     const p = proj[i];
-    if (!p || p.d <= 0) continue;
+    if (!p || p.facing <= 0) continue;
     const mag = con.stars[i][2];
     const r = Math.max(1.5, 4 - mag * 0.7);
     ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);

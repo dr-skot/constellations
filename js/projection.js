@@ -18,83 +18,86 @@ function angularDist(ra1, dec1, ra2, dec2) {
   return Math.acos(Math.max(-1, Math.min(1, cos_c))) * 180 / Math.PI;
 }
 
-// Project stars onto a TAN (gnomonic) image — same projection as photoUrl.
+// Half-angle tangent of the TAN (gnomonic) projection — the single sensitive scale
+// atom. Pixel scale is (W/2)/tanHalfFov(fov); the WebGL shader consumes it directly.
+// (The wrong small-angle form W/(fov·π/180) once shipped here; keep the one home.)
+function tanHalfFov(fov) { return Math.tan(fov * Math.PI / 360); }
+
+// Project stars onto a north-up TAN (gnomonic) image — same projection as photoUrl.
 // East is left, north is up, center = (con.ra, con.dec), full width = con.fov degrees.
+// Roll is applied downstream by the quiz canvas (ctx.rotate), so this stays north-up;
+// the explorer's rolled camera path uses makeCamera instead.
 function projectStarsTAN(stars, con, W, H) {
   const ra0 = con.ra * Math.PI / 180, dec0 = con.dec * Math.PI / 180;
-  const scale = (W / 2) / Math.tan(con.fov * Math.PI / 360);
+  const scale = (W / 2) / tanHalfFov(con.fov);
   return stars.map(s => {
     const ra = s[0] * Math.PI / 180, dec = s[1] * Math.PI / 180;
-    const d = Math.sin(dec0) * Math.sin(dec) + Math.cos(dec0) * Math.cos(dec) * Math.cos(ra - ra0);
-    const xi = Math.cos(dec) * Math.sin(ra - ra0) / d;
-    const eta = (Math.cos(dec0) * Math.sin(dec) - Math.sin(dec0) * Math.cos(dec) * Math.cos(ra - ra0)) / d;
-    // d > 0: point is in front of projection plane; d ≤ 0: behind (>90° away),
-    // coords are invalid — dividing by negative d flips signs and can produce
-    // coordinates that accidentally land on screen, causing phantom draws.
-    return { x: W / 2 - xi * scale, y: H / 2 - eta * scale, d, mag: s[2], hint: s[3], name: s[4] };
+    // facing = cosine of angle to view centre. facing > 0: in front of projection
+    // plane; facing ≤ 0: behind (>90° away), coords invalid — dividing by a negative
+    // facing flips signs and can land off-screen points on screen (phantom draws).
+    const facing = Math.sin(dec0) * Math.sin(dec) + Math.cos(dec0) * Math.cos(dec) * Math.cos(ra - ra0);
+    const xi = Math.cos(dec) * Math.sin(ra - ra0) / facing;
+    const eta = (Math.cos(dec0) * Math.sin(dec) - Math.sin(dec0) * Math.cos(dec) * Math.cos(ra - ra0)) / facing;
+    return { x: W / 2 - xi * scale, y: H / 2 - eta * scale, facing, mag: s[2], hint: s[3], name: s[4] };
   });
 }
 
-// Sky unit vector → canvas pixel, given camera centre c, up vector, fov, and canvas size.
-// Exact inverse of pixelToVec. Returns {x, y, d} or null if behind camera (d <= 0).
-function vecToPixel(v, c, up, fov, W, H) {
-  const scale = (W/2) / Math.tan(fov * Math.PI / 360);
-  const [cx, cy, cz] = c, [ux, uy, uz] = up;
-  let rx = cy*uz - cz*uy, ry = cz*ux - cx*uz, rz = cx*uy - cy*ux;
-  const rlen = Math.sqrt(rx*rx + ry*ry + rz*rz);
-  rx /= rlen; ry /= rlen; rz /= rlen;
-  const upx = ry*cz - rz*cy, upy = rz*cx - rx*cz, upz = rx*cy - ry*cx;
-  const d = v[0]*cx + v[1]*cy + v[2]*cz;
-  if (d <= 0) return null;
-  const xi  = -(v[0]*rx + v[1]*ry + v[2]*rz) / d;
-  const eta =  (v[0]*upx + v[1]*upy + v[2]*upz) / d;
-  return { x: W/2 - xi*scale, y: H/2 - eta*scale, d };
-}
-
-// Project an array of [ra, dec, mag, hint, name] stars using an explicit camera frame
-// (centre P, up vector, fov) rather than assuming north-up. Replaces projectStarsTAN
-// in the explorer so roll works correctly.
-function projectStarsCamera(stars, P, up, fov, W, H) {
-  const scale = (W/2) / Math.tan(fov * Math.PI / 360);
+// A camera fixed at centre P (unit vector), up vector `up` (re-orthogonalized to P),
+// field of view `fov` (degrees, full width), for a W×H canvas. One small deep interface
+// over the rolled TAN (gnomonic) projection — forward project(), batch projectStars(),
+// inverse unproject() — plus the derived frame the WebGL shader is fed from. The frame
+// (right, up_perp) and the scale are computed once here, not re-derived per call.
+//
+// Replaces the old projectStarsCamera / vecToPixel / pixelToVec trio: same math, one home.
+function makeCamera(P, up, fov, W, H) {
+  const scale = (W / 2) / tanHalfFov(fov);
   const [cx, cy, cz] = P, [ux, uy, uz] = up;
+  // right = P × up (screen-right), normalized; up_perp = right × P (true screen-up)
   let rx = cy*uz - cz*uy, ry = cz*ux - cx*uz, rz = cx*uy - cy*ux;
   const rlen = Math.sqrt(rx*rx + ry*ry + rz*rz);
   rx /= rlen; ry /= rlen; rz /= rlen;
   const upx = ry*cz - rz*cy, upy = rz*cx - rx*cz, upz = rx*cy - ry*cx;
-  return stars.map(s => {
-    const v = raDecToVec(s[0], s[1]);
-    const d = v[0]*cx + v[1]*cy + v[2]*cz;
-    const xi  = -(v[0]*rx + v[1]*ry + v[2]*rz) / d;
-    const eta =  (v[0]*upx + v[1]*upy + v[2]*upz) / d;
-    return { x: W/2 - xi*scale, y: H/2 - eta*scale, d, mag: s[2], hint: s[3], name: s[4] };
-  });
-}
 
-// Inverse TAN (gnomonic) projection: canvas pixel → RA/Dec
-// Convert pixel to 3D unit direction vector given view-centre c and camera up vector.
-// No RA/Dec coordinate system involved — poles are not special.
-function pixelToVec(px, py, c, up, fov, W, H) {
-  const scale = (W/2) / Math.tan(fov * Math.PI / 360);
-  const xi  = (W/2 - px) / scale;  // positive = left on screen
-  const eta = (H/2 - py) / scale;  // positive = up on screen
-  // right = c × up (screen-right direction), then re-derive up perp to c
-  const [cx, cy, cz] = c, [ux, uy, uz] = up;
-  let rx = cy*uz - cz*uy, ry = cz*ux - cx*uz, rz = cx*uy - cy*ux;
-  const rlen = Math.sqrt(rx*rx + ry*ry + rz*rz);
-  rx /= rlen; ry /= rlen; rz /= rlen;
-  // up_perp = right × c (ensures orthogonality)
-  const upx = ry*cz - rz*cy, upy = rz*cx - rx*cz, upz = rx*cy - ry*cx;
-  // d = normalize(c - xi*right + eta*up_perp)
-  // (xi positive = left = east = opposite of screen-right)
-  const dx = cx - xi*rx + eta*upx;
-  const dy = cy - xi*ry + eta*upy;
-  const dz = cz - xi*rz + eta*upz;
-  const dlen = Math.sqrt(dx*dx + dy*dy + dz*dz);
-  return [dx/dlen, dy/dlen, dz/dlen];
+  // Sky unit vector → canvas pixel. `facing` = cosine of angle to view centre; > 0
+  // means in front of the camera. ALWAYS returned (never null) — callers guard on
+  // `facing > 0`; a point behind (facing ≤ 0) yields phantom coords, so don't draw it.
+  function project(v) {
+    const facing = v[0]*cx + v[1]*cy + v[2]*cz;
+    const xi  = -(v[0]*rx + v[1]*ry + v[2]*rz) / facing;
+    const eta =  (v[0]*upx + v[1]*upy + v[2]*upz) / facing;
+    return { x: W/2 - xi*scale, y: H/2 - eta*scale, facing };
+  }
+
+  // Project an array of [ra, dec, mag?, hint?, name?] stars, echoing the non-geometry
+  // fields through for the draw loops (bare [ra, dec, 0] points just carry undefined).
+  function projectStars(stars) {
+    return stars.map(s => {
+      const p = project(raDecToVec(s[0], s[1]));
+      p.mag = s[2]; p.hint = s[3]; p.name = s[4];
+      return p;
+    });
+  }
+
+  // Inverse: canvas pixel → sky unit vector. No RA/Dec involved — poles aren't special.
+  function unproject(px, py) {
+    const xi  = (W/2 - px) / scale;  // positive = left on screen
+    const eta = (H/2 - py) / scale;  // positive = up on screen
+    const dx = cx - xi*rx + eta*upx;
+    const dy = cy - xi*ry + eta*upy;
+    const dz = cz - xi*rz + eta*upz;
+    const dlen = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    return [dx/dlen, dy/dlen, dz/dlen];
+  }
+
+  return {
+    project, projectStars, unproject,
+    right: [rx, ry, rz], up: [upx, upy, upz], center: [cx, cy, cz],
+    tanHalfFov: tanHalfFov(fov),
+  };
 }
 
 function pixelToRADec(px, py, ra0, dec0, fov, W, H) {
-  const scale = (W / 2) / Math.tan(fov * Math.PI / 360);
+  const scale = (W / 2) / tanHalfFov(fov);
   const xi = (W / 2 - px) / scale;
   const eta = (H / 2 - py) / scale;
   const ra0r = ra0 * Math.PI / 180, dec0r = dec0 * Math.PI / 180;
