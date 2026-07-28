@@ -103,3 +103,29 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   #1). Callers set the stroke style beforehand and, for multi-ring shapes, call once per ring;
   `close` closes the final sub-path (the phototile debug outline). Used by the equator, Milky Way,
   boundary, quiz-highlight, and phototile passes.
+
+## Label placement
+
+The same "spiral-search-avoiding-boundaries" algorithm places a text label where it clears
+constellation boundaries, in two coordinate frames. The shared machinery lives in `js/render.js`
+alongside the geometry primitives it uses (`pointInPoly2D`, `edgesHitRect`).
+
+- **fitLabelBox(cx, cy, hw, hh, { inside, outside, edges })** — the collision test: samples the
+  label box's centre + 4 corners and requires every sample to lie inside the `inside` polygon
+  (when given) and outside the `outside` polygon (when given), with the box rect crossing none of
+  `edges`. Pure. The caller owns the bounds-shape test (canvas rect vs. circle) and any coordinate
+  transform, passing already-transformed `cx,cy`.
+
+- **searchLabelSpot(preScan, center, radii, valid)** — the search: tries each `preScan` point in
+  order, then walks rings of 16 evenly-spaced angles at each radius in `radii` (given order) around
+  `center`, returning the first `{x,y}` where `valid` holds, else `null`.
+
+- **findNeighborLabelSpot(view, neighborPts, hint, box)** — places a neighbor's name in the
+  rotated, circular quiz reveal; lifted out of a closure that used to live inside `redrawReveal`.
+  Pure (screen-space 2D in, point out): `view = { cx, cy, R, cosA, sinA, currentPts, edges }` is the
+  per-reveal geometry, built once and passed per neighbor. Characterized by `test/neighbor-label.js`
+  against a golden captured from the pre-refactor closure.
+
+- **conNamePosition** (`js/explore.js`) places a constellation's *own* name in the explore view; it
+  stays an impure adapter (camera projection, `measureText`, throttle cache, unprojection) wrapped
+  around `searchLabelSpot` + `fitLabelBox`.

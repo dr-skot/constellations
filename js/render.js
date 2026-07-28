@@ -307,6 +307,76 @@ function pointInPoly2D(px, py, pts) {
   return inside;
 }
 
+// ── Label placement ──────────────────────────────────────────────────────────
+// Shared machinery for dropping a text label where it clears constellation
+// boundaries. Two callers: conNamePosition (explore.js — a constellation's own
+// name, canvas space) and findNeighborLabelSpot (below — neighbor names in the
+// rotated quiz reveal). See CONTEXT.md "label placement".
+
+// Does an hw×hh label box centred at (cx,cy) satisfy the polygon/edge
+// constraints? Samples the centre + 4 corners; every sample must lie inside
+// `inside` (when given) and outside `outside` (when given), and the box rect must
+// not be crossed by any of `edges`. Pure — the caller owns any bounds-shape test
+// and coordinate transform (it passes already-transformed cx,cy).
+function fitLabelBox(cx, cy, hw, hh, { inside, outside, edges } = {}) {
+  const x1 = cx - hw, x2 = cx + hw, y1 = cy - hh, y2 = cy + hh;
+  for (const [px, py] of [[cx,cy],[x1,y1],[x2,y1],[x1,y2],[x2,y2]]) {
+    if (inside && !pointInPoly2D(px, py, inside)) return false;
+    if (outside && pointInPoly2D(px, py, outside)) return false;
+  }
+  if (edges && edges.length && edgesHitRect(edges, x1, y1, x2, y2)) return false;
+  return true;
+}
+
+// Search for a label spot: try each `preScan` point in order, then walk rings of
+// 16 evenly-spaced angles at each radius in `radii` (in the given order) around
+// `center`. Returns the first {x,y} for which valid(x,y) holds, else null.
+function searchLabelSpot(preScan, center, radii, valid) {
+  for (const p of preScan) if (valid(p.x, p.y)) return { x: p.x, y: p.y };
+  for (const r of radii) {
+    for (let ai = 0; ai < 16; ai++) {
+      const x = center.x + Math.cos(ai * Math.PI / 8) * r;
+      const y = center.y + Math.sin(ai * Math.PI / 8) * r;
+      if (valid(x, y)) return { x, y };
+    }
+  }
+  return null;
+}
+
+// Place a neighbor constellation's name in the circular, rotated quiz-reveal
+// view. All points are screen-space 2D (already projected). `view` carries the
+// per-reveal geometry: circle centre (cx,cy) + radius R, rotation (cosA,sinA),
+// the current constellation's polygon (currentPts), and every visible boundary
+// edge (edges). The label must sit inside the neighbor's polygon, outside the
+// current one, clear of all edges, and within the circle. Pre-scans along the
+// hint direction, then spirals inward. Returns {x,y} in canvas space, or null.
+function findNeighborLabelSpot(view, neighborPts, hint, box) {
+  const { cx, cy, R, cosA, sinA, currentPts, edges } = view;
+  const { hw, hh } = box;
+  const inside = neighborPts.length >= 3 ? neighborPts : null;
+  const outside = currentPts.length >= 3 ? currentPts : null;
+
+  const valid = (tx, ty) => {
+    const dx = tx - cx, dy = ty - cy;
+    if (dx * dx + dy * dy > (R - hw) * (R - hw)) return false;
+    const sx = cx + dx * cosA - dy * sinA;
+    const sy = cy + dx * sinA + dy * cosA;
+    return fitLabelBox(sx, sy, hw, hh, { inside, outside, edges });
+  };
+
+  const preScan = [];
+  const hl = Math.sqrt(hint.dx * hint.dx + hint.dy * hint.dy);
+  if (hl > 1) {
+    for (let t = 0.08; t <= 0.93; t += 0.03) {
+      preScan.push({ x: cx + (hint.dx / hl) * R * t, y: cy + (hint.dy / hl) * R * t });
+    }
+  }
+  const radii = [];
+  for (let ri = 5; ri >= 1; ri--) radii.push(R * 0.88 * ri / 5);
+
+  return searchLabelSpot(preScan, { x: cx, y: cy }, radii, valid);
+}
+
 function redrawReveal(con) {
   const origAbbr = con.abbr;
   const showBound = revState.boundary;
@@ -362,50 +432,10 @@ function redrawReveal(con) {
   const curVisPts  = curProjRings.flat().filter(p => p.facing > 0);
   const curScrPts  = curVisPts.map(ptToScr);
 
-  // Search in canvas space for a label centre where:
-  //   • the label bounding box (hw × hh, horizontal in SCREEN space) lies inside
-  //     the neighbor's polygon and outside the current constellation's polygon,
-  //   • AND no visible boundary edge from ANY constellation crosses the label rect.
-  // allScrEdges is built during the drawing pass below and passed in.
-  function findInNeighbor(nScrPts, allScrEdges, hintDx, hintDy, hw, hh) {
-    const canNPIP = nScrPts.length >= 3;
-    const canCPIP = curScrPts.length >= 3;
-
-    function valid(tx, ty) {
-      const dx = tx - cirCx, dy = ty - cirCy;
-      if (dx * dx + dy * dy > (R - hw) * (R - hw)) return false;
-      // Convert candidate centre to screen space.
-      const sx = cirCx + dx * cosA - dy * sinA;
-      const sy = cirCy + dx * sinA + dy * cosA;
-      const x1 = sx - hw, x2 = sx + hw, y1 = sy - hh, y2 = sy + hh;
-      // All 5 sample points (screen space) must pass PIP constraints.
-      for (const [px, py] of [[sx,sy],[x1,y1],[x2,y1],[x1,y2],[x2,y2]]) {
-        if (canNPIP && !pointInPoly2D(px, py, nScrPts)) return false;
-        if (canCPIP &&  pointInPoly2D(px, py, curScrPts)) return false;
-      }
-      // No boundary edge (from any constellation) may cross the label rectangle.
-      if (edgesHitRect(allScrEdges, x1, y1, x2, y2)) return false;
-      return true;
-    }
-
-    const hl = Math.sqrt(hintDx * hintDx + hintDy * hintDy);
-    if (hl > 1) {
-      for (let t = 0.08; t <= 0.93; t += 0.03) {
-        const tx = cirCx + (hintDx / hl) * R * t;
-        const ty = cirCy + (hintDy / hl) * R * t;
-        if (valid(tx, ty)) return { x: tx, y: ty };
-      }
-    }
-    for (let ri = 5; ri >= 1; ri--) {
-      const r = R * 0.88 * ri / 5;
-      for (let ai = 0; ai < 16; ai++) {
-        const tx = cirCx + Math.cos(ai * Math.PI / 8) * r;
-        const ty = cirCy + Math.sin(ai * Math.PI / 8) * r;
-        if (valid(tx, ty)) return { x: tx, y: ty };
-      }
-    }
-    return null;
-  }
+  // Per-reveal geometry shared by every neighbor label placement (see
+  // findNeighborLabelSpot). allScrEdges is filled during Pass 1 below; the
+  // labels are placed in Pass 2 once it is complete.
+  const labelView = { cx: cirCx, cy: cirCy, R, cosA, sinA, currentPts: curScrPts, edges: null };
 
   // ── Pass 1: draw boundaries, collect all screen-space edges + label candidates ──
   const allScrEdges = [];     // every visible boundary edge in screen coords
@@ -486,8 +516,9 @@ function redrawReveal(con) {
     ctx.restore();
 
     // ── Pass 2: place labels now that allScrEdges is complete ──
+    labelView.edges = allScrEdges;
     for (const cand of labelCandidates) {
-      const pt = findInNeighbor(cand.nScrPts, allScrEdges, cand.hintDx, cand.hintDy, cand.hw, cand.hh);
+      const pt = findNeighborLabelSpot(labelView, cand.nScrPts, { dx: cand.hintDx, dy: cand.hintDy }, { hw: cand.hw, hh: cand.hh });
       if (pt) neighborLabelPts.push({ name: cand.name, x: pt.x, y: pt.y });
     }
   }

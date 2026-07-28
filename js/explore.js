@@ -204,29 +204,23 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
   const pRings = projBounds[con.abbr];
   const polyPts = pRings ? pRings.flatMap(pts => pts.filter(p => p.facing > 0)) : null;
   const canPIP = polyPts && polyPts.length >= 3;
+  // Label must stay within the canvas rect (bounds test), and — via the shared
+  // fitLabelBox — inside its own boundary polygon and clear of other boundaries.
   const valid = (tx, ty) => {
     if (tx < hw || tx > W - hw || ty < hh || ty > H - hh) return false;
-    const x1 = tx - hw, x2 = tx + hw, y1 = ty - hh, y2 = ty + hh;
-    if (canPIP) {
-      for (const [px, py] of [[tx,ty],[x1,y1],[x2,y1],[x1,y2],[x2,y2]])
-        if (!pointInPoly2D(px, py, polyPts)) return false;
-    }
-    if (showBounds && allBoundEdges.length && edgesHitRect(allBoundEdges, x1, y1, x2, y2)) return false;
-    return true;
+    return fitLabelBox(tx, ty, hw, hh, {
+      inside: canPIP ? polyPts : null,
+      edges: showBounds ? allBoundEdges : null,
+    });
   };
-  let lx = cp.x, ly = cp.y;
-  if (!valid(lx, ly)) {
-    let found = false;
-    const step = Math.max(hw, fs);
-    for (let r = step; r < W * 0.7 && !found; r += step) {
-      for (let ai = 0; ai < 16 && !found; ai++) {
-        const tx = cp.x + Math.cos(ai * Math.PI / 8) * r;
-        const ty = cp.y + Math.sin(ai * Math.PI / 8) * r;
-        if (valid(tx, ty)) { lx = tx; ly = ty; found = true; }
-      }
-    }
-    if (!found) return null;
-  }
+  // Try the anchor (projected centroid), then spiral outward in step-sized rings.
+  const step = Math.max(hw, fs);
+  const radii = [];
+  for (let r = step; r < W * 0.7; r += step) radii.push(r);
+  const anchor = { x: cp.x, y: cp.y };
+  const spot = searchLabelSpot([anchor], anchor, radii, valid);
+  if (!spot) return null;
+  const lx = spot.x, ly = spot.y;
   const vec = cam.unproject(lx, ly);
   const rd = vecToRaDec(vec);
   const result = { ra: rd.ra, dec: rd.dec, time: now };
