@@ -12,79 +12,45 @@ function currentCon() {
   return q ? q.con : null;
 }
 
+// Thin adapters over the pure round-trip in js/lesson-session.js. This layer owns
+// sessionStorage, the "only persist an active lesson" policy, and the DOM/toggle-
+// group application; sessionToJSON/sessionFromJSON own the payload shape.
 function saveLessonSession() {
   if (session.lessonIdx == null) return;
-
-  sessionStorage.setItem('lesson-session', JSON.stringify({
-    _v: 2,
-    lessonLabel: session.lessonLabel,
-    questions: session.questions.map(q => ({
-      abbr: q.con.abbr, type: q.type, mode: q.mode,
-      answerMode: q.answerMode,
-      ...(q.distanceLevel != null ? { distanceLevel: q.distanceLevel } : {}),
-      ...(q.noBounds ? { noBounds: true } : {}),
-      ...(q.rotation != null ? { rotation: q.rotation } : {}),
-      ...(q.startP ? { startP: q.startP, startFov: q.startFov } : {}),
-      ...(q.choices ? { choices: q.choices } : {})
-    })),
-    idx: session.idx,
-    correct: session.correct,
-    revState: typeof revState !== 'undefined' ? { ...revState } : undefined,
-    eqRevState: typeof eqRevState !== 'undefined' ? { ...eqRevState } : undefined,
-    history: session.history.map(h => h ? {
-      ...h,
-      chosen: h.chosen?.abbr || null,
-      choices: (h.choices || []).map(c => c?.abbr || c)
-    } : null)
-  }));
+  sessionStorage.setItem('lesson-session', JSON.stringify(sessionToJSON(
+    session,
+    typeof revState !== 'undefined' ? revState : undefined,
+    typeof eqRevState !== 'undefined' ? eqRevState : undefined
+  )));
 }
 
 function tryResumeLesson() {
   try {
-    const d = JSON.parse(sessionStorage.getItem('lesson-session'));
-    if (!d || !d.lessonLabel || d._v !== 2) return false;
-    const questions = d.questions.map(q => {
-      const con = C.find(c => c.abbr === q.abbr);
-      if (!con) return null;
-      return { con, type: q.type, mode: q.mode,
-               answerMode: q.answerMode,
-               ...(q.distanceLevel != null ? { distanceLevel: q.distanceLevel } : {}),
-               ...(q.noBounds ? { noBounds: true } : {}),
-               ...(q.rotation != null ? { rotation: q.rotation } : {}),
-               ...(q.startP ? { startP: q.startP, startFov: q.startFov } : {}),
-               ...(q.choices ? { choices: q.choices } : {}) };
-    }).filter(Boolean);
-    if (questions.length !== d.questions.length) return false;
-    session.questions = questions;
-    session.idx = d.idx;
-    session.correct = d.correct;
-    session.history = (d.history || []).map(h => {
-      if (!h) return null;
-      return {
-        ...h,
-        chosen: typeof h.chosen === 'string' ? C.find(c => c.abbr === h.chosen) || null : h.chosen,
-        choices: (h.choices || []).map(c => typeof c === 'string' ? C.find(con => con.abbr === c) || c : c)
-      };
-    });
+    const restored = sessionFromJSON(JSON.parse(sessionStorage.getItem('lesson-session')), C);
+    if (!restored) return false;
+    session.questions = restored.questions;
+    session.idx = restored.idx;
+    session.correct = restored.correct;
+    session.history = restored.history;
     session.lessonIdx = 0;
-    session.lessonLabel = d.lessonLabel;
+    session.lessonLabel = restored.lessonLabel;
     session.answered = false;
     session.viewMode = false;
-    // Restore reveal toggle states
-    if (d.revState) {
-      for (const k of Object.keys(d.revState)) {
-        revState[k] = d.revState[k];
-        if (_revToggleGroup) _revToggleGroup.setValue(k, d.revState[k]);
+    // Restore reveal toggle states (globals + toggle-group DOM)
+    if (restored.revState) {
+      for (const k of Object.keys(restored.revState)) {
+        revState[k] = restored.revState[k];
+        if (_revToggleGroup) _revToggleGroup.setValue(k, restored.revState[k]);
       }
     }
-    if (d.eqRevState) {
-      for (const k of Object.keys(d.eqRevState)) {
-        eqRevState[k] = d.eqRevState[k];
-        if (_eqRevToggleGroup) _eqRevToggleGroup.setValue(k, d.eqRevState[k]);
+    if (restored.eqRevState) {
+      for (const k of Object.keys(restored.eqRevState)) {
+        eqRevState[k] = restored.eqRevState[k];
+        if (_eqRevToggleGroup) _eqRevToggleGroup.setValue(k, restored.eqRevState[k]);
       }
     }
     document.getElementById('screen-quiz').classList.remove('viewer-mode');
-    document.getElementById('quiz-breadcrumb-stage').textContent = d.lessonLabel;
+    document.getElementById('quiz-breadcrumb-stage').textContent = restored.lessonLabel;
     document.getElementById('quiz-breadcrumb').style.display = '';
     showLessonQuestion();
     return true;

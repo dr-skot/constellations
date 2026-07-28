@@ -49,3 +49,19 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 
 - **tier** — one rung of the 7-step `TIER_SPECS` ladder (identify/diagram → find/photo-nb).
   A tier is passed at 1+ correct; the first unpassed tier is the **frontier**.
+
+## Session
+
+- **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
+  correct, answered, history, viewMode, lessonIdx/Label) plus the two reveal-toggle states
+  `revState` (quiz) and `eqRevState` (explorer). Persisted to `sessionStorage['lesson-session']`
+  so a page reload resumes mid-lesson.
+
+- **sessionToJSON / sessionFromJSON** — the pure round-trip in `js/lesson-session.js`:
+  `sessionToJSON(session, revState, eqRevState) → payload` and
+  `sessionFromJSON(payload, catalog) → restored | null`. The single home for the con↔abbr
+  conversion (a question stores `con.abbr` on disk, resolves it against the catalog on load) and
+  the optional per-question fields (distanceLevel, noBounds, rotation, startP/startFov, choices).
+  `sessionFromJSON` returns `null` when the payload is unusable (`_v` mismatch, missing
+  lessonLabel, or any abbr that doesn't resolve). Pure obj↔obj: sessionStorage and the DOM
+  toggle-group application stay in the quiz.js adapter (`saveLessonSession`/`tryResumeLesson`).
