@@ -82,3 +82,24 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   `sessionFromJSON` returns `null` when the payload is unusable (`_v` mismatch, missing
   lessonLabel, or any abbr that doesn't resolve). Pure obj↔obj: sessionStorage and the DOM
   toggle-group application stay in the quiz.js adapter (`saveLessonSession`/`tryResumeLesson`).
+
+## Explore rendering
+
+- **display flags** — the discrete set of per-layer booleans that drive `drawExplore`'s passes:
+  `showPhoto, showDiag, showStars, showLines, showBounds, showArt, showStarLabels, showConNames`
+  plus `refMode` (`'always' | 'moving' | null`) and the context flags `cm`/`isAnswered`.
+  `resolveDisplayFlags(explore, exState, eqRevState, guideActive)` in `js/explore.js` is the pure
+  resolver: it decodes the three-way state — course mode (`explore.quiz.stageMode`, answered vs.
+  not), find-help overrides (`explore.photo/diagram/bounds/art/names/equator`), and free-explore
+  defaults (`exState`) — into that flag bundle. Reads no globals (the caller passes `!!_gs`).
+  The per-frame alpha ramps (`_refAlpha`, `_compassAlpha`) that fade the reference guides stay
+  inline in `drawExplore` next to their draw calls, since they depend on the animation value
+  `explore._northAlpha`. Characterized by `test/display-flags.js` against a frozen truth table.
+
+- **strokePolyline(ctx, pts, close)** — the canvas primitive in `js/explore.js` for a projected
+  polyline. Owns `beginPath` + the final `stroke`; lifts the pen wherever a point faces away from
+  the camera (`facing <= 0`). It **drops** the horizon-crossing segment rather than clipping it to
+  the near plane — a faithful copy of the pre-existing behavior (tracked for improvement in issue
+  #1). Callers set the stroke style beforehand and, for multi-ring shapes, call once per ring;
+  `close` closes the final sub-path (the phototile debug outline). Used by the equator, Milky Way,
+  boundary, quiz-highlight, and phototile passes.

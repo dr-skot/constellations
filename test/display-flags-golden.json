@@ -1,0 +1,4155 @@
+[
+  {
+    "label": "free/override:photo=undefined",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:photo=true",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "photo": true
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:photo=false",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "photo": false
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:diagram=undefined",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:diagram=true",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "diagram": true
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:diagram=false",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "diagram": false
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:bounds=undefined",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:bounds=true",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "bounds": true
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:bounds=false",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "bounds": false
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:art=undefined",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:art=true",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "art": true
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:art=false",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "art": false
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:names=undefined",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:names=true",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "names": true
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:names=false",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "names": false
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:equator=undefined",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:equator=true",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "equator": true
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:equator=false",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "equator": false
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": null
+    }
+  },
+  {
+    "label": "free/override:bounds=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "bounds": [
+          "Ori"
+        ]
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:diagram=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "diagram": [
+          "Ori"
+        ]
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:names=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "names": [
+          "Ori"
+        ]
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/override:art=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": null,
+        "art": [
+          "Ori"
+        ]
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/ref=always",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/ref=moving",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "moving"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "moving"
+    }
+  },
+  {
+    "label": "free/ref=null",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": null
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": null
+    }
+  },
+  {
+    "label": "free/exState:photo=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:photo=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": false,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:stars=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:stars=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": false,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": false,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:diagram=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:diagram=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": false,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:art=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:art=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": false,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:bounds=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:bounds=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": false,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:starLabels=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:starLabels=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": false,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:conNames=true",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/exState:conNames=false",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": false,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": true,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "free/guideActive",
+    "input": {
+      "explore": {
+        "quiz": null
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": true
+    },
+    "flags": {
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": true,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:photo/bounds=undefined",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": false
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:photo/bounds=true",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": false,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:photo/bounds=false",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": false,
+          "bounds": false
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:photo/bounds=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": false,
+          "bounds": [
+            "Ori"
+          ]
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:photo/guide",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": false,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": true
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": false,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:diagram/bounds=undefined",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": false
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:diagram/bounds=true",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": false,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:diagram/bounds=false",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": false,
+          "bounds": false
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:diagram/bounds=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": false,
+          "bounds": [
+            "Ori"
+          ]
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:diagram/guide",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": false,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": true
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:stars/bounds=undefined",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": false
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:stars/bounds=true",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": false,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:stars/bounds=false",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": false,
+          "bounds": false
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:stars/bounds=[Ori]",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": false,
+          "bounds": [
+            "Ori"
+          ]
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/unanswered:stars/guide",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": false,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": true
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": false,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=0",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=1",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=2",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=3",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=4",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=5",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=6",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=7",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=8",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=9",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=10",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=11",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=12",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=13",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=14",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:photo/eqRev=15",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "photo",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "photo",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=0",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=1",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=2",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=3",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=4",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=5",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=6",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=7",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=8",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=9",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=10",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=11",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=12",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=13",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=14",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:diagram/eqRev=15",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "diagram",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "diagram",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=0",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=1",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=2",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=3",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": false,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=4",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=5",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=6",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=7",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": false
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": false,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=8",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=9",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=10",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=11",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": false,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": false,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=12",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": false,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=13",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": false,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": false,
+      "showStars": false,
+      "showLines": false,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=14",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": false,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": false,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  },
+  {
+    "label": "course/answered:stars/eqRev=15",
+    "input": {
+      "explore": {
+        "quiz": {
+          "stageMode": "stars",
+          "answered": true,
+          "bounds": true
+        }
+      },
+      "exState": {
+        "photo": true,
+        "stars": true,
+        "diagram": true,
+        "art": true,
+        "bounds": true,
+        "starLabels": true,
+        "conNames": true,
+        "reference": "always"
+      },
+      "eqRevState": {
+        "photo": true,
+        "diagram": true,
+        "art": true,
+        "boundary": true
+      },
+      "guideActive": false
+    },
+    "flags": {
+      "cm": "stars",
+      "isAnswered": true,
+      "showPhoto": true,
+      "showDiag": true,
+      "showStars": true,
+      "showLines": true,
+      "showBounds": true,
+      "showArt": true,
+      "showStarLabels": false,
+      "showConNames": false,
+      "refMode": "always"
+    }
+  }
+]

@@ -39,6 +39,33 @@ let _exDial = null;
 const eqRevState = { photo: true, diagram: true, art: true, boundary: true };
 let _eqRevToggleGroup = null;
 
+// Resolve the current explore / quiz / course state into the discrete display
+// flags that drive drawExplore's layer passes. Pure: reads no globals (the
+// caller passes `!!_gs` as guideActive). Returns the mode flags plus the
+// reference-guide mode string; the per-frame alpha ramps (_refAlpha,
+// _compassAlpha) stay in drawExplore next to their draw calls, since they
+// depend on the animation value explore._northAlpha. Characterized by
+// test/display-flags.js against test/display-flags-golden.json.
+function resolveDisplayFlags(explore, exState, eqRevState, guideActive) {
+  const q = explore.quiz;
+  const cm = q?.stageMode;                 // course mode active?
+  const isAnswered = !!(q?.answered);
+  const showDiag = cm ? (isAnswered ? eqRevState.diagram : cm !== 'photo') : true;
+  return {
+    cm,
+    isAnswered,
+    showPhoto:      cm ? (isAnswered ? eqRevState.photo    : cm === 'photo')   : explore.photo   !== undefined ? !!explore.photo   : exState.photo,
+    showDiag,
+    showStars:      cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : exState.stars,
+    showLines:      cm ? (isAnswered ? showDiag           : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram,
+    showBounds:     cm ? (isAnswered ? eqRevState.boundary : !!q.bounds)       : explore.bounds  !== undefined ? !!explore.bounds  : exState.bounds,
+    showArt:        cm ? (isAnswered ? eqRevState.art      : false)            : explore.art     !== undefined ? !!explore.art     : exState.art,
+    showStarLabels: (cm || guideActive) ? false : exState.starLabels,
+    showConNames:   cm ? false : explore.names !== undefined ? !!explore.names : exState.conNames,
+    refMode:        cm ? 'always' : explore.equator !== undefined ? (explore.equator ? 'always' : null) : exState.reference,
+  };
+}
+
 function initEqRevealToggles() {
   _eqRevToggleGroup = createToggleGroup(document.getElementById('eq-reveal-controls'), {
     buttons: [
@@ -273,6 +300,24 @@ function loadExplorePhoto(con) {
   img.src = photoUrl(con);
 }
 
+// Stroke a polyline through projected points, lifting the pen wherever a point
+// faces away from the camera (facing <= 0). The crossing segment is dropped, not
+// clipped to the horizon (a known imperfection — see issue #1). Owns beginPath +
+// the final stroke; callers set the stroke style beforehand and, for multi-ring
+// shapes, call once per ring. `close` closes the final sub-path (the phototile
+// debug outline). Tested by test/stroke-polyline.js.
+function strokePolyline(ctx, pts, close = false) {
+  ctx.beginPath();
+  let penDown = false;
+  for (const p of pts) {
+    if (p.facing <= 0) { penDown = false; continue; }
+    if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
+    else ctx.lineTo(p.x, p.y);
+  }
+  if (close) ctx.closePath();
+  ctx.stroke();
+}
+
 function drawExplore() {
   const canvas = document.getElementById('explore-canvas');
   if (!canvas) return;
@@ -331,19 +376,11 @@ function drawExplore() {
   }
 
   const visible = exploreVisibleCons();
-  const q = explore.quiz;
-  const cm = q?.stageMode;  // course mode active?
-  const isAnswered = !!(q?.answered);
-  const showPhoto      = cm ? (isAnswered ? eqRevState.photo    : cm === 'photo')   : explore.photo !== undefined ? !!explore.photo : exState.photo;
-  const showDiag       = cm ? (isAnswered ? eqRevState.diagram  : cm !== 'photo')   : true;
-  const showStars      = cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : exState.stars;
-  const showLines      = cm ? (isAnswered ? showDiag            : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram;
-  const showBounds     = cm ? (isAnswered ? eqRevState.boundary : !!q.bounds)       : explore.bounds !== undefined ? !!explore.bounds : exState.bounds;
-  const showArt        = cm ? (isAnswered ? eqRevState.art      : false)            : explore.art !== undefined ? !!explore.art : exState.art;
-  const showStarLabels = (cm || _gs) ? false : exState.starLabels;
-  const showConNames   = cm ? false : explore.names !== undefined ? !!explore.names : exState.conNames;
-  const _refMode       = cm ? 'always' : explore.equator !== undefined ? (explore.equator ? 'always' : null) : exState.reference;
-  const _refAlpha      = _refMode === 'always' ? 1 : _refMode === 'moving' ? (explore._northAlpha || 0) : 0;
+  const {
+    cm, showPhoto, showDiag, showStars, showLines, showBounds, showArt,
+    showStarLabels, showConNames, refMode,
+  } = resolveDisplayFlags(explore, exState, eqRevState, !!_gs);
+  const _refAlpha      = refMode === 'always' ? 1 : refMode === 'moving' ? (explore._northAlpha || 0) : 0;
   const showEquator    = _refAlpha > 0.01;
 
   // Photo layer (WebGL)
@@ -367,15 +404,7 @@ function drawExplore() {
           const rd = pixelToRADec(px, py, con.ra, con.dec, con.fov, IW, IH);
           return cam.projectStars([[rd.ra, rd.dec, 0]])[0];
         });
-        ctx.beginPath();
-        let started = false;
-        for (const p of pts) {
-          if (p.facing <= 0) { started = false; continue; }
-          if (!started) { ctx.moveTo(p.x, p.y); started = true; }
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.closePath();
-        ctx.stroke();
+        strokePolyline(ctx, pts, true);
       }
       ctx.restore();
     }
@@ -390,14 +419,7 @@ function drawExplore() {
     ctx.strokeStyle = `rgba(220,180,80,${0.35 * _refAlpha})`;
     ctx.lineWidth = Math.max(1, W / 640);
     ctx.setLineDash([celDash, celGap]);
-    ctx.beginPath();
-    let penDown = false;
-    for (const p of pts) {
-      if (p.facing <= 0) { penDown = false; continue; }
-      if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-      else ctx.lineTo(p.x, p.y);
-    }
-    ctx.stroke();
+    strokePolyline(ctx, pts);
     ctx.restore();
   }
 
@@ -415,14 +437,7 @@ function drawExplore() {
     ctx.lineWidth = Math.max(24, W / 13);
     ctx.shadowColor = 'rgba(180,200,255,0.16)';
     ctx.shadowBlur = W / 40;
-    ctx.beginPath();
-    let penDown = false;
-    for (const p of pts) {
-      if (p.facing <= 0) { penDown = false; continue; }
-      if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-      else ctx.lineTo(p.x, p.y);
-    }
-    ctx.stroke();
+    strokePolyline(ctx, pts);
     ctx.restore();
   }
 
@@ -458,14 +473,7 @@ function drawExplore() {
       const pRings = projBounds[con.abbr];
       if (!pRings) continue;
       for (const pts of pRings) {
-        ctx.beginPath();
-        let penDown = false;
-        for (const p of pts) {
-          if (p.facing <= 0) { penDown = false; continue; }
-          if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.stroke();
+        strokePolyline(ctx, pts);
       }
     }
     ctx.restore();
@@ -571,14 +579,7 @@ function drawExplore() {
       ctx.lineWidth = lw;
       for (const ring of BOUNDS[con.abbr]) {
         const pts = cam.projectStars(ring.map(([ra, dec]) => [ra, dec, 0]));
-        ctx.beginPath();
-        let penDown = false;
-        for (const p of pts) {
-          if (p.facing <= 0) { penDown = false; continue; }
-          if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.stroke();
+        strokePolyline(ctx, pts);
       }
       ctx.restore();
     };
@@ -607,7 +608,7 @@ function drawExplore() {
   }
 
   // Compass arrow — N or S depending on hemisphere (fades in/out on interaction)
-  const _compassAlpha = _refMode === 'always' ? 0.35 : _refMode === 'moving' ? (explore._northAlpha || 0) * 0.35 : 0;
+  const _compassAlpha = refMode === 'always' ? 0.35 : refMode === 'moving' ? (explore._northAlpha || 0) * 0.35 : 0;
   if (_compassAlpha > 0.005) {
     const cx = W / 2, cy = H / 2;
     const south = camP[2] < 0; // center point south of celestial equator
