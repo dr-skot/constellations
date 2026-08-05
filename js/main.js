@@ -1,28 +1,11 @@
 // ═══════════════════════════════════════════════════════════
-// DIAGRAM-SOURCE (FIGURES) PICKERS
+// DIAGRAM-SOURCE (FIGURES)
 // ═══════════════════════════════════════════════════════════
-// One shared, persisted setting (diagramSource in js/diagram-sources.js) surfaced
-// in two places — the explorer controls and the quiz screen — kept in sync.
-let _figureGroups = [];
-
-function initFigureToggles() {
-  loadDiagramSource();
-  _figureGroups = ['tg-figures', 'quiz-figures'].map(id => {
-    const el = document.getElementById(id);
-    if (!el) return null;
-    return createToggleGroup(el, {
-      exclusive: true,
-      caption: 'Figures',
-      buttons: DIAGRAM_SOURCES.map(s => ({ label: s.label, value: s.key, on: s.key === diagramSource })),
-      onChange(value, on) { if (on) applyDiagramSource(value); },
-    });
-  }).filter(Boolean);
-}
-
-// Switch the diagram source: persist it, sync every picker, redraw the active view.
+// The Figures picker lives on the Settings screen (js/settings.js). This is the
+// one place that switches the shared, persisted diagramSource and redraws every
+// surface that draws a figure.
 function applyDiagramSource(key) {
   setDiagramSource(key);
-  for (const g of _figureGroups) g.setValue(key, true);
   if (_settingsGroup) _settingsGroup.setValue(key, true);
   if (typeof drawExplore === 'function') drawExplore();
   if (typeof redrawQuizFigure === 'function') redrawQuizFigure();
@@ -198,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize toggle groups and rotate dial for explore mode
   initExploreToggles();
   initEqRevealToggles();
-  initFigureToggles();
   initSettings();
 
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
