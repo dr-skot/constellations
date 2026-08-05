@@ -11,10 +11,13 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/explore.css">
   <link rel="stylesheet" href="css/course.css">
+  <link rel="stylesheet" href="css/settings.css">
 </head>
 
 <body>
   <div id="app">
+
+    <button id="btn-settings" class="gear" aria-label="Settings" title="Settings">⚙</button>
 
     <div id="screen-start" class="screen active">
       <div class="screen-body">
@@ -185,6 +188,15 @@
           <div class="result-stars" id="res-stars"></div>
         </div>
         <div id="result-btns" style="display:flex;flex-direction:column;align-items:center;gap:12px"></div>
+      </div>
+    </div>
+
+    <div id="screen-settings" class="screen">
+      <div class="screen-body">
+        <nav class="find-breadcrumb">
+          <a href="#" id="settings-breadcrumb-course">Course</a> › <span>Settings</span>
+        </nav>
+        <div id="settings-list"></div>
       </div>
     </div>
 

@@ -51,6 +51,8 @@ function handleRoute(hash) {
     con ? viewConstellation(con) : navigate('course');
   } else if (hash === 'lesson') {
     if (!tryResumeLesson()) startLesson();
+  } else if (hash === 'settings') {
+    showScreen('settings');
   } else {
     navigate('course');
   }
@@ -160,6 +162,14 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault(); navigate('course');
   });
   document.getElementById('quiz-breadcrumb-course').addEventListener('click', e => {
+    e.preventDefault(); navigate('course');
+  });
+
+  // Settings: global gear opens the settings screen; breadcrumb returns to course
+  document.getElementById('btn-settings').addEventListener('click', () => {
+    if (location.hash.slice(1) !== 'settings') navigate('settings');
+  });
+  document.getElementById('settings-breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
 
