@@ -19,12 +19,14 @@ function initFigureToggles() {
   }).filter(Boolean);
 }
 
-// Switch the diagram source: persist it, sync both pickers, redraw the active view.
+// Switch the diagram source: persist it, sync every picker, redraw the active view.
 function applyDiagramSource(key) {
   setDiagramSource(key);
   for (const g of _figureGroups) g.setValue(key, true);
+  if (_settingsGroup) _settingsGroup.setValue(key, true);
   if (typeof drawExplore === 'function') drawExplore();
   if (typeof redrawQuizFigure === 'function') redrawQuizFigure();
+  if (typeof redrawSettingsFigure === 'function') redrawSettingsFigure();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -53,6 +55,7 @@ function handleRoute(hash) {
     if (!tryResumeLesson()) startLesson();
   } else if (hash === 'settings') {
     showScreen('settings');
+    if (typeof refreshSettings === 'function') refreshSettings();
   } else {
     navigate('course');
   }
@@ -196,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initExploreToggles();
   initEqRevealToggles();
   initFigureToggles();
+  initSettings();
 
   // Copy View button — copies RA/Dec/FOV/rotation to clipboard
   document.getElementById('btn-copy-view').addEventListener('click', () => {

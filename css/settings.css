@@ -41,6 +41,46 @@
   gap: 16px;
 }
 
+.setting-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.setting-card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--text);
+}
+
+.setting-desc {
+  font-size: .82rem;
+  color: var(--dim);
+  line-height: 1.5;
+  margin-top: -4px;
+}
+
+.setting-figure {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.setting-blurb {
+  font-size: .85rem;
+  color: var(--text);
+  line-height: 1.55;
+  min-height: 2.6em;
+}
+
 /* On narrow screens the app column fills the viewport, so the fixed gear would
    sit over the header search/nav buttons in the top-right. Reserve a gutter on
    the header rows that have right-aligned controls (explorer + quiz). */
