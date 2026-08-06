@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Progress — Constellate</title>
+  <link rel="stylesheet" href="css/progress.css">
   <style>
     :root {
       --bg: #05060f; --card: #0c0f1e; --border: rgba(255,255,255,.08);
@@ -52,21 +53,8 @@
     .tier-lbl { width: 10px; font-size: .45rem; color: var(--dim);
                 text-align: center; line-height: 1; }
 
-    /* Constellation grid */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 6px; }
-    .con-card { background: var(--card); border: 1px solid var(--border);
-                border-radius: 7px; padding: 7px 9px;
-                transition: border-color .15s; }
-    .con-card:hover { border-color: rgba(91,138,245,.4); }
-    .con-card.unseen { opacity: .35; }
-    .con-name { font-size: .8rem; font-weight: 500; white-space: nowrap;
-                overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-    .con-diff { font-size: .62rem; color: var(--dim); margin-bottom: 5px; }
-    .tiers { display: flex; gap: 3px; }
-    .tier { width: 10px; height: 10px; border-radius: 2px;
-            background: rgba(255,255,255,.1); position: relative; cursor: default; }
-    .tier.seen   { background: var(--warn); }
-    .tier.passed { background: var(--ok); }
+    /* Constellation card visuals (grid, .con-card, .tier dots) now live in the shared
+       css/progress.css. Only the progress page's own interaction styles remain below. */
 
     /* Diff section headers */
     .diff-header { grid-column: 1 / -1; font-size: .68rem; letter-spacing: .18em;
@@ -128,26 +116,10 @@
 <script src="js/data.js"></script>
 <script src="js/lesson.js"></script>
 <script src="js/course.js"></script>
+<script src="js/progress-grid.js"></script>
 <script>
-  const TIERS = [
-    { key: 'identify/diagram', short: 'iD', label: 'Identify by diagram' },
-    { key: 'find/diagram',     short: 'fD', label: 'Find by diagram' },
-    { key: 'identify/stars',   short: 'iS', label: 'Identify by stars' },
-    { key: 'find/stars',       short: 'fS', label: 'Find by stars' },
-    { key: 'identify/photo',   short: 'iP', label: 'Identify by photo' },
-    { key: 'find/photo',       short: 'fP', label: 'Find by photo' },
-    { key: 'find/photo-nb',    short: 'nP', label: 'Find by photo (no bounds)' },
-  ];
-
+  // TIERS, tierClass(exposure, abbr, key) and progressCard() come from js/progress-grid.js.
   const exp = loadExposure();
-
-  function tierClass(abbr, key) {
-    const t = exp[abbr]?.[key];
-    if (!t) return 'unseen';
-    if (t.correct >= 1) return 'passed';
-    if (t.seen >= 1) return 'seen';
-    return 'unseen';
-  }
 
   // Stats
   const total = C.length;
@@ -203,20 +175,7 @@
       wrap.appendChild(gridEl);
     }
 
-    const unseen = (exp[con.abbr]?.['identify/diagram']?.seen || 0) === 0;
-    const card = document.createElement('div');
-    card.className = 'con-card' + (unseen ? ' unseen' : '');
-
-    const dots = TIERS.map(t => {
-      const cls = tierClass(con.abbr, t.key);
-      const e = exp[con.abbr]?.[t.key];
-      const tip = `${t.key}: seen ${e?.seen||0}, correct ${e?.correct||0}`;
-      return `<div class="tier ${cls}" title="${tip}"></div>`;
-    }).join('');
-
-    card.innerHTML =
-      `<div class="con-name" title="${con.name}">${con.name}</div>` +
-      `<div class="tiers">${dots}</div>`;
+    const card = progressCard(con, exp);
     card.addEventListener('click', () => showDetail(con, card));
     gridEl.appendChild(card);
   }
@@ -236,7 +195,7 @@
     document.getElementById('detail-name').textContent = con.name;
     const e = exp[con.abbr] || {};
     document.getElementById('detail-tiers').innerHTML = TIERS.map(t => {
-      const cls = tierClass(con.abbr, t.key);
+      const cls = tierClass(exp, con.abbr, t.key);
       const data = e[t.key];
       const seen = data?.seen || 0;
       const correct = data?.correct || 0;
@@ -276,7 +235,7 @@
     lines.push('');
     for (const con of sorted) {
       const tierStr = TIERS.map(t => {
-        const cls = tierClass(con.abbr, t.key);
+        const cls = tierClass(exp, con.abbr, t.key);
         return cls === 'passed' ? '✓' : cls === 'seen' ? '○' : '·';
       }).join(' ');
       const tc = Object.values(exp[con.abbr] || {}).reduce((s, v) => s + (v.correct||0), 0);

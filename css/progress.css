@@ -1,0 +1,58 @@
+/* Shared progress-grid styles: the constellation card, its tier dots, and the grid that
+   lays cards out. Included by both the full progress page (progress.html) and the in-app
+   result screen (index.html) so a con-card looks identical on either surface.
+   Uses --card/--border/--ok/--warn/--dim from the host page's palette; --warn carries a
+   fallback since the main app's base palette doesn't define it. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 6px;
+}
+
+.con-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 9px;
+  transition: border-color .15s;
+}
+.con-card:hover { border-color: rgba(91, 138, 245, .4); }
+.con-card.unseen { opacity: .35; }
+
+.con-name {
+  font-size: .8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.con-diff { font-size: .62rem; color: var(--dim); margin-bottom: 5px; }
+
+.tiers { display: flex; gap: 3px; }
+.tier {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .1);
+  position: relative;
+  cursor: default;
+}
+.tier.seen   { background: var(--warn, #e8a400); }
+.tier.passed { background: var(--ok); }
+
+/* A tier that newly passed this lesson — emphasized on the result screen (opt-in via
+   progressCard's `highlight` set). Motion is gated for reduced-motion users. */
+.tier.just-passed {
+  box-shadow: 0 0 0 2px var(--ok), 0 0 7px 1px var(--ok);
+  animation: tier-pop .5s ease-out;
+}
+@keyframes tier-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.55); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tier.just-passed { animation: none; }
+}
