@@ -111,8 +111,37 @@ function endLesson() {
     good ? '★★★' : pct >= 0.5 ? '★★' : '★';
   const cnt = parseInt(localStorage.getItem('lesson-count') || '0') + 1;
   localStorage.setItem('lesson-count', cnt);
+  renderResultProgress();
   showScreen('result');
   renderResultButtons();
+}
+
+// The constellations practiced this lesson, drawn as shared progress cards (current tier
+// state — the newly-passed emphasis lands in #21), plus a link to the full progress page.
+function renderResultProgress() {
+  const host = document.getElementById('result-progress');
+  host.innerHTML = '';
+  const practiced = distinctCons(session.questions);
+  if (!practiced.length) { host.style.display = 'none'; return; }
+  host.style.display = '';
+
+  const head = document.createElement('div');
+  head.className = 'result-progress-head';
+  const label = document.createElement('span');
+  label.className = 'result-progress-label';
+  label.textContent = 'Practiced this lesson';
+  const link = document.createElement('a');
+  link.className = 'result-progress-link';
+  link.href = 'progress.html';
+  link.textContent = 'View full progress →';
+  head.append(label, link);
+  host.appendChild(head);
+
+  const exp = loadExposure();
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+  for (const con of practiced) grid.appendChild(progressCard(con, exp));
+  host.appendChild(grid);
 }
 
 function renderResultButtons() {

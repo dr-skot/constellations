@@ -25,6 +25,18 @@ function tierClass(exposure, abbr, key) {
   return 'unseen';
 }
 
+// The distinct constellations across a lesson's questions, deduped by abbr in
+// first-encounter order — the set of cards a result/progress surface shows for a lesson.
+function distinctCons(questions) {
+  const seen = new Set();
+  const out = [];
+  for (const q of questions || []) {
+    const con = q?.con;
+    if (con && !seen.has(con.abbr)) { seen.add(con.abbr); out.push(con); }
+  }
+  return out;
+}
+
 // Build a .con-card element (name + 7 tier dots) for `con` against `exposure`.
 // opts.highlight: a Set of "abbr/tierKey" strings; matching dots get `.just-passed`.
 function progressCard(con, exposure, opts = {}) {
@@ -50,5 +62,5 @@ function progressCard(con, exposure, opts = {}) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { TIERS, tierClass, progressCard };
+  module.exports = { TIERS, tierClass, distinctCons, progressCard };
 }

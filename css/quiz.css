@@ -289,7 +289,8 @@ canvas {
 /* results */
 .result-wrap {
   text-align: center;
-  padding: 20px 0
+  padding: 20px 0;
+  flex-shrink: 0     /* keep the score/★ block sized; only #result-progress absorbs a short window */
 }
 
 .result-num {
@@ -315,6 +316,45 @@ canvas {
   margin-top: 8px;
   letter-spacing: .15em
 }
+
+/* Practiced-this-lesson chart: its own scroll area so a lesson touching many
+   constellations can't push the result buttons off a short screen. Content-sized under a
+   42vh cap (so it never dominates a tall window); shrinks-and-scrolls when a short window
+   would otherwise overflow — flex-grow stays 0 so a few cards don't leave a gap. */
+#result-progress {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  max-height: 42vh;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.result-progress-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.result-progress-label {
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.result-progress-link {
+  font-size: .82rem;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.result-progress-link:hover { text-decoration: underline; }
+
+/* Keep the result buttons pinned and reachable even when the chart scrolls. */
+#result-btns { flex-shrink: 0; }
 
 .btn-again {
   align-self: center;

@@ -41,6 +41,26 @@ check('null exposure → unseen (no throw)', tierClass(null, 'UMa', 'identify/di
 check('seen=0 correct=0 → unseen',
   tierClass({ UMa: { 'find/stars': { seen: 0, correct: 0 } } }, 'UMa', 'find/stars') === 'unseen');
 
+// distinctCons: the constellations practiced across a lesson's questions, deduped by
+// abbr, in first-encounter order (drives which cards the result screen shows).
+const uma = { abbr: 'UMa', name: 'Ursa Major' };
+const ori = { abbr: 'Ori', name: 'Orion' };
+const cas = { abbr: 'Cas', name: 'Cassiopeia' };
+const qs = [
+  { con: uma, type: 'identify' }, { con: ori, type: 'find' },
+  { con: uma, type: 'find' },     { con: cas, type: 'identify' },
+  { con: ori, type: 'identify' },
+];
+const practiced = distinctCons(qs);
+check('distinctCons dedupes by abbr', practiced.length === 3);
+check('distinctCons keeps first-encounter order',
+  practiced.map(c => c.abbr).join(',') === 'UMa,Ori,Cas');
+check('distinctCons returns the con objects themselves', practiced[0] === uma);
+check('distinctCons on [] → []', distinctCons([]).length === 0);
+check('distinctCons on null → [] (no throw)', distinctCons(null).length === 0);
+check('distinctCons skips questions with no con',
+  distinctCons([{ type: 'x' }, { con: uma }]).length === 1);
+
 origLog('');
 if (failures.length === 0) { origLog('✅ ALL PASSED'); process.exit(0); }
 else { origLog(`❌ ${failures.length} FAILURE(S)`); process.exit(1); }
