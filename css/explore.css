@@ -28,7 +28,9 @@
 
 #explore-area {
   position: relative;
-  flex: 1;
+  /* Cap the star view like the quiz circle so it doesn't stretch to fill a tall window;
+     shrink:1 + min-height:0 still lets it shrink on short ones. (#16) */
+  flex: 0 1 540px;
   min-height: 0;
   display: flex;
   align-items: stretch;
@@ -37,6 +39,10 @@
   border-radius: 14px;
   box-shadow: 0 0 15px rgba(80,130,220,0.3);
 }
+
+/* Tall-window (#16): center the explorer block as a group, same as the quiz screen. */
+#screen-explore { justify-content: safe center; }
+#screen-explore .screen-body { flex: 0 1 auto; }
 #explore-wrap {
   position: relative;
   border-radius: 14px;
@@ -66,7 +72,10 @@
 }
 
 #explore-quiz-bar {
-  padding: 4px 0 2px
+  padding: 4px 0 2px;
+  /* Reserve the answered-state height (prompt + feedback + reveal controls) up front so the
+     reveal controls appearing on answer don't push the star view — the stars stay put. (#16) */
+  min-height: 76px
 }
 #eq-label-area {
   display: grid;

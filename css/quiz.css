@@ -49,13 +49,21 @@
 
 #canvas-area {
   position: relative;
-  flex: 1;
+  /* Cap the circle's height (basis) so it can't spread on tall windows; grow:0 keeps it
+     from filling, shrink:1 + min-height:0 still lets it shrink on short windows. (#16) */
+  flex: 0 1 540px;
   min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   container-type: size;
 }
+
+/* Tall-window (#16): center the quiz block (header/circle/answers/nav) as one group so
+   the buttons stop hugging the bottom. Body must not grow, else it eats the free space;
+   `safe` center falls back to top-aligned (no clipping) when content exceeds a short window. */
+#screen-quiz { justify-content: safe center; }
+#screen-quiz .screen-body { flex: 0 1 auto; }
 #canvas-wrap {
   border-radius: 14px;
   overflow: hidden;
