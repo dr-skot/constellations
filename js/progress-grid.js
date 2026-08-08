@@ -2,7 +2,8 @@
 // logic, and the constellation-card builder. Loaded as a plain-script global (no build).
 // Two callers draw the same cards: the course screen's full grid and the result screen's
 // practiced-this-lesson strip (both in index.html). The `highlight` hook marks dots that
-// newly passed a lesson (#21). Depends on nothing but the DOM (only progressCard touches it).
+// newly passed the just-finished lesson. Depends on nothing but the DOM (only progressCard
+// touches it).
 
 const TIERS = [
   { key: 'identify/diagram', short: 'iD', label: 'Identify by diagram' },
@@ -61,6 +62,25 @@ function distinctCons(questions) {
   return out;
 }
 
+// The set of "abbr/tierKey" strings for tiers that passed for the FIRST time between two
+// exposure snapshots (before → after), across `cons`. Feeds progressCard's `highlight` so
+// the result screen can emphasize what this lesson just unlocked. A null `before` (no
+// pre-lesson snapshot, e.g. after a reload) yields an empty set — nothing emphasized, the
+// graceful fallback.
+function newlyPassed(before, after, cons) {
+  const set = new Set();
+  if (!before) return set;
+  for (const con of cons || []) {
+    for (const t of TIERS) {
+      if (tierClass(before, con.abbr, t.key) !== 'passed' &&
+          tierClass(after, con.abbr, t.key) === 'passed') {
+        set.add(`${con.abbr}/${t.key}`);
+      }
+    }
+  }
+  return set;
+}
+
 // Build a .con-card element (name + 7 tier dots) for `con` against `exposure`.
 // opts.highlight: a Set of "abbr/tierKey" strings; matching dots get `.just-passed`.
 function progressCard(con, exposure, opts = {}) {
@@ -86,5 +106,5 @@ function progressCard(con, exposure, opts = {}) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { TIERS, DIFFICULTY_BANDS, tierClass, consByDifficulty, distinctCons, progressCard };
+  module.exports = { TIERS, DIFFICULTY_BANDS, tierClass, consByDifficulty, distinctCons, newlyPassed, progressCard };
 }

@@ -85,6 +85,40 @@ check('consByDifficulty labels an unknown diff by number',
   consByDifficulty([{ abbr: 'X', name: 'X', diff: 99 }])[0].label === 'Difficulty 99');
 check('consByDifficulty does not mutate its input', cons[0].abbr === 'Ori');
 
+// newlyPassed: the "abbr/tierKey" set for tiers that passed for the FIRST time between a
+// before→after exposure snapshot (drives the just-passed emphasis on the result screen).
+const cons2 = [{ abbr: 'UMa', name: 'Ursa Major' }, { abbr: 'Ori', name: 'Orion' }];
+const before = {
+  UMa: {
+    'identify/diagram': { seen: 2, correct: 1 },  // already passed before the lesson
+    'find/diagram':     { seen: 1, correct: 0 },  // seen, not yet passed
+  },
+  // Ori entirely unseen before
+};
+const after = {
+  UMa: {
+    'identify/diagram': { seen: 3, correct: 2 },  // still passed — NOT newly passed
+    'find/diagram':     { seen: 2, correct: 1 },  // 0→1 correct → newly passed
+    'identify/stars':   { seen: 1, correct: 0 },  // newly seen, still not passed
+  },
+  Ori: {
+    'identify/diagram': { seen: 1, correct: 1 },  // unseen→passed → newly passed
+  },
+};
+const np = newlyPassed(before, after, cons2);
+check('newlyPassed flags a tier that went 0→1 correct', np.has('UMa/find/diagram'));
+check('newlyPassed flags an unseen→passed tier', np.has('Ori/identify/diagram'));
+check('newlyPassed ignores a tier already passed before', !np.has('UMa/identify/diagram'));
+check('newlyPassed ignores a tier still not passed', !np.has('UMa/identify/stars'));
+check('newlyPassed set has exactly the two newly-passed tiers', np.size === 2);
+check('newlyPassed keys match the progressCard `${abbr}/${tierKey}` format',
+  [...np].sort().join(',') === 'Ori/identify/diagram,UMa/find/diagram');
+check('newlyPassed with null before (no snapshot) → empty set (graceful fallback)',
+  newlyPassed(null, after, cons2).size === 0);
+check('newlyPassed with no cons → empty set', newlyPassed(before, after, []).size === 0);
+check('newlyPassed does not throw on missing after data',
+  newlyPassed(before, {}, cons2).size === 0);
+
 origLog('');
 if (failures.length === 0) { origLog('✅ ALL PASSED'); process.exit(0); }
 else { origLog(`❌ ${failures.length} FAILURE(S)`); process.exit(1); }

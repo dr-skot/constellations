@@ -80,7 +80,13 @@ function generateNextLesson() {
   return planLesson(loadExposure(), C, BOUNDS, Math.random, Date.now(), console);
 }
 
+// Exposure snapshot taken at lesson start, diffed on the result screen to emphasize the
+// tiers this lesson newly passed. A module var, so a page reload clears it — the result
+// screen then falls back to plain current state (no emphasis).
+let _exposureAtLessonStart = null;
+
 function startLesson() {
+  _exposureAtLessonStart = loadExposure();
   const { label, questions } = generateNextLesson();
   session.questions = questions;
   session.idx = 0; session.correct = 0; session.answered = false;
@@ -116,9 +122,10 @@ function endLesson() {
   renderResultButtons();
 }
 
-// The constellations practiced this lesson, drawn as shared progress cards (current tier
-// state — the newly-passed emphasis lands in #21). The full grid lives on the course
-// screen, one "Back to Course" away, so no separate link is needed here.
+// The constellations practiced this lesson, drawn as shared progress cards. Tiers this
+// lesson newly passed (diffing the lesson-start snapshot against now) get the .just-passed
+// emphasis; with no snapshot (e.g. resumed after a reload) nothing is emphasized. The full
+// grid lives on the course screen, one "Back to Course" away, so no link is needed here.
 function renderResultProgress() {
   const host = document.getElementById('result-progress');
   host.innerHTML = '';
@@ -132,9 +139,10 @@ function renderResultProgress() {
   host.appendChild(label);
 
   const exp = loadExposure();
+  const highlight = newlyPassed(_exposureAtLessonStart, exp, practiced);
   const grid = document.createElement('div');
   grid.className = 'grid';
-  for (const con of practiced) grid.appendChild(progressCard(con, exp));
+  for (const con of practiced) grid.appendChild(progressCard(con, exp, { highlight }));
   host.appendChild(grid);
 }
 
