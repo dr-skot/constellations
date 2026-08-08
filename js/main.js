@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   initRevealToggles();
+  initCourseDetail();
 
   // Explore mode
   document.getElementById('eq-next').addEventListener('click', () => {

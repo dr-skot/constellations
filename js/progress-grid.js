@@ -1,9 +1,8 @@
-// Shared progress-grid renderer: the tier ladder, the tier-state logic, and the
-// constellation-card builder. Loaded as a plain-script global (no build). Today the full
-// progress page (progress.html) is the only caller; the in-app result screen (index.html)
-// wires it in next (see #20/#21) so both surfaces draw the same cards. The `highlight`
-// hook exists now so those callers have it. Depends on nothing but the DOM (only
-// progressCard touches it).
+// Shared progress-grid renderer: the tier ladder, difficulty banding, the tier-state
+// logic, and the constellation-card builder. Loaded as a plain-script global (no build).
+// Two callers draw the same cards: the course screen's full grid and the result screen's
+// practiced-this-lesson strip (both in index.html). The `highlight` hook marks dots that
+// newly passed a lesson (#21). Depends on nothing but the DOM (only progressCard touches it).
 
 const TIERS = [
   { key: 'identify/diagram', short: 'iD', label: 'Identify by diagram' },
@@ -23,6 +22,31 @@ function tierClass(exposure, abbr, key) {
   if (t.correct >= 1) return 'passed';
   if (t.seen >= 1) return 'seen';
   return 'unseen';
+}
+
+// Difficulty band labels shown as grid section headers, keyed by con.diff.
+const DIFFICULTY_BANDS = {
+  1: 'Instant Recognition', 2: 'Bright & Distinctive',
+  3: 'Prominent',           4: 'Moderate',
+  5: 'Faint Zodiac & Medium Southern', 6: 'Regional Familiarity',
+  7: 'Faint or Deep South', 8: 'The Invisible',
+};
+
+// Group constellations into difficulty bands for the progress grid: sorted by diff then
+// name, one group per distinct diff, returned as [{ diff, label, cons }] ascending.
+// Does not mutate its input.
+function consByDifficulty(cons) {
+  const sorted = [...(cons || [])].sort((a, b) => a.diff - b.diff || a.name.localeCompare(b.name));
+  const groups = [];
+  let cur = null;
+  for (const con of sorted) {
+    if (!cur || con.diff !== cur.diff) {
+      cur = { diff: con.diff, label: DIFFICULTY_BANDS[con.diff] || `Difficulty ${con.diff}`, cons: [] };
+      groups.push(cur);
+    }
+    cur.cons.push(con);
+  }
+  return groups;
 }
 
 // The distinct constellations across a lesson's questions, deduped by abbr in
@@ -62,5 +86,5 @@ function progressCard(con, exposure, opts = {}) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { TIERS, tierClass, distinctCons, progressCard };
+  module.exports = { TIERS, DIFFICULTY_BANDS, tierClass, consByDifficulty, distinctCons, progressCard };
 }

@@ -29,12 +29,48 @@
 .viewer-mode .hud, .viewer-mode .prog-wrap, .viewer-mode #quiz-label-area,
 .viewer-mode .ans-grid, .viewer-mode #autocomplete-area, .viewer-mode .nav-row { display:none !important; }
 
-.stat-row {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:8px 0; border-bottom:1px solid var(--border); font-size:.85rem;
-}
-.stat-label { color:var(--dim); }
-.stat-val   { color:var(--text); font-weight:500; }
+/* Course progress grid (folded in from the old progress.html): a legend, difficulty-band
+   headers, the shared con-card grid (styled in css/progress.css), and a detail panel.
+   #course-map scrolls on its own so the hero and reset button stay put. */
+#course-legend { justify-content:center; margin:2px 0 10px; }
+#course-map { flex:1; min-height:0; overflow-y:auto; }
+
+.legend { display:flex; gap:14px; flex-wrap:wrap; font-size:.75rem;
+          color:var(--dim); }
+.legend span { display:flex; align-items:center; gap:5px; }
+.legend .dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+.legend .dot.passed { background:var(--ok); }
+.legend .dot.seen   { background:var(--warn, #e8a400); }
+.legend .dot.unseen { background:rgba(255,255,255,.12); }
+
+.diff-header { font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+               color:var(--dim); padding:10px 0 4px; border-top:1px solid var(--border);
+               margin-top:4px; }
+.diff-header:first-child { border-top:none; margin-top:0; }
+
+/* Cards are clickable on the course grid (they open the detail panel). */
+#course-map .con-card { cursor:pointer; }
+#course-map .con-card.active { border-color:var(--accent); }
+
+/* Detail panel: fixed strip at the bottom of the course screen. */
+.progress-detail { position:fixed; bottom:0; left:0; right:0; display:none; z-index:10;
+                   background:var(--card); border-top:1px solid var(--border);
+                   padding:14px 20px 20px; max-width:680px; margin:0 auto;
+                   box-shadow:0 -8px 32px rgba(0,0,0,.5); }
+.progress-detail.show { display:block; }
+#course-detail-close { float:right; background:none; border:none; color:var(--dim);
+                       cursor:pointer; font-size:1.1rem; line-height:1; padding:0; }
+#course-detail-close:hover { color:var(--text); }
+.progress-detail h2 { font-size:1rem; font-weight:500; margin-bottom:10px; }
+.detail-tiers { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+                gap:5px 16px; }
+.detail-tier { display:flex; align-items:center; gap:8px; font-size:.8rem; }
+.detail-dot { width:9px; height:9px; border-radius:2px; flex-shrink:0; }
+.detail-dot.passed { background:var(--ok); }
+.detail-dot.seen   { background:var(--warn, #e8a400); }
+.detail-dot.unseen { background:rgba(255,255,255,.12); }
+.detail-tier-name { color:var(--dim); flex:1; }
+.detail-counts { color:var(--text); white-space:nowrap; font-size:.75rem; }
 #quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
 #viewer-select-row { display:none; }
 .viewer-mode #viewer-select-row { display:flex; }

@@ -61,6 +61,30 @@ check('distinctCons on null → [] (no throw)', distinctCons(null).length === 0)
 check('distinctCons skips questions with no con',
   distinctCons([{ type: 'x' }, { con: uma }]).length === 1);
 
+// consByDifficulty: groups constellations into difficulty bands for the course grid —
+// sorted by diff then name, one group per distinct diff, ascending.
+const cons = [
+  { abbr: 'Ori', name: 'Orion',      diff: 2 },
+  { abbr: 'UMa', name: 'Ursa Major', diff: 1 },
+  { abbr: 'Leo', name: 'Leo',        diff: 2 },
+  { abbr: 'Aql', name: 'Aquila',     diff: 2 },
+  { abbr: 'Cas', name: 'Cassiopeia', diff: 1 },
+];
+const bands = consByDifficulty(cons);
+check('consByDifficulty groups by distinct diff', bands.length === 2);
+check('consByDifficulty bands ascend by diff', bands.map(b => b.diff).join(',') === '1,2');
+check('consByDifficulty labels the bands',
+  bands[0].label === 'Instant Recognition' && bands[1].label === 'Bright & Distinctive');
+check('consByDifficulty sorts within a band by name',
+  bands[1].cons.map(c => c.abbr).join(',') === 'Aql,Leo,Ori');
+check('consByDifficulty puts each con in exactly one band',
+  bands.reduce((n, b) => n + b.cons.length, 0) === cons.length);
+check('consByDifficulty on [] → []', consByDifficulty([]).length === 0);
+check('consByDifficulty on null → [] (no throw)', consByDifficulty(null).length === 0);
+check('consByDifficulty labels an unknown diff by number',
+  consByDifficulty([{ abbr: 'X', name: 'X', diff: 99 }])[0].label === 'Difficulty 99');
+check('consByDifficulty does not mutate its input', cons[0].abbr === 'Ori');
+
 origLog('');
 if (failures.length === 0) { origLog('✅ ALL PASSED'); process.exit(0); }
 else { origLog(`❌ ${failures.length} FAILURE(S)`); process.exit(1); }

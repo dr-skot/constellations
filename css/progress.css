@@ -1,8 +1,8 @@
 /* Shared progress-grid styles: the constellation card, its tier dots, and the grid that
-   lays cards out. Included by both the full progress page (progress.html) and the in-app
-   result screen (index.html) so a con-card looks identical on either surface.
-   Uses --card/--border/--ok/--warn/--dim from the host page's palette; --warn carries a
-   fallback since the main app's base palette doesn't define it. */
+   lays cards out. Used by both the course-screen grid and the result-screen practiced
+   strip (index.html) so a con-card looks identical on either surface.
+   Uses --card/--border/--ok/--warn/--dim from the host palette; --warn carries a
+   fallback since the app's base palette doesn't define it. */
 
 .grid {
   display: grid;

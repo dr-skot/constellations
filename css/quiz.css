@@ -333,25 +333,12 @@ canvas {
   flex-direction: column;
   gap: 8px;
 }
-.result-progress-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
 .result-progress-label {
   font-size: .72rem;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--dim);
 }
-.result-progress-link {
-  font-size: .82rem;
-  color: var(--accent);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.result-progress-link:hover { text-decoration: underline; }
 
 /* Keep the result buttons pinned and reachable even when the chart scrolls. */
 #result-btns { flex-shrink: 0; }

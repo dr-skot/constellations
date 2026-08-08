@@ -117,7 +117,8 @@ function endLesson() {
 }
 
 // The constellations practiced this lesson, drawn as shared progress cards (current tier
-// state — the newly-passed emphasis lands in #21), plus a link to the full progress page.
+// state — the newly-passed emphasis lands in #21). The full grid lives on the course
+// screen, one "Back to Course" away, so no separate link is needed here.
 function renderResultProgress() {
   const host = document.getElementById('result-progress');
   host.innerHTML = '';
@@ -125,17 +126,10 @@ function renderResultProgress() {
   if (!practiced.length) { host.style.display = 'none'; return; }
   host.style.display = '';
 
-  const head = document.createElement('div');
-  head.className = 'result-progress-head';
-  const label = document.createElement('span');
+  const label = document.createElement('div');
   label.className = 'result-progress-label';
   label.textContent = 'Practiced this lesson';
-  const link = document.createElement('a');
-  link.className = 'result-progress-link';
-  link.href = 'progress.html';
-  link.textContent = 'View full progress →';
-  head.append(label, link);
-  host.appendChild(head);
+  host.appendChild(label);
 
   const exp = loadExposure();
   const grid = document.createElement('div');
@@ -247,23 +241,60 @@ function startLessonFindQuestion(q) {
 
 function renderCourseMap() {
   const exp = loadExposure(), total = C.length;
-  const count = key => C.filter(c => (exp[c.abbr]?.[key]?.correct||0) >= 1).length;
   const seen = C.filter(c => (exp[c.abbr]?.['identify/diagram']?.seen||0) > 0).length;
   document.getElementById('btn-continue').textContent = seen > 0 ? 'Continue ›' : 'Start Learning ›';
   document.getElementById('course-progress-bar').style.width = `${(seen/total)*100}%`;
   document.getElementById('course-progress-label').textContent = `${seen} / ${total} constellations introduced`;
-  document.getElementById('course-map').innerHTML = [
-    ['Diagram identified',  'identify/diagram'],
-    ['Located by diagram',  'find/diagram'],
-    ['Stars identified',    'identify/stars'],
-    ['Located by stars',    'find/stars'],
-    ['Photo identified',    'identify/photo'],
-    ['Located by photo',    'find/photo'],
-    ['Master navigator',    'find/photo-nb'],
-  ].map(([label, key]) =>
-    `<div class="stat-row"><span class="stat-label">${label}</span>` +
-    `<span class="stat-val">${count(key)} / ${total}</span></div>`
-  ).join('');
+
+  // The full progress grid: every constellation as a shared progress card, grouped into
+  // difficulty bands. Tapping a card opens the detail panel with its per-tier counts.
+  const map = document.getElementById('course-map');
+  map.innerHTML = '';
+  for (const band of consByDifficulty(C)) {
+    const hdr = document.createElement('div');
+    hdr.className = 'diff-header';
+    hdr.textContent = band.label;
+    map.appendChild(hdr);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    for (const con of band.cons) {
+      const card = progressCard(con, exp);
+      card.addEventListener('click', () => showCourseDetail(con, card));
+      grid.appendChild(card);
+    }
+    map.appendChild(grid);
+  }
+}
+
+// Card detail panel: per-tier seen/correct counts for one constellation. Clicking the
+// active card again, the ✕, or Escape closes it (wired once in initCourseDetail).
+let _activeCourseCard = null;
+function showCourseDetail(con, card) {
+  if (_activeCourseCard) _activeCourseCard.classList.remove('active');
+  if (_activeCourseCard === card) { _activeCourseCard = null; closeCourseDetail(); return; }
+  _activeCourseCard = card;
+  card.classList.add('active');
+  const exp = loadExposure();
+  document.getElementById('course-detail-name').textContent = con.name;
+  document.getElementById('course-detail-tiers').innerHTML = TIERS.map(t => {
+    const cls = tierClass(exp, con.abbr, t.key);
+    const data = exp[con.abbr]?.[t.key];
+    return `<div class="detail-tier">
+      <div class="detail-dot ${cls}"></div>
+      <span class="detail-tier-name">${t.label}</span>
+      <span class="detail-counts">${data?.seen || 0} seen · ${data?.correct || 0} correct</span>
+    </div>`;
+  }).join('');
+  document.getElementById('course-detail').classList.add('show');
+}
+function closeCourseDetail() {
+  if (_activeCourseCard) _activeCourseCard.classList.remove('active');
+  _activeCourseCard = null;
+  document.getElementById('course-detail').classList.remove('show');
+}
+function initCourseDetail() {
+  document.getElementById('course-detail-close').addEventListener('click', closeCourseDetail);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCourseDetail(); });
 }
 
 // ═══════════════════════════════════════════════════════════
