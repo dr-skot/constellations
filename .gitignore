@@ -1,5 +1,5 @@
-# Commit-message scratch files (git commit -F .tmp/commit-msg.txt)
-.tmp/
+# Scratch files, incl. commit messages (git commit -F tmp/commit-msg.txt)
+tmp/
 
 # Playwright MCP snapshots dropped during browser smoke tests
 .playwright-mcp/
