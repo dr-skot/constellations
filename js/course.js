@@ -142,7 +142,11 @@ function renderResultProgress() {
   const highlight = newlyPassed(_exposureAtLessonStart, exp, practiced);
   const grid = document.createElement('div');
   grid.className = 'grid';
-  for (const con of practiced) grid.appendChild(progressCard(con, exp, { highlight }));
+  for (const con of practiced) {
+    const card = progressCard(con, exp, { highlight });
+    card.addEventListener('click', e => { e.stopPropagation(); showCourseDetail(con, card); });
+    grid.appendChild(card);
+  }
   host.appendChild(grid);
 }
 
@@ -367,8 +371,9 @@ function closeCourseDetail() {
 function initCourseDetail() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCourseDetail(); });
   document.addEventListener('click', closeCourseDetail);     // click away
-  const map = document.getElementById('course-map');
-  if (map) map.addEventListener('scroll', closeCourseDetail);
+  // Capture-phase catches scrolls from any scroll container (the course map or the
+  // result-screen grid), so the anchored popover dismisses wherever it was opened.
+  document.addEventListener('scroll', closeCourseDetail, true);
   window.addEventListener('resize', closeCourseDetail);
 }
 
