@@ -106,11 +106,16 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 
 - **strokePolyline(ctx, pts, close)** — the canvas primitive in `js/explore.js` for a projected
   polyline. Owns `beginPath` + the final `stroke`; lifts the pen wherever a point faces away from
-  the camera (`facing <= 0`). It **drops** the horizon-crossing segment rather than clipping it to
-  the near plane — a faithful copy of the pre-existing behavior (tracked for improvement in issue
-  #1). Callers set the stroke style beforehand and, for multi-ring shapes, call once per ring;
+  the camera (`facing <= 0`). A segment that straddles the near plane is **clipped** to the horizon
+  via `clipToNear` so the line runs to the screen edge instead of dropping the crossing segment
+  (issue #1). Callers set the stroke style beforehand and, for multi-ring shapes, call once per ring;
   `close` closes the final sub-path (the phototile debug outline). Used by the equator, Milky Way,
   boundary, quiz-highlight, and phototile passes.
+
+- **clipToNear(a, b)** — perspective-correct screen point where the segment `a→b` crosses the near
+  plane, evaluated at `facing = NEAR_EPS`. Both `x·facing` and `facing` are linear along the
+  view-space chord (gnomonic projection maps that chord to a straight screen line), so it reproduces
+  the projected crossing from the two projected endpoints alone. Backs strokePolyline's horizon clip.
 
 ## Label placement
 

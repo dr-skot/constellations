@@ -311,19 +311,52 @@ function loadExplorePhoto(con) {
   img.src = photoUrl(con);
 }
 
-// Stroke a polyline through projected points, lifting the pen wherever a point
-// faces away from the camera (facing <= 0). The crossing segment is dropped, not
-// clipped to the horizon (a known imperfection — see issue #1). Owns beginPath +
-// the final stroke; callers set the stroke style beforehand and, for multi-ring
-// shapes, call once per ring. `close` closes the final sub-path (the phototile
-// debug outline). Tested by test/stroke-polyline.js.
+// Near-plane epsilon for horizon clipping. A segment crossing facing = 0 is clipped
+// at this small positive facing instead of exactly 0 (which projects to infinity),
+// so the clipped vertex lands far off-screen and the visible line runs to the edge.
+const NEAR_EPS = 1e-6;
+
+// Perspective-correct screen point where the segment a→b crosses the near plane,
+// evaluated at facing = NEAR_EPS. Both (x·facing) and facing are linear along the
+// view-space chord (gnomonic projection maps that chord to a straight screen line),
+// so x = (x·facing)(t) / facing(t) reproduces the projected crossing from the two
+// endpoints alone — no camera or view vectors needed here. See issue #1.
+function clipToNear(a, b) {
+  const fa = a.facing, fb = b.facing;
+  const t = (NEAR_EPS - fa) / (fb - fa);
+  const x = (a.x * fa + t * (b.x * fb - a.x * fa)) / NEAR_EPS;
+  const y = (a.y * fa + t * (b.y * fb - a.y * fa)) / NEAR_EPS;
+  return { x, y };
+}
+
+// Stroke a polyline through projected points. A segment that straddles the near
+// plane (one endpoint facing the camera, one facing away) is CLIPPED to the horizon
+// via clipToNear so the line runs to the screen edge instead of dropping the crossing
+// segment (issue #1); points fully behind the camera (facing <= 0) still lift the pen.
+// Owns beginPath + the final stroke; callers set the stroke style beforehand and, for
+// multi-ring shapes, call once per ring. `close` closes the final sub-path (the
+// phototile debug outline). Tested by test/stroke-polyline.js.
 function strokePolyline(ctx, pts, close = false) {
   ctx.beginPath();
   let penDown = false;
+  let prev = null;
   for (const p of pts) {
-    if (p.facing <= 0) { penDown = false; continue; }
-    if (!penDown) { ctx.moveTo(p.x, p.y); penDown = true; }
-    else ctx.lineTo(p.x, p.y);
+    if (p.facing > 0) {
+      if (penDown) {
+        ctx.lineTo(p.x, p.y);
+      } else {
+        // Entering the front hemisphere: if the previous point was behind, start at
+        // the near-plane crossing so the line runs in from the edge.
+        if (prev && prev.facing <= 0) { const c = clipToNear(prev, p); ctx.moveTo(c.x, c.y); ctx.lineTo(p.x, p.y); }
+        else ctx.moveTo(p.x, p.y);
+        penDown = true;
+      }
+    } else {
+      // Behind the camera: run the line out to the crossing before lifting the pen.
+      if (penDown) { const c = clipToNear(prev, p); ctx.lineTo(c.x, c.y); }
+      penDown = false;
+    }
+    prev = p;
   }
   if (close) ctx.closePath();
   ctx.stroke();
