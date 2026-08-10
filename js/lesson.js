@@ -182,29 +182,89 @@ function planLesson(exposure, catalog, bounds, rng = Math.random, now = Date.now
     };
   }));
 
-  const questions = [];
-
-  // Review slots — use reviewSpec so passed tiers get revisited occasionally
-  for (const con of reviewPool) {
-    if (questions.length >= reviewNeeded) break;
-    const spec = applyKnobs(reviewSpec(exp[con.abbr], con.name, rng, log), exp[con.abbr], con.name, rng, log);
-    if (spec.type === 'find' && !bounds[con.abbr]) continue;
-    questions.push({ con, ...spec });
+  // Roll a ready-to-use spec for `con`. Retries so a find tier the con can't
+  // render (no BOUNDS) resolves to another tier instead of dropping the con,
+  // and — when `avoid` is given (a set of questionKeys the constellation has
+  // already used this lesson) — so a repeat prefers a tier/mode it hasn't served
+  // yet. That keeps a second appearance a genuinely different task rather than
+  // the same one at a different rotation (issue #17). Always returns a renderable
+  // spec — an identify/diagram question is the guaranteed fallback (it needs no
+  // bounds), so every constellation can fill a slot and lessons stay 12 long.
+  function rollValidSpec(con, avoid) {
+    let renderable = null;
+    for (let i = 0; i < 8; i++) {
+      const spec = applyKnobs(reviewSpec(exp[con.abbr], con.name, rng, log), exp[con.abbr], con.name, rng, log);
+      if (spec.type === 'find' && !bounds[con.abbr]) continue;   // can't render without bounds
+      renderable = renderable || spec;
+      if (!avoid || !avoid.has(questionKey(spec))) return spec;   // fresh tier/mode wins
+    }
+    return renderable  // every renderable roll was an already-used tier — accept the repeat
+      || applyKnobs({ type: 'identify', mode: 'diagram', _tierKey: 'identify/diagram' },
+           exp[con.abbr], con.name, rng, log);
   }
 
-  // New slots
+  // ── Seed one distinct question per constellation ───────────
+  // Review constellations first (heat order), then new introductions. Each
+  // constellation appears at most once here; forced repeats are added below.
+  // `usedKeys` tracks the tier/mode signatures a constellation has served so
+  // repeats can steer clear of them.
+  const groups = [];  // [{ con, queue: [question, ...], usedKeys: Set }], priority order
+  function seed(con, spec) {
+    groups.push({ con, queue: [{ con, ...spec }], usedKeys: new Set([questionKey(spec)]) });
+  }
+
+  for (const con of reviewPool) {
+    if (groups.length >= reviewNeeded) break;
+    seed(con, rollValidSpec(con));
+  }
+
   let added = 0;
   for (const con of newPool) {
-    if (added >= actualNew || questions.length >= 12) break;
+    if (added >= actualNew || groups.length >= 12) break;
     log.log('[lesson] new:', con.name, 'diff:', con.diff);
-    questions.push({ con, type: 'identify', mode: 'diagram', answerMode: 'choice' });
+    seed(con, { type: 'identify', mode: 'diagram', answerMode: 'choice' });
     added++;
   }
 
-  while (questions.length < 12 && questions.length > 0)
-    questions.push({ ...questions[Math.floor(rng() * questions.length)] });
+  // ── Fill to 12 with capped, evenly-spread repeats ──────────
+  // cap = the fewest repeats the pool forces: with ≥12 distinct constellations
+  // it is 1 (no repeats at all); with a small pool it spreads copies evenly
+  // rather than cloning one target many times (issue #17). Each repeat re-rolls
+  // a fresh spec, so a second appearance can be a different tier/mode instead of
+  // the same question at a different rotation.
+  const D = groups.length;
+  const cap = Math.max(1, Math.ceil(12 / Math.max(1, D)));
+  let total = D;
+  let progressed = true;
+  while (total < 12 && progressed) {
+    progressed = false;
+    for (const g of groups) {
+      if (total >= 12) break;
+      if (g.queue.length >= cap) continue;
+      const spec = rollValidSpec(g.con, g.usedKeys);
+      g.queue.push({ con: g.con, ...spec });
+      g.usedKeys.add(questionKey(spec));
+      total++;
+      progressed = true;
+    }
+  }
 
-  questions.sort(() => rng() - 0.5);
+  // ── Order by greedy spacing ────────────────────────────────
+  // Repeatedly emit the constellation with the most copies left that isn't the
+  // one just emitted (rng tie-break). Guarantees no back-to-back repeat whenever
+  // no constellation owns more than half the slots — always true unless D === 1
+  // (a single distinct constellation, where adjacency is unavoidable).
+  const questions = [];
+  let prev = null;
+  while (questions.length < total) {
+    let pool = groups.filter(g => g.queue.length > 0 && g.con.abbr !== prev);
+    if (pool.length === 0) pool = groups.filter(g => g.queue.length > 0);
+    const most = Math.max(...pool.map(g => g.queue.length));
+    const top = pool.filter(g => g.queue.length === most);
+    const pick = top[Math.floor(rng() * top.length)];
+    questions.push(pick.queue.shift());
+    prev = pick.con.abbr;
+  }
 
   const newCount  = questions.filter(q => !(exp[q.con.abbr]?.['identify/diagram']?.seen)).length;
   const findCount = questions.filter(q => q.type === 'find').length;

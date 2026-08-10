@@ -126,6 +126,67 @@ for (const [name, exp] of states) {
     questions.every(q => q.con && q.con.abbr && q.con.stars.length > 0));
 }
 
+// Anti-repeat invariants (issue #17): a constellation never appears on two
+// consecutive questions, and no constellation is over-represented beyond an
+// even spread of the pool. Small pools (few known constellations) are the
+// stress case — they used to be padded with cloned questions and shuffled
+// blind, producing runs like four Ursa Majors in a row.
+{
+  const antiStates = [
+    ['fresh', freshExposure()],
+    ['2 cons @ tier1', seedExposure(2, 1)],
+    ['3 cons @ tier1', seedExposure(3, 1)],
+    ['6 cons @ tier1', seedExposure(6, 1)],
+    ['20 cons @ tier3', seedExposure(20, 3)],
+  ];
+  for (const [name, exp] of antiStates) {
+    // Sweep several seeds so a single lucky ordering can't hide a repeat.
+    let adjTotal = 0, capViolations = '';
+    for (const seed of [1, 2, 7, 42, 99, 2024]) {
+      const { questions } = planLesson(exp, C, BOUNDS, makeRng(seed), NOW);
+      const distinct = new Set(questions.map(q => q.con.abbr)).size;
+
+      for (let i = 1; i < questions.length; i++)
+        if (questions[i].con.abbr === questions[i - 1].con.abbr && distinct > 1) adjTotal++;
+
+      const counts = {};
+      for (const q of questions) counts[q.con.abbr] = (counts[q.con.abbr] || 0) + 1;
+      const cap = Math.max(1, Math.ceil(questions.length / distinct));
+      for (const [a, n] of Object.entries(counts))
+        if (n > cap) capViolations += ` seed${seed}:${a}=${n}>${cap}(D=${distinct})`;
+    }
+    check(`[${name}] no back-to-back same constellation (6 seeds)`,
+      adjTotal === 0, `${adjTotal} adjacent repeat(s) across seeds`);
+    check(`[${name}] no constellation exceeds even-spread cap (6 seeds)`,
+      capViolations === '', capViolations.trim());
+  }
+}
+
+// Near-duplicate avoidance (issue #17): when a constellation with several
+// passed tiers is repeated within a lesson, the repeat should be a *different*
+// tier/mode, not the same question at another rotation. Constellations here have
+// tiers 0–2 passed (≥2 identify tiers that render without bounds), so a repeated
+// review constellation must vary its questionKey at least once.
+{
+  const exp = seedExposure(4, 3);
+  let sameKeyRepeats = 0, checked = 0;
+  for (const seed of [1, 2, 7, 42, 99, 2024]) {
+    const { questions } = planLesson(exp, C, BOUNDS, makeRng(seed), NOW);
+    const byCon = {};
+    for (const q of questions) (byCon[q.con.abbr] ||= []).push(q);
+    for (const [abbr, qs] of Object.entries(byCon)) {
+      if (qs.length < 2 || !exp[abbr]) continue;   // only repeated, known (multi-tier) cons
+      checked++;
+      const keys = new Set(qs.map(q => (q.type === 'find' && q.noBounds && q.mode === 'photo')
+        ? 'find/photo-nb' : (q.type === 'find' ? 'find/' + q.mode : 'identify/' + q.mode)));
+      if (keys.size < 2) sameKeyRepeats++;   // repeated but never varied the task
+    }
+  }
+  check('repeated multi-tier constellation varies its tier/mode (6 seeds)',
+    checked > 0 && sameKeyRepeats === 0,
+    `${sameKeyRepeats}/${checked} repeated cons never varied tier`);
+}
+
 // Determinism: same (exposure, seed, now) → identical lesson.
 {
   const exp = seedExposure(15, 4);

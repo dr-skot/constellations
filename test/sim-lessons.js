@@ -443,6 +443,9 @@ console.table = quiet;
 const NUM_LESSONS = 20;
 const TIER_KEYS = TIER_SPECS.map(([k]) => k);
 let totalQuestions = 0;
+// issue #17 anti-repeat invariants, accumulated across every simulated lesson.
+let adjacentRepeats = 0;
+const capOverflows = [];
 const lessonSummaries = [];
 const newIntrosPerLesson = [];
 const allQuestions = []; // track every question for review weighting analysis
@@ -455,6 +458,20 @@ for (let lesson = 0; lesson < NUM_LESSONS; lesson++) {
   const knownBefore = new Set(Object.keys(expBefore).filter(k => k !== '_v2'));
 
   const { label, questions } = generateNextLesson();
+
+  // issue #17: no back-to-back same constellation, and no constellation over an
+  // even spread of the pool (cap = ceil(12 / distinct)). Checked on every lesson
+  // the simulation produces — many pool sizes and shapes, not one frozen golden.
+  {
+    const distinct = new Set(questions.map(q => q.con.abbr)).size;
+    for (let i = 1; i < questions.length; i++)
+      if (questions[i].con.abbr === questions[i - 1].con.abbr && distinct > 1) adjacentRepeats++;
+    const counts = {};
+    for (const q of questions) counts[q.con.abbr] = (counts[q.con.abbr] || 0) + 1;
+    const cap = Math.max(1, Math.ceil(questions.length / distinct));
+    for (const [a, n] of Object.entries(counts))
+      if (n > cap) capOverflows.push(`L${lesson + 1} ${a}:${n}>${cap}(D=${distinct})`);
+  }
 
   for (const q of questions) {
     allQuestions.push({
@@ -514,6 +531,12 @@ console.log('');
 
 const exp = loadExposure();
 const knownAbbrs = Object.keys(exp).filter(k => k !== '_v2');
+
+// issue #17: anti-repeat invariants over all 20 simulated lessons
+check('Anti-repeat: no back-to-back same constellation across 20 lessons',
+  adjacentRepeats === 0, `${adjacentRepeats} adjacent repeat(s)`);
+check('Anti-repeat: no constellation exceeds even-spread cap across 20 lessons',
+  capOverflows.length === 0, capOverflows.join(' '));
 
 // QA 1: First lesson intro cap
 check('Lesson 1 introduces ≤4 constellations',

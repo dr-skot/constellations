@@ -14,8 +14,8 @@
 // the rng stream a lesson sees is fully determined by its recorded seed — so a
 // faithful extraction reproduces every lesson exactly.
 //
-// Run ONCE against unmodified code:  node test/capture-golden.js
-// Commit the emitted test/lesson-golden.json.
+// Re-run whenever an INTENTIONAL change to planLesson alters its output, then
+// review the test/lesson-golden.json diff and commit it:  node test/capture-golden.js
 
 const fs = require('fs');
 const path = require('path');
@@ -72,9 +72,13 @@ Date.now = () => mockNow;
 const origLog = console.log, origTable = console.table;
 console.log = () => {}; console.table = () => {};
 
-// ── Load unmodified source ─────────────────────────────────
+// ── Load source ────────────────────────────────────────────
+// data.js → lesson.js (planLesson, TIER_SPECS, questionKey) → course.js
+// (generateNextLesson, which delegates to planLesson). lesson.js must load
+// before course.js; it was added when the planner was extracted out of course.js.
 const jsDir = path.join(__dirname, '..', 'js');
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'data.js'), 'utf8'), { filename: 'data.js' });
+vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'lesson.js'), 'utf8'), { filename: 'lesson.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'course.js'), 'utf8'), { filename: 'course.js' });
 
 // Keep console muted through capture — the scheduler logs on every call; the pure
