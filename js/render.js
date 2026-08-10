@@ -377,6 +377,31 @@ function findNeighborLabelSpot(view, neighborPts, hint, box) {
   return searchLabelSpot(preScan, { x: cx, y: cy }, radii, valid);
 }
 
+// Place the course-screen card-anchored detail popover (issue #22). Pure geometry:
+//   card: { left, top, width, height, vBottom } — the tapped card's box in the same
+//         coordinate space the popover is positioned in (viewport space for a
+//         position:fixed popover); vBottom is the card's bottom edge, and with
+//         viewportHeight it decides the flip.
+//   pop:  { width, height } — the measured popover box.
+//   vp:   { containerWidth, viewportHeight } — the bounds the popover must stay within.
+//   opts: gap between card and popover, pad (inner arrow margin), minArrow,
+//         arrowHalf (half the arrow width), minTop (top clamp when flipped above).
+// Returns { left, top, above, arrow }: the popover opens below the card by default
+// and flips above when opening below would spill past the viewport bottom; left is
+// clamped so the popover stays within the container; arrow is the caret's offset
+// from the popover's left, kept pointing at the card's centre after clamping.
+function popoverPosition(card, pop, vp, opts = {}) {
+  const gap = opts.gap ?? 8, pad = opts.pad ?? 24,
+        minArrow = opts.minArrow ?? 12, arrowHalf = opts.arrowHalf ?? 6,
+        minTop = opts.minTop ?? 4;
+  const left = Math.max(0, Math.min(card.left, vp.containerWidth - pop.width));
+  const arrow = Math.min(Math.max(card.left - left + card.width / 2 - arrowHalf, minArrow), pop.width - pad);
+  const below = card.vBottom + gap + pop.height <= vp.viewportHeight;
+  const top = below ? card.top + card.height + gap
+                    : Math.max(minTop, card.top - pop.height - gap);
+  return { left, top, above: !below, arrow };
+}
+
 function redrawReveal(con) {
   const origAbbr = con.abbr;
   const showBound = revState.boundary;

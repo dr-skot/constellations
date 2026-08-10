@@ -52,25 +52,36 @@
 #course-map .con-card { cursor:pointer; }
 #course-map .con-card.active { border-color:var(--accent); }
 
-/* Detail panel: fixed strip at the bottom of the course screen. */
-.progress-detail { position:fixed; bottom:0; left:0; right:0; display:none; z-index:10;
-                   background:var(--card); border-top:1px solid var(--border);
-                   padding:14px 20px 20px; max-width:680px; margin:0 auto;
-                   box-shadow:0 -8px 32px rgba(0,0,0,.5); }
-.progress-detail.show { display:block; }
-#course-detail-close { float:right; background:none; border:none; color:var(--dim);
-                       cursor:pointer; font-size:1.1rem; line-height:1; padding:0; }
-#course-detail-close:hover { color:var(--text); }
-.progress-detail h2 { font-size:1rem; font-weight:500; margin-bottom:10px; }
-.detail-tiers { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
-                gap:5px 16px; }
-.detail-tier { display:flex; align-items:center; gap:8px; font-size:.8rem; }
-.detail-dot { width:9px; height:9px; border-radius:2px; flex-shrink:0; }
-.detail-dot.passed { background:var(--ok); }
-.detail-dot.seen   { background:var(--warn, #e8a400); }
-.detail-dot.unseen { background:rgba(255,255,255,.12); }
-.detail-tier-name { color:var(--dim); flex:1; }
-.detail-counts { color:var(--text); white-space:nowrap; font-size:.75rem; }
+/* Detail popover: anchored at the tapped card (issue #22). Placement — below vs.
+   flipped above, and the horizontal clamp — is computed by popoverPosition in
+   render.js; this only styles the box, its arrow, and the tier rows. */
+.course-popover { position:fixed; width:320px; max-width:calc(100vw - 24px);
+                  background:var(--card); border:1px solid rgba(91,138,245,.5);
+                  border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,.6); z-index:80; }
+.course-popover::before { content:''; position:absolute; top:-7px; left:var(--arrow, 24px);
+                  width:12px; height:12px; background:var(--card); transform:rotate(45deg);
+                  border-left:1px solid rgba(91,138,245,.5); border-top:1px solid rgba(91,138,245,.5); }
+.course-popover.above::before { top:auto; bottom:-7px; border-left:none; border-top:none;
+                  border-right:1px solid rgba(91,138,245,.5); border-bottom:1px solid rgba(91,138,245,.5); }
+@keyframes cdp-pop { from { opacity:0; transform:translateY(-4px) scale(.98); } to { opacity:1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .course-popover { animation:cdp-pop .16s ease-out; }
+}
+.cdp-head { display:flex; align-items:center; gap:10px; padding:10px 14px 8px; }
+.cdp-glyph { flex-shrink:0; border-radius:6px; background:rgba(255,255,255,.02); }
+.cdp-title { font-size:.95rem; font-weight:600; color:var(--text); }
+.cdp-close { margin-left:auto; background:none; border:none; color:var(--dim);
+             cursor:pointer; font-size:1rem; line-height:1; padding:4px; }
+.cdp-close:hover { color:var(--text); }
+.cdp-tiers { padding:2px 14px 12px; display:grid; gap:1px; }
+.cdp-row { display:flex; align-items:center; gap:10px; padding:5px 6px; border-radius:6px; font-size:.82rem; }
+.cdp-row.unseen { opacity:.5; }
+.cdp-dot { width:9px; height:9px; border-radius:2px; flex-shrink:0; background:rgba(255,255,255,.12); }
+.cdp-row.passed .cdp-dot { background:var(--ok); }
+.cdp-row.seen   .cdp-dot { background:var(--warn, #e8a400); }
+.cdp-name { color:var(--dim); flex:1; }
+.cdp-row.passed .cdp-name { color:var(--text); }
+.cdp-counts { color:var(--text); white-space:nowrap; font-size:.76rem; font-variant-numeric:tabular-nums; }
 #quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
 #viewer-select-row { display:none; }
 .viewer-mode #viewer-select-row { display:flex; }

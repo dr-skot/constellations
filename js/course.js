@@ -267,42 +267,109 @@ function renderCourseMap() {
     grid.className = 'grid';
     for (const con of band.cons) {
       const card = progressCard(con, exp);
-      card.addEventListener('click', () => showCourseDetail(con, card));
+      card.addEventListener('click', e => { e.stopPropagation(); showCourseDetail(con, card); });
       grid.appendChild(card);
     }
     map.appendChild(grid);
   }
 }
 
-// Card detail panel: per-tier seen/correct counts for one constellation. Clicking the
-// active card again, the ✕, or Escape closes it (wired once in initCourseDetail).
+// Card detail: a popover anchored at the tapped card showing per-tier seen/correct
+// counts for one constellation, led by a tiny figure + its name (issue #22). It
+// opens below the card and flips above near the viewport bottom (placement geometry
+// is popoverPosition in render.js). Re-tapping the active card, the ✕, Escape, a
+// click away, or scrolling/resizing closes it (all wired once in initCourseDetail).
 let _activeCourseCard = null;
+let _coursePopover = null;
+
+// A tiny north-up stick figure of `con`, bounding-box-fit into `size` px. Reuses the
+// app's projectStarsTAN, so the glyph is oriented (north up) like the quiz diagram.
+// Draws the default catalog figure (con.stars/con.lines); honoring the selected
+// diagram source (Rey/Stellarium/Ford) for the glyph is out of scope here (issue #22).
+function courseConGlyph(con, size) {
+  const dpr = window.devicePixelRatio || 1;
+  const cv = document.createElement('canvas');
+  cv.className = 'cdp-glyph';
+  cv.width = size * dpr; cv.height = size * dpr;
+  cv.style.width = size + 'px'; cv.style.height = size + 'px';
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  const pts = projectStarsTAN(con.stars, con, 100, 100);
+  const vis = pts.filter(p => p.facing > 0);
+  if (!vis.length) return cv;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const p of vis) { minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+                         minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y); }
+  const pad = 5, w = Math.max(maxX - minX, 1e-3), h = Math.max(maxY - minY, 1e-3);
+  const s = Math.min((size - 2 * pad) / w, (size - 2 * pad) / h);
+  const ox = (size - w * s) / 2 - minX * s, oy = (size - h * s) / 2 - minY * s;
+  const X = p => p.x * s + ox, Y = p => p.y * s + oy;
+  ctx.strokeStyle = 'rgba(180,200,255,.45)'; ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (const [a, b] of con.lines) {
+    const pa = pts[a], pb = pts[b];
+    if (!pa || !pb || pa.facing <= 0 || pb.facing <= 0) continue;
+    ctx.moveTo(X(pa), Y(pa)); ctx.lineTo(X(pb), Y(pb));
+  }
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(232,240,255,.9)';
+  for (const p of vis) {
+    const r = Math.max(.6, 1.6 - (p.mag || 3) * 0.18);
+    ctx.beginPath(); ctx.arc(X(p), Y(p), r, 0, Math.PI * 2); ctx.fill();
+  }
+  return cv;
+}
+
+function positionCoursePopover(pop, card) {
+  const r = card.getBoundingClientRect();
+  const pos = popoverPosition(
+    { left: r.left, top: r.top, width: r.width, height: r.height, vBottom: r.bottom },
+    { width: pop.offsetWidth, height: pop.offsetHeight },
+    { containerWidth: window.innerWidth, viewportHeight: window.innerHeight });
+  pop.style.left = pos.left + 'px';
+  pop.style.top = pos.top + 'px';
+  pop.style.setProperty('--arrow', pos.arrow + 'px');
+  pop.classList.toggle('above', pos.above);
+}
+
 function showCourseDetail(con, card) {
-  if (_activeCourseCard) _activeCourseCard.classList.remove('active');
-  if (_activeCourseCard === card) { _activeCourseCard = null; closeCourseDetail(); return; }
+  const reopen = _activeCourseCard === card;
+  closeCourseDetail();
+  if (reopen) return;                       // re-tap toggles closed
   _activeCourseCard = card;
   card.classList.add('active');
   const exp = loadExposure();
-  document.getElementById('course-detail-name').textContent = con.name;
-  document.getElementById('course-detail-tiers').innerHTML = TIERS.map(t => {
+  const rows = TIERS.map(t => {
     const cls = tierClass(exp, con.abbr, t.key);
-    const data = exp[con.abbr]?.[t.key];
-    return `<div class="detail-tier">
-      <div class="detail-dot ${cls}"></div>
-      <span class="detail-tier-name">${t.label}</span>
-      <span class="detail-counts">${data?.seen || 0} seen · ${data?.correct || 0} correct</span>
-    </div>`;
+    const d = exp[con.abbr]?.[t.key];
+    return `<div class="cdp-row ${cls}"><span class="cdp-dot"></span>` +
+      `<span class="cdp-name">${t.label}</span>` +
+      `<span class="cdp-counts">${d?.seen || 0} seen · ${d?.correct || 0} correct</span></div>`;
   }).join('');
-  document.getElementById('course-detail').classList.add('show');
+  const pop = document.createElement('div');
+  pop.className = 'course-popover';
+  pop.innerHTML = `<div class="cdp-head"><span class="cdp-title">${con.name}</span>` +
+    `<button class="cdp-close" aria-label="Close">✕</button></div>` +
+    `<div class="cdp-tiers">${rows}</div>`;
+  pop.querySelector('.cdp-head').insertBefore(courseConGlyph(con, 34), pop.querySelector('.cdp-title'));
+  pop.querySelector('.cdp-close').addEventListener('click', e => { e.stopPropagation(); closeCourseDetail(); });
+  pop.addEventListener('click', e => e.stopPropagation());   // clicks inside don't dismiss
+  document.body.appendChild(pop);
+  positionCoursePopover(pop, card);         // measure after append, then place
+  _coursePopover = pop;
 }
+
 function closeCourseDetail() {
   if (_activeCourseCard) _activeCourseCard.classList.remove('active');
   _activeCourseCard = null;
-  document.getElementById('course-detail').classList.remove('show');
+  if (_coursePopover) { _coursePopover.remove(); _coursePopover = null; }
 }
+
 function initCourseDetail() {
-  document.getElementById('course-detail-close').addEventListener('click', closeCourseDetail);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCourseDetail(); });
+  document.addEventListener('click', closeCourseDetail);     // click away
+  const map = document.getElementById('course-map');
+  if (map) map.addEventListener('scroll', closeCourseDetail);
+  window.addEventListener('resize', closeCourseDetail);
 }
 
 // ═══════════════════════════════════════════════════════════
