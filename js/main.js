@@ -252,12 +252,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalBody = document.getElementById('modal-body');
   const modalGuideLink = document.getElementById('modal-guide-link');
   const modalExploreBtn = document.getElementById('modal-explore-btn');
+  const modalGlyph = document.getElementById('modal-glyph');
   let modalAbbrCurrent = null;
 
   function openConModal(con) {
     modalAbbrCurrent = con.abbr;
     modalTitle.textContent = con.name;
     modalBody.textContent = '';
+    // Mini north-up figure, same glyph the course detail popover uses (issue #22).
+    modalGlyph.replaceChildren(courseConGlyph(con, 64));
     conModal.style.display = 'flex';
     // Authored blurb (cached; near-instant after warm-up), guarded against a
     // stale modal if the user reopens on a different constellation mid-load.

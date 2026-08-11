@@ -112,12 +112,25 @@ body {
 
 .modal-close:hover { color: var(--text) }
 
+.modal-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding-right: 24px
+}
+
+.modal-glyph {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px
+}
+
 .modal-title {
   font-size: 1.35rem;
   font-weight: 400;
   letter-spacing: .1em;
-  color: #b0ccff;
-  margin-bottom: 14px
+  color: #b0ccff
 }
 
 .modal-body {
