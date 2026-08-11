@@ -13,6 +13,18 @@ function applyDiagramSource(key) {
 }
 
 // ═══════════════════════════════════════════════════════════
+// CONSTELLATION BLURBS
+// ═══════════════════════════════════════════════════════════
+// Original, authored flavor text (myth + a fun fact + a look-for) for the info
+// modal — replaces the old live Wikipedia fetch (see issue #4). Keyed by abbr.
+let _blurbs = null;
+function _loadBlurbs() {
+  if (_blurbs) return Promise.resolve(_blurbs);
+  return fetch('js/constellation-blurbs.json').then(r => r.json()).then(b => (_blurbs = b));
+}
+_loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
+
+// ═══════════════════════════════════════════════════════════
 // HASH ROUTING
 // ═══════════════════════════════════════════════════════════
 
@@ -238,27 +250,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const conModal = document.getElementById('con-modal');
   const modalTitle = document.getElementById('modal-title');
   const modalBody = document.getElementById('modal-body');
-  const modalWikiLink = document.getElementById('modal-wiki-link');
+  const modalGuideLink = document.getElementById('modal-guide-link');
   const modalExploreBtn = document.getElementById('modal-explore-btn');
   let modalAbbrCurrent = null;
 
   function openConModal(con) {
     modalAbbrCurrent = con.abbr;
     modalTitle.textContent = con.name;
-    modalBody.textContent = 'Loading…';
-    const wikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(con.name)}_(constellation)`;
-    modalWikiLink.href = wikiUrl;
+    modalBody.textContent = '';
     conModal.style.display = 'flex';
-    fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(con.name)}_(constellation)`)
-      .then(r => r.json())
-      .then(d => {
-        if (modalAbbrCurrent !== con.abbr) return;
-        modalBody.textContent = d.extract || 'No summary available.';
-      })
-      .catch(() => {
-        if (modalAbbrCurrent !== con.abbr) return;
-        modalBody.textContent = 'Could not load description.';
-      });
+    // Authored blurb (cached; near-instant after warm-up), guarded against a
+    // stale modal if the user reopens on a different constellation mid-load.
+    _loadBlurbs().then(blurbs => {
+      if (modalAbbrCurrent !== con.abbr) return;
+      modalBody.textContent = blurbs[con.abbr] || '';
+    }).catch(() => {});
+    // Offer the finding guide only when one exists for this constellation.
+    modalGuideLink.style.display = 'none';
+    _loadGuides().then(guides => {
+      if (modalAbbrCurrent !== con.abbr) return;
+      if (guides[con.name]?.steps?.length) modalGuideLink.style.display = '';
+    }).catch(() => {});
   }
 
   function closeConModal() {
@@ -274,6 +286,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const abbr = modalAbbrCurrent;
     closeConModal();
     navigate('explore/' + abbr);
+  });
+
+  // "Finding guide →" — jump into the explorer for this constellation and start
+  // its guided walkthrough (startFindGuide restores the view on exit).
+  modalGuideLink.addEventListener('click', e => {
+    e.preventDefault();
+    const con = C.find(c => c.abbr === modalAbbrCurrent);
+    closeConModal();
+    if (!con) return;
+    navigate('explore/' + con.abbr);
+    startFindGuide(con);
   });
 
   // Delegated handler for .con-info-link clicks (generated dynamically by conLabel)

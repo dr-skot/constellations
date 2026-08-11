@@ -135,13 +135,14 @@ body {
   flex-wrap: wrap
 }
 
-.modal-wiki-link {
+.modal-guide-link {
   color: var(--accent);
   font-size: .85rem;
-  text-decoration: none
+  text-decoration: none;
+  cursor: pointer
 }
 
-.modal-wiki-link:hover { text-decoration: underline }
+.modal-guide-link:hover { text-decoration: underline }
 
 .modal-explore-btn {
   margin-left: auto;

@@ -36,11 +36,16 @@ function startFindGuide(con) {
     const guide = guides[con.name];
     if (!guide?.steps?.length) return;
 
-    _guideSaved = { quiz: explore.quiz, ...snapshotView(explore) };
+    const quizBar = document.getElementById('explore-quiz-bar');
+    const navRow  = document.getElementById('find-nav-row');
+    // Capture the bars' prior visibility so exit restores exactly what was showing
+    // — the guide can be launched from a find quiz (bars visible) or from the info
+    // modal's "Finding guide" link in free explore (bars hidden). See issue #4.
+    _guideSaved = { quiz: explore.quiz, quizBarDisplay: quizBar.style.display, navRowDisplay: navRow.style.display, ...snapshotView(explore) };
     explore.quiz = null;
 
-    document.getElementById('explore-quiz-bar').style.display    = 'none';
-    document.getElementById('find-nav-row').style.display        = 'none';
+    quizBar.style.display = 'none';
+    navRow.style.display  = 'none';
     document.getElementById('find-guide-overlay').style.display  = '';
 
     const steps = guide.steps.map(s => Object.assign({}, s));
@@ -60,11 +65,12 @@ function exitFindGuide() {
 
   explore.quiz = _guideSaved.quiz;
   applyView(explore, _guideSaved);
+  const { quizBarDisplay, navRowDisplay } = _guideSaved;
   _guideSaved  = null;
 
   document.getElementById('find-guide-overlay').style.display  = 'none';
-  document.getElementById('explore-quiz-bar').style.display    = '';
-  document.getElementById('find-nav-row').style.display        = '';
+  document.getElementById('explore-quiz-bar').style.display    = quizBarDisplay;
+  document.getElementById('find-nav-row').style.display        = navRowDisplay;
 
   drawExplore();
 }
