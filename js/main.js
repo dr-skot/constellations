@@ -260,13 +260,13 @@ document.addEventListener('DOMContentLoaded', () => {
     modalTitle.textContent = con.name;
     modalBody.textContent = '';
     // Mini north-up figure, same glyph the course detail popover uses (issue #22).
-    modalGlyph.replaceChildren(courseConGlyph(con, 64));
+    modalGlyph.replaceChildren(conGlyph(con, 64));
     conModal.style.display = 'flex';
     // Authored blurb (cached; near-instant after warm-up), guarded against a
     // stale modal if the user reopens on a different constellation mid-load.
     _loadBlurbs().then(blurbs => {
       if (modalAbbrCurrent !== con.abbr) return;
-      modalBody.textContent = blurbs[con.abbr] || '';
+      modalBody.textContent = blurbs[con.abbr] || 'No description available.';
     }).catch(() => {});
     // Offer the finding guide only when one exists for this constellation.
     modalGuideLink.style.display = 'none';

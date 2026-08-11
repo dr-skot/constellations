@@ -290,10 +290,11 @@ let _coursePopover = null;
 // app's projectStarsTAN, so the glyph is oriented (north up) like the quiz diagram.
 // Draws the default catalog figure (con.stars/con.lines); honoring the selected
 // diagram source (Rey/Stellarium/Ford) for the glyph is out of scope here (issue #22).
-function courseConGlyph(con, size) {
+// Shared widget: used by the course detail popover and the constellation info modal.
+function conGlyph(con, size) {
   const dpr = window.devicePixelRatio || 1;
   const cv = document.createElement('canvas');
-  cv.className = 'cdp-glyph';
+  cv.className = 'con-glyph';
   cv.width = size * dpr; cv.height = size * dpr;
   cv.style.width = size + 'px'; cv.style.height = size + 'px';
   const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
@@ -354,7 +355,7 @@ function showCourseDetail(con, card) {
   pop.innerHTML = `<div class="cdp-head"><span class="cdp-title">${con.name}</span>` +
     `<button class="cdp-close" aria-label="Close">✕</button></div>` +
     `<div class="cdp-tiers">${rows}</div>`;
-  pop.querySelector('.cdp-head').insertBefore(courseConGlyph(con, 34), pop.querySelector('.cdp-title'));
+  pop.querySelector('.cdp-head').insertBefore(conGlyph(con, 34), pop.querySelector('.cdp-title'));
   pop.querySelector('.cdp-close').addEventListener('click', e => { e.stopPropagation(); closeCourseDetail(); });
   pop.addEventListener('click', e => e.stopPropagation());   // clicks inside don't dismiss
   document.body.appendChild(pop);
