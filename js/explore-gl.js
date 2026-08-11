@@ -24,11 +24,22 @@ const GL_FS = `
   varying vec2 vTexCoord;
   uniform sampler2D uTex;
   uniform float uAlpha;
+  uniform float uFloor;   // black-point crush: lift this floor, rescale (see issue #23)
   void main() {
     vec4 c = texture2D(uTex, vTexCoord);
-    gl_FragColor = vec4(c.rgb, c.a * uAlpha);
+    vec3 rgb = max(c.rgb - uFloor, 0.0) / max(1.0 - uFloor, 1e-4);
+    gl_FragColor = vec4(rgb, c.a * uAlpha);
   }
 `;
+
+// Black-point crush for the photo layer. Each per-constellation JPG crop carries
+// JPEG shadow-noise in its near-black background (values ~6–15) that reads as a
+// blue-grey quilt once shadow gamma amplifies it. Subtracting this floor and
+// rescaling crushes that noise to black while keeping real stars/nebulae. 12/255
+// is the tuned compromise: it clears the quilt yet still keeps the faintest
+// naked-eye stars as dim points (e.g. most of Orion's bow) rather than erasing
+// them — measured against the π Orionis chain. See issue #23.
+const PHOTO_BLACK_FLOOR = 12 / 255;
 
 let gl = null;
 let glProg = null;
@@ -69,6 +80,7 @@ function initExploreGL(canvas) {
   glLoc.aspect    = gl.getUniformLocation(glProg, 'uAspect');
   glLoc.tex       = gl.getUniformLocation(glProg, 'uTex');
   glLoc.alpha     = gl.getUniformLocation(glProg, 'uAlpha');
+  glLoc.floor     = gl.getUniformLocation(glProg, 'uFloor');
 
   gl.enable(gl.BLEND);
   return true;
@@ -177,7 +189,7 @@ function glUploadTex(img) {
 }
 
 // ── Draw one mesh ─────────────────────────────────────────
-function glDrawMesh(mesh, tex, alpha, additive, camP) {
+function glDrawMesh(mesh, tex, alpha, additive, camP, floor = 0) {
   if (!mesh || !tex) return;
   const { sv, tc, ix } = mesh;
 
@@ -216,6 +228,7 @@ function glDrawMesh(mesh, tex, alpha, additive, camP) {
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.uniform1i(glLoc.tex, 0);
   gl.uniform1f(glLoc.alpha, alpha);
+  gl.uniform1f(glLoc.floor, floor);
   gl.blendFunc(gl.SRC_ALPHA, additive ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
   gl.drawElements(gl.TRIANGLES, k, gl.UNSIGNED_SHORT, 0);
 
@@ -232,7 +245,7 @@ function drawExplorePhotoLayerGL(con, cam) {
   if (!glPhotoTex[con.abbr]) glPhotoTex[con.abbr] = glUploadTex(img);
   if (!glPhotoMesh[con.abbr]) glPhotoMesh[con.abbr] = glBuildPhotoMesh(con);
   glSetCamera(cam);
-  glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false, cam.center);
+  glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false, cam.center, PHOTO_BLACK_FLOOR);
 }
 
 // ── Public: draw art layer ─────────────────────────────────

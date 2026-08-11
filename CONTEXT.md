@@ -117,6 +117,16 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   view-space chord (gnomonic projection maps that chord to a straight screen line), so it reproduces
   the projected crossing from the two projected endpoints alone. Backs strokePolyline's horizon clip.
 
+- **black-point crush** — the photo layer is assembled from per-constellation square JPG crops
+  (`img/<abbr>.jpg`), each carrying JPEG shadow-noise in its near-black background (values ~6–15)
+  that reads as a blue-grey **quilt** once shadow gamma amplifies it. The photo fragment shader in
+  `js/explore-gl.js` subtracts a floor and rescales — `rgb = max(rgb - uFloor, 0) / (1 - uFloor)` —
+  crushing that noise to black while keeping real stars and nebulae. The floor is `PHOTO_BLACK_FLOOR
+  = 12/255`, tuned against the π Orionis bow: high enough to clear the quilt, low enough to keep the
+  faintest naked-eye stars as dim points rather than erasing them. Photo passes set it; the art layer
+  draws with `uFloor = 0`. The crush resolves the quilt (issue #23); the faint straight tile-edge
+  seams that remain are a separate, minor artifact left unaddressed.
+
 ## Label placement
 
 The same "spiral-search-avoiding-boundaries" algorithm places a text label where it clears
