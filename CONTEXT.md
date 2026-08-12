@@ -58,6 +58,20 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 - **tier** — one rung of the 7-step `TIER_SPECS` ladder (identify/diagram → find/photo-nb).
   A tier is passed at 1+ correct; the first unpassed tier is the **frontier**.
 
+- **level check / calibration** — the optional up-front identification quiz (~8 probes, one
+  per `diff` band) that seeds a returning learner's **exposure** so they skip the
+  one-new-per-lesson introduction grind. It hands off to the normal adaptive **planLesson** —
+  no parallel scheduler. Pure scoring + seeding core in `js/calibration.js`
+  (`computeDStar` + `applyCalibrationSeed`); `seedExposureFromCalibration(dStar)` is the impure
+  load→seed→save adapter. Beginners can skip it (`D* = 0`, no seeding) and start from zero.
+
+- **known-difficulty threshold `D*`** — the calibration result: the hardest `diff` band (0–8)
+  the learner reliably identifies, scored by `computeDStar` as the **best separator** —
+  `argmin` over `b∈0..8` of `(misses in bands ≤ b) + (hits in bands > b)`, ties broken toward
+  the lower (conservative) `b`. `0` ⇒ start at zero; `8` ⇒ credit all bands. Seeding then credits
+  `identify/diagram` (upward-merge to ≥1, `lastSeen` deliberately omitted so seeded cons stay
+  hot) for every renderable constellation with `diff ≤ D*`, and nothing higher up the ladder.
+
 ## Session
 
 - **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
