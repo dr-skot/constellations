@@ -28,7 +28,7 @@ const origLog = console.log, origTable = console.table;
 console.log = () => {}; console.table = () => {};
 
 const jsDir = path.join(__dirname, '..', 'js');
-for (const f of ['data.js', 'lesson.js', 'calibration.js', 'course.js']) {
+for (const f of ['data.js', 'lesson.js', 'calibration.js', 'course.js', 'calibration-ui.js']) {
   vm.runInThisContext(fs.readFileSync(path.join(jsDir, f), 'utf8'), { filename: f });
 }
 
@@ -254,6 +254,40 @@ origLog('── flow helpers ─────────────────
   // A lone low slip is forgiven: bands {1,3,4,5,6} right, 2 wrong, 7,8 wrong → 6.
   const slip = [R('Ori',T),R('Leo',F),R('Peg',T),R('Her',T),R('Cnc',T),R('Cet',T),R('CVn',F),R('Dor',F)];
   check('dStarFromProbeResults: lone low slip forgiven → 6', dStarFromProbeResults(slip) === 6);
+}
+
+// ═══════════════════════════════════════════════════════════
+// 5. Entry logic (ticket #34) — first-run detection + route target
+// ═══════════════════════════════════════════════════════════
+origLog('── entry logic ─────────────────────────────────');
+
+// exposureIsEmpty (course.js) — the shape-aware emptiness predicate first-run reads.
+{
+  check('exposureIsEmpty: {} → true', exposureIsEmpty({}) === true);
+  check('exposureIsEmpty: {_v2:true} → true', exposureIsEmpty({ _v2: true }) === true);
+  check('exposureIsEmpty: with a con → false', exposureIsEmpty({ _v2: true, Ori: {} }) === false);
+}
+
+// calibrationIsFirstRun: true only when there is no recorded progress.
+{
+  localStorage.clear();
+  check('firstRun: empty exposure → true', calibrationIsFirstRun() === true);
+  seedExposureFromCalibration(3);   // now there is progress
+  check('firstRun: seeded exposure → false', calibrationIsFirstRun() === false);
+  localStorage.clear();
+  saveExposure({ _v2: true });      // the empty-but-migrated shape
+  check('firstRun: {_v2:true} only → true', calibrationIsFirstRun() === true);
+}
+
+// calibrationEntryTarget: offer the check on a first-run default landing; never
+// hijack an explicit route, and never offer once there is progress.
+{
+  check('entry: first-run + no hash → calibration', calibrationEntryTarget('', true) === 'calibration');
+  check('entry: first-run + course → calibration', calibrationEntryTarget('course', true) === 'calibration');
+  check('entry: returning + no hash → course', calibrationEntryTarget('', false) === 'course');
+  check('entry: first-run + explicit route not hijacked', calibrationEntryTarget('explore', true) === 'explore');
+  check('entry: first-run + view/Ori not hijacked', calibrationEntryTarget('view/Ori', true) === 'view/Ori');
+  check('entry: returning + lesson passes through', calibrationEntryTarget('lesson', false) === 'lesson');
 }
 
 // ── Summary ────────────────────────────────────────────────

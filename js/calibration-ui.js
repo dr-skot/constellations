@@ -10,6 +10,23 @@
 
 let calState = { probes: [], idx: 0, results: [] };
 
+// ── Entry points (ticket #34) ──────────────────────────────────────────────
+// True when the learner has no recorded progress yet — the first-run trigger.
+// exposureIsEmpty (course.js) owns knowledge of the stored shape.
+function calibrationIsFirstRun() {
+  return exposureIsEmpty(loadExposure());
+}
+
+// The screen to land on at launch. On a first run arriving at the default landing
+// (empty hash or #course), offer the level check; otherwise honor the requested
+// route (never hijack an explicit hash like #explore or #view/Ori), defaulting an
+// empty hash to the course home. Pure — main.js supplies hash + first-run flag.
+function calibrationEntryTarget(hash, firstRun) {
+  const entry = hash || 'course';
+  if (entry === 'course' && firstRun) return 'calibration';
+  return entry;
+}
+
 function showCalPanel(name) {
   document.querySelectorAll('#screen-calibration .cal-panel')
     .forEach(p => p.classList.remove('active'));
@@ -152,7 +169,8 @@ function initCalibration() {
     navigate('lesson');
   });
   document.getElementById('cal-retake').addEventListener('click', startCalibration);
-  // Temporary entry (ticket #34 finalizes the first-run offer + course-screen re-run).
+  // Course-screen re-run entry (#34): re-launch the flow anytime. The offer screen
+  // carries the upward-merge framing, so it reads as safe (never lowers progress).
   const trigger = document.getElementById('btn-level-check');
   if (trigger) trigger.addEventListener('click', () => navigate('calibration'));
 }

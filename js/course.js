@@ -21,6 +21,13 @@ function loadExposure() {
 }
 function saveExposure(data) { localStorage.setItem('con-exposure', JSON.stringify(data)); }
 
+// True when an exposure record holds no real progress — only the `_v2` version
+// marker (or nothing). Lives here, beside loadExposure, so the storage shape's one
+// private key stays owned by one module. Drives the calibration first-run offer (#34).
+function exposureIsEmpty(exposure) {
+  return Object.keys(exposure).filter(k => k !== '_v2').length === 0;
+}
+
 // One-time migration: fold old 16-tier keys into new 7-tier keys.
 function migrateExposure(old) {
   const foldMap = {

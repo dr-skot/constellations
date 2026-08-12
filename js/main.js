@@ -314,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (con) openConModal(con);
   });
 
-  // Entry point — route based on current URL hash
-  handleRoute(location.hash.slice(1) || 'course');
+  // Entry point — route based on current URL hash, but a first-run learner (empty
+  // progress) arriving at the default landing is offered the level check (#34).
+  handleRoute(calibrationEntryTarget(location.hash.slice(1), calibrationIsFirstRun()));
 });

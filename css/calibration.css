@@ -72,8 +72,8 @@
 #cal-grid .con-card.active { border-color: var(--accent); }
 #cal-payoff .cal-btn-row { margin-top: 0; }
 
-/* Temporary course-screen trigger (ticket #34 finalizes the entry points). */
-.course-level-check { margin-top: 12px; padding: 6px 16px; font-size: .8rem;
-                      background: transparent; color: var(--accent);
-                      border: 1px solid var(--accent); border-radius: 8px; cursor: pointer; }
-.course-level-check:hover { background: var(--accent); color: #fff; }
+/* Quiet course-screen re-run entry (#34) — understated next to "Start Learning". */
+.course-level-check { margin-top: 10px; padding: 4px 8px; font-size: .78rem;
+                      background: transparent; color: var(--dim);
+                      border: none; text-decoration: underline; cursor: pointer; }
+.course-level-check:hover { color: var(--text); }
