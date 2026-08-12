@@ -260,22 +260,10 @@ function renderCourseMap() {
 
   // The full progress grid: every constellation as a shared progress card, grouped into
   // difficulty bands. Tapping a card opens the detail panel with its per-tier counts.
-  const map = document.getElementById('course-map');
-  map.innerHTML = '';
-  for (const band of consByDifficulty(C)) {
-    const hdr = document.createElement('div');
-    hdr.className = 'diff-header';
-    hdr.textContent = band.label;
-    map.appendChild(hdr);
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    for (const con of band.cons) {
-      const card = progressCard(con, exp);
-      card.addEventListener('click', e => { e.stopPropagation(); showCourseDetail(con, card); });
-      grid.appendChild(card);
-    }
-    map.appendChild(grid);
-  }
+  // Shared renderer (progress-grid.js) — the calibration payoff draws the same grid.
+  renderProgressGrid(document.getElementById('course-map'), C, exp, {
+    onCardClick: (con, card) => showCourseDetail(con, card),
+  });
 }
 
 // Card detail: a popover anchored at the tapped card showing per-tier seen/correct
@@ -290,8 +278,20 @@ let _coursePopover = null;
 // app's projectStarsTAN, so the glyph is oriented (north up) like the quiz diagram.
 // Draws the default catalog figure (con.stars/con.lines); honoring the selected
 // diagram source (Rey/Stellarium/Ford) for the glyph is out of scope here (issue #22).
-// Shared widget: used by the course detail popover and the constellation info modal.
-function conGlyph(con, size) {
+// Shared widget: the course detail popover, the constellation info modal, and the
+// calibration probe (issue #33) all draw through it. `opts` tunes the look for the
+// larger probe figure; the defaults reproduce the small-glyph appearance exactly, so
+// existing callers are unchanged:
+//   starBase/starSlope/starMin — star radius = max(starMin, starBase - mag*starSlope)
+//   lineWidth, lineColor, starColor — stroke/fill styling
+//   glow — draw a faint halo behind each star (probe hero only)
+function conGlyph(con, size, opts = {}) {
+  const starBase  = opts.starBase  ?? 1.6, starSlope = opts.starSlope ?? 0.18,
+        starMin   = opts.starMin   ?? 0.6,
+        lineWidth = opts.lineWidth ?? 1,
+        lineColor = opts.lineColor ?? 'rgba(180,200,255,.45)',
+        starColor = opts.starColor ?? 'rgba(232,240,255,.9)',
+        glow      = opts.glow      ?? false;
   const dpr = window.devicePixelRatio || 1;
   const cv = document.createElement('canvas');
   cv.className = 'con-glyph';
@@ -308,7 +308,7 @@ function conGlyph(con, size) {
   const s = Math.min((size - 2 * pad) / w, (size - 2 * pad) / h);
   const ox = (size - w * s) / 2 - minX * s, oy = (size - h * s) / 2 - minY * s;
   const X = p => p.x * s + ox, Y = p => p.y * s + oy;
-  ctx.strokeStyle = 'rgba(180,200,255,.45)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = lineColor; ctx.lineWidth = lineWidth;
   ctx.beginPath();
   for (const [a, b] of con.lines) {
     const pa = pts[a], pb = pts[b];
@@ -316,9 +316,14 @@ function conGlyph(con, size) {
     ctx.moveTo(X(pa), Y(pa)); ctx.lineTo(X(pb), Y(pb));
   }
   ctx.stroke();
-  ctx.fillStyle = 'rgba(232,240,255,.9)';
+  ctx.fillStyle = starColor;
   for (const p of vis) {
-    const r = Math.max(.6, 1.6 - (p.mag || 3) * 0.18);
+    const r = Math.max(starMin, starBase - (p.mag || 3) * starSlope);
+    if (glow) {
+      ctx.globalAlpha = 0.16;
+      ctx.beginPath(); ctx.arc(X(p), Y(p), r + 1.6, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
     ctx.beginPath(); ctx.arc(X(p), Y(p), r, 0, Math.PI * 2); ctx.fill();
   }
   return cv;

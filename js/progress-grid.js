@@ -105,6 +105,30 @@ function progressCard(con, exposure, opts = {}) {
   return card;
 }
 
+// Render the full banded progress grid — every constellation in `catalog` as a
+// progressCard, grouped into difficulty bands with a header each — into `host`
+// (cleared first). Shared by the course map and the calibration payoff so both
+// draw the identical grid. opts is forwarded to progressCard (e.g. `highlight`);
+// opts.onCardClick(con, card), if given, is wired to each card.
+function renderProgressGrid(host, catalog, exposure, opts = {}) {
+  host.innerHTML = '';
+  for (const band of consByDifficulty(catalog)) {
+    const hdr = document.createElement('div');
+    hdr.className = 'diff-header';
+    hdr.textContent = band.label;
+    host.appendChild(hdr);
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    for (const con of band.cons) {
+      const card = progressCard(con, exposure, opts);
+      if (opts.onCardClick)
+        card.addEventListener('click', e => { e.stopPropagation(); opts.onCardClick(con, card); });
+      grid.appendChild(card);
+    }
+    host.appendChild(grid);
+  }
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { TIERS, DIFFICULTY_BANDS, tierClass, consByDifficulty, distinctCons, newlyPassed, progressCard };
+  module.exports = { TIERS, DIFFICULTY_BANDS, tierClass, consByDifficulty, distinctCons, newlyPassed, progressCard, renderProgressGrid };
 }

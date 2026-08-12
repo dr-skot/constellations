@@ -51,6 +51,8 @@ function handleRoute(hash) {
   } else if (hash === 'settings') {
     showScreen('settings');
     if (typeof refreshSettings === 'function') refreshSettings();
+  } else if (hash === 'calibration') {
+    startCalibration();
   } else {
     navigate('course');
   }
@@ -143,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initRevealToggles();
   initCourseDetail();
+  initCalibration();
 
   // Explore mode
   document.getElementById('eq-next').addEventListener('click', () => {

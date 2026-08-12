@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/course.css">
   <link rel="stylesheet" href="css/settings.css">
   <link rel="stylesheet" href="css/progress.css">
+  <link rel="stylesheet" href="css/calibration.css">
 </head>
 
 <body>
@@ -37,6 +38,7 @@
           <button id="btn-continue">Start Learning ›</button>
           <div id="course-progress-wrap"><div id="course-progress-bar"></div></div>
           <div id="course-progress-label"></div>
+          <button id="btn-level-check" class="course-level-check">Level check ›</button>
         </div>
         <div class="legend" id="course-legend">
           <span><span class="dot passed"></span> passed</span>
@@ -205,6 +207,46 @@
       </div>
     </div>
 
+    <div id="screen-calibration" class="screen">
+      <div class="screen-body">
+
+        <section id="cal-offer" class="cal-panel active">
+          <p class="cal-eyebrow">Before you begin</p>
+          <h1 class="cal-h1">Already know your way around the night sky?</h1>
+          <p class="cal-lede">Take a quick level check — about 90 seconds. Name a handful of constellations and we’ll start you where you actually are, instead of from zero.</p>
+          <div class="cal-btn-row">
+            <button id="cal-begin" class="cal-btn cal-btn-primary">Take the level check</button>
+            <button id="cal-skip" class="cal-btn cal-btn-ghost">Skip — start from the beginning</button>
+          </div>
+          <p class="cal-micro">A true beginner should skip. You can retake it anytime from the course screen — it only ever raises your progress, never lowers it.</p>
+        </section>
+
+        <section id="cal-probes" class="cal-panel">
+          <div class="cal-qtop">
+            <div class="cal-pips" id="cal-pips"></div>
+            <div class="cal-count" id="cal-count">1 / 8</div>
+          </div>
+          <div class="cal-sky" id="cal-fig" aria-label="constellation figure"></div>
+          <p class="cal-prompt">Which constellation is this?</p>
+          <div class="cal-choices" id="cal-choices"></div>
+          <div class="cal-nextbar" id="cal-nextbar"></div>
+        </section>
+
+        <section id="cal-payoff" class="cal-panel">
+          <p class="cal-eyebrow">Your level check</p>
+          <h2 class="cal-h2" id="cal-res-head">Placing you…</h2>
+          <p class="cal-unlock" id="cal-res-unlock"></p>
+          <p class="cal-band" id="cal-res-band"></p>
+          <div id="cal-grid" class="cal-grid"></div>
+          <div class="cal-btn-row">
+            <button id="cal-start-lesson" class="cal-btn cal-btn-primary">Start my first lesson</button>
+            <button id="cal-retake" class="cal-btn cal-btn-ghost">Retake the level check</button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
   </div>
 
   <div id="con-modal" class="modal-overlay" style="display:none">
@@ -240,6 +282,7 @@
   <script src="js/find-guide.js"></script>
   <script src="js/course.js"></script>
   <script src="js/progress-grid.js"></script>
+  <script src="js/calibration-ui.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/main.js"></script>
 </body>

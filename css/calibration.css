@@ -1,0 +1,79 @@
+/* Level-check / calibration screen (issue #33). Three panels (offer, probes,
+   payoff) on one screen; only .active shows. Uses the app's design tokens; the
+   payoff grid reuses the shared .grid / .con-card / .diff-header styles. */
+
+.cal-panel { display: none; }
+.cal-panel.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .cal-panel.active { animation: cal-fade .3s ease; }
+}
+@keyframes cal-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Offer + payoff share centered text; offer sits vertically centered. */
+#cal-offer { justify-content: center; text-align: center; max-width: 32rem; margin: 0 auto; }
+.cal-eyebrow { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase;
+               color: var(--accent); margin: 0 0 12px; }
+.cal-h1 { font-size: 1.6rem; line-height: 1.15; margin: 0 0 12px; text-wrap: balance; }
+.cal-h2 { font-size: 1.35rem; line-height: 1.15; margin: 0 0 8px; text-wrap: balance; }
+.cal-lede { color: var(--dim); font-size: .95rem; line-height: 1.55; margin: 0 auto 22px; max-width: 34ch; }
+.cal-micro { font-size: .75rem; color: var(--dim); text-align: center; margin: 14px auto 0;
+             line-height: 1.5; max-width: 40ch; }
+
+/* Buttons — primary matches #btn-continue; ghost matches the secondary style. */
+.cal-btn-row { display: flex; flex-direction: column; gap: 10px; max-width: 22rem;
+               margin: 8px auto 0; width: 100%; }
+.cal-btn { width: 100%; text-align: center; font-size: .95rem; padding: 13px 18px;
+           border-radius: 12px; border: 1px solid transparent; cursor: pointer; }
+.cal-btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+.cal-btn-primary:hover { opacity: .9; }
+.cal-btn-ghost { background: transparent; color: var(--dim); border-color: var(--border); }
+.cal-btn-ghost:hover { border-color: var(--dim); color: var(--text); }
+
+/* Probe panel. */
+.cal-qtop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cal-pips { display: flex; gap: 5px; }
+.cal-pip { width: 20px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.12); }
+.cal-pip.done { background: var(--accent); }
+.cal-pip.cur { background: var(--dim); }
+.cal-count { font-size: .78rem; color: var(--dim); letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+
+.cal-sky { width: 100%; max-width: 20rem; aspect-ratio: 1 / 1; margin: 0 auto;
+           background: radial-gradient(90% 90% at 50% 40%, #0e1830 0%, #0a1120 70%, #070c17 100%);
+           border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.cal-sky canvas { display: block; width: 100%; height: 100%; }
+.cal-prompt { text-align: center; font-size: .9rem; color: var(--dim); margin: 16px 0 14px; }
+
+.cal-choices { display: grid; gap: 9px; max-width: 24rem; width: 100%; margin: 0 auto; }
+.cal-choice { font-size: .95rem; color: var(--text); background: rgba(255,255,255,.03);
+              border: 1px solid var(--border); border-radius: 12px; padding: 13px 16px;
+              text-align: left; cursor: pointer; }
+.cal-choice:hover:not(:disabled) { background: rgba(255,255,255,.06); border-color: var(--dim); }
+.cal-choice:disabled { cursor: default; }
+.cal-choice.correct { background: rgba(34,197,94,.14); border-color: var(--ok); color: #c9f7e0; }
+.cal-choice.wrong { background: rgba(239,68,68,.12); border-color: var(--err); color: #ffd6d6; }
+
+.cal-nextbar { margin: 16px auto 0; max-width: 24rem; width: 100%; min-height: 48px;
+               display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.cal-verdict { font-size: .85rem; font-weight: 600; }
+.cal-verdict.ok { color: var(--ok); } .cal-verdict.no { color: var(--err); }
+.cal-btn-next { padding: 11px 22px; background: var(--accent); color: #fff; border: none;
+                border-radius: 11px; font-size: .9rem; cursor: pointer; }
+.cal-btn-next:hover { opacity: .9; }
+
+/* Payoff. Count is the hero; the raw band number is de-emphasized (jargon). */
+#cal-payoff { text-align: center; }
+.cal-unlock { color: var(--text); font-size: 1rem; line-height: 1.5; margin: 0 auto 6px; max-width: 40ch; }
+.cal-unlock b { color: var(--accent); }
+.cal-band { font-size: .72rem; color: var(--dim); letter-spacing: .06em; margin: 0 0 14px; }
+.cal-grid { flex: 1; min-height: 0; overflow-y: auto; text-align: left;
+            border: 1px solid var(--border); border-radius: 14px; padding: 4px 14px 12px;
+            background: rgba(9,14,26,.4); margin-bottom: 14px; }
+#cal-grid .con-card { cursor: pointer; }
+#cal-grid .con-card.active { border-color: var(--accent); }
+#cal-payoff .cal-btn-row { margin-top: 0; }
+
+/* Temporary course-screen trigger (ticket #34 finalizes the entry points). */
+.course-level-check { margin-top: 12px; padding: 6px 16px; font-size: .8rem;
+                      background: transparent; color: var(--accent);
+                      border: 1px solid var(--accent); border-radius: 8px; cursor: pointer; }
+.course-level-check:hover { background: var(--accent); color: #fff; }

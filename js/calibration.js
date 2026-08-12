@@ -38,18 +38,23 @@ function computeDStar(correct) {
 }
 
 // ── Exposure seeding (decision #29) ────────────────────────────────────────
-// Pure core: for every renderable constellation (`stars.length > 0`) with
-// `diff ≤ dStar`, mark its identify/diagram tier passed by lifting `seen` and
-// `correct` to at least 1 (Math.max — an upward-only merge that never demotes
-// real practice). Higher tiers are left untouched (earned through normal play),
-// and `lastSeen` is DELIBERATELY never written: a seeded con must stay stale so
-// heat keeps it hot and it surfaces in lesson 1 (writing `now` would bury it).
-// `dStar ≤ 0` is a no-op. Mutates and returns `exposure`.
+// The constellations a given D* credits: renderable (`stars.length > 0`) and
+// `diff ≤ dStar`; empty when `dStar ≤ 0`. The single source of truth for "what
+// this D* unlocks" — both the seed write and the payoff count derive from it, so
+// they can never drift apart.
+function calibrationSeedTargets(catalog, dStar) {
+  if (dStar <= 0) return [];
+  return catalog.filter(c => c.stars && c.stars.length > 0 && c.diff <= dStar);
+}
+
+// Pure core: for every target constellation, mark its identify/diagram tier passed
+// by lifting `seen` and `correct` to at least 1 (Math.max — an upward-only merge
+// that never demotes real practice). Higher tiers are left untouched (earned
+// through normal play), and `lastSeen` is DELIBERATELY never written: a seeded con
+// must stay stale so heat keeps it hot and it surfaces in lesson 1 (writing `now`
+// would bury it). `dStar ≤ 0` is a no-op. Mutates and returns `exposure`.
 function applyCalibrationSeed(exposure, catalog, dStar) {
-  if (dStar <= 0) return exposure;
-  for (const con of catalog) {
-    if (!con.stars || con.stars.length === 0) continue;   // non-renderable → skip
-    if (con.diff > dStar) continue;                        // above the threshold → skip
+  for (const con of calibrationSeedTargets(catalog, dStar)) {
     const e = exposure[con.abbr] || (exposure[con.abbr] = {});
     const t = e['identify/diagram'] || (e['identify/diagram'] = { seen: 0, correct: 0 });
     t.seen    = Math.max(t.seen    || 0, 1);
@@ -57,6 +62,51 @@ function applyCalibrationSeed(exposure, catalog, dStar) {
     // no t.lastSeen — see note above.
   }
   return exposure;
+}
+
+// ── Flow helpers (calibration screen, ticket #33) ──────────────────────────
+// Pure pieces the standalone calibration flow is built from; the DOM wiring lives
+// in js/calibration-ui.js. Kept here beside the scorer so they stay unit-testable.
+
+// The ratified probe ladder (#27): one constellation per diff band 1→8, easy→hard.
+const CALIBRATION_LADDER = ['Ori', 'Leo', 'Peg', 'Her', 'Cnc', 'Cet', 'CVn', 'Dor'];
+
+// Resolve the ladder to real catalog cons. Each is renderable and its `diff`
+// equals its band (Orion=1 … Dorado=8), which is what makes D* scoring by band
+// (below) independent of the order the probes are shown in.
+function calibrationProbes(catalog = C) {
+  return CALIBRATION_LADDER
+    .map(abbr => catalog.find(c => c.abbr === abbr))
+    .filter(Boolean);
+}
+
+// Fisher–Yates, in place. `rng` defaults to Math.random so it is callable
+// standalone; the UI threads real randomness in, tests thread a seeded rng.
+function shuffleInPlace(arr, rng = Math.random) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+// `n` distinct distractor names for `con`: the catalog (minus the answer)
+// shuffled, first `n` names.
+function pickDistractors(con, catalog = C, rng = Math.random, n = 3) {
+  const pool = shuffleInPlace(catalog.filter(c => c.name !== con.name), rng);
+  return pool.slice(0, n).map(c => c.name);
+}
+
+// Score a finished calibration. `results` is one { diff, correct } per probe in ANY
+// order; we fold them into a band-indexed hit array and defer to computeDStar, so a
+// shuffled presentation yields the same D* as the ladder order. A band with no probe
+// (shouldn't happen with the 8-probe ladder) counts as not-known.
+function dStarFromProbeResults(results) {
+  const byBand = new Array(8).fill(false);   // index k ↦ band k+1
+  for (const r of results) {
+    if (r.correct && r.diff >= 1 && r.diff <= 8) byBand[r.diff - 1] = true;
+  }
+  return computeDStar(byBand);
 }
 
 // Impure adapter: load the live exposure, seed it against the real catalog C,

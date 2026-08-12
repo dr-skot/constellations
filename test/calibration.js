@@ -131,6 +131,21 @@ const CATALOG = [
   check('seed: D*<0 is a no-op', Object.keys(expNeg).length === 1 && expNeg._v2);
 }
 
+// calibrationSeedTargets: the single source of truth both the seed and the payoff
+// count read, so they can never disagree.
+{
+  const targets = calibrationSeedTargets(CATALOG, 3);
+  check('seedTargets: renderable diff≤D* only',
+    targets.map(c => c.abbr).sort().join(',') === 'AAA,BBB');
+  check('seedTargets: D*≤0 → empty', calibrationSeedTargets(CATALOG, 0).length === 0);
+  // The count matches exactly what applyCalibrationSeed writes.
+  const exp = { _v2: true };
+  applyCalibrationSeed(exp, CATALOG, 3);
+  const seededCount = Object.keys(exp).filter(k => k !== '_v2' && exp[k]['identify/diagram']).length;
+  check('seedTargets: count equals what the seed actually wrote',
+    calibrationSeedTargets(CATALOG, 3).length === seededCount);
+}
+
 // applyCalibrationSeed returns the same (mutated) exposure object.
 {
   const exp = { _v2: true };
@@ -191,6 +206,54 @@ origLog('── seedExposureFromCalibration (adapter) ───────');
   const after = loadExposure();
   check('adapter: re-run merges upward only (never demotes)',
     after[sample.abbr]['identify/diagram'].correct === 9);
+}
+
+// ═══════════════════════════════════════════════════════════
+// 4. Flow helpers — probe roster, distractors, band-scored D*
+// ═══════════════════════════════════════════════════════════
+origLog('── flow helpers ────────────────────────────────');
+
+// The 8-probe ladder resolves to real, renderable catalog cons, one per diff band.
+{
+  const probes = calibrationProbes(C);
+  check('probes: exactly 8', probes.length === 8);
+  check('probes: match the ratified ladder order (#27)',
+    probes.map(c => c.abbr).join(',') === 'Ori,Leo,Peg,Her,Cnc,Cet,CVn,Dor');
+  check('probes: every probe is renderable (stars.length > 0)',
+    probes.every(c => c.stars.length > 0));
+  check('probes: diffs cover bands 1..8 exactly',
+    probes.map(c => c.diff).join(',') === '1,2,3,4,5,6,7,8');
+}
+
+// Distractors: n distinct catalog names, never the answer.
+{
+  function seqRng(seq) { let i = 0; return () => seq[i++ % seq.length]; }
+  const con = C.find(c => c.abbr === 'Ori');
+  const d = pickDistractors(con, C, seqRng([0.1, 0.5, 0.9, 0.3, 0.7]), 3);
+  check('distractors: returns n names', d.length === 3);
+  check('distractors: all distinct', new Set(d).size === 3);
+  check('distractors: never the correct name', !d.includes(con.name));
+  check('distractors: all are real catalog names',
+    d.every(name => C.some(c => c.name === name)));
+}
+
+// D* is scored by band (diff), so the presentation shuffle can never change it.
+{
+  const R = (abbr, correct) => ({ diff: C.find(c => c.abbr === abbr).diff, correct });
+  // Bands 1..3 right, 4..8 wrong → D* = 3, in ladder order …
+  const ordered = [R('Ori',T),R('Leo',T),R('Peg',T),R('Her',F),R('Cnc',F),R('Cet',F),R('CVn',F),R('Dor',F)];
+  check('dStarFromProbeResults: bands 1..3 right → 3', dStarFromProbeResults(ordered) === 3);
+  // … and the same results shuffled give the identical D*.
+  const shuffled = [R('Dor',F),R('Peg',T),R('CVn',F),R('Ori',T),R('Cet',F),R('Leo',T),R('Her',F),R('Cnc',F)];
+  check('dStarFromProbeResults: shuffle-independent', dStarFromProbeResults(shuffled) === 3);
+  // Endpoints.
+  check('dStarFromProbeResults: all right → 8',
+    dStarFromProbeResults(['Ori','Leo','Peg','Her','Cnc','Cet','CVn','Dor'].map(a => R(a, T))) === 8);
+  check('dStarFromProbeResults: all wrong → 0',
+    dStarFromProbeResults(['Ori','Leo','Peg','Her','Cnc','Cet','CVn','Dor'].map(a => R(a, F))) === 0);
+  // A lone low slip is forgiven: bands {1,3,4,5,6} right, 2 wrong, 7,8 wrong → 6.
+  const slip = [R('Ori',T),R('Leo',F),R('Peg',T),R('Her',T),R('Cnc',T),R('Cet',T),R('CVn',F),R('Dor',F)];
+  check('dStarFromProbeResults: lone low slip forgiven → 6', dStarFromProbeResults(slip) === 6);
 }
 
 // ── Summary ────────────────────────────────────────────────
