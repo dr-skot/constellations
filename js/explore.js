@@ -40,29 +40,45 @@ const eqRevState = { photo: true, diagram: true, art: true, boundary: true };
 let _eqRevToggleGroup = null;
 
 // Resolve the current explore / quiz / course state into the discrete display
-// flags that drive drawExplore's layer passes. Pure: reads no globals (the
-// caller passes `!!_gs` as guideActive). Returns the mode flags plus the
-// reference-guide mode string; the per-frame alpha ramps (_refAlpha,
-// _compassAlpha) stay in drawExplore next to their draw calls, since they
-// depend on the animation value explore._northAlpha. Characterized by
-// test/display-flags.js against test/display-flags-golden.json.
-function resolveDisplayFlags(explore, exState, eqRevState, guideActive) {
+// flags that drive drawExplore's layer passes, plus the per-layer filters. Pure:
+// reads no globals. Three sources, in order — course mode, then the step display
+// a running finding guide published, then the free-explore defaults.
+//
+// The step display is COMPLETE: while a guide runs it fully determines the layers
+// and exState is not consulted; `null` means no guide. That one value replaced six
+// tri-state properties whose presence all encoded the same bit, and it carries the
+// abbr allowlists that drawExplore used to re-derive from the bus itself.
+//
+// The per-frame alpha ramps (_refAlpha, _compassAlpha) stay in drawExplore next to
+// their draw calls, since they depend on the animation value explore._northAlpha.
+// Characterized by test/display-flags.js against test/display-flags-golden.json.
+function resolveDisplayFlags(explore, exState, eqRevState) {
   const q = explore.quiz;
   const cm = q?.stageMode;                 // course mode active?
   const isAnswered = !!(q?.answered);
+  const sd = explore.stepDisplay || null;  // the running guide's step display, or null
   const showDiag = cm ? (isAnswered ? eqRevState.diagram : cm !== 'photo') : true;
   return {
     cm,
     isAnswered,
-    showPhoto:      cm ? (isAnswered ? eqRevState.photo    : cm === 'photo')   : explore.photo   !== undefined ? !!explore.photo   : exState.photo,
+    showPhoto:      cm ? (isAnswered ? eqRevState.photo    : cm === 'photo')   : sd ? sd.layers.photo.on   : exState.photo,
     showDiag,
-    showStars:      cm ? showDiag : explore.diagram !== undefined ? !!explore.diagram : exState.stars,
-    showLines:      cm ? (isAnswered ? showDiag           : cm === 'diagram') : explore.diagram !== undefined ? !!explore.diagram : exState.diagram,
-    showBounds:     cm ? (isAnswered ? eqRevState.boundary : !!q.bounds)       : explore.bounds  !== undefined ? !!explore.bounds  : exState.bounds,
-    showArt:        cm ? (isAnswered ? eqRevState.art      : false)            : explore.art     !== undefined ? !!explore.art     : exState.art,
-    showStarLabels: (cm || guideActive) ? false : exState.starLabels,
-    showConNames:   cm ? false : explore.names !== undefined ? !!explore.names : exState.conNames,
-    refMode:        cm ? 'always' : explore.equator !== undefined ? (explore.equator ? 'always' : null) : exState.reference,
+    showStars:      cm ? showDiag : sd ? sd.layers.diagram.on : exState.stars,
+    showLines:      cm ? (isAnswered ? showDiag           : cm === 'diagram') : sd ? sd.layers.diagram.on : exState.diagram,
+    showBounds:     cm ? (isAnswered ? eqRevState.boundary : !!q.bounds)       : sd ? sd.layers.bounds.on  : exState.bounds,
+    showArt:        cm ? (isAnswered ? eqRevState.art      : false)            : sd ? sd.layers.art.on     : exState.art,
+    showStarLabels: (cm || sd) ? false : exState.starLabels,
+    showConNames:   cm ? false : sd ? sd.layers.names.on : exState.conNames,
+    // A guide suppresses the reference guides for its whole run. This used to be a
+    // per-step `equator` field that no step ever set, so it was written false on
+    // every step; it is a rule of the step display now, not data.
+    refMode:        cm ? 'always' : sd ? null : exState.reference,
+    // Per-layer allowlists — null means "every visible constellation". Returned
+    // beside the flags so the draw passes stop decoding the bus a second time.
+    diagramOnly:    sd ? sd.layers.diagram.only : null,
+    boundsOnly:     sd ? sd.layers.bounds.only  : null,
+    artOnly:        sd ? sd.layers.art.only     : null,
+    namesOnly:      sd ? sd.layers.names.only   : null,
   };
 }
 
@@ -423,7 +439,8 @@ function drawExplore() {
   const {
     cm, showPhoto, showDiag, showStars, showLines, showBounds, showArt,
     showStarLabels, showConNames, refMode,
-  } = resolveDisplayFlags(explore, exState, eqRevState, !!_gs);
+    diagramOnly, boundsOnly, artOnly, namesOnly,
+  } = resolveDisplayFlags(explore, exState, eqRevState);
   const _refAlpha      = refMode === 'always' ? 1 : refMode === 'moving' ? (explore._northAlpha || 0) : 0;
   const showEquator    = _refAlpha > 0.01;
 
@@ -511,9 +528,8 @@ function drawExplore() {
     ctx.save();
     ctx.strokeStyle = 'rgba(120,200,120,0.45)';
     ctx.lineWidth = Math.max(1, W / 640);
-    const boundsFilter = Array.isArray(explore.bounds) ? explore.bounds : null;
     for (const con of visible) {
-      if (boundsFilter && !boundsFilter.includes(con.abbr)) continue;
+      if (boundsOnly && !boundsOnly.includes(con.abbr)) continue;
       const pRings = projBounds[con.abbr];
       if (!pRings) continue;
       for (const pts of pRings) {
@@ -525,10 +541,9 @@ function drawExplore() {
 
   // Diagram: two-pass so guide lines can sit between diagram lines and stars
   if (showStars || showLines) {
-    const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
     // Pass 1: diagram lines only
     for (const con of visible) {
-      if (diagFilter && !diagFilter.includes(con.abbr)) continue;
+      if (diagramOnly && !diagramOnly.includes(con.abbr)) continue;
       const dcon = diagramFor(con, diagramSource);
       if (dcon.lines && showLines) {
         const fullProj = cam.projectStars(dcon.stars)
@@ -539,19 +554,19 @@ function drawExplore() {
   }
 
   // Guide custom lines (above diagram lines, below stars)
-  if (explore.guideLinesDef?.length && explore.guideLinesCatalog) {
-    const gc = explore.guideLinesColor || 'rgba(80,145,230,0.52)';
-    const glw = (explore.guideLinesWidth || 1.5) * (40 / explore.fov);
+  // Endpoints are already resolved to ra/dec by makeStepDisplay, so this pass no
+  // longer carries a catalog on the bus or looks names up per frame.
+  const guideLines = explore.stepDisplay?.lines;
+  if (guideLines) {
+    const gc = guideLines.color;
+    const glw = guideLines.width * (40 / explore.fov);
     ctx.save();
     ctx.strokeStyle = gc;
     ctx.lineWidth = glw;
     ctx.shadowColor = gc;
     ctx.shadowBlur = glw * 6;
-    for (const [nameA, nameB] of explore.guideLinesDef) {
-      const a = explore.guideLinesCatalog[nameA];
-      const b = explore.guideLinesCatalog[nameB];
-      if (!a || !b) continue;
-      const pts = cam.projectStars([[a.ra, a.dec, 0], [b.ra, b.dec, 0]]);
+    for (const seg of guideLines.segments) {
+      const pts = cam.projectStars([[seg.a.ra, seg.a.dec, 0], [seg.b.ra, seg.b.dec, 0]]);
       if (pts[0].facing > 0 && pts[1].facing > 0) {
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
@@ -564,9 +579,8 @@ function drawExplore() {
 
   // Pass 2: stars + labels
   if (showStars || showLines) {
-    const diagFilter = Array.isArray(explore.diagram) ? explore.diagram : null;
     for (const con of visible) {
-      if (diagFilter && !diagFilter.includes(con.abbr)) continue;
+      if (diagramOnly && !diagramOnly.includes(con.abbr)) continue;
       const dcon = diagramFor(con, diagramSource);
       const proj = cam.projectStars(dcon.stars)
         .map((p, i) => ({ ...p, _orig: dcon.stars[i] }))
@@ -584,9 +598,8 @@ function drawExplore() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = 'rgba(160,185,255,0.6)';
-    const namesFilter = Array.isArray(explore.names) ? explore.names : null;
     for (const con of visible) {
-      if (namesFilter && !namesFilter.includes(con.abbr)) continue;
+      if (namesOnly && !namesOnly.includes(con.abbr)) continue;
       const pos = conNamePosition(con, ctx, fs, camP, camUp, explore.fov, W, H, projBounds, allBoundEdges, showBounds);
       if (!pos) continue;
       const p = cam.projectStars([[pos.ra, pos.dec, 99]])[0];
@@ -598,11 +611,10 @@ function drawExplore() {
   // Artwork layer (WebGL)
   const exploreCredit = document.getElementById('explore-art-credit');
   if (showArt) {
-    const artFilter = Array.isArray(explore.art) ? explore.art : null;
     let hasArt = false;
     for (const con of visible) {
       if (!ART[con.abbr]) continue;
-      if (artFilter && !artFilter.includes(con.abbr)) continue;
+      if (artOnly && !artOnly.includes(con.abbr)) continue;
       hasArt = true;
       drawExploreArtLayerGL(con, cam);
     }
