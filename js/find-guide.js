@@ -31,7 +31,10 @@ function updateFindHelpBtn(con) {
 }
 
 // ── Public: open the guide ───────────────────────────────────────────────────
-function startFindGuide(con) {
+// opts.onExit (optional): when the guide finishes, call this instead of restoring
+// the explore view — used when the guide is a detour from another screen (e.g. the
+// quiz) that wants to return there. See issue #35.
+function startFindGuide(con, opts = {}) {
   _loadGuides().then(guides => {
     const guide = guides[con.name];
     if (!guide?.steps?.length) return;
@@ -41,7 +44,7 @@ function startFindGuide(con) {
     // Capture the bars' prior visibility so exit restores exactly what was showing
     // — the guide can be launched from a find quiz (bars visible) or from the info
     // modal's "Finding guide" link in free explore (bars hidden). See issue #4.
-    _guideSaved = { quiz: explore.quiz, quizBarDisplay: quizBar.style.display, navRowDisplay: navRow.style.display, ...snapshotView(explore) };
+    _guideSaved = { quiz: explore.quiz, quizBarDisplay: quizBar.style.display, navRowDisplay: navRow.style.display, onExit: opts.onExit || null, ...snapshotView(explore) };
     explore.quiz = null;
 
     quizBar.style.display = 'none';
@@ -58,19 +61,22 @@ function startFindGuide(con) {
   });
 }
 
-// ── Public: close the guide and return to quiz ───────────────────────────────
+// ── Public: close the guide ───────────────────────────────────────────────────
 function exitFindGuide() {
   if (!_guideSaved) return;
   guideStop();
+  document.getElementById('find-guide-overlay').style.display = 'none';
 
-  explore.quiz = _guideSaved.quiz;
-  applyView(explore, _guideSaved);
-  const { quizBarDisplay, navRowDisplay } = _guideSaved;
-  _guideSaved  = null;
+  const saved = _guideSaved;
+  _guideSaved = null;
 
-  document.getElementById('find-guide-overlay').style.display  = 'none';
-  document.getElementById('explore-quiz-bar').style.display    = quizBarDisplay;
-  document.getElementById('find-nav-row').style.display        = navRowDisplay;
+  // Detour caller (e.g. the quiz info-modal link) owns where to go next.
+  if (saved.onExit) { saved.onExit(); return; }
 
+  // Default: restore the explore view and the find-quiz bars we came from.
+  explore.quiz = saved.quiz;
+  applyView(explore, saved);
+  document.getElementById('explore-quiz-bar').style.display = saved.quizBarDisplay;
+  document.getElementById('find-nav-row').style.display     = saved.navRowDisplay;
   drawExplore();
 }

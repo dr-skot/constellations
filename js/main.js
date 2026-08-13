@@ -305,14 +305,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // "Finding guide →" — jump into the explorer for this constellation and start
-  // its guided walkthrough (startFindGuide restores the view on exit).
+  // its guided walkthrough. When opened from the quiz (the info link on an answered
+  // question or a level-check probe), the guide is a detour: on finish, return to
+  // the quiz at the same question rather than leaving the learner in explore (#35).
   modalGuideLink.addEventListener('click', e => {
     e.preventDefault();
     const con = C.find(c => c.abbr === modalAbbrCurrent);
+    const fromQuiz = document.getElementById('screen-quiz').classList.contains('active');
+    const wasCalibration = session.calibration;   // navigate('explore') clears it; restore on return
+    const returnHash = location.hash;             // e.g. #lesson / #calibration, to restore on exit
     closeConModal();
     if (!con) return;
     navigate('explore/' + con.abbr);
-    startFindGuide(con);
+    startFindGuide(con, fromQuiz ? { onExit: () => {
+      session.calibration = wasCalibration;
+      if (returnHash) history.replaceState(null, '', returnHash);
+      showScreen('quiz');
+      showLessonQuestion();
+    } } : undefined);
   });
 
   // Delegated handler for .con-info-link clicks (generated dynamically by conLabel)
