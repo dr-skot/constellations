@@ -5,7 +5,8 @@ let settings = { mode: 'diagram', diff: '1', hem: 'B' };
 let session = {
   questions: [], idx: 0, correct: 0, answered: false,
   history: [], choices: [], viewMode: false,
-  lessonIdx: null, lessonLabel: '', lastMastered: false
+  lessonIdx: null, lessonLabel: '', lastMastered: false,
+  calibration: false, calResults: []   // level-check mode (see js/calibration-ui.js)
 };
 function currentCon() {
   const q = session.questions[session.idx];
@@ -78,6 +79,9 @@ function getDistractors(correct, pool) {
 }
 
 function updatePrevBtn() {
+  // Calibration has no "previous" (going back would let a probe be re-answered and
+  // re-scored); the quiz keeps its normal Previous affordance.
+  if (session.calibration) { document.getElementById('btn-prev').classList.remove('show'); return; }
   document.getElementById('btn-prev').classList.toggle('show', session.idx > 0);
 }
 
@@ -133,7 +137,9 @@ function showLessonQuestion() {
       saveLessonSession();
     }
     session.rotation = q.rotation;
-    recordSeen(q.con.abbr, questionKey(q));
+    // The calibration level check measures before it seeds (D*), so it must not
+    // record exposure per probe — a lucky right answer shouldn't credit the con.
+    if (!session.calibration) recordSeen(q.con.abbr, questionKey(q));
   }
 
   const sz = document.getElementById('canvas-wrap').offsetWidth;
@@ -220,6 +226,24 @@ function handleAnswer(chosen, correct) {
     else if (b.textContent === chosen.name && chosen !== correct) b.classList.add('err');
   });
 
+  // Calibration level check: record the probe result (by diff band) for D* scoring —
+  // no exposure write, no reveal. Everything else (screen, choices, feedback) is the
+  // quiz's own, so the probe looks identical to an identify question.
+  if (session.calibration) {
+    const right = chosen === correct;
+    session.calResults[session.idx] = { diff: correct.diff, correct: right };
+    if (right) {
+      session.correct++;
+      document.getElementById('hud-score').textContent = `${session.correct} correct`;
+    }
+    document.getElementById('feedback').innerHTML = right
+      ? `✓ Correct! — ${conLabel(correct)}`
+      : `✗ That was ${conLabel(correct)}`;
+    document.getElementById('btn-next').classList.add('show');
+    updatePrevBtn();
+    return;
+  }
+
   if (chosen === correct) {
     session.correct++;
     document.getElementById('hud-score').textContent = `${session.correct} correct`;
@@ -268,6 +292,12 @@ function handleAutocompleteAnswer() {
 }
 
 function nextLessonQuestion() {
+  if (session.calibration) {
+    session.idx++;
+    if (session.idx >= session.questions.length) finishCalibrationProbes();
+    else showLessonQuestion();
+    return;
+  }
   session.idx++;
   saveLessonSession();
   if (session.idx >= session.questions.length) endLesson();

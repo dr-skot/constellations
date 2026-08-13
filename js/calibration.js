@@ -82,19 +82,14 @@ function calibrationProbes(catalog = C) {
 
 // Fisher–Yates, in place. `rng` defaults to Math.random so it is callable
 // standalone; the UI threads real randomness in, tests thread a seeded rng.
+// Shuffles the probe order and each probe's answer choices (the quiz's
+// getDistractors supplies the distractors themselves).
 function shuffleInPlace(arr, rng = Math.random) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
   }
   return arr;
-}
-
-// `n` distinct distractor names for `con`: the catalog (minus the answer)
-// shuffled, first `n` names.
-function pickDistractors(con, catalog = C, rng = Math.random, n = 3) {
-  const pool = shuffleInPlace(catalog.filter(c => c.name !== con.name), rng);
-  return pool.slice(0, n).map(c => c.name);
 }
 
 // Score a finished calibration. `results` is one { diff, correct } per probe in ANY

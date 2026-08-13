@@ -34,6 +34,10 @@ function navigate(hash) {
 }
 
 function handleRoute(hash) {
+  // Any navigation away from the level check leaves calibration mode — so a probe
+  // exit via a breadcrumb/gear (not just Quit) can't leak the flag into a later
+  // lesson (which would skip exposure recording and re-seed from probe results).
+  if (hash !== 'calibration') session.calibration = false;
   if (!hash || hash === 'course') {
     showScreen('start'); renderCourseMap();
   } else if (hash === 'explore') {
@@ -113,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('quiz-autocomplete-submit')
     .addEventListener('click', handleAutocompleteAnswer);
   document.getElementById('btn-prev').addEventListener('click', () => {
+    if (session.calibration) return;   // no going back within a level check
     if (session.idx > 0 && session.history[session.idx - 1]) {
       session.idx--;
       showLessonQuestion();
@@ -130,6 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   document.getElementById('btn-quit').addEventListener('click', () => {
+    if (session.calibration) {         // quitting a level check → back to course, no seeding
+      session.calibration = false;
+      navigate('course');
+      return;
+    }
     if (session.viewMode) {
       session.viewMode = false;
       document.getElementById('screen-quiz').classList.remove('viewer-mode');

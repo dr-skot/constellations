@@ -225,16 +225,12 @@ origLog('── flow helpers ─────────────────
     probes.map(c => c.diff).join(',') === '1,2,3,4,5,6,7,8');
 }
 
-// Distractors: n distinct catalog names, never the answer.
+// Distractors are supplied by the quiz's getDistractors (js/quiz.js), reused by the
+// probe UI; not re-tested here. shuffleInPlace shuffles probe + choice order.
 {
   function seqRng(seq) { let i = 0; return () => seq[i++ % seq.length]; }
-  const con = C.find(c => c.abbr === 'Ori');
-  const d = pickDistractors(con, C, seqRng([0.1, 0.5, 0.9, 0.3, 0.7]), 3);
-  check('distractors: returns n names', d.length === 3);
-  check('distractors: all distinct', new Set(d).size === 3);
-  check('distractors: never the correct name', !d.includes(con.name));
-  check('distractors: all are real catalog names',
-    d.every(name => C.some(c => c.name === name)));
+  const a = shuffleInPlace([1, 2, 3, 4, 5], seqRng([0, 0, 0, 0]));
+  check('shuffleInPlace: preserves the multiset', a.slice().sort().join(',') === '1,2,3,4,5');
 }
 
 // D* is scored by band (diff), so the presentation shuffle can never change it.
@@ -288,6 +284,22 @@ origLog('── entry logic ─────────────────�
   check('entry: first-run + explicit route not hijacked', calibrationEntryTarget('explore', true) === 'explore');
   check('entry: first-run + view/Ori not hijacked', calibrationEntryTarget('view/Ori', true) === 'view/Ori');
   check('entry: returning + lesson passes through', calibrationEntryTarget('lesson', false) === 'lesson');
+}
+
+// calibrationPayoffCopy: the payoff headline/body/band, incl. the re-run-skip case.
+{
+  const beginner = calibrationPayoffCopy(0, 0, false);
+  check('payoffCopy: D*=0 first-timer → "Starting from the beginning"',
+    beginner.head === 'Starting from the beginning' && beginner.band === '');
+  const rerunSkip = calibrationPayoffCopy(0, 36, true);
+  check('payoffCopy: D*=0 with progress → "No changes" (not "beginning")',
+    rerunSkip.head === 'No changes' && !/beginning/i.test(rerunSkip.unlock) && rerunSkip.band === '');
+  const mid = calibrationPayoffCopy(4, 36, false);
+  check('payoffCopy: mid D* → placed + band + count',
+    mid.head === 'We’ve placed you' && mid.band === 'difficulty band 4 of 8' && mid.unlock.includes('36'));
+  const whole = calibrationPayoffCopy(8, 88, true);
+  check('payoffCopy: D*≥8 → whole-sky + band',
+    whole.head === 'You know the whole sky' && whole.band === 'difficulty band 8 of 8');
 }
 
 // ── Summary ────────────────────────────────────────────────
