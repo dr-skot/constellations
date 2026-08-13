@@ -34,7 +34,11 @@ function _drawOutlinedLabel(ctx, text, x, y, color, scale) {
 }
 
 // ── Annotation drawing ────────────────────────────────────────────────────────
-function guideDrawAnnotation(step, catalog) {
+// Paints the marks a step display carries. Catalog lookups already happened once,
+// in makeStepDisplay, so this projects and paints and nothing else — and it
+// switches on one `kind` tag instead of probing raw fields in a fixed order.
+// Pass null to clear.
+function guideDrawAnnotation(display) {
   const ann = document.getElementById('annotation-canvas');
   const src = document.getElementById('explore-canvas');
   const W = src.width, H = src.height;
@@ -47,9 +51,23 @@ function guideDrawAnnotation(step, catalog) {
   const camUp = cameraReverse(explore.P, explore.R, [0, 1, 0]);
   const cam = makeCamera(explore.P, camUp, explore.fov, W, H);
 
+  const marks = display?.marks || [];
+  if (!marks.length) return;
+
+  const dpr   = window.devicePixelRatio || 1;
+  const scale = W / (src.offsetWidth || W / dpr);
+  const fovS  = 40 / explore.fov;   // FOV scale factor (same as drawStars)
+  const margin = 10 * scale;        // fixed pixel margin around a star
+  const objRadius = (o) => o.arcmin
+    ? (o.arcmin / 60) / explore.fov * (W / 2)
+    : magToR(o.mag ?? 6) * fovS * scale;
+
+  ctx.save();
+  for (const mark of marks) {
+
   // Precession circle — centered on ecliptic pole, radius = obliquity
-  if (step?.precessionCircle) {
-    const south = step.precessionCircle === 'south';
+  if (mark.kind === 'precession') {
+    const south = mark.south;
     const obliquity = 23.44 * Math.PI / 180;
     const epRA = (south ? 90 : 270) * Math.PI / 180;
     const epDec = (south ? -(90 - 23.44) : (90 - 23.44)) * Math.PI / 180;
@@ -92,33 +110,21 @@ function guideDrawAnnotation(step, catalog) {
     }
     ctx.stroke();
     ctx.setLineDash([]);
+    continue;
   }
 
-  if (!step?.highlight?.length) return;
-  const dpr   = window.devicePixelRatio || 1;
-  const scale = W / (src.offsetWidth || W / dpr);
-  const fovS = 40 / explore.fov;  // FOV scale factor (same as drawStars)
-  const margin = 10 * scale;     // fixed pixel margin around star
-  const objRadius = (obj) => obj.arcmin
-    ? (obj.arcmin / 60) / explore.fov * (W / 2)
-    : magToR(obj.mag ?? 6) * fovS * scale;
-
-  ctx.save();
-  for (const raw of (step.highlight || [])) {
-    if (raw.capsule) {
-      // Resolve each capsule point: catalog lookup, project, carry label
-      const pts = raw.capsule.map(e => {
-        if (typeof e === 'string') e = { id: e };
-        const obj = e.id ? (catalog && catalog[e.id]) : e;
-        if (!obj) return null;
-        const p = cam.projectStars([[obj.ra, obj.dec, 0]])[0];
+    if (mark.kind === 'capsule') {
+      // Project the already-resolved points. The camera cull stays here: whether a
+      // point faces away depends on where the camera is pointing this frame.
+      const pts = mark.points.map(e => {
+        const p = cam.projectStars([[e.ra, e.dec, 0]])[0];
         if (!p || p.facing <= 0) return null;
-        return { x: p.x, y: p.y, obj, label: e.label };
+        return { x: p.x, y: p.y, obj: e, label: e.label };
       }).filter(Boolean);
       if (pts.length < 2) continue;
       const maxObjR = Math.max(...pts.map(p => objRadius(p.obj)));
-      const r     = maxObjR + (raw.margin != null ? raw.margin * scale : margin);
-      const color = raw.color || '#fff';
+      const r     = maxObjR + (mark.margin != null ? mark.margin * scale : margin);
+      const color = mark.color;
       const lw    = Math.max(1.5, 1.5 * scale);
       const drawPath = (c) => {
         c.beginPath();
@@ -142,17 +148,16 @@ function guideDrawAnnotation(step, catalog) {
       // Per-point labels, then fallback to capsule-level label at first point
       const labels = [];
       for (const p of pts) { if (p.label) labels.push([p, p.label]); }
-      if (!labels.length && raw.label) labels.push([pts[0], raw.label]);
+      if (!labels.length && mark.label) labels.push([pts[0], mark.label]);
       for (const [P, text] of labels) {
         const lx = P.x + r + 6 * scale, ly = P.y;
         _drawOutlinedLabel(ctx, text, lx, ly, color, scale);
       }
       continue;
     }
-    const h = guideResolveHighlight(raw, catalog);
-    if (!h) continue;
-    if (h.line) {
-      const projected = h.line.map(([ra, dec]) => {
+    const h = mark;
+    if (h.kind === 'line') {
+      const projected = h.points.map(({ ra, dec }) => {
         const p = cam.projectStars([[ra, dec, 0]])[0];
         return (p && p.facing > 0) ? p : null;
       });
@@ -202,7 +207,9 @@ function guideDrawAnnotation(step, catalog) {
         const first = valid[0];
         _drawOutlinedLabel(ctx, h.label, first.x + 6 * scale, first.y - 10 * scale, h.color, scale);
       }
-    } else if (h.crosshair) {
+    } else if (h.kind === 'crosshair') {
+      // Note: the painter uses its own colour here and ignores h.color. The value
+      // carries whatever the data set so a validator can see the unread field.
       const pts = cam.projectStars([[h.ra, h.dec, 0]]);
       const p = pts[0];
       if (!p || p.facing <= 0) continue;
@@ -289,7 +296,7 @@ window.addEventListener('resize', () => {
   if (wrap) wrap._sized = false;
   if (gl)   gl._sized   = false;
   _guideDraw();
-  if (_gs) guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
+  if (_gs) guideDrawAnnotation(explore.stepDisplay);
 });
 
 // Are the current step's overlays on screen? Two facts, deliberately separate: whether
@@ -419,12 +426,10 @@ function _guideAddListeners() {
   document.getElementById('fg-btn-toggle-diag').addEventListener('click', () => {
     if (!_gs) return;
     _gs.overlaysHidden = !_gs.overlaysHidden;
-    _gs.diagVisible    = _guideOverlaysShown();
     _gs.applied = _gs.overlaysHidden ? displayWithoutOverlays(_gs.stepDisplay) : _gs.stepDisplay;
     _guidePublish();
-    const step = _gs.steps[_gs.idx];
     _guideDraw();
-    guideDrawAnnotation(_gs.diagVisible ? step : null, _gs.catalog);
+    guideDrawAnnotation(explore.stepDisplay);
     document.getElementById('fg-btn-toggle-diag').textContent =
       _gs.overlaysHidden ? 'Show overlays' : 'Hide overlays';
   });
@@ -436,7 +441,6 @@ function _guideAddListeners() {
 function guideGoTo(i, immediate) {
   if (!_gs) return;
   const prevShown    = _guideOverlaysShown();
-  const prevStep     = (_gs.idx >= 0 && prevShown) ? _gs.steps[_gs.idx] : null;
   const prevDisplay  = (_gs.idx >= 0 && prevShown) ? _gs.stepDisplay : null;
   _gs.idx = i;
   const s = _gs.steps[i];
@@ -453,7 +457,6 @@ function guideGoTo(i, immediate) {
   _gs.animating      = !immediate;
   _gs.stepDisplay    = makeStepDisplay(s, _gs.catalog);
   _gs.overlaysHidden = false;          // arriving at a step shows whatever it has
-  _gs.diagVisible    = hasOverlays(_gs.stepDisplay);
   if (_gs.stepKey) localStorage.setItem(_gs.stepKey, i);
   _guideRenderUI();
 
@@ -464,24 +467,25 @@ function guideGoTo(i, immediate) {
     explore.fov = s.fov;
     explore.R   = _stepR(s);
     _guideDraw();
-    guideDrawAnnotation(s, _gs.catalog);
+    guideDrawAnnotation(explore.stepDisplay);
     _gs.animating = false;
     _guideRenderUI();
   } else {
     // Before the flight: carry over only what both steps share, so departing elements
-    // clear before the camera moves and arriving ones appear on landing.
+    // clear before the camera moves and arriving ones appear on landing. One
+    // intersection now covers both canvases — the marks travel in the same value as
+    // the layers, so there is no second annotation-only intersection to keep in step.
     _gs.applied = prevDisplay ? intersectDisplays(prevDisplay, _gs.stepDisplay) : _gs.stepDisplay;
-    const midAnnotation = _guideIntersectAnnotation(prevStep, s);
     _guidePublish();
     _guideDraw();
-    guideDrawAnnotation(midAnnotation, _gs.catalog);
+    guideDrawAnnotation(explore.stepDisplay);
 
-    guideAnimateTo(s, null, _guideDraw, () => guideDrawAnnotation(midAnnotation, _gs.catalog), () => {
+    guideAnimateTo(s, null, _guideDraw, () => guideDrawAnnotation(explore.stepDisplay), () => {
       if (!_gs) return;
       _gs.applied = _gs.stepDisplay;
       _guidePublish();
       _guideDraw();
-      guideDrawAnnotation(s, _gs.catalog);
+      guideDrawAnnotation(explore.stepDisplay);
       _gs.animating = false;
       _guideRenderUI();
     }, () => !!_gs);
@@ -489,7 +493,7 @@ function guideGoTo(i, immediate) {
 }
 
 function guideStart(steps, catalog, options = {}) {
-  _gs = { steps, catalog, idx: -1, animating: false, diagVisible: false,
+  _gs = { steps, catalog, idx: -1, animating: false,
           stepDisplay: null,        // the full display of steps[idx]
           applied: null,            // what is actually published — full, intersection, or bare photo
           overlaysHidden: false,    // the learner's Hide overlays toggle

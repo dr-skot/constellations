@@ -706,7 +706,7 @@ function drawExplore() {
 
   // Redraw guide annotations so highlights follow drag/zoom
   if (_gs && !_gs.animating) {
-    guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
+    guideDrawAnnotation(explore.stepDisplay);
   }
 }
 
