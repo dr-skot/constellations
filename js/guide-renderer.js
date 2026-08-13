@@ -1,14 +1,9 @@
 // js/guide-renderer.js
 // Shared rendering logic used by find-help.html and find-guide.js
 
-// ── Catalog lookup ────────────────────────────────────────────────────────────
-function guideResolveHighlight(h, catalog) {
-  if (typeof h === 'string') h = { id: h };
-  if (!h.id) return h;
-  const obj = catalog && catalog[h.id];
-  if (!obj) return null;
-  return Object.assign({}, obj, { label: h.label != null ? h.label : h.id }, h);
-}
+// Catalog lookup moved to js/step-display.js: highlights and guide-line endpoints
+// resolve once, when the step display is built, instead of per frame — so an id
+// the catalog lacks is reportable data rather than a silent skip.
 
 // ── North-up roll ─────────────────────────────────────────────────────────────
 function guideNorthUpR(P) {
@@ -20,9 +15,9 @@ function guideNorthUpR(P) {
   return Math.atan2(q[0], q[1]);
 }
 
-function _stepHasOverlays(step) {
-  return !!(step.diagram || step.art || step.names || step.bounds || step.highlight?.length || step.lines?.length);
-}
+// "Does this step have overlays?" is hasOverlays(display) now — a query over the
+// value rather than a hand-written list of field names, which had already fallen
+// out of date by omitting the precession circle.
 
 function _drawOutlinedLabel(ctx, text, x, y, color, scale) {
   const fs = Math.round(13 * scale);
@@ -309,80 +304,19 @@ function _guideOverlaysShown() {
   return !_gs.overlaysHidden && hasOverlays(_gs.stepDisplay);
 }
 
-// The only writer of explore.stepDisplay. Everything that used to apply display state
-// field by field — five call sites — goes through here, so "what is on screen right now"
-// has exactly one answer.
+// The only writer of explore.stepDisplay, and now the whole of it. Six layer
+// properties, four guideLines* properties and a _gs truthiness probe used to say
+// what this one slot says — and un-setting them meant six deletes, which were
+// load-bearing: any exit path that missed them pinned the free explorer to the
+// last step's layers. Setting one slot to null cannot half-restore.
 function _guidePublish() {
-  const display = _gs ? _gs.applied : null;
-  explore.stepDisplay = display;
-  _guideWriteLegacy(display);
+  explore.stepDisplay = _gs ? _gs.applied : null;
 }
 
-// TEMPORARY (removed in the contract step, issue #42): also write the loose bus
-// properties, so the readers that have not migrated yet see no change.
-function _guideWriteLegacy(display) {
-  if (!display) {
-    delete explore.photo;
-    delete explore.diagram;
-    delete explore.art;
-    delete explore.names;
-    delete explore.bounds;
-    delete explore.equator;
-    explore.guideLinesDef = null;
-    return;
-  }
-  for (const name of ['photo', 'diagram', 'art', 'names', 'bounds']) {
-    const layer = display.layers[name];
-    explore[name] = layer.only ? layer.only : layer.on;
-  }
-  explore.equator = false;             // a guide suppresses the reference guides
-  if (display.lines) {
-    explore.guideLinesDef     = display.lines.segments.map(s => s.names);
-    explore.guideLinesCatalog = _gs.catalog;
-    explore.guideLinesColor   = display.lines.color;
-    explore.guideLinesWidth   = display.lines.width;
-  } else {
-    explore.guideLinesDef = null;
-  }
-}
-
-function _guideIntersectSettings(a, b) {
-  const result = {
-    photo:   a.photo   && b.photo,
-    diagram: _intersectFilter(a.diagram, b.diagram),
-    bounds:  _intersectFilter(a.bounds, b.bounds),
-    art:     _intersectFilter(a.art, b.art),
-    names:   _intersectFilter(a.names, b.names),
-    equator: a.equator && b.equator
-  };
-  if (a.lines?.length && b.lines?.length) {
-    const aSet = new Set(a.lines.map(l => l.join('|')));
-    const shared = b.lines.filter(l => aSet.has(l.join('|')));
-    if (shared.length) {
-      result.lines = shared;
-      result.lineColor = b.lineColor;
-      result.lineWidth = b.lineWidth;
-    }
-  }
-  return result;
-}
-
-function _guideIntersectAnnotation(a, b) {
-  if (!a || !b) return null;
-  const aIds = new Set((a.highlight || []).map(h => h.id || JSON.stringify(h)));
-  const shared = (b.highlight || []).filter(h => aIds.has(h.id || JSON.stringify(h)));
-  if (!shared.length) return null;
-  return { highlight: shared };
-}
-
-function _intersectFilter(a, b) {
-  if (Array.isArray(a) && Array.isArray(b)) {
-    const s = new Set(a);
-    const shared = b.filter(x => s.has(x));
-    return shared.length ? shared : undefined;
-  }
-  return a && b;
-}
+// The step-transition intersection lives in js/step-display.js now, as
+// intersectDisplays — one function over one value, covering both canvases, tested
+// against a transcription of the pair it replaced (_guideIntersectSettings and
+// _guideIntersectAnnotation, which had to be kept in lockstep by hand).
 
 function _guideRenderUI() {
   const { steps, idx, animating } = _gs;

@@ -147,14 +147,20 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 
 - **display flags** — the discrete set of per-layer booleans that drive `drawExplore`'s passes:
   `showPhoto, showDiag, showStars, showLines, showBounds, showArt, showStarLabels, showConNames`
-  plus `refMode` (`'always' | 'moving' | null`) and the context flags `cm`/`isAnswered`.
-  `resolveDisplayFlags(explore, exState, eqRevState, guideActive)` in `js/explore.js` is the pure
-  resolver: it decodes the three-way state — course mode (`explore.quiz.stageMode`, answered vs.
-  not), find-help overrides (`explore.photo/diagram/bounds/art/names/equator`), and free-explore
-  defaults (`exState`) — into that flag bundle. Reads no globals (the caller passes `!!_gs`).
+  plus `refMode` (`'always' | 'moving' | null`), the context flags `cm`/`isAnswered`, and the
+  per-layer allowlists `diagramOnly, boundsOnly, artOnly, namesOnly` (`null` = every visible
+  constellation). `resolveDisplayFlags(explore, exState, eqRevState)` in `js/explore.js` is the
+  pure resolver: it decodes the three-way state — course mode (`explore.quiz.stageMode`, answered
+  vs. not), the running guide's **step display** (`explore.stepDisplay`), and free-explore defaults
+  (`exState`) — into that bundle. Returning the filters beside the flags is what keeps the draw
+  passes from decoding the display a second time; before the step display existed, six loose bus
+  properties were read here as booleans and re-read 460 lines later as allowlists.
   The per-frame alpha ramps (`_refAlpha`, `_compassAlpha`) that fade the reference guides stay
   inline in `drawExplore` next to their draw calls, since they depend on the animation value
-  `explore._northAlpha`. Characterized by `test/display-flags.js` against a frozen truth table.
+  `explore._northAlpha`. Characterized by `test/display-flags.js`: 86 of the frozen truth table's
+  103 scenarios replay byte-for-byte, and the 17 encoding partial overrides — unreachable under a
+  complete-or-null display — are covered instead by a sweep against a verbatim transcription of the
+  pre-refactor cascade.
 
 - **strokePolyline(ctx, pts, close)** — the canvas primitive in `js/explore.js` for a projected
   polyline. Owns `beginPath` + the final `stroke`; lifts the pen wherever a point faces away from
