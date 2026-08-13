@@ -105,6 +105,44 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   lessonLabel, or any abbr that doesn't resolve). Pure obj↔obj: sessionStorage and the DOM
   toggle-group application stay in the quiz.js adapter (`saveLessonSession`/`tryResumeLesson`).
 
+## Finding guides
+
+- **step** — one panel of a finding guide (88 guides, 338 steps). A step declares two
+  independent things: **where to point** (`ra`/`dec`/`fov`/`rotation`, or `random` for the
+  opening step) and **what to show**. They differ in how they transition — the camera is
+  **tweened** between steps by `guideAnimateTo`, the display is **intersected** — and that
+  difference is why the seam sits between them.
+
+- **step display** — what a step asks the explorer to show, as one value
+  (`js/step-display.js`, pure). Built by `makeStepDisplay(step, catalog)`, the single
+  conversion out of the guide JSON. Carries `layers` (`photo`/`diagram`/`bounds`/`art`/
+  `names`, each `{on, only}` where `only` is an abbr allowlist or `null`), `lines` (guide
+  lines with endpoints already resolved to ra/dec, keeping their raw name pair as
+  identity), `marks` (kind-tagged: `circle`/`capsule`/`line`/`crosshair`/`precession`),
+  and `problems` (unresolvable catalog ids and fields nothing reads — the data-integrity
+  gate, asserted empty by `test/step-display.js`). The pipeline reads:
+  *step → **step display** → **display flags** (sky canvas) + **marks** (annotation canvas)*.
+  Complete-or-null: while a guide runs the value fully determines the layers and `exState`
+  is not consulted; `null` means no guide. Replaced six tri-state override flags plus four
+  `guideLines*` properties on the `explore` bus (spec #37).
+
+- **overlays** — everything a step display turns on **except the photo**: the figure
+  layers, the guide lines, and the marks. That is precisely what the Show/Hide overlays
+  button removes and leaves. `hasOverlays(display)` is the query (button visibility);
+  `displayWithoutOverlays(display)` is what the button produces. Asking the value replaced
+  a hand-written list of field names that had already lost the precession circle.
+  Deliberately *not* the name of the step display itself: the two senses cross — overlays
+  exclude the photo, which the display carries, and the display carries marks the earlier
+  boolean-flag group did not.
+
+- **intersectDisplays(a, b)** — the step-transition carry-over: only what both steps have
+  in common stays lit while the camera flies, so departing elements clear before the
+  flight and arriving ones appear on landing. Layers meet at shared abbrs when both are
+  filtered, otherwise the destination wins when the origin is on. Guide-line segments match
+  on their name pair; marks match on `key` (the catalog id, else the entry serialized) —
+  so a precession mark, which has no `key`, never survives a flight. Replaced
+  `_guideIntersectSettings` / `_guideIntersectAnnotation` / `_intersectFilter`.
+
 ## Explore rendering
 
 - **display flags** — the discrete set of per-layer booleans that drive `drawExplore`'s passes:

@@ -425,7 +425,6 @@
               "Mintaka",
               "Alnitak"
             ],
-            "r": 10,
             "color": "#c8d8ff",
             "label": "belt"
           }
@@ -497,7 +496,6 @@
               "Mizar",
               "Alkaid"
             ],
-            "r": 10,
             "color": "#c8d8ff"
           },
           "Arcturus"
@@ -770,7 +768,6 @@
               "Alnitak"
             ],
             "label": "Orion's belt",
-            "r": 10,
             "color": "#c8d8ff"
           },
           "Sirius"
