@@ -53,6 +53,7 @@
      from filling, shrink:1 + min-height:0 still lets it shrink on short windows. (#16) */
   flex: 0 1 540px;
   min-height: 0;
+  margin-top: 12px;   /* breathing room below the progress bar (#36) */
   display: flex;
   align-items: center;
   justify-content: center;
