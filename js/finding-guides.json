@@ -3734,7 +3734,7 @@
         "caption": "Sigma Octantis, the nearest naked-eye star to the pole, is so dim it's invisible from any light-polluted site — a poor substitute for Polaris. The south pole's lack of a bright marker is a temporary cosmic accident. Precession is slowly shifting Earth's axis, and around 9250 AD, Delta Velorum will come within 0.2° of the south pole — closer than Polaris ever gets to the north pole.",
         "ra": 87.61,
         "dec": -67.43,
-        "fov": 58.4,
+        "fov": 80,
         "rotation": 1.1481,
         "photo": true,
         "diagram": true,
