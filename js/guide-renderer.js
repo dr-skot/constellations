@@ -292,18 +292,48 @@ window.addEventListener('resize', () => {
   if (_gs) guideDrawAnnotation(_gs.diagVisible ? _gs.steps[_gs.idx] : null, _gs.catalog);
 });
 
-function _guideApplySettings(step) {
-  explore.photo   = step.photo || false;
-  explore.diagram = step.diagram || false;
-  explore.art     = step.art || false;
-  explore.names   = step.names || false;
-  explore.bounds  = step.bounds || false;
-  explore.equator = step.equator || false;
-  if (step.lines?.length && _gs?.catalog) {
-    explore.guideLinesDef     = step.lines;
+// Are the current step's overlays on screen? Two facts, deliberately separate: whether
+// the step HAS overlays decides whether the toggle button appears, whether the learner
+// HID them decides its label.
+function _guideOverlaysShown() {
+  // stepDisplay is null until the first step lands, so guideGoTo asks this before there
+  // is anything to show.
+  if (!_gs || !_gs.stepDisplay) return false;
+  return !_gs.overlaysHidden && hasOverlays(_gs.stepDisplay);
+}
+
+// The only writer of explore.stepDisplay. Everything that used to apply display state
+// field by field — five call sites — goes through here, so "what is on screen right now"
+// has exactly one answer.
+function _guidePublish() {
+  const display = _gs ? _gs.applied : null;
+  explore.stepDisplay = display;
+  _guideWriteLegacy(display);
+}
+
+// TEMPORARY (removed in the contract step, issue #42): also write the loose bus
+// properties, so the readers that have not migrated yet see no change.
+function _guideWriteLegacy(display) {
+  if (!display) {
+    delete explore.photo;
+    delete explore.diagram;
+    delete explore.art;
+    delete explore.names;
+    delete explore.bounds;
+    delete explore.equator;
+    explore.guideLinesDef = null;
+    return;
+  }
+  for (const name of ['photo', 'diagram', 'art', 'names', 'bounds']) {
+    const layer = display.layers[name];
+    explore[name] = layer.only ? layer.only : layer.on;
+  }
+  explore.equator = false;             // a guide suppresses the reference guides
+  if (display.lines) {
+    explore.guideLinesDef     = display.lines.segments.map(s => s.names);
     explore.guideLinesCatalog = _gs.catalog;
-    explore.guideLinesColor   = step.lineColor || 'rgba(140,200,255,0.9)';
-    explore.guideLinesWidth   = step.lineWidth || 5;
+    explore.guideLinesColor   = display.lines.color;
+    explore.guideLinesWidth   = display.lines.width;
   } else {
     explore.guideLinesDef = null;
   }
@@ -348,7 +378,7 @@ function _intersectFilter(a, b) {
 }
 
 function _guideRenderUI() {
-  const { steps, idx, animating, diagVisible } = _gs;
+  const { steps, idx, animating } = _gs;
   const n = steps.length;
   document.getElementById('fg-step-dots').innerHTML = steps.map((_, j) =>
     `<div class="fg-dot ${j < idx ? 'done' : j === idx ? 'active' : ''}"></div>`
@@ -359,11 +389,11 @@ function _guideRenderUI() {
   const prevBtn = document.getElementById('fg-btn-prev');
   prevBtn.style.visibility = (idx === 0 || animating) ? 'hidden' : 'visible';
   const isLast = idx === n - 1;
-  const step = steps[idx];
-  const hasOverlays = _stepHasOverlays(step);
   const toggleBtn = document.getElementById('fg-btn-toggle-diag');
-  toggleBtn.style.display = hasOverlays ? '' : 'none';
-  toggleBtn.textContent   = diagVisible ? 'Hide overlays' : 'Show overlays';
+  // Two separate facts: does this step have overlays (show the button at all), and did
+  // the learner hide them (what the button says).
+  toggleBtn.style.display = hasOverlays(_gs.stepDisplay) ? '' : 'none';
+  toggleBtn.textContent   = _gs.overlaysHidden ? 'Show overlays' : 'Hide overlays';
   const nextBtn = document.getElementById('fg-btn-next');
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
   nextBtn.style.visibility = animating ? 'hidden' : 'visible';
@@ -388,17 +418,15 @@ function _guideAddListeners() {
 
   document.getElementById('fg-btn-toggle-diag').addEventListener('click', () => {
     if (!_gs) return;
-    _gs.diagVisible = !_gs.diagVisible;
+    _gs.overlaysHidden = !_gs.overlaysHidden;
+    _gs.diagVisible    = _guideOverlaysShown();
+    _gs.applied = _gs.overlaysHidden ? displayWithoutOverlays(_gs.stepDisplay) : _gs.stepDisplay;
+    _guidePublish();
     const step = _gs.steps[_gs.idx];
-    if (_gs.diagVisible) {
-      _guideApplySettings(step);
-    } else {
-      _guideApplySettings({ photo: step.photo, equator: step.equator });
-    }
     _guideDraw();
     guideDrawAnnotation(_gs.diagVisible ? step : null, _gs.catalog);
     document.getElementById('fg-btn-toggle-diag').textContent =
-      _gs.diagVisible ? 'Hide overlays' : 'Show overlays';
+      _gs.overlaysHidden ? 'Show overlays' : 'Hide overlays';
   });
 
   const backBtn = document.getElementById('fg-back-btn');
@@ -407,7 +435,9 @@ function _guideAddListeners() {
 
 function guideGoTo(i, immediate) {
   if (!_gs) return;
-  const prevStep = (_gs.idx >= 0 && _gs.diagVisible) ? _gs.steps[_gs.idx] : null;
+  const prevShown    = _guideOverlaysShown();
+  const prevStep     = (_gs.idx >= 0 && prevShown) ? _gs.steps[_gs.idx] : null;
+  const prevDisplay  = (_gs.idx >= 0 && prevShown) ? _gs.stepDisplay : null;
   _gs.idx = i;
   const s = _gs.steps[i];
 
@@ -420,13 +450,16 @@ function guideGoTo(i, immediate) {
     if (atTarget) immediate = true;
   }
 
-  _gs.animating = !immediate;
-  _gs.diagVisible = _stepHasOverlays(s);
+  _gs.animating      = !immediate;
+  _gs.stepDisplay    = makeStepDisplay(s, _gs.catalog);
+  _gs.overlaysHidden = false;          // arriving at a step shows whatever it has
+  _gs.diagVisible    = hasOverlays(_gs.stepDisplay);
   if (_gs.stepKey) localStorage.setItem(_gs.stepKey, i);
   _guideRenderUI();
 
   if (immediate) {
-    _guideApplySettings(s);
+    _gs.applied = _gs.stepDisplay;
+    _guidePublish();
     explore.P   = raDecToVec(s.ra, s.dec);
     explore.fov = s.fov;
     explore.R   = _stepR(s);
@@ -435,16 +468,18 @@ function guideGoTo(i, immediate) {
     _gs.animating = false;
     _guideRenderUI();
   } else {
-    // Before animation: apply intersection settings, clear departing elements
-    const midSettings = prevStep ? _guideIntersectSettings(prevStep, s) : s;
+    // Before the flight: carry over only what both steps share, so departing elements
+    // clear before the camera moves and arriving ones appear on landing.
+    _gs.applied = prevDisplay ? intersectDisplays(prevDisplay, _gs.stepDisplay) : _gs.stepDisplay;
     const midAnnotation = _guideIntersectAnnotation(prevStep, s);
-    _guideApplySettings(midSettings);
+    _guidePublish();
     _guideDraw();
     guideDrawAnnotation(midAnnotation, _gs.catalog);
 
     guideAnimateTo(s, null, _guideDraw, () => guideDrawAnnotation(midAnnotation, _gs.catalog), () => {
       if (!_gs) return;
-      _guideApplySettings(s);
+      _gs.applied = _gs.stepDisplay;
+      _guidePublish();
       _guideDraw();
       guideDrawAnnotation(s, _gs.catalog);
       _gs.animating = false;
@@ -455,6 +490,9 @@ function guideGoTo(i, immediate) {
 
 function guideStart(steps, catalog, options = {}) {
   _gs = { steps, catalog, idx: -1, animating: false, diagVisible: false,
+          stepDisplay: null,        // the full display of steps[idx]
+          applied: null,            // what is actually published — full, intersection, or bare photo
+          overlaysHidden: false,    // the learner's Hide overlays toggle
           onLastNext: options.onLastNext || null, stepKey: options.stepKey || null,
           defaultR: explore.R };
   _guideAddListeners();
@@ -465,13 +503,7 @@ function guideStart(steps, catalog, options = {}) {
 function guideStop() {
   if (_gs?.stepKey) localStorage.removeItem(_gs.stepKey);
   _gs = null;
-  delete explore.photo;
-  delete explore.diagram;
-  delete explore.art;
-  delete explore.names;
-  delete explore.bounds;
-  delete explore.equator;
-  explore.guideLinesDef = null;
+  _guidePublish();                     // clears the slot and the legacy properties
   const ann = document.getElementById('annotation-canvas');
   if (ann) { const c = ann.getContext('2d'); c.clearRect(0, 0, ann.width, ann.height); }
 }
