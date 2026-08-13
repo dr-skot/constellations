@@ -29,7 +29,7 @@ let _settingsBlurb = null;    // the per-source blurb under the preview
 const figuresSetting = {
   id: 'figures',
   title: 'Figures',
-  description: "Different traditions for connecting a constellation's stars — this changes the drawing only, never the quiz.",
+  description: "Different traditions for connecting a constellation's stars. Applies everywhere figures are drawn, including the quiz.",
   render(mountEl) {
     const pickHost = document.createElement('div');
     pickHost.className = 'toggle-group';
