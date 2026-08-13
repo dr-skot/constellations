@@ -63,6 +63,28 @@ diagramSource = 'iau';
 loadDiagramSource();
 check('loadDiagramSource restores the saved key', diagramSource === 'rey');
 
+// A page that omits the alternate figure sets — find-help.html ships only
+// diagram-sources.js, not the ~139 KB of Rey/Stellarium/Ford data — must still
+// draw. Every source falls back to C's own figure instead of throwing.
+{
+  const sandbox = { console: { log() {}, warn() {}, error() {} }, localStorage: global.localStorage };
+  vm.createContext(sandbox);
+  let ok = true, err = '';
+  try {
+    for (const f of ['data.js', 'diagram-sources.js']) {
+      vm.runInContext(fs.readFileSync(path.join(jsDir, f), 'utf8'), sandbox, { filename: f });
+    }
+    // C and diagramFor are const/function declarations, so they live lexically in
+    // the context rather than on the sandbox object — evaluate in there.
+    const missed = vm.runInContext(
+      `const bareOri = C.find(c => c.abbr === 'Ori');
+       ['rey','stellarium','ford','iau','bogus'].filter(k => diagramFor(bareOri, k) !== bareOri);`,
+      sandbox, { filename: 'fallback-check' });
+    if (missed.length) { ok = false; err = `did not fall back: ${missed.join(',')}`; }
+  } catch (e) { ok = false; err = e.message; }
+  check('without the alternate figure data, every source falls back to IAU', ok, err);
+}
+
 origLog('');
 if (failures.length === 0) { origLog('✅ ALL PASSED'); process.exit(0); }
 else { origLog(`❌ ${failures.length} FAILURE(S)`); process.exit(1); }
