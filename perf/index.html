@@ -49,7 +49,10 @@
 
   <ol class="steps" id="ladder"></ol>
 
-<script src="harness.js"></script>
+<!-- The ?v= is load-bearing: iOS Safari served a cached harness.js against a
+     fresh index.html, so Perf.clearFrom did not exist and the run button threw
+     and did nothing. Bump it whenever harness.js changes shape. -->
+<script src="harness.js?v=2"></script>
 <script>
 (function () {
   var tbody = document.querySelector('#results tbody');
@@ -168,8 +171,11 @@
   // The synthetic rungs 1-10 have measured clean on every run and cost about two
   // minutes to re-prove. This starts at the reproducer and keeps that baseline.
   document.getElementById('run-app').addEventListener('click', function () {
-    Perf.clearFrom(Perf.FIRST_APP_STEP);
-    location.href = Perf.stepUrl(Perf.FIRST_APP_STEP, true);
+    // Degrade rather than die if an old harness.js is cached: a throw here left
+    // the button doing nothing at all, which reads as a broken page.
+    var first = Perf.FIRST_APP_STEP || 11;
+    if (Perf.clearFrom) Perf.clearFrom(first);
+    location.href = Perf.stepUrl(first, true);
   });
   document.getElementById('clear').addEventListener('click', function () {
     Perf.clearAll(); render();
