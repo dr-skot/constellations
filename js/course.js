@@ -126,7 +126,11 @@ function endLesson() {
   const cnt = parseInt(localStorage.getItem('lesson-count') || '0') + 1;
   localStorage.setItem('lesson-count', cnt);
   renderResultProgress();
-  showScreen('result');
+  // The result screen has its own hash, so the address bar stops describing the
+  // lesson that just ended. It is a transient route: a finished lesson lives only
+  // in memory, so a reload lands on the course home rather than resolving #lesson,
+  // failing to resume, and silently starting a fresh lesson over the score.
+  navigate('result');
   renderResultButtons();
 }
 
