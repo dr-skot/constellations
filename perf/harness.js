@@ -1,0 +1,223 @@
+// ═══════════════════════════════════════════════════════════
+// PERF BISECT HARNESS
+// ═══════════════════════════════════════════════════════════
+//
+// One measurement engine, shared by every rung of the ladder (perf/step.html) and
+// by the real app (index.html?perf=1). It answers one question per page:
+//
+//   does THIS page freeze, and is the main thread blocked or is the screen simply
+//   not being presented?
+//
+// Three clocks run in parallel:
+//   raf    — advances only when a frame is actually presented
+//   timer  — advances whenever the main thread is free, painted or not
+//   paint  — time from a real DOM change to the pixels appearing
+//
+// timer healthy + raf stalled  => rendering suspended, thread idle  (the iOS bug)
+// timer stalled                => the main thread is genuinely blocked (our code)
+//
+// Written for iOS Safari: no modules, no build, no dependencies.
+
+(function (global) {
+  'use strict';
+
+  var KEY = 'perf-bisect-results';
+
+  // Every URL is resolved against the harness's own location, because rung 11 runs
+  // from the app root (/index.html?perf=1) while rungs 1-10 run from /perf/. Using
+  // relative paths sent the final navigation to the app instead of the results.
+  var BASE = (function () {
+    var s = document.currentScript;
+    if (!s) { var all = document.getElementsByTagName('script'); s = all[all.length - 1]; }
+    var src = (s && s.src) || '';
+    return src ? src.replace(/harness\.js.*$/, '') : 'perf/';
+  })();
+
+  // The ladder. Each rung adds exactly ONE thing to the rung before it, so the
+  // first rung that stalls names the culprit.
+  var STEPS = [
+    { id: 1,  name: 'Buttons only',      adds: 'Four buttons that light up on each tick. No canvas anywhere.' },
+    { id: 2,  name: '+ progress bar',    adds: 'A progress bar and header text updated every tick.' },
+    { id: 3,  name: '+ canvas present',  adds: 'A canvas at full device resolution, drawn once and never touched again.' },
+    { id: 4,  name: '+ canvas redraw',   adds: 'Redraws simple shapes into that canvas every tick.' },
+    { id: 5,  name: '+ canvas realloc',  adds: 'Reassigns canvas.width every tick, reallocating the bitmap.' },
+    { id: 6,  name: '+ heavy draw',      adds: 'Gradients, 180 background stars, shadowBlur stars and lines, text labels.' },
+    { id: 7,  name: '+ photo <img>',     adds: 'Swaps a real 640x640 photo into an <img> every tick.' },
+    { id: 8,  name: '+ art overlay',     adds: 'drawImage of a real .webp art file onto the canvas every tick.' },
+    { id: 9,  name: '+ WebGL context',   adds: 'Creates a WebGL canvas, uploads a texture and draws every tick.' },
+    { id: 10, name: '+ all app scripts', adds: 'Loads every js/ file the real app loads: parse cost, globals, startup fetches.' },
+    { id: 11, name: 'The real app',      adds: 'index.html itself, auto-answering questions.' }
+  ];
+
+  function stepUrl(id, auto) {
+    var q = auto ? '&auto=1' : '';
+    if (id === 11) return BASE + '../index.html?perf=1' + (auto ? '&auto=1' : '') + '#lesson';
+    return BASE + 'step.html?step=' + id + q;
+  }
+  function resultsUrl() { return BASE + 'index.html?done=1'; }
+
+  // ── Results storage ────────────────────────────────────────────────────────
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(all) {
+    try { localStorage.setItem(KEY, JSON.stringify(all)); } catch (e) {}
+  }
+  function record(id, result) {
+    var all = load();
+    all[id] = result;
+    save(all);
+  }
+  function clearAll() { save({}); }
+
+  // ── The measurement ────────────────────────────────────────────────────────
+  // opts.seconds  how long to measure
+  // opts.tick     called every opts.tickMs to simulate a question change
+  // opts.onDone   receives the result object
+  function measure(opts) {
+    var seconds = opts.seconds || 10;
+    var tickMs = opts.tickMs || 700;
+    var rafGaps = [], timerGaps = [], paints = [];
+    var stopped = false;
+    var lastR = performance.now(), lastT = performance.now();
+    var ticks = 0;
+
+    // A hidden page gets no animation frames at all, which would otherwise be
+    // recorded as a flawless zero-stall pass. Track it and refuse to report.
+    var wasHidden = document.hidden;
+    var onVis = function () { if (document.hidden) wasHidden = true; };
+    document.addEventListener('visibilitychange', onVis);
+
+    var rafTick = function (t) {
+      rafGaps.push(t - lastR); lastR = t;
+      if (!stopped) requestAnimationFrame(rafTick);
+    };
+    requestAnimationFrame(rafTick);
+
+    var timerTick = function () {
+      var n = performance.now();
+      timerGaps.push(n - lastT); lastT = n;
+      if (!stopped) setTimeout(timerTick, 16);
+    };
+    setTimeout(timerTick, 16);
+
+    // A real DOM change, timed to the frame that shows it.
+    var probe = document.createElement('div');
+    probe.setAttribute('data-perf-probe', '');
+    probe.style.cssText = 'position:fixed;top:0;left:0;width:6px;height:6px;z-index:2147483647;background:#f0f';
+    document.body.appendChild(probe);
+    var paintTimer = setInterval(function () {
+      var t0 = performance.now();
+      probe.style.background = probe.style.background === 'rgb(255, 0, 255)' ? '#0ff' : '#f0f';
+      requestAnimationFrame(function () { paints.push(performance.now() - t0); });
+    }, 250);
+
+    // Drive the page the way a user would.
+    var workTimer = setInterval(function () {
+      ticks++;
+      try { if (opts.tick) opts.tick(ticks); } catch (e) { /* keep measuring */ }
+    }, tickMs);
+
+    setTimeout(function () {
+      stopped = true;
+      clearInterval(paintTimer);
+      clearInterval(workTimer);
+      document.removeEventListener('visibilitychange', onVis);
+      if (probe.parentNode) probe.parentNode.removeChild(probe);
+
+      var result = summarize(rafGaps, timerGaps, paints, seconds, ticks);
+      // Too few frames to judge: the page was backgrounded, or the screen slept.
+      if (wasHidden || rafGaps.length < seconds * 5) {
+        result.noData = true;
+        result.stalled = false;
+        result.verdict = 'NO DATA — page was hidden';
+      }
+      if (opts.onDone) opts.onDone(result);
+    }, seconds * 1000);
+  }
+
+  function pct(sorted, p) { return sorted.length ? sorted[Math.floor(sorted.length * p)] : 0; }
+  function r0(n) { return Math.round(n); }
+
+  function summarize(rafGaps, timerGaps, paints, seconds, ticks) {
+    var r = rafGaps.slice().sort(function (a, b) { return a - b; });
+    var t = timerGaps.slice().sort(function (a, b) { return a - b; });
+    var p = paints.slice().sort(function (a, b) { return a - b; });
+
+    var worstPaint = p.length ? p[p.length - 1] : 0;
+    var worstFrame = r.length ? r[r.length - 1] : 0;
+    var worstTimer = t.length ? t[t.length - 1] : 0;
+    var expectedFrames = seconds * 60;
+
+    // A stall is the screen not updating for over half a second.
+    var stalled = worstPaint > 500 || worstFrame > 500;
+    var threadBlocked = worstTimer > 500;
+
+    return {
+      frames: rafGaps.length,
+      framesExpected: expectedFrames,
+      fps: r0(rafGaps.length / seconds),
+      frameMedian: r0(pct(r, 0.5)),
+      worstFrameMs: r0(worstFrame),
+      worstTimerMs: r0(worstTimer),
+      paintMedianMs: r0(pct(p, 0.5)),
+      worstPaintMs: r0(worstPaint),
+      stallsOver500ms: paints.filter(function (x) { return x > 500; }).length,
+      ticks: ticks,
+      stalled: stalled,
+      threadBlocked: threadBlocked,
+      verdict: !stalled ? 'OK' : (threadBlocked ? 'BLOCKED THREAD' : 'SUSPENDED RENDERING')
+    };
+  }
+
+  // ── On-screen readout ──────────────────────────────────────────────────────
+  function hud(text) {
+    var el = document.getElementById('perf-hud');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'perf-hud';
+      el.style.cssText = 'position:fixed;top:6px;right:6px;z-index:2147483646;background:rgba(0,0,0,.85);' +
+        'color:#0f0;font:11px/1.4 ui-monospace,Menlo,monospace;padding:6px 8px;border-radius:6px;' +
+        'white-space:pre;text-align:right;pointer-events:none;max-width:60vw';
+      document.body.appendChild(el);
+    }
+    el.textContent = text;
+  }
+
+  // ── Auto-run: measure this rung, store it, move to the next ────────────────
+  function autoRun(id, tick) {
+    var step = STEPS[id - 1];
+    hud('step ' + id + '/' + STEPS.length + '\n' + (step ? step.name : '') + '\nmeasuring...');
+    measure({
+      seconds: 10,
+      tick: tick,
+      onDone: function (result) {
+        record(id, result);
+        hud('step ' + id + ' -> ' + result.verdict + '\nfps ' + result.fps +
+            '  worst paint ' + (result.worstPaintMs / 1000).toFixed(1) + 's\nnext...');
+        setTimeout(function () {
+          if (id >= STEPS.length) location.href = resultsUrl();
+          else location.href = stepUrl(id + 1, true);
+        }, 900);
+      }
+    });
+  }
+
+  function param(name) {
+    var m = new RegExp('[?&]' + name + '=([^&#]*)').exec(location.search);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  global.Perf = {
+    STEPS: STEPS,
+    stepUrl: stepUrl,
+    resultsUrl: resultsUrl,
+    load: load,
+    record: record,
+    clearAll: clearAll,
+    measure: measure,
+    autoRun: autoRun,
+    hud: hud,
+    param: param
+  };
+})(window);

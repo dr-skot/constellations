@@ -277,5 +277,12 @@
   <script src="js/settings.js"></script>
   <script src="js/screens.js"></script>
   <script src="js/main.js"></script>
+  <!-- Perf bisect rung 11: only loaded with ?perf=1, so normal runs pay nothing. -->
+  <script>
+    if (/[?&]perf=1/.test(location.search)) {
+      document.write('<script src="perf/harness.js"><\/script>');
+      document.write('<script src="perf/app-probe.js"><\/script>');
+    }
+  </script>
 </body>
 </html>

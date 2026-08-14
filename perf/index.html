@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Constellate — perf bisect</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; padding:14px; background:#080a14; color:#e8f0ff;
+    font:15px/1.5 system-ui,-apple-system,sans-serif; }
+  h1 { font-size:19px; margin:0 0 4px; }
+  p.lede { color:#8fa3c8; font-size:13px; margin:0 0 14px; }
+  button.go { display:block; width:100%; padding:16px; font-size:17px; font-weight:600;
+    background:linear-gradient(135deg,#5b8af5,#8f6bf5); color:#fff; border:0; border-radius:12px; }
+  button.alt { display:block; width:100%; padding:11px; font-size:14px; margin-top:8px;
+    background:#141c30; color:#cfe0ff; border:1px solid #2c3a5e; border-radius:10px; }
+  #verdict { margin:16px 0; padding:13px; border-radius:10px; display:none; }
+  #verdict.found { background:#3a1520; border:1px solid #f55b7a; }
+  #verdict.clean { background:#12301c; border:1px solid #4bd07a; }
+  #verdict h2 { margin:0 0 6px; font-size:16px; }
+  #verdict p { margin:4px 0; font-size:13px; }
+  table { width:100%; border-collapse:collapse; margin-top:14px; font-size:12px; }
+  th, td { text-align:left; padding:6px 5px; border-bottom:1px solid #1b2540; }
+  th { color:#8fa3c8; font-weight:600; }
+  td.n { text-align:right; font-family:ui-monospace,Menlo,monospace; }
+  tr.bad td { background:rgba(245,91,122,.12); }
+  tr.bad td:first-child { box-shadow:inset 3px 0 0 #f55b7a; }
+  .ok { color:#4bd07a; } .bad { color:#f55b7a; } .pending { color:#54608a; } .warn { color:#f5c65b; }
+  .steps { margin-top:18px; font-size:12px; color:#8fa3c8; }
+  .steps li { margin:3px 0; }
+  code { background:#141c30; padding:1px 4px; border-radius:4px; font-size:11px; }
+</style>
+</head>
+<body>
+  <h1>Perf bisect</h1>
+  <p class="lede">Eleven pages. Each adds exactly one thing to the one before it.
+    The first that freezes is the culprit. Runs itself — about two minutes.</p>
+
+  <button class="go" id="run">Run all steps</button>
+  <button class="alt" id="clear">Clear results</button>
+
+  <div id="verdict"></div>
+  <table id="results"><thead><tr>
+    <th>#</th><th>Step</th><th class="n">fps</th><th class="n">worst paint</th><th>verdict</th>
+  </tr></thead><tbody></tbody></table>
+
+  <ol class="steps" id="ladder"></ol>
+
+<script src="harness.js"></script>
+<script>
+(function () {
+  var tbody = document.querySelector('#results tbody');
+  var verdictEl = document.getElementById('verdict');
+
+  document.getElementById('ladder').innerHTML = Perf.STEPS.map(function (s) {
+    return '<li><b>' + s.name + '</b> — ' + s.adds + '</li>';
+  }).join('');
+
+  function render() {
+    var all = Perf.load();
+    tbody.innerHTML = Perf.STEPS.map(function (s) {
+      var r = all[s.id];
+      var cls = r && r.stalled ? ' class="bad"' : '';
+      var cell = !r ? '<span class="pending">not run</span>'
+        : r.noData ? '<span class="warn">no data — hidden</span>'
+        : (r.stalled ? '<span class="bad">' + r.verdict + '</span>' : '<span class="ok">OK</span>');
+      return '<tr' + cls + '><td>' + s.id + '</td><td>' + s.name + '</td>' +
+        '<td class="n">' + (r ? r.fps : '–') + '</td>' +
+        '<td class="n">' + (r ? (r.worstPaintMs / 1000).toFixed(1) + 's' : '–') + '</td>' +
+        '<td>' + cell + '</td></tr>';
+    }).join('');
+
+    // The verdict: the first rung that stalled is what introduced the problem.
+    var firstBad = null;
+    for (var i = 0; i < Perf.STEPS.length; i++) {
+      var r = all[Perf.STEPS[i].id];
+      if (r && r.stalled) { firstBad = Perf.STEPS[i]; break; }
+    }
+    var ranAny = Object.keys(all).length > 0;
+    var ranAll = Object.keys(all).length >= Perf.STEPS.length;
+    var noData = Perf.STEPS.filter(function (s) { return all[s.id] && all[s.id].noData; });
+
+    if (!firstBad && noData.length) {
+      verdictEl.style.display = 'block';
+      verdictEl.className = 'found';
+      verdictEl.innerHTML = '<h2>' + noData.length + ' step(s) recorded no data</h2>' +
+        '<p>The page was hidden or the screen slept while measuring, so those rungs ' +
+        'prove nothing. Keep the phone awake and this page in front, then run again.</p>';
+      return;
+    }
+
+    if (!ranAny) { verdictEl.style.display = 'none'; return; }
+    verdictEl.style.display = 'block';
+
+    if (firstBad) {
+      var r2 = all[firstBad.id];
+      verdictEl.className = 'found';
+      verdictEl.innerHTML = '<h2>Culprit: step ' + firstBad.id + ' — ' + firstBad.name + '</h2>' +
+        '<p>' + firstBad.adds + '</p>' +
+        '<p>Everything below it ran clean. This step is what introduced the freeze: ' +
+        'worst paint <b>' + (r2.worstPaintMs / 1000).toFixed(1) + 's</b>, ' +
+        'fps <b>' + r2.fps + '</b> (expected ~60), ' +
+        (r2.threadBlocked
+          ? 'and the <b>main thread was blocked</b> — so it is our JavaScript.'
+          : 'while the <b>main thread stayed free</b> — so the screen simply was not being presented.') +
+        '</p>';
+    } else if (ranAll) {
+      verdictEl.className = 'clean';
+      verdictEl.innerHTML = '<h2>No step stalled</h2>' +
+        '<p>Every rung including the real app ran clean. Either the problem needs real ' +
+        'finger taps rather than the automatic ticker, or it needs a cold start. Run it ' +
+        'again straight after force-quitting Safari, and use <b>Run one step manually</b> ' +
+        'on the real app to tap it yourself.</p>';
+    } else {
+      verdictEl.className = 'clean';
+      verdictEl.innerHTML = '<h2>Partial run</h2><p>' + Object.keys(all).length + ' of ' +
+        Perf.STEPS.length + ' steps recorded. Run all steps for a verdict.</p>';
+    }
+  }
+
+  document.getElementById('run').addEventListener('click', function () {
+    Perf.clearAll();
+    location.href = Perf.stepUrl(1, true);
+  });
+  document.getElementById('clear').addEventListener('click', function () {
+    Perf.clearAll(); render();
+  });
+
+  // Manual links, one per step, for tapping a single rung by hand.
+  var manual = document.createElement('div');
+  manual.className = 'steps';
+  manual.innerHTML = '<b>Run one step manually (20s, you tap):</b><br>' +
+    Perf.STEPS.map(function (s) {
+      return '<a href="' + Perf.stepUrl(s.id, false) + '" style="color:#8fb4ff">' + s.id + '</a>';
+    }).join(' &nbsp; ');
+  document.body.appendChild(manual);
+
+  render();
+})();
+</script>
+</body>
+</html>

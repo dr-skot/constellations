@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Perf step</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin:0; padding:0; background:#080a14; color:#e8f0ff;
+    font:15px/1.4 system-ui,-apple-system,sans-serif; height:100%; }
+  body { display:flex; flex-direction:column; padding:10px; box-sizing:border-box; gap:10px; }
+  h1 { font-size:15px; margin:0; font-weight:600; }
+  .sub { font-size:12px; color:#8fa3c8; margin:0; }
+  .bar { height:6px; background:#1b2540; border-radius:3px; overflow:hidden; display:none; }
+  .bar > i { display:block; height:100%; width:0; background:#5b8af5; transition:width .2s; }
+  #hdr { display:none; font-size:12px; color:#8fa3c8; }
+  #wrap { flex:1; min-height:0; display:none; align-items:center; justify-content:center; position:relative; }
+  #cv { max-width:100%; max-height:100%; border-radius:50%; display:block; }
+  #photo { position:absolute; inset:0; margin:auto; max-width:100%; max-height:100%;
+    border-radius:50%; display:none; }
+  #glcv { position:absolute; left:-9999px; top:0; width:120px; height:120px; }
+  #btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  button { padding:14px 8px; font-size:15px; border-radius:10px;
+    border:1px solid #2c3a5e; background:#141c30; color:#cfe0ff; }
+  button.lit { background:#1d3a6e; border-color:#5b8af5; color:#fff; }
+  #fb { min-height:20px; font-size:13px; color:#9fd0a0; }
+</style>
+</head>
+<body>
+  <h1 id="title">step</h1>
+  <p class="sub" id="adds"></p>
+  <div class="bar" id="bar"><i></i></div>
+  <div id="hdr">3 / 12 &nbsp; 2 correct</div>
+  <div id="wrap"><canvas id="cv"></canvas><img id="photo" alt=""></div>
+  <canvas id="glcv"></canvas>
+  <div id="fb"></div>
+  <div id="btns">
+    <button>Orion</button><button>Cygnus</button><button>Lyra</button><button>Draco</button>
+  </div>
+
+<script src="harness.js"></script>
+<script>
+(function () {
+  var step = parseInt(Perf.param('step') || '1', 10);
+  var auto = Perf.param('auto') === '1';
+  var info = Perf.STEPS[step - 1] || Perf.STEPS[0];
+  document.getElementById('title').textContent = 'Step ' + step + '/' + Perf.STEPS.length + ' — ' + info.name;
+  document.getElementById('adds').textContent = info.adds;
+
+  // Cumulative feature flags: each rung turns on one more.
+  var F = {
+    progress:  step >= 2,
+    canvas:    step >= 3,
+    redraw:    step >= 4,
+    realloc:   step >= 5,
+    heavy:     step >= 6,
+    photo:     step >= 7,
+    art:       step >= 8,
+    webgl:     step >= 9,
+    appScripts: step >= 10
+  };
+
+  var btns = [].slice.call(document.querySelectorAll('#btns button'));
+  var bar = document.getElementById('bar');
+  var hdr = document.getElementById('hdr');
+  var fb = document.getElementById('fb');
+  var wrap = document.getElementById('wrap');
+  var cv = document.getElementById('cv');
+  var photo = document.getElementById('photo');
+  var glcv = document.getElementById('glcv');
+
+  if (F.progress) { bar.style.display = 'block'; hdr.style.display = 'block'; }
+  if (F.canvas)   { wrap.style.display = 'flex'; }
+  if (F.photo)    { photo.style.display = 'block'; }
+
+  // ── Canvas sized exactly the way the real quiz sizes it ────────────────────
+  var ctx = null, SIDE = 0;
+  function sizeIt() {
+    var box = Math.min(wrap.clientWidth || 320, wrap.clientHeight || 320);
+    SIDE = Math.round(box * (window.devicePixelRatio || 1));
+    cv.style.width = box + 'px'; cv.style.height = box + 'px';
+    cv.width = SIDE; cv.height = SIDE;
+    ctx = cv.getContext('2d');
+  }
+  if (F.canvas) { sizeIt(); }
+
+  // ── Assets, same files the real app uses ───────────────────────────────────
+  var ABBRS = ['Ori', 'Cyg', 'Lyr', 'Dra', 'UMa', 'Cas', 'Peg', 'Leo'];
+  var artImg = null;
+  if (F.art) {
+    artImg = new Image();
+    artImg.src = '../img/art/Ori.webp';
+  }
+
+  // ── Drawing ────────────────────────────────────────────────────────────────
+  function rnd(seed) { var s = seed; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+  function drawSimple(n) {
+    ctx.fillStyle = '#0b0e1e';
+    ctx.fillRect(0, 0, SIDE, SIDE);
+    ctx.strokeStyle = '#5b8af5';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(SIDE / 2, SIDE / 2, SIDE / 3, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = '#cfe0ff';
+    ctx.beginPath();
+    ctx.arc(SIDE / 2 + Math.cos(n) * SIDE / 4, SIDE / 2 + Math.sin(n) * SIDE / 4, SIDE / 40, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // A faithful stand-in for renderCanvas: gradient sky, 180 background stars,
+  // ~25 stars with per-star shadowBlur and radial glows, lines with shadowBlur,
+  // and text labels.
+  function drawHeavy(n) {
+    var g = ctx.createRadialGradient(SIDE / 2, SIDE / 2, 0, SIDE / 2, SIDE / 2, SIDE * 0.71);
+    g.addColorStop(0, '#0b0e1e'); g.addColorStop(1, '#020408');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, SIDE, SIDE);
+
+    var R = rnd(12345);
+    ctx.save();
+    for (var i = 0; i < 180; i++) {
+      var bx = R() * SIDE, by = R() * SIDE, m = 3.8 + R() * 3;
+      ctx.globalAlpha = 0.12 + R() * 0.45;
+      ctx.fillStyle = R() > 0.8 ? 'rgba(160,190,255,1)' : 'rgba(210,218,255,1)';
+      ctx.beginPath(); ctx.arc(bx, by, Math.max(0.2, 1.2 - m * 0.15), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1; ctx.restore();
+
+    var pts = [], R2 = rnd(999 + n);
+    for (var k = 0; k < 25; k++) {
+      pts.push({ x: SIDE * (0.2 + R2() * 0.6), y: SIDE * (0.2 + R2() * 0.6), mag: R2() * 4 });
+    }
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(80,145,230,0.52)';
+    ctx.lineWidth = SIDE / 500;
+    ctx.shadowColor = 'rgba(100,160,255,0.4)';
+    ctx.shadowBlur = 5;
+    for (var j = 1; j < pts.length; j++) {
+      ctx.beginPath(); ctx.moveTo(pts[j - 1].x, pts[j - 1].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke();
+    }
+    ctx.restore();
+
+    for (var s = 0; s < pts.length; s++) {
+      var p = pts[s], rad = Math.max(1, 6 - p.mag) * (SIDE / 600);
+      if (p.mag < 2.5) {
+        var gs = (p.mag < 1 ? 18 : 10) * (SIDE / 600);
+        var grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, gs);
+        grd.addColorStop(0, 'rgba(245,238,220,0.28)');
+        grd.addColorStop(1, 'rgba(245,238,220,0)');
+        ctx.fillStyle = grd;
+        ctx.beginPath(); ctx.arc(p.x, p.y, gs, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.save();
+      ctx.shadowColor = '#f5eedc';
+      ctx.shadowBlur = (p.mag < 2 ? 8 : 4) * (SIDE / 600);
+      ctx.fillStyle = '#f5eedc';
+      ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    ctx.font = Math.round(SIDE * 0.036) + 'px system-ui,-apple-system,sans-serif';
+    ctx.fillStyle = 'rgba(200,215,255,.75)';
+    for (var L = 0; L < 6; L++) ctx.fillText('Star ' + L, pts[L].x + 8, pts[L].y);
+
+    if (F.art && artImg && artImg.complete && artImg.naturalWidth) {
+      ctx.save(); ctx.globalAlpha = 0.5;
+      ctx.drawImage(artImg, 0, 0, SIDE, SIDE);
+      ctx.restore();
+    }
+  }
+
+  // ── WebGL, mirroring what the explorer keeps alive ─────────────────────────
+  var gl = null, glTex = null, glProg = null, glBuf = null;
+  if (F.webgl) {
+    try {
+      glcv.width = 240; glcv.height = 240;
+      gl = glcv.getContext('webgl', { alpha: false });
+      if (gl) {
+        var vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, 'attribute vec2 p;varying vec2 t;void main(){t=p*0.5+0.5;gl_Position=vec4(p,0.,1.);}');
+        gl.compileShader(vs);
+        var fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, 'precision mediump float;varying vec2 t;uniform sampler2D s;void main(){gl_FragColor=texture2D(s,t);}');
+        gl.compileShader(fs);
+        glProg = gl.createProgram();
+        gl.attachShader(glProg, vs); gl.attachShader(glProg, fs); gl.linkProgram(glProg);
+        gl.useProgram(glProg);
+        glBuf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, glBuf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+        var loc = gl.getAttribLocation(glProg, 'p');
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        var tImg = new Image();
+        tImg.onload = function () {
+          glTex = gl.createTexture();
+          gl.bindTexture(gl.TEXTURE_2D, glTex);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tImg);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        };
+        tImg.src = '../img/Ori.jpg';
+      }
+    } catch (e) {}
+  }
+
+  // ── One "question change" ──────────────────────────────────────────────────
+  var lit = 0;
+  function tick(n) {
+    lit = (lit + 1) % btns.length;
+    for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('lit', i === lit);
+    fb.textContent = (n % 2) ? '✓ Correct — ' + ABBRS[n % ABBRS.length] : '✗ That was ' + ABBRS[n % ABBRS.length];
+
+    if (F.progress) {
+      bar.firstElementChild.style.width = ((n % 12) / 12 * 100) + '%';
+      hdr.textContent = ((n % 12) + 1) + ' / 12   ' + (n % 7) + ' correct';
+    }
+
+    if (F.canvas && ctx) {
+      // The suspected culprit: reassigning width reallocates the bitmap.
+      if (F.realloc) { cv.width = SIDE; cv.height = SIDE; }
+      if (F.heavy) drawHeavy(n);
+      else if (F.redraw) drawSimple(n);
+    }
+
+    if (F.photo) photo.src = '../img/' + ABBRS[n % ABBRS.length] + '.jpg';
+
+    if (F.webgl && gl && glTex) {
+      gl.viewport(0, 0, 240, 240);
+      gl.clearColor(0, 0, 0, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.bindTexture(gl.TEXTURE_2D, glTex);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+  }
+
+  btns.forEach(function (b) { b.addEventListener('click', function () { tick(Math.floor(Math.random() * 100)); }); });
+
+  // Draw once so step 3 has a painted canvas that is then left alone.
+  if (F.canvas && ctx) { F.heavy ? drawHeavy(1) : drawSimple(1); }
+
+  function begin() {
+    if (auto) Perf.autoRun(step, tick);
+    else {
+      Perf.hud('manual mode\ntap the buttons\nmeasuring 20s...');
+      Perf.measure({ seconds: 20, tick: tick, onDone: function (r) {
+        Perf.record(step, r);
+        Perf.hud('step ' + step + ': ' + r.verdict + '\nfps ' + r.fps +
+                 '\nworst paint ' + (r.worstPaintMs / 1000).toFixed(1) + 's');
+      } });
+    }
+  }
+
+  // Step 10 loads the real app's scripts first, then measures.
+  if (F.appScripts) {
+    var FILES = ['data.js','lesson.js','calibration.js','stellarium-data.js','ford-data.js',
+      'rey-data.js','diagram-sources.js','projection.js','render.js','lesson-session.js',
+      'quiz.js','explore-gl.js','components.js','explore.js','step-display.js',
+      'guide-renderer.js','find-guide.js','course.js','progress-grid.js','calibration-ui.js',
+      'settings.js','screens.js'];
+    var i = 0;
+    (function next() {
+      if (i >= FILES.length) { setTimeout(begin, 300); return; }
+      var s = document.createElement('script');
+      s.src = '../js/' + FILES[i++];
+      s.async = false;
+      s.onload = next;
+      s.onerror = next;   // a file that needs app DOM may throw; keep going
+      document.head.appendChild(s);
+    })();
+  } else {
+    begin();
+  }
+})();
+</script>
+</body>
+</html>
