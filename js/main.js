@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else nextExploreQuestion();
   });
   document.addEventListener('keydown', e => {
-    if (!document.getElementById('screen-explore').classList.contains('active')) return;
+    if (currentScreen() !== 'explore') return;
     if ((e.key === 'Enter' || e.key === ' ') && document.getElementById('eq-next').classList.contains('show'))
       document.getElementById('eq-next').click();
   });
@@ -257,15 +257,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Explore drag (mouse + touch + wheel zoom)
   initExploreDrag();
 
+  // Keyboard shortcuts are scoped by screen; the router is asked which one is
+  // showing, rather than reading it back off a CSS class.
   document.addEventListener('keydown', e => {
-    if (document.getElementById('screen-result').classList.contains('active')) {
+    if (currentScreen() === 'result') {
       if (e.key === 'Enter' || e.key === ' ') {
         const next = document.querySelector('#result-btns .btn-again');
         if (next) { e.preventDefault(); next.click(); }
       }
       return;
     }
-    if (!document.getElementById('screen-quiz').classList.contains('active')) return;
+    if (currentScreen() !== 'quiz') return;
     const btns = [...document.querySelectorAll('.ans-btn')];
     const idx = { '1': 0, '2': 1, '3': 2, '4': 3 }[e.key];
     if (idx !== undefined && btns[idx] && !btns[idx].disabled) btns[idx].click();
