@@ -31,10 +31,10 @@ function updateFindHelpBtn(con) {
 }
 
 // ── Public: open the guide ───────────────────────────────────────────────────
-// opts.onExit (optional): when the guide finishes, call this instead of restoring
-// the explore view — used when the guide is a detour from another screen (e.g. the
-// quiz) that wants to return there. See issue #35.
-function startFindGuide(con, opts = {}) {
+// Where the learner goes on exit is not this module's business: if a detour is in
+// flight (the guide was launched from a quiz question or a level-check probe, see
+// issue #35), ending it returns them. Otherwise the explorer is restored.
+function startFindGuide(con) {
   _loadGuides().then(guides => {
     const guide = guides[con.name];
     if (!guide?.steps?.length) return;
@@ -44,7 +44,7 @@ function startFindGuide(con, opts = {}) {
     // Capture the bars' prior visibility so exit restores exactly what was showing
     // — the guide can be launched from a find quiz (bars visible) or from the info
     // modal's "Finding guide" link in free explore (bars hidden). See issue #4.
-    _guideSaved = { quiz: explore.quiz, quizBarDisplay: quizBar.style.display, navRowDisplay: navRow.style.display, onExit: opts.onExit || null, ...snapshotView(explore) };
+    _guideSaved = { quiz: explore.quiz, quizBarDisplay: quizBar.style.display, navRowDisplay: navRow.style.display, ...snapshotView(explore) };
     explore.quiz = null;
 
     quizBar.style.display = 'none';
@@ -70,8 +70,8 @@ function exitFindGuide() {
   const saved = _guideSaved;
   _guideSaved = null;
 
-  // Detour caller (e.g. the quiz info-modal link) owns where to go next.
-  if (saved.onExit) { saved.onExit(); return; }
+  // A detour in flight owns where to go next — back to the question we left.
+  if (inDetour()) { endDetour(); return; }
 
   // Default: restore the explore view and the find-quiz bars we came from.
   explore.quiz = saved.quiz;

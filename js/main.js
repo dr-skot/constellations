@@ -327,18 +327,16 @@ document.addEventListener('DOMContentLoaded', () => {
   modalGuideLink.addEventListener('click', e => {
     e.preventDefault();
     const con = C.find(c => c.abbr === modalAbbrCurrent);
-    const fromQuiz = document.getElementById('screen-quiz').classList.contains('active');
-    const wasCalibration = session.calibration;   // navigate('explore') clears it; restore on return
-    const returnHash = location.hash;             // e.g. #lesson / #calibration, to restore on exit
+    const fromQuiz = currentScreen() === 'quiz';
     closeConModal();
     if (!con) return;
+    // From the quiz the guide is a DETOUR: record the route being left and how to
+    // re-render it, so finishing the guide returns to the same question. The
+    // departure below is then not a departure, which is why the level-check flag
+    // needs no saving and restoring across it.
+    if (fromQuiz) beginDetour(() => { showScreen('quiz'); showLessonQuestion(); });
     navigate('explore/' + con.abbr);
-    startFindGuide(con, fromQuiz ? { onExit: () => {
-      session.calibration = wasCalibration;
-      if (returnHash) history.replaceState(null, '', returnHash);
-      showScreen('quiz');
-      showLessonQuestion();
-    } } : undefined);
+    startFindGuide(con);
   });
 
   // Delegated handler for .con-info-link clicks (generated dynamically by conLabel)
