@@ -304,10 +304,6 @@ function nextLessonQuestion() {
   else showLessonQuestion();
 }
 
-// ═══════════════════════════════════════════════════════════
-// UI
-// ═══════════════════════════════════════════════════════════
-function showScreen(n) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + n).classList.add('active');
-}
+// showScreen moved to js/screens.js, which is now the only writer of the active
+// screen — that is what makes currentScreen() trustworthy. The DOM body of it is
+// the setScreen sink main.js injects at boot.

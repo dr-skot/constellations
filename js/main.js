@@ -27,48 +27,62 @@ _loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
 // ═══════════════════════════════════════════════════════════
 // HASH ROUTING
 // ═══════════════════════════════════════════════════════════
+// The router itself is js/screens.js; this is the impure half it is wired to —
+// the real history, the real screen toggle, and one enter action per route. The
+// router owns everything else: which screen a route shows, when a redirect
+// replaces instead of pushes, and what leaving means (spec #44).
 
-function navigate(hash) {
-  history.pushState(null, '', '#' + hash);
-  handleRoute(hash);
+function _initRouting() {
+  initRouter({
+    history: {
+      push:    hash => history.pushState(null, '', '#' + hash),
+      replace: hash => history.replaceState(null, '', '#' + hash),
+    },
+    setScreen: name => {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + name).classList.add('active');
+    },
+    actions: {
+      course: () => renderCourseMap(),
+      explore: () => {
+        restoreExploreState();
+        stopExploreQuiz(); drawExplore();
+      },
+      // An explicit destination, so the saved free-explore state is deliberately
+      // NOT restored — an unknown abbr just leaves the view where it is.
+      exploreCon: abbr => {
+        const con = C.find(c => c.abbr === abbr);
+        if (con) { explore.P = raDecToVec(con.ra, con.dec); explore.R = 0; }
+        stopExploreQuiz(); drawExplore();
+      },
+      view: abbr => {
+        const con = C.find(c => c.abbr === abbr);
+        con ? viewConstellation(con) : navigate('course');
+      },
+      lesson: () => { if (!tryResumeLesson()) startLesson(); },
+      settings: () => { if (typeof refreshSettings === 'function') refreshSettings(); },
+      calibration: () => startCalibration(),
+    },
+    exits: {
+      // Leaving the level check leaves calibration mode, so a probe exit via a
+      // breadcrumb or the gear (not just Quit) can't leak the flag into a later
+      // lesson, which would skip exposure recording and re-seed from probe
+      // results. This replaces a preamble that cleared the flag on EVERY route
+      // change, because handleRoute could not tell a departure from an arrival.
+      calibration: () => { session.calibration = false; },
+    },
+  });
+
+  // Back button support. A popstate is an entry the app did not initiate, so it
+  // writes no history of its own.
+  window.addEventListener('popstate', () => enterRoute(location.hash.slice(1)));
 }
-
-function handleRoute(hash) {
-  // Any navigation away from the level check leaves calibration mode — so a probe
-  // exit via a breadcrumb/gear (not just Quit) can't leak the flag into a later
-  // lesson (which would skip exposure recording and re-seed from probe results).
-  if (hash !== 'calibration') session.calibration = false;
-  if (!hash || hash === 'course') {
-    showScreen('start'); renderCourseMap();
-  } else if (hash === 'explore') {
-    restoreExploreState();
-    stopExploreQuiz(); showScreen('explore'); drawExplore();
-  } else if (hash.startsWith('explore/')) {
-    const con = C.find(c => c.abbr === hash.slice(8));
-    if (con) { explore.P = raDecToVec(con.ra, con.dec); explore.R = 0; }
-    stopExploreQuiz(); showScreen('explore'); drawExplore();
-  } else if (hash.startsWith('view/')) {
-    const con = C.find(c => c.abbr === hash.slice(5));
-    con ? viewConstellation(con) : navigate('course');
-  } else if (hash === 'lesson') {
-    if (!tryResumeLesson()) startLesson();
-  } else if (hash === 'settings') {
-    showScreen('settings');
-    if (typeof refreshSettings === 'function') refreshSettings();
-  } else if (hash === 'calibration') {
-    startCalibration();
-  } else {
-    navigate('course');
-  }
-}
-
-// Back button support
-window.addEventListener('popstate', () => handleRoute(location.hash.slice(1) || 'course'));
 
 // ═══════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  _initRouting();
   try { initExploreGL(document.getElementById('explore-gl-canvas')); } catch(e) { console.error('GL init failed:', e); }
 
   // Populate constellation viewer search datalist and viewer select
@@ -178,9 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Settings: global gear opens the settings screen; breadcrumb returns to course
-  document.getElementById('btn-settings').addEventListener('click', () => {
-    if (location.hash.slice(1) !== 'settings') navigate('settings');
-  });
+  // Navigating to the hash already showing replaces rather than pushes, so a second
+  // tap no longer needs guarding against a duplicate history entry.
+  document.getElementById('btn-settings').addEventListener('click', () => navigate('settings'));
   document.getElementById('settings-breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
@@ -336,5 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Entry point — route based on current URL hash, but a first-run learner (empty
   // progress) arriving at the default landing is offered the level check (#34).
-  handleRoute(calibrationEntryTarget(location.hash.slice(1), calibrationIsFirstRun()));
+  // The resolved entry is written back, so hash and screen agree from the first
+  // paint: the offer used to show while the address bar stayed empty.
+  enterRoute(calibrationEntryTarget(location.hash.slice(1), calibrationIsFirstRun()),
+             { write: 'replace' });
 });
