@@ -59,9 +59,8 @@ function redrawSettingsFigure() {
   if (!_settingsCanvas) return;
   const w = _settingsCanvas.clientWidth;
   if (!w) return;                                    // hidden (display:none) — redrawn on route enter
-  const dpr = window.devicePixelRatio || 1;
-  _settingsCanvas.width = w * dpr;
-  _settingsCanvas.height = _settingsCanvas.clientHeight * dpr;
+  const dpr = displayScale();
+  sizeCanvas(_settingsCanvas, w * dpr, _settingsCanvas.clientHeight * dpr);
   renderCanvas(_settingsCanvas, UMA(), 'diagram');
   _settingsBlurb.textContent = FIGURE_BLURB[diagramSource] || '';
 }

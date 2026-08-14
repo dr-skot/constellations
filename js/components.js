@@ -99,8 +99,7 @@ function createRotateDial(container, options = {}) {
   function resize() {
     const rect = container.getBoundingClientRect();
     if (rect.width === 0) return;
-    canvas.width = rect.width * devicePixelRatio;
-    canvas.height = rect.height * devicePixelRatio;
+    sizeCanvas(canvas, rect.width * devicePixelRatio, rect.height * devicePixelRatio);
     canvas.style.width = rect.width + 'px';
     canvas.style.height = rect.height + 'px';
     drawDial();

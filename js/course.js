@@ -403,7 +403,8 @@ function viewConstellation(con) {
   showScreen('quiz');
   const canvas = document.getElementById('quiz-canvas');
   const sz = document.getElementById('canvas-wrap').offsetWidth;
-  canvas.width = canvas.height = sz * (window.devicePixelRatio || 1);
+  const px = sz * displayScale();
+  sizeCanvas(canvas, px, px);
   canvas.style.display = 'block';
   document.getElementById('photo-box').classList.remove('show');
   document.getElementById('photo-img').classList.remove('show');

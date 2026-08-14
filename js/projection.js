@@ -10,6 +10,36 @@ function photoUrl(con) {
   return `img/${con.abbr}.jpg`;
 }
 
+// Resize a canvas's backing store ONLY when it actually changes.
+//
+// Assigning canvas.width/height reallocates the bitmap and drops its GPU texture
+// even when the value assigned is identical. On a 3x display the quiz canvas is
+// 1107x1107, so a redundant assignment throws away and rebuilds ~4.9MB — and doing
+// that once per question stalls frame presentation on iOS for SECONDS at a time
+// (measured on an iPhone 15 Pro: 3 frames delivered in 20s, an 18s freeze, with the
+// main thread idle the whole time). Guarding it restored a steady 60fps at the same
+// resolution. drawExplore has always done this correctly; everywhere else did not.
+//
+// Returns true when a resize happened — in which case the bitmap is now cleared,
+// per the canvas spec. Callers that fully repaint (renderCanvas/redrawReveal draw an
+// opaque background first) can ignore the result.
+// The backing-store scale to draw at. Capped at 2 because the cost is quadratic:
+// on a 3x phone the quiz canvas is 1107x1107 (~4.9MB), at 2x it is 738x738 (~2.2MB,
+// 44% of the pixels), and the difference is not visible on a phone screen. Measured
+// on an iPhone 15 Pro, lowering the scale roughly doubled delivered frames while
+// tapping through questions (631 -> 1092 frames per 20s).
+function displayScale() {
+  return Math.min(window.devicePixelRatio || 1, 2);
+}
+
+function sizeCanvas(canvas, w, h) {
+  const W = Math.round(w), H = Math.round(h);
+  if (canvas.width === W && canvas.height === H) return false;
+  canvas.width = W;
+  canvas.height = H;
+  return true;
+}
+
 function angularDist(ra1, dec1, ra2, dec2) {
   const toR = Math.PI / 180;
   const d1 = dec1 * toR, d2 = dec2 * toR;

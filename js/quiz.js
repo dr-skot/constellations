@@ -143,7 +143,8 @@ function showLessonQuestion() {
   }
 
   const sz = document.getElementById('canvas-wrap').offsetWidth;
-  canvas.width = canvas.height = sz * (window.devicePixelRatio || 1);
+  const px = sz * displayScale();
+  sizeCanvas(canvas, px, px);   // only when it changed — see sizeCanvas (projection.js)
 
   if (settings.mode === 'photo') {
     showPhotoMode(con, session.rotation);
