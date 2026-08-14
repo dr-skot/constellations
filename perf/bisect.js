@@ -31,6 +31,20 @@
   'use strict';
 
   var STATE_KEY = 'perf-bisect-search';
+
+  // Where the app and the results page live, resolved from THIS script's own
+  // URL rather than from location. bisect.js is loaded by two different pages —
+  // /perf/index.html (the button) and /index.html (each run) — so anything
+  // derived from location.pathname points somewhere different depending on who
+  // is asking. Building the URL from location sent the button to
+  // /perf/index.html?bisect=1 instead of the app, which just reloaded the
+  // results page and looked exactly like the button doing nothing.
+  var ROOT = (function () {
+    var s = document.currentScript;
+    if (!s) { var all = document.getElementsByTagName('script'); s = all[all.length - 1]; }
+    var src = (s && s.src) || '';
+    return src ? src.replace(/perf\/bisect\.js.*$/, '') : '/';
+  })();
   var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
   function noop() {}
@@ -162,12 +176,11 @@
   }
 
   function killUrl(ids) {
-    var base = location.pathname.replace(/[^/]*$/, '');
-    return base + 'index.html?perf=1&bisect=1&auto=1&kill=' + encodeURIComponent(ids.join(',')) + '#lesson';
+    return ROOT + 'index.html?perf=1&bisect=1&auto=1&kill=' +
+           encodeURIComponent(ids.join(',')) + '#lesson';
   }
   function resultsUrl() {
-    var base = location.pathname.replace(/[^/]*$/, '');
-    return base + 'perf/index.html?bisect=done';
+    return ROOT + 'perf/index.html?bisect=done';
   }
 
   // ── Public: apply the kills named in the URL ───────────────────────────────
