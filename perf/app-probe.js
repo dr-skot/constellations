@@ -79,10 +79,26 @@
     return true;
   }
 
+  function active(id) {
+    var el = document.getElementById(id);
+    return !!(el && el.classList.contains('active'));
+  }
+
   function tick() {
-    // Answered already? Advance.
+    // The result screen FIRST. endLesson never clears .show from btn-next
+    // (quiz.js only clears it in showLessonQuestion), so a naive "click btn-next
+    // if it is showing" clicks a hidden button, re-enters nextLessonQuestion, runs
+    // off the end of the lesson and calls endLesson again — rebuilding the whole
+    // practiced-constellation grid, canvases and all, every tick. The run then
+    // measures the driver thrashing endLesson instead of the app being used.
+    if (active('screen-result')) {
+      var again = document.querySelector('#result-btns .btn-again');   // "Next Lesson >"
+      if (again) { again.click(); return; }
+    }
+
+    // Answered already? Advance — but only while the quiz screen is genuinely up.
     var next = document.getElementById('btn-next');
-    if (next && next.classList.contains('show')) { next.click(); return; }
+    if (active('screen-quiz') && next && next.classList.contains('show')) { next.click(); return; }
 
     var answers = [].slice.call(document.querySelectorAll('.ans-btn')).filter(function (b) {
       return !b.disabled;
@@ -93,9 +109,8 @@
     // as the first run did when it stalled — do NOT skip past it. Its Next button
     // appears once answered, so honour that if it shows.
     var eq = document.getElementById('eq-next');
-    if (eq && eq.classList.contains('show')) { eq.click(); return; }
-    if (document.getElementById('screen-explore') &&
-        document.getElementById('screen-explore').classList.contains('active')) return;
+    if (active('screen-explore') && eq && eq.classList.contains('show')) { eq.click(); return; }
+    if (active('screen-explore')) return;
 
     // Result screen or nowhere useful — start another lesson.
     if (flag('choiceonly')) seedChoiceLesson();
