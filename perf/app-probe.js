@@ -79,6 +79,16 @@
     return true;
   }
 
+  // The name of the constellation the current question is asking about, for the
+  // one answer the app will not accept approximately.
+  function currentConName() {
+    try {
+      var q = session.questions[session.idx];
+      if (q && q.con && q.con.name) return q.con.name;
+    } catch (e) {}
+    return (typeof C !== 'undefined' && C.length) ? C[0].name : 'Orion';
+  }
+
   // A click on the middle of the sky. The canvas listener reads clientX/clientY
   // (js/explore.js:896), which a bare element.click() leaves at 0,0 — that lands
   // outside the canvas and is silently ignored, so the event has to carry real
@@ -101,6 +111,16 @@
     return !!(el && el.classList.contains('active'));
   }
 
+  // Is this control actually on screen? The app leaves controls in the DOM when
+  // they do not apply — #ans-grid keeps last question's four buttons under
+  // display:none while a type-the-name question is up, and endLesson leaves
+  // .show on #btn-next. A driver that clicks by selector alone answers through
+  // controls no finger could reach, and then measures something the user can
+  // never do. That mistake cost a whole run once already (commit 24f1ae1).
+  function visible(el) {
+    return !!(el && el.offsetParent !== null && !el.disabled);
+  }
+
   function tick() {
     // The result screen FIRST. endLesson never clears .show from btn-next
     // (quiz.js only clears it in showLessonQuestion), so a naive "click btn-next
@@ -115,11 +135,31 @@
 
     // Answered already? Advance — but only while the quiz screen is genuinely up.
     var next = document.getElementById('btn-next');
-    if (active('screen-quiz') && next && next.classList.contains('show')) { next.click(); return; }
+    if (active('screen-quiz') && visible(next) && next.classList.contains('show')) {
+      next.click();
+      return;
+    }
 
-    var answers = [].slice.call(document.querySelectorAll('.ans-btn')).filter(function (b) {
-      return !b.disabled;
-    });
+    // A type-the-name question (answerMode 'autocomplete'): #ans-grid is hidden
+    // and an input takes its place. This is checked BEFORE the answer buttons
+    // because the hidden grid still holds the previous question's four buttons —
+    // clicking one answers through a control that is not on screen, and the
+    // typed path never gets measured at all.
+    //
+    // Unlike a tap on the sky, the value MATTERS. handleAutocompleteAnswer
+    // (js/quiz.js:265) looks the text up in C and, on no match, writes "Unknown
+    // constellation" and returns WITHOUT marking the question answered — so
+    // anything approximate parks the driver for the whole window, exactly as
+    // find questions used to. Type the real answer.
+    var ac = document.getElementById('quiz-autocomplete-input');
+    var check = document.getElementById('quiz-autocomplete-submit');
+    if (active('screen-quiz') && visible(ac) && visible(check)) {
+      ac.value = currentConName();
+      check.click();
+      return;
+    }
+
+    var answers = [].slice.call(document.querySelectorAll('.ans-btn')).filter(visible);
     if (answers.length) { answers[Math.floor(Math.random() * answers.length)].click(); return; }
 
     // A find-in-the-sky question: the explorer is on screen. Answer it by
@@ -138,7 +178,10 @@
     // 12 seeds a choice-only lesson that is being actively clicked through.
     // The freeze the user actually reports is on ordinary identify questions.
     var eq = document.getElementById('eq-next');
-    if (active('screen-explore') && eq && eq.classList.contains('show')) { eq.click(); return; }
+    if (active('screen-explore') && visible(eq) && eq.classList.contains('show')) {
+      eq.click();
+      return;
+    }
     if (active('screen-explore')) { tapSky(); return; }
 
     // Result screen or nowhere useful — start another lesson.
