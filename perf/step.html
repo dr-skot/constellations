@@ -244,12 +244,16 @@
   function begin() {
     if (auto) Perf.autoRun(step, tick);
     else {
-      Perf.hud('manual mode\ntap the buttons\nmeasuring 20s...');
-      Perf.measure({ seconds: 20, tick: tick, onDone: function (r) {
-        Perf.record(step, r);
-        Perf.hud('step ' + step + ': ' + r.verdict + '\nfps ' + r.fps +
-                 '\nworst paint ' + (r.worstPaintMs / 1000).toFixed(1) + 's');
-      } });
+      // MANUAL: no auto-ticker — the buttons' own click handlers drive it, so the
+      // page advances only on a real tap.
+      Perf.measure({ seconds: 30, tick: null, label: 'step ' + step + ' — TAP IT',
+        onDone: function (r) {
+          Perf.record(step, r);
+          Perf.hud('step ' + step + ': ' + r.verdict + '\ntaps ' + r.taps +
+                   '  fps ' + r.fps +
+                   '\nworst paint ' + (r.worstPaintMs / 1000).toFixed(1) + 's' +
+                   '\nthread ' + (r.threadBlocked ? 'BLOCKED' : 'free'));
+        } });
     }
   }
 

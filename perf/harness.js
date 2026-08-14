@@ -130,20 +130,43 @@
       requestAnimationFrame(function () { paints.push(performance.now() - t0); });
     }, 250);
 
-    // Drive the page the way a user would.
-    var workTimer = setInterval(function () {
+    // Drive the page the way a user would — unless the user is driving it. With
+    // no tick, only real finger taps advance the page, which is the one thing a
+    // synthetic .click() cannot reproduce: gesture recognition and the touch
+    // handling that runs before our handlers ever see the event.
+    var workTimer = opts.tick ? setInterval(function () {
       ticks++;
-      try { if (opts.tick) opts.tick(ticks); } catch (e) { /* keep measuring */ }
-    }, tickMs);
+      try { opts.tick(ticks); } catch (e) { /* keep measuring */ }
+    }, tickMs) : null;
+
+    // Count real touches so a manual run can be told apart from an idle one.
+    var taps = 0;
+    var onTap = function () { taps++; };
+    document.addEventListener('touchend', onTap, { capture: true, passive: true });
+    document.addEventListener('click', onTap, { capture: true, passive: true });
+
+    // Live readout, so a stall is visible as it happens rather than only at the end.
+    var liveTimer = opts.live === false ? null : setInterval(function () {
+      var wp = 0, wf = 0;
+      for (var i = 0; i < paints.length; i++) if (paints[i] > wp) wp = paints[i];
+      for (var j = 0; j < rafGaps.length; j++) if (rafGaps[j] > wf) wf = rafGaps[j];
+      hud((opts.label || 'measuring') + '\ntaps ' + taps +
+          '\nworst paint ' + (wp / 1000).toFixed(1) + 's' +
+          '\nworst frame ' + (wf / 1000).toFixed(1) + 's');
+    }, 500);
 
     setTimeout(function () {
       stopped = true;
       clearInterval(paintTimer);
-      clearInterval(workTimer);
+      if (workTimer) clearInterval(workTimer);
+      if (liveTimer) clearInterval(liveTimer);
       document.removeEventListener('visibilitychange', onVis);
+      document.removeEventListener('touchend', onTap, true);
+      document.removeEventListener('click', onTap, true);
       if (probe.parentNode) probe.parentNode.removeChild(probe);
 
       var result = summarize(rafGaps, timerGaps, paints, seconds, ticks);
+      result.taps = taps;
 
       // A page starved of frames looks identical to a hidden one, so only the
       // visibility API may call it hidden. Starved-but-visible is the WORST

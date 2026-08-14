@@ -111,12 +111,16 @@
           Perf.hud('rung ' + rung + '\n' + note + 'measuring...');
           Perf.autoRun(rung, tick);
         } else {
-          Perf.hud('rung ' + rung + ' — manual\n' + note + 'tap through questions\n20s...');
-          Perf.measure({ seconds: 20, tick: tick, onDone: function (r) {
-            Perf.record(rung, r);
-            Perf.hud('rung ' + rung + ': ' + r.verdict + '\nfps ' + r.fps +
-                     '\nworst paint ' + (r.worstPaintMs / 1000).toFixed(1) + 's');
-          } });
+          // MANUAL: no auto-ticker. Real taps are the only thing driving the page,
+          // which is the one input a synthetic click cannot reproduce.
+          Perf.measure({ seconds: 30, tick: null, label: 'rung ' + rung + ' — TAP IT',
+            onDone: function (r) {
+              Perf.record(rung, r);
+              Perf.hud('rung ' + rung + ': ' + r.verdict + '\ntaps ' + r.taps +
+                       '  fps ' + r.fps +
+                       '\nworst paint ' + (r.worstPaintMs / 1000).toFixed(1) + 's' +
+                       '\nthread ' + (r.threadBlocked ? 'BLOCKED' : 'free'));
+            } });
         }
       }, 500);
     }, 500);
