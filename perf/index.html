@@ -40,6 +40,7 @@
 
   <button class="go" id="run-app">Run app steps (11–16, ~4 min)</button>
   <button class="alt" id="run">Re-run the whole ladder from 1 (~6 min)</button>
+  <button class="alt" id="copy">Copy results</button>
   <button class="alt" id="clear">Clear results</button>
 
   <div id="verdict"></div>
@@ -179,6 +180,51 @@
   });
   document.getElementById('clear').addEventListener('click', function () {
     Perf.clearAll(); render();
+  });
+
+  // Getting the table off the phone was the slowest part of the loop — the
+  // alternative is retyping sixteen rows or airdropping a screenshot. One tap
+  // puts every number on the clipboard, including the ones the table does not
+  // show (worst frame, worst timer, taps, ticks), which are what actually
+  // distinguish a blocked thread from a starved one.
+  function resultsText() {
+    var all = Perf.load();
+    var lines = ['rung | fps | worstPaint | worstFrame | worstTimer | frames | taps | ticks | verdict'];
+    Perf.STEPS.forEach(function (s) {
+      var r = all[s.id];
+      if (!r) { lines.push(s.id + ' | ' + s.name + ' | NOT RUN'); return; }
+      lines.push([s.id + ' ' + s.name, r.fps, r.worstPaintMs + 'ms', r.worstFrameMs + 'ms',
+        r.worstTimerMs + 'ms', r.frames + '/' + r.framesExpected, r.taps, r.ticks,
+        (r.noData ? 'NO DATA (hidden)' : r.verdict) +
+        (r.starved ? ' [starved]' : '') + (r.threadBlocked ? ' [blocked]' : '')
+      ].join(' | '));
+    });
+    lines.push('ua: ' + navigator.userAgent);
+    return lines.join('\n');
+  }
+  // Exposed so the same text can be pulled over the WebKit debug proxy when the
+  // clipboard is not an option (see handoff section 9).
+  window.perfResultsText = resultsText;
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var btn = this;
+    var text = resultsText();
+    var done = function (ok) { btn.textContent = ok ? 'Copied — paste it to Claude' : 'Copy failed'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      return;
+    }
+    // Older iOS Safari: no async clipboard outside a secure/permitted context.
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    done(ok);
   });
 
   // Manual links, one per step, for tapping a single rung by hand.
