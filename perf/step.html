@@ -38,7 +38,7 @@
     <button>Orion</button><button>Cygnus</button><button>Lyra</button><button>Draco</button>
   </div>
 
-<script src="harness.js?v=4"></script>
+<script src="harness.js?v=5"></script>
 <script>
 (function () {
   var step = parseInt(Perf.param('step') || '1', 10);
@@ -247,6 +247,7 @@
       // MANUAL: no auto-ticker — the buttons' own click handlers drive it, so the
       // page advances only on a real tap.
       Perf.measure({ seconds: 30, tick: null, label: 'step ' + step + ' — TAP IT',
+        checkpoint: function (snap) { Perf.record(step, snap); },
         onDone: function (r) {
           Perf.record(step, r);
           Perf.hud('step ' + step + ': ' + r.verdict + '\ntaps ' + r.taps +

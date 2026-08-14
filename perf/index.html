@@ -14,11 +14,11 @@
     background:linear-gradient(135deg,#5b8af5,#8f6bf5); color:#fff; border:0; border-radius:12px; }
   button.alt { display:block; width:100%; padding:11px; font-size:14px; margin-top:8px;
     background:#141c30; color:#cfe0ff; border:1px solid #2c3a5e; border-radius:10px; }
-  #verdict { margin:16px 0; padding:13px; border-radius:10px; display:none; }
-  #verdict.found { background:#3a1520; border:1px solid #f55b7a; }
+  #verdict, #banner { margin:16px 0; padding:13px; border-radius:10px; display:none; }
+  #verdict.found, #banner.found { background:#3a1520; border:1px solid #f55b7a; }
   #verdict.clean { background:#12301c; border:1px solid #4bd07a; }
-  #verdict h2 { margin:0 0 6px; font-size:16px; }
-  #verdict p { margin:4px 0; font-size:13px; }
+  #verdict h2, #banner h2 { margin:0 0 6px; font-size:16px; }
+  #verdict p, #banner p { margin:4px 0; font-size:13px; }
   table { width:100%; border-collapse:collapse; margin-top:14px; font-size:12px; }
   th, td { text-align:left; padding:6px 5px; border-bottom:1px solid #1b2540; }
   th { color:#8fa3c8; font-weight:600; }
@@ -43,6 +43,7 @@
   <button class="alt" id="copy">Copy results</button>
   <button class="alt" id="clear">Clear results</button>
 
+  <div id="banner"></div>
   <div id="verdict"></div>
   <table id="results"><thead><tr>
     <th>#</th><th>Step</th><th class="n">fps</th><th class="n">worst paint</th><th>verdict</th>
@@ -53,7 +54,7 @@
 <!-- The ?v= is load-bearing: iOS Safari served a cached harness.js against a
      fresh index.html, so Perf.clearFrom did not exist and the run button threw
      and did nothing. Bump it whenever harness.js changes shape. -->
-<script src="harness.js?v=4"></script>
+<script src="harness.js?v=5"></script>
 <script>
 (function () {
   var tbody = document.querySelector('#results tbody');
@@ -65,17 +66,57 @@
 
   function render() {
     var all = Perf.load();
+    var active = Perf.loadActive ? Perf.loadActive() : null;
+    // The newest run stamp present. Anything older is left over from a previous
+    // run and says so, rather than passing itself off as part of this one.
+    var newestRun = 0;
+    Perf.STEPS.forEach(function (s) {
+      var r = all[s.id];
+      if (r && r.run > newestRun) newestRun = r.run;
+    });
+
     tbody.innerHTML = Perf.STEPS.map(function (s) {
       var r = all[s.id];
       var cls = r && r.stalled ? ' class="bad"' : '';
+      var stale = r && newestRun && r.run !== newestRun
+        ? ' <span class="pending">(earlier run)</span>' : '';
       var cell = !r ? '<span class="pending">not run</span>'
         : r.noData ? '<span class="warn">no data — hidden</span>'
+        : r.partial
+          ? '<span class="warn">interrupted at ' + r.elapsedSec + 's</span>' +
+            (r.stalled ? ' <span class="bad">' + r.verdict + '</span>' : '')
         : (r.stalled ? '<span class="bad">' + r.verdict + '</span>' : '<span class="ok">OK</span>');
+      cell += stale;
       return '<tr' + cls + '><td>' + s.id + '</td><td>' + s.name + '</td>' +
         '<td class="n">' + (r ? r.fps : '–') + '</td>' +
         '<td class="n">' + (r ? (r.worstPaintMs / 1000).toFixed(1) + 's' : '–') + '</td>' +
         '<td>' + cell + '</td></tr>';
     }).join('');
+
+    // A run that never reached its last rung leaves its marker behind. Say so,
+    // and offer to pick up where it stopped rather than paying for the rungs
+    // that already reported.
+    var bannerEl = document.getElementById('banner');
+    if (active) {
+      var mins = Math.round((Date.now() - active.at) / 60000);
+      bannerEl.style.display = 'block';
+      bannerEl.className = 'found';
+      bannerEl.innerHTML = '<h2>A run stopped at rung ' + active.rung + '</h2>' +
+        '<p>Last measured ' + (mins < 1 ? 'less than a minute' : mins + ' minute(s)') +
+        ' ago — the screen probably slept or Safari dropped the tab. Whatever that ' +
+        'rung had seen up to that moment is in the table below.</p>' +
+        '<button class="alt" id="resume">Resume at rung ' + active.rung + '</button>' +
+        '<button class="alt" id="dismiss">Dismiss</button>';
+      document.getElementById('resume').addEventListener('click', function () {
+        Perf.startRun(active.rung);
+        location.href = Perf.stepUrl(active.rung, true);
+      });
+      document.getElementById('dismiss').addEventListener('click', function () {
+        Perf.endRun(); render();
+      });
+    } else {
+      bannerEl.style.display = 'none';
+    }
 
     // The verdict: the first rung that stalled is what introduced the problem.
     var firstBad = null;
@@ -165,8 +206,13 @@
     }
   }
 
+  // Neither run button clears anything. Clearing first meant a run that died
+  // mid-rung destroyed the previous run's data and wrote none of its own — which
+  // is exactly what happened on 2026-08-14, losing rungs the user had watched
+  // choke. Each rung overwrites its own row as it completes, and rows carry the
+  // run that produced them so anything left over from an older run is labelled.
   document.getElementById('run').addEventListener('click', function () {
-    Perf.clearAll();
+    Perf.startRun(1);
     location.href = Perf.stepUrl(1, true);
   });
   // The synthetic rungs 1-10 have measured clean on every run and cost about two
@@ -175,7 +221,7 @@
     // Degrade rather than die if an old harness.js is cached: a throw here left
     // the button doing nothing at all, which reads as a broken page.
     var first = Perf.FIRST_APP_STEP || 11;
-    if (Perf.clearFrom) Perf.clearFrom(first);
+    if (Perf.startRun) Perf.startRun(first);
     location.href = Perf.stepUrl(first, true);
   });
   document.getElementById('clear').addEventListener('click', function () {

@@ -221,6 +221,7 @@
           // MANUAL: no auto-ticker. Real taps are the only thing driving the page,
           // which is the one input a synthetic click cannot reproduce.
           Perf.measure({ seconds: 30, tick: null, label: 'rung ' + rung + ' — TAP IT',
+            checkpoint: function (snap) { Perf.record(rung, snap); },
             onDone: function (r) {
               Perf.record(rung, r);
               Perf.hud('rung ' + rung + ': ' + r.verdict + '\ntaps ' + r.taps +

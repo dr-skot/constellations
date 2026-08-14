@@ -93,10 +93,38 @@
   }
   function record(id, result) {
     var all = load();
+    var act = loadActive();
+    result.at = Date.now();
+    result.run = act ? act.runId : 0;
     all[id] = result;
     save(all);
   }
-  function clearAll() { save({}); }
+  function clearAll() { save({}); endRun(); }
+
+  // ── Which run is in flight ─────────────────────────────────────────────────
+  // A run used to leave no trace of itself, so a run that died mid-rung was
+  // indistinguishable from one that was never started — and since the start
+  // button cleared results first, it also took the previous run's data with it.
+  // Now every result is stamped with the run that produced it, and an
+  // interrupted run can say where it stopped.
+  var ACTIVE_KEY = 'perf-run-active';
+  function loadActive() {
+    try { return JSON.parse(localStorage.getItem(ACTIVE_KEY)) || null; } catch (e) { return null; }
+  }
+  function saveActive(a) {
+    try {
+      if (a) localStorage.setItem(ACTIVE_KEY, JSON.stringify(a));
+      else localStorage.removeItem(ACTIVE_KEY);
+    } catch (e) {}
+  }
+  function startRun(first) { saveActive({ runId: Date.now(), rung: first, at: Date.now() }); }
+  function markRung(id) {
+    var a = loadActive() || { runId: Date.now() };
+    a.rung = id;
+    a.at = Date.now();
+    saveActive(a);
+  }
+  function endRun() { saveActive(null); }
 
   // Clear only the rungs from `id` up, so a re-run of the real-app rungs keeps the
   // known-clean 1-10 baseline instead of spending two minutes re-proving it.
@@ -118,7 +146,8 @@
     var tickMs = opts.tickMs || 700;
     var rafGaps = [], timerGaps = [], paints = [];
     var stopped = false;
-    var lastR = performance.now(), lastT = performance.now();
+    var t0 = performance.now();
+    var lastR = t0, lastT = t0;
     var ticks = 0;
 
     // A hidden page gets no animation frames at all, which would otherwise be
@@ -146,9 +175,9 @@
     probe.style.cssText = 'position:fixed;top:0;left:0;width:6px;height:6px;z-index:2147483647;background:#f0f';
     document.body.appendChild(probe);
     var paintTimer = setInterval(function () {
-      var t0 = performance.now();
+      var p0 = performance.now();     // not t0: that names the start of the window
       probe.style.background = probe.style.background === 'rgb(255, 0, 255)' ? '#0ff' : '#f0f';
-      requestAnimationFrame(function () { paints.push(performance.now() - t0); });
+      requestAnimationFrame(function () { paints.push(performance.now() - p0); });
     }, 250);
 
     // Drive the page the way a user would — unless the user is driving it. With
@@ -166,6 +195,26 @@
     document.addEventListener('touchend', onTap, { capture: true, passive: true });
     document.addEventListener('click', onTap, { capture: true, passive: true });
 
+    // Write what we have, once a second, so a rung that never finishes still
+    // reports what it saw. The result used to be written only when the window
+    // closed, so a lock screen or a discarded tab erased the whole rung — and
+    // the worst stalls are exactly the ones most likely to disrupt the run that
+    // is measuring them. A run was lost this way on 2026-08-14 after the user
+    // watched rungs visibly choking.
+    var ckTimer = opts.checkpoint ? setInterval(function () {
+      // Once the page has been hidden the clocks are meaningless, and writing
+      // that over a good snapshot would destroy the very thing checkpointing
+      // exists to save: what the rung saw while it was still on screen. Stop
+      // writing instead, and let the last visible snapshot stand.
+      if (wasHidden) return;
+      var elapsed = (performance.now() - t0) / 1000;
+      var snap = summarize(rafGaps, timerGaps, paints, elapsed, ticks);
+      snap.partial = true;
+      snap.elapsedSec = Math.round(elapsed);
+      snap.taps = taps;
+      try { opts.checkpoint(snap); } catch (e) { /* never let storage kill the run */ }
+    }, 1000) : null;
+
     // Live readout, so a stall is visible as it happens rather than only at the end.
     var liveTimer = opts.live === false ? null : setInterval(function () {
       var wp = 0, wf = 0;
@@ -181,6 +230,7 @@
       clearInterval(paintTimer);
       if (workTimer) clearInterval(workTimer);
       if (liveTimer) clearInterval(liveTimer);
+      if (ckTimer) clearInterval(ckTimer);
       document.removeEventListener('visibilitychange', onVis);
       document.removeEventListener('touchend', onTap, true);
       document.removeEventListener('click', onTap, true);
@@ -256,6 +306,7 @@
   // ── Auto-run: measure this rung, store it, move to the next ────────────────
   function autoRun(id, tick) {
     var step = STEPS[id - 1];
+    markRung(id);
     hud('step ' + id + '/' + STEPS.length + '\n' + (step ? step.name : '') + '\nmeasuring...');
     measure({
       // The observed freezes arrive roughly every 7 seconds, so a 10s window can
@@ -265,12 +316,13 @@
       seconds: id >= 11 ? 30 : 12,
       label: 'step ' + id + '/' + STEPS.length,
       tick: tick,
+      checkpoint: function (snap) { record(id, snap); },
       onDone: function (result) {
         record(id, result);
         hud('step ' + id + ' -> ' + result.verdict + '\nfps ' + result.fps +
             '  worst paint ' + (result.worstPaintMs / 1000).toFixed(1) + 's\nnext...');
         setTimeout(function () {
-          if (id >= STEPS.length) location.href = resultsUrl();
+          if (id >= STEPS.length) { endRun(); location.href = resultsUrl(); }
           else location.href = stepUrl(id + 1, true);
         }, 900);
       }
@@ -291,6 +343,9 @@
     record: record,
     clearAll: clearAll,
     clearFrom: clearFrom,
+    startRun: startRun,
+    endRun: endRun,
+    loadActive: loadActive,
     measure: measure,
     autoRun: autoRun,
     hud: hud,
