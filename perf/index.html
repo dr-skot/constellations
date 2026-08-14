@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<!-- GitHub Pages serves HTML with a ten-minute cache, so a phone kept running a
+     stale copy of this page — and a stale page names stale script versions, which
+     defeats the ?v= trick entirely. That cost two rounds of "the button does
+     nothing". A measurement tool is worth re-fetching every time. -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Constellate — perf bisect</title>
 <style>
   :root { color-scheme: dark; }
@@ -59,8 +66,8 @@
 <!-- The ?v= is load-bearing: iOS Safari served a cached harness.js against a
      fresh index.html, so Perf.clearFrom did not exist and the run button threw
      and did nothing. Bump it whenever harness.js changes shape. -->
-<script src="harness.js?v=7"></script>
-<script src="bisect.js?v=7"></script>
+<script src="harness.js?v=8"></script>
+<script src="bisect.js?v=8"></script>
 <script>
 (function () {
   var tbody = document.querySelector('#results tbody');

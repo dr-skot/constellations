@@ -43,7 +43,14 @@
     var s = document.currentScript;
     if (!s) { var all = document.getElementsByTagName('script'); s = all[all.length - 1]; }
     var src = (s && s.src) || '';
-    return src ? src.replace(/perf\/bisect\.js.*$/, '') : '/';
+    var root = src ? src.replace(/perf\/bisect\.js.*$/, '') : '';
+    // Belt and braces. If the script tag could not be found at all we fall back
+    // to the page's own directory — and from /perf/index.html that would point
+    // the app URL back into /perf/, which is the failure this whole block
+    // exists to prevent. Strip a trailing perf/ so the wrong answer is not
+    // reachable by any path.
+    if (!root) root = location.pathname.replace(/[^/]*$/, '');
+    return root.replace(/perf\/$/, '');
   })();
   var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
