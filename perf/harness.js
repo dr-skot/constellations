@@ -46,20 +46,30 @@
     { id: 8,  name: '+ art overlay',     adds: 'drawImage of a real .webp art file onto the canvas every tick.' },
     { id: 9,  name: '+ WebGL context',   adds: 'Creates a WebGL canvas, uploads a texture and draws every tick.' },
     { id: 10, name: '+ all app scripts', adds: 'Loads every js/ file the real app loads: parse cost, globals, startup fetches.' },
-    { id: 11, name: 'The real app',      adds: 'index.html itself, auto-answering multiple-choice questions.' },
+    // ── THE REPRODUCER ──────────────────────────────────────────────────────
+    // Rung 11 must be the exact case that stalls, unmodified. In the first ladder
+    // run it stalled while sitting on a find-in-the-sky question with the explorer
+    // rendering — so it runs a NORMAL planner lesson, find questions and all, and
+    // sits on them exactly as it did then. Nothing here may be "fixed" to make the
+    // run smoother: a top rung that does not reproduce makes every rung below it
+    // meaningless.
+    { id: 11, name: 'Real app — untouched', kind: 'add',
+      adds: 'THE REPRODUCER. index.html with your existing progress and session, nothing ' +
+            'cleared or seeded, whatever question comes up. Measured for 30s, because the ' +
+            'observed freezes arrive roughly every 7 seconds and a short window can miss them.' },
 
-    // Rungs 1-11 ADD one thing each: the first that stalls is the culprit.
-    // Rungs 12+ SUBTRACT one thing from the real app: the first that comes back
-    // CLEAN is the culprit. They only matter when 11 stalls but 1-10 are fine,
-    // which means the cause is something the real app has and rung 10 does not.
-    { id: 12, name: 'App minus Sky Explorer', remove: 'noexplore',
-      adds: 'The real app with the entire explore screen and its canvases removed.' },
-    { id: 13, name: 'App minus WebGL',        remove: 'nogl',
-      adds: 'The real app with the WebGL canvas and its context removed.' },
-    { id: 14, name: 'App minus datalists',    remove: 'nodatalist',
-      adds: 'The real app with both 88-option <datalist> elements emptied.' },
-    { id: 15, name: 'App minus photos',       remove: 'nophoto',
-      adds: 'The real app with photo loading replaced by an inline blank image.' }
+    // Each rung below is the reproducer MINUS exactly one thing. The first that
+    // comes back clean names the culprit.
+    { id: 12, name: 'Reproducer minus find questions', remove: 'choiceonly', kind: 'remove',
+      adds: 'Same, but a multiple-choice-only lesson, so the explorer never opens.' },
+    { id: 13, name: 'Reproducer minus WebGL', remove: 'nogl', kind: 'remove',
+      adds: 'Same lesson, but the WebGL context is destroyed — the sky falls back to 2D.' },
+    { id: 14, name: 'Reproducer minus photos', remove: 'nophoto', kind: 'remove',
+      adds: 'Same lesson, but photo loading is replaced by an inline blank image.' },
+    { id: 15, name: 'Reproducer minus art', remove: 'noart', kind: 'remove',
+      adds: 'Same lesson, but the constellation artwork is never loaded or drawn.' },
+    { id: 16, name: 'Reproducer minus datalists', remove: 'nodatalist', kind: 'remove',
+      adds: 'Same lesson, but both 88-option <datalist> elements are emptied.' }
   ];
 
   function stepUrl(id, auto) {
@@ -237,7 +247,12 @@
     var step = STEPS[id - 1];
     hud('step ' + id + '/' + STEPS.length + '\n' + (step ? step.name : '') + '\nmeasuring...');
     measure({
-      seconds: 10,
+      // The observed freezes arrive roughly every 7 seconds, so a 10s window can
+      // miss one and report a clean pass — very likely what happened when rung 11
+      // stalled on one run and not the next. The real-app rungs, where that risk
+      // matters, get 30s; the synthetic rungs below them get 12s.
+      seconds: id >= 11 ? 30 : 12,
+      label: 'step ' + id + '/' + STEPS.length,
       tick: tick,
       onDone: function (result) {
         record(id, result);

@@ -48,20 +48,19 @@
         done.push('datalists');
       } catch (e) {}
     }
-    if (flag('noexplore')) {
+    if (flag('noart')) {
       try {
-        var se = document.getElementById('screen-explore');
-        if (se) se.parentNode.removeChild(se);
-        done.push('explore screen');
+        if (typeof ART === 'object') for (var k in ART) delete ART[k];
+        done.push('art');
       } catch (e) {}
     }
     return done;
   }
 
   // ── A lesson of multiple-choice questions only ─────────────────────────────
-  // The planner mixes in find-in-the-sky questions, which the auto-answerer
-  // cannot click — it would sit there recording nothing. The complaint is about
-  // the quiz buttons, so build a deterministic identify/diagram lesson instead.
+  // ONLY for the "minus find questions" rung. The reproducer must NOT use this:
+  // the stall was first seen while the app sat on a find question with the sky
+  // rendering, so removing find questions removes the bug being measured.
   function seedChoiceLesson() {
     if (typeof C === 'undefined' || typeof session === 'undefined') return false;
     var picks = C.slice(0, 24);
@@ -90,21 +89,42 @@
     });
     if (answers.length) { answers[Math.floor(Math.random() * answers.length)].click(); return; }
 
-    // Ran off the end of the lesson (result screen) — start another.
-    seedChoiceLesson();
+    // A find-in-the-sky question: the explorer is on screen. Sit on it, exactly
+    // as the first run did when it stalled — do NOT skip past it. Its Next button
+    // appears once answered, so honour that if it shows.
+    var eq = document.getElementById('eq-next');
+    if (eq && eq.classList.contains('show')) { eq.click(); return; }
+    if (document.getElementById('screen-explore') &&
+        document.getElementById('screen-explore').classList.contains('active')) return;
+
+    // Result screen or nowhere useful — start another lesson.
+    if (flag('choiceonly')) seedChoiceLesson();
+    else if (typeof navigate === 'function') navigate('lesson');
   }
 
   ready(function () {
     var removed = applyRemovals();
     var rung = parseInt((/[?&]rung=(\d+)/.exec(location.search) || [])[1] || '11', 10);
 
-    // Get onto a quiz question before the clocks start.
-    try { if (typeof navigate === 'function') navigate('lesson'); } catch (e) {}
+    // The reproducer is the app EXACTLY as it is used: existing progress, a
+    // resumed lesson if there is one, whatever question the planner serves,
+    // whatever screens have already been visited. Nothing is cleared, seeded or
+    // steered — every previous attempt to "prepare" it removed a condition that
+    // might be the bug and then reported clean.
+    //
+    // The observed freeze happens on ordinary four-button identify questions, so
+    // question type is a variable to TEST (rung 12), never an assumption to build in.
+    try {
+      var onQuestion = document.querySelector('.ans-btn') ||
+                       (document.getElementById('screen-explore') || {}).classList &&
+                       document.getElementById('screen-explore').classList.contains('active');
+      if (!onQuestion && typeof navigate === 'function') navigate('lesson');
+    } catch (e) {}
 
     setTimeout(function () {
-      var ok = seedChoiceLesson();
+      if (flag('choiceonly')) seedChoiceLesson();
       var note = (removed.length ? 'minus ' + removed.join(', ') + '\n' : '') +
-                 (ok ? '' : 'could not seed lesson\n');
+                 (flag('choiceonly') ? 'choice-only\n' : 'real lesson\n');
 
       setTimeout(function () {
         if (Perf.param('auto') === '1') {
