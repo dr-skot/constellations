@@ -66,8 +66,8 @@
 <!-- The ?v= is load-bearing: iOS Safari served a cached harness.js against a
      fresh index.html, so Perf.clearFrom did not exist and the run button threw
      and did nothing. Bump it whenever harness.js changes shape. -->
-<script src="harness.js?v=8"></script>
-<script src="bisect.js?v=8"></script>
+<script src="harness.js?v=9"></script>
+<script src="bisect.js?v=9"></script>
 <script>
 (function () {
   var tbody = document.querySelector('#results tbody');
@@ -303,6 +303,25 @@
         (r.starved ? ' [starved]' : '') + (r.threadBlocked ? ' [blocked]' : '')
       ].join(' | '));
     });
+    // The bisect's runs live in their own state, not in STEPS, so walking the
+    // ladder alone silently omitted them — the user copied a table and got the
+    // PREVIOUS experiment's results with no sign the bisect had happened.
+    var st = PerfBisect.loadState && PerfBisect.loadState();
+    if (st) {
+      lines.push('');
+      lines.push('--- feature bisect ---');
+      if (st.done && st.answer) lines.push('CULPRIT: ' + st.answer);
+      else if (st.done) lines.push('NO SINGLE FEATURE: ' + (st.note || ''));
+      else lines.push('IN PROGRESS: ' + st.candidates.length + ' feature(s) still in play');
+      lines.push('run | switched off | fps | worstPaint | worstTimer | result');
+      st.history.forEach(function (h, i) {
+        lines.push([i + 1, (h.kills.join(',') || 'nothing'), h.fps, h.worstPaintMs + 'ms',
+          h.worstTimerMs + 'ms',
+          (h.noData ? 'NO DATA' : h.stalled ? 'STALLED' : 'clean') +
+          (h.threadBlocked ? ' [blocked]' : '')].join(' | '));
+      });
+    }
+
     lines.push('ua: ' + navigator.userAgent);
     return lines.join('\n');
   }
