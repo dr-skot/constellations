@@ -35,7 +35,7 @@ const HOME = 'course';
 // Returns { name, param, screen, transient, hash }, or null when the hash names no
 // route (the caller redirects). An empty hash is the course home.
 function parseRoute(hash) {
-  const h = String(hash == null ? '' : hash).replace(/^#/, '') || HOME;
+  const h = _norm(hash);
   for (const r of ROUTES) {
     if (!r.prefix && h === r.name) return _route(r, null, h);
     if (r.prefix && h.startsWith(r.prefix)) {
@@ -48,6 +48,11 @@ function parseRoute(hash) {
 
 function _route(row, param, hash) {
   return { name: row.name, param, screen: row.screen || null, transient: !!row.transient, hash };
+}
+
+// A hash as the router stores it: no leading '#', and an empty one is the home route.
+function _norm(hash) {
+  return String(hash == null ? '' : hash).replace(/^#/, '') || HOME;
 }
 
 // ── Injected ports ──────────────────────────────────────────────────────────
@@ -85,10 +90,14 @@ function showScreen(name) {
 // navigate: an in-app navigation. Writes history, then enters. Navigating to the
 // hash already showing replaces instead of pushing (so tapping the gear twice does
 // not stack duplicate entries) but still runs the enter action.
-function navigate(hash) {
+// `opts.replace` overwrites the current entry instead of adding one — for a
+// destination that supersedes where it came from. Ending a lesson uses it: the
+// spent #lesson entry must not survive one Back away from the result screen,
+// because resolving it would start a fresh lesson over the score just shown.
+function navigate(hash, opts = {}) {
   const h = _norm(hash);
   const same = _route_ && _route_.hash === h;
-  _history[same ? 'replace' : 'push'](h);
+  _history[same || opts.replace ? 'replace' : 'push'](h);
   _enter(h, true);
 }
 
@@ -97,10 +106,6 @@ function navigate(hash) {
 // screen agree from the first paint); popstate passes nothing and writes nothing.
 function enterRoute(hash, opts = {}) {
   _enter(_norm(hash), false, opts.write);
-}
-
-function _norm(hash) {
-  return String(hash == null ? '' : hash).replace(/^#/, '') || HOME;
 }
 
 function _enter(hash, inApp, write) {

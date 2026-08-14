@@ -24,7 +24,7 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
 // A router wired to recorders. `rec.hist` is the history tape as ['push'|'replace', hash]
 // pairs; `rec.screens` every screen the sink was handed; `rec.fired` every enter action
 // that ran, as 'name' or 'name:param'; `rec.exits` every exit action that ran.
-function mkRouter(opts = {}) {
+function mkRouter() {
   const rec = { hist: [], screens: [], fired: [], exits: [], seenScreen: [] };
   const names = ['course', 'explore', 'exploreCon', 'view', 'lesson', 'result', 'settings', 'calibration'];
   const actions = {};
@@ -38,7 +38,7 @@ function mkRouter(opts = {}) {
     history: { push: h => rec.hist.push(['push', h]), replace: h => rec.hist.push(['replace', h]) },
     setScreen: s => rec.screens.push(s),
     actions,
-    exits: opts.exits === false ? {} : exits,
+    exits,
   });
   rec.lastHist = () => rec.hist[rec.hist.length - 1];
   rec.lastScreen = () => rec.screens[rec.screens.length - 1];
@@ -128,8 +128,23 @@ function mkRouter(opts = {}) {
   navigate('result');
   check('result: entering from inside the app shows the result screen',
     currentRoute().name === 'result' && rec.lastScreen() === 'result');
-  check('result: an in-app entry pushes its hash',
-    rec.lastHist()[0] === 'push' && rec.lastHist()[1] === 'result');
+}
+{
+  // Ending a lesson REPLACES the spent #lesson entry rather than pushing over it.
+  // Pushing leaves #lesson one Back away, and going back there resolves a lesson
+  // whose stored session was cleared when it ended — which starts a brand-new
+  // lesson. That is the very bug #result exists to kill, only reached by Back.
+  const rec = mkRouter();
+  navigate('course');
+  navigate('lesson');
+  navigate('result', { replace: true });
+  check('result: ending a lesson replaces the spent lesson entry',
+    rec.lastHist()[0] === 'replace' && rec.lastHist()[1] === 'result');
+  check('result: replacing still shows the screen and fires the action',
+    rec.lastScreen() === 'result' && rec.fired[rec.fired.length - 1] === 'result');
+  check('replace: the lesson entry is gone, so Back leads to what preceded it',
+    rec.hist.map(h => h[1]).join() === 'course,lesson,result'
+    && rec.hist.map(h => h[0]).join() === 'push,push,replace');
 }
 {
   const rec = mkRouter();
@@ -141,7 +156,6 @@ function mkRouter(opts = {}) {
 {
   const rec = mkRouter();
   navigate('result');
-  const before = rec.fired.length;
   enterRoute('result');                            // forward/back onto #result
   check('result: a popstate entry redirects too', currentRoute().name === 'course');
 }
@@ -290,7 +304,6 @@ function mkRouter(opts = {}) {
 {
   const rec = mkRouter();
   navigate('course');
-  let resumed = 0;
   endDetour();                                       // nothing in flight
   check('detour: ending with none in flight is a no-op',
     rec.hist.length === 1 && currentRoute().name === 'course');

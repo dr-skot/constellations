@@ -135,7 +135,9 @@ function initCalibration() {
     sessionStorage.removeItem('lesson-session');
     navigate('lesson');
   });
-  document.getElementById('cal-retake').addEventListener('click', startCalibration);
+  // Re-enter the route rather than calling its action directly: same hash, so it
+  // replaces instead of stacking a duplicate entry, and the route stays the truth.
+  document.getElementById('cal-retake').addEventListener('click', () => navigate('calibration'));
   // Course-screen re-run entry (#34): re-launch the flow anytime. The offer screen
   // carries the upward-merge framing, so it reads as safe (never lowers progress).
   const trigger = document.getElementById('btn-level-check');

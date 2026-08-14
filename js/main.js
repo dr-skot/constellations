@@ -57,7 +57,9 @@ function _initRouting() {
       },
       view: abbr => {
         const con = C.find(c => c.abbr === abbr);
-        con ? viewConstellation(con) : navigate('course');
+        // An unknown abbr is a dead URL, so it replaces rather than pushes — the
+        // same rule the router applies to a hash that names no route at all.
+        con ? viewConstellation(con) : navigate('course', { replace: true });
       },
       lesson: () => { if (!tryResumeLesson()) startLesson(); },
       settings: () => { if (typeof refreshSettings === 'function') refreshSettings(); },
