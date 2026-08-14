@@ -33,10 +33,13 @@
 </head>
 <body>
   <h1>Perf bisect</h1>
-  <p class="lede">Eleven pages. Each adds exactly one thing to the one before it.
-    The first that freezes is the culprit. Runs itself — about two minutes.</p>
+  <p class="lede">Sixteen rungs. 1–10 each add one thing to the rung below, so the first
+    that freezes is the culprit; all ten have measured clean every run, so the default
+    button skips them and keeps their result. 11 is the real app; 12–16 each take one
+    thing away from it, so the first that comes back clean is the culprit.</p>
 
-  <button class="go" id="run">Run all steps</button>
+  <button class="go" id="run-app">Run app steps (11–16, ~4 min)</button>
+  <button class="alt" id="run">Re-run the whole ladder from 1 (~6 min)</button>
   <button class="alt" id="clear">Clear results</button>
 
   <div id="verdict"></div>
@@ -162,6 +165,12 @@
     Perf.clearAll();
     location.href = Perf.stepUrl(1, true);
   });
+  // The synthetic rungs 1-10 have measured clean on every run and cost about two
+  // minutes to re-prove. This starts at the reproducer and keeps that baseline.
+  document.getElementById('run-app').addEventListener('click', function () {
+    Perf.clearFrom(Perf.FIRST_APP_STEP);
+    location.href = Perf.stepUrl(Perf.FIRST_APP_STEP, true);
+  });
   document.getElementById('clear').addEventListener('click', function () {
     Perf.clearAll(); render();
   });
@@ -169,7 +178,7 @@
   // Manual links, one per step, for tapping a single rung by hand.
   var manual = document.createElement('div');
   manual.className = 'steps';
-  manual.innerHTML = '<b>Run one step manually (20s, you tap):</b><br>' +
+  manual.innerHTML = '<b>Run one step manually (12s; 30s and real taps only from 11 up):</b><br>' +
     Perf.STEPS.map(function (s) {
       return '<a href="' + Perf.stepUrl(s.id, false) + '" style="color:#8fb4ff">' + s.id + '</a>';
     }).join(' &nbsp; ');

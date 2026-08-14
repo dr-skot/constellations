@@ -98,6 +98,17 @@
   }
   function clearAll() { save({}); }
 
+  // Clear only the rungs from `id` up, so a re-run of the real-app rungs keeps the
+  // known-clean 1-10 baseline instead of spending two minutes re-proving it.
+  function clearFrom(id) {
+    var all = load(), kept = {};
+    Object.keys(all).forEach(function (k) { if (+k < id) kept[k] = all[k]; });
+    save(kept);
+  }
+
+  // The first rung that runs the real app rather than a synthetic page.
+  var FIRST_APP_STEP = 11;
+
   // ── The measurement ────────────────────────────────────────────────────────
   // opts.seconds  how long to measure
   // opts.tick     called every opts.tickMs to simulate a question change
@@ -273,11 +284,13 @@
 
   global.Perf = {
     STEPS: STEPS,
+    FIRST_APP_STEP: FIRST_APP_STEP,
     stepUrl: stepUrl,
     resultsUrl: resultsUrl,
     load: load,
     record: record,
     clearAll: clearAll,
+    clearFrom: clearFrom,
     measure: measure,
     autoRun: autoRun,
     hud: hud,
