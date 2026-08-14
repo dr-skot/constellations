@@ -14,7 +14,10 @@
     background:linear-gradient(135deg,#5b8af5,#8f6bf5); color:#fff; border:0; border-radius:12px; }
   button.alt { display:block; width:100%; padding:11px; font-size:14px; margin-top:8px;
     background:#141c30; color:#cfe0ff; border:1px solid #2c3a5e; border-radius:10px; }
-  #verdict, #banner { margin:16px 0; padding:13px; border-radius:10px; display:none; }
+  #verdict, #banner, #bisect-out { margin:16px 0; padding:13px; border-radius:10px; display:none; }
+  #bisect-out { background:#111a2e; border:1px solid #2c3a5e; }
+  #bisect-out h2 { margin:0 0 6px; font-size:16px; }
+  #bisect-out p { margin:4px 0; font-size:13px; color:#8fa3c8; }
   #verdict.found, #banner.found { background:#3a1520; border:1px solid #f55b7a; }
   #verdict.clean { background:#12301c; border:1px solid #4bd07a; }
   #verdict h2, #banner h2 { margin:0 0 6px; font-size:16px; }
@@ -38,12 +41,14 @@
     button skips them and keeps their result. 11 is the real app; 12–16 each take one
     thing away from it, so the first that comes back clean is the culprit.</p>
 
-  <button class="go" id="run-app">Run app steps (11–16, ~4 min)</button>
+  <button class="go" id="bisect">Bisect the app (~3 min)</button>
+  <button class="alt" id="run-app">Run app steps (11–16, ~4 min)</button>
   <button class="alt" id="run">Re-run the whole ladder from 1 (~6 min)</button>
   <button class="alt" id="copy">Copy results</button>
   <button class="alt" id="clear">Clear results</button>
 
   <div id="banner"></div>
+  <div id="bisect-out"></div>
   <div id="verdict"></div>
   <table id="results"><thead><tr>
     <th>#</th><th>Step</th><th class="n">fps</th><th class="n">worst paint</th><th>verdict</th>
@@ -54,7 +59,8 @@
 <!-- The ?v= is load-bearing: iOS Safari served a cached harness.js against a
      fresh index.html, so Perf.clearFrom did not exist and the run button threw
      and did nothing. Bump it whenever harness.js changes shape. -->
-<script src="harness.js?v=5"></script>
+<script src="harness.js?v=6"></script>
+<script src="bisect.js?v=6"></script>
 <script>
 (function () {
   var tbody = document.querySelector('#results tbody');
@@ -93,7 +99,49 @@
         '<td>' + cell + '</td></tr>';
     }).join('');
 
-    // A run that never reached its last rung leaves its marker behind. Say so,
+    // ── The bisect's own readout ───────────────────────────────────────────────
+  // Each line is one real-app run: which features were off, and whether it
+  // stalled. The halving is only trustworthy if you can see the steps it took.
+  function renderBisect() {
+    var host = document.getElementById('bisect-out');
+    var st = PerfBisect.loadState();
+    if (!st) { host.style.display = 'none'; return; }
+    host.style.display = 'block';
+
+    var rows = st.history.map(function (h, i) {
+      return '<tr><td class="n">' + (i + 1) + '</td>' +
+        '<td>' + (h.kills.length ? h.kills.join(', ') : '<i>nothing off</i>') + '</td>' +
+        '<td class="n">' + h.fps + '</td>' +
+        '<td class="n">' + (h.worstPaintMs / 1000).toFixed(1) + 's</td>' +
+        '<td>' + (h.noData ? '<span class="warn">no data</span>'
+          : h.stalled ? '<span class="bad">STALLED</span>' + (h.threadBlocked ? ' [blocked]' : '')
+          : '<span class="ok">clean</span>') + '</td></tr>';
+    }).join('');
+
+    var head = '<h2>Feature bisect</h2>';
+    if (st.done && st.answer) {
+      var k = PerfBisect.KILLS.filter(function (x) { return x.id === st.answer; })[0];
+      head = '<h2>Culprit: ' + st.answer + '</h2><p>' + (k ? k.what : '') + '</p>' +
+        '<p>The real app stalls with this feature on, and runs clean with only this ' +
+        'one switched off. Everything else stayed exactly as it was.</p>';
+    } else if (st.done && st.aborted) {
+      head = '<h2>Bisect stopped</h2><p>' + (st.note || '') + '</p>';
+    } else if (st.done) {
+      head = '<h2>No single feature accounts for it</h2><p>' + (st.note || '') +
+        '</p><p>Two features together, or something no flag switches off. The ' +
+        'run log below shows which halves stalled.</p>';
+    } else {
+      head = '<h2>Bisect in progress</h2><p>' + st.candidates.length +
+        ' feature(s) still in play after ' + st.history.length + ' run(s).</p>';
+    }
+
+    host.innerHTML = head +
+      '<table><thead><tr><th>#</th><th>switched off</th><th class="n">fps</th>' +
+      '<th class="n">worst paint</th><th>result</th></tr></thead><tbody>' +
+      rows + '</tbody></table>';
+  }
+
+  // A run that never reached its last rung leaves its marker behind. Say so,
     // and offer to pick up where it stopped rather than paying for the rungs
     // that already reported.
     var bannerEl = document.getElementById('banner');
@@ -211,6 +259,9 @@
   // is exactly what happened on 2026-08-14, losing rungs the user had watched
   // choke. Each rung overwrites its own row as it completes, and rows carry the
   // run that produced them so anything left over from an older run is labelled.
+  document.getElementById('bisect').addEventListener('click', function () {
+    location.href = PerfBisect.start();
+  });
   document.getElementById('run').addEventListener('click', function () {
     Perf.startRun(1);
     location.href = Perf.stepUrl(1, true);
@@ -283,6 +334,7 @@
   document.body.appendChild(manual);
 
   render();
+  renderBisect();
 })();
 </script>
 </body>

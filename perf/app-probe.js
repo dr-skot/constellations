@@ -189,7 +189,69 @@
     else if (typeof navigate === 'function') navigate('lesson');
   }
 
+  // ── Bisect mode ────────────────────────────────────────────────────────────
+  // Same app, same driver, same measurement — the only difference is that a SET
+  // of features is switched off and the next URL is chosen by halving the
+  // candidates rather than by walking a fixed ladder. Sharing tick() matters:
+  // a second driver would be a second thing to get wrong.
+  function runBisect() {
+    var applied = PerfBisect.applyFromUrl();
+    var choiceOnly = applied.indexOf('find') !== -1;
+    setTimeout(function () {
+      if (choiceOnly) seedChoiceLesson();
+      Perf.hud('BISECT\noff: ' + (applied.length ? applied.join(', ') : 'nothing') +
+               '\nmeasuring 30s...');
+
+      // Did the app actually DO anything? A kill that breaks the app leaves a
+      // page that cannot advance — no questions answered, nothing redrawn — and
+      // an idle page measures a flawless 60fps. Without this, "the app is dead"
+      // and "the app is fine" are the same reading, and the bisect would follow
+      // the dead half. Verified the hard way: emptying inactive screens took
+      // #screen-quiz with it, btn-next vanished, and the run went silent.
+      var progress = 0, lastIdx = -1, lastAns = null;
+      var watch = setInterval(function () {
+        try {
+          if (session.idx !== lastIdx || session.answered !== lastAns) progress++;
+          lastIdx = session.idx;
+          lastAns = session.answered;
+        } catch (e) {}
+      }, 500);
+
+      Perf.measure({
+        seconds: 30,
+        tick: tick,
+        label: 'bisect (' + applied.length + ' off)',
+        checkpoint: function (snap) { Perf.record('bisect:' + applied.join('+'), snap); },
+        onDone: function (r) {
+          clearInterval(watch);
+          r.progress = progress;
+          // A stall with no progress is a real stall. A CLEAN reading with no
+          // progress is a broken app pretending to be a healthy one.
+          r.invalid = !r.stalled && progress < 2;
+          Perf.record('bisect:' + applied.join('+'), r);
+          Perf.hud('BISECT ' + (r.invalid ? 'INVALID (app made no progress)'
+                                          : r.stalled ? 'STALLED' : 'CLEAN') +
+                   '\nfps ' + r.fps + '  paint ' + (r.worstPaintMs / 1000).toFixed(1) + 's' +
+                   '\nquestions advanced ' + progress + '\nnext...');
+          var url = PerfBisect.recordAndAdvance(applied, r);
+          setTimeout(function () { location.href = url; }, 900);
+        }
+      });
+    }, 800);
+  }
+
   ready(function () {
+    if (/[?&]bisect=1/.test(location.search) && typeof PerfBisect !== 'undefined') {
+      // The app must be ON a question before the kills mean anything.
+      try {
+        var q = document.querySelector('.ans-btn') ||
+                document.getElementById('screen-explore').classList.contains('active');
+        if (!q && typeof navigate === 'function') navigate('lesson');
+      } catch (e) {}
+      setTimeout(runBisect, 600);
+      return;
+    }
+
     var removed = applyRemovals();
     var rung = parseInt((/[?&]rung=(\d+)/.exec(location.search) || [])[1] || '11', 10);
 
