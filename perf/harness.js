@@ -46,12 +46,30 @@
     { id: 8,  name: '+ art overlay',     adds: 'drawImage of a real .webp art file onto the canvas every tick.' },
     { id: 9,  name: '+ WebGL context',   adds: 'Creates a WebGL canvas, uploads a texture and draws every tick.' },
     { id: 10, name: '+ all app scripts', adds: 'Loads every js/ file the real app loads: parse cost, globals, startup fetches.' },
-    { id: 11, name: 'The real app',      adds: 'index.html itself, auto-answering questions.' }
+    { id: 11, name: 'The real app',      adds: 'index.html itself, auto-answering multiple-choice questions.' },
+
+    // Rungs 1-11 ADD one thing each: the first that stalls is the culprit.
+    // Rungs 12+ SUBTRACT one thing from the real app: the first that comes back
+    // CLEAN is the culprit. They only matter when 11 stalls but 1-10 are fine,
+    // which means the cause is something the real app has and rung 10 does not.
+    { id: 12, name: 'App minus Sky Explorer', remove: 'noexplore',
+      adds: 'The real app with the entire explore screen and its canvases removed.' },
+    { id: 13, name: 'App minus WebGL',        remove: 'nogl',
+      adds: 'The real app with the WebGL canvas and its context removed.' },
+    { id: 14, name: 'App minus datalists',    remove: 'nodatalist',
+      adds: 'The real app with both 88-option <datalist> elements emptied.' },
+    { id: 15, name: 'App minus photos',       remove: 'nophoto',
+      adds: 'The real app with photo loading replaced by an inline blank image.' }
   ];
 
   function stepUrl(id, auto) {
     var q = auto ? '&auto=1' : '';
-    if (id === 11) return BASE + '../index.html?perf=1' + (auto ? '&auto=1' : '') + '#lesson';
+    var step = STEPS[id - 1];
+    if (id >= 11) {
+      var extra = (step && step.remove) ? '&' + step.remove + '=1' : '';
+      return BASE + '../index.html?perf=1&rung=' + id + extra +
+             (auto ? '&auto=1' : '') + '#lesson';
+    }
     return BASE + 'step.html?step=' + id + q;
   }
   function resultsUrl() { return BASE + 'index.html?done=1'; }
@@ -126,11 +144,18 @@
       if (probe.parentNode) probe.parentNode.removeChild(probe);
 
       var result = summarize(rafGaps, timerGaps, paints, seconds, ticks);
-      // Too few frames to judge: the page was backgrounded, or the screen slept.
-      if (wasHidden || rafGaps.length < seconds * 5) {
+
+      // A page starved of frames looks identical to a hidden one, so only the
+      // visibility API may call it hidden. Starved-but-visible is the WORST
+      // possible result, not missing data — an earlier version filed it as noise.
+      if (wasHidden) {
         result.noData = true;
         result.stalled = false;
         result.verdict = 'NO DATA — page was hidden';
+      } else if (rafGaps.length < seconds * 5) {
+        result.stalled = true;
+        result.starved = true;
+        result.verdict = result.threadBlocked ? 'BLOCKED THREAD (severe)' : 'FRAMES STARVED';
       }
       if (opts.onDone) opts.onDone(result);
     }, seconds * 1000);

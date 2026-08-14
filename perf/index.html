@@ -92,6 +92,37 @@
     if (!ranAny) { verdictEl.style.display = 'none'; return; }
     verdictEl.style.display = 'block';
 
+    // Rungs 1-11 add; the first that stalls is the culprit. Rungs 12+ subtract
+    // from the real app; the first that comes back CLEAN is the culprit.
+    var addBad = null;
+    for (var a = 0; a < 11; a++) {
+      var ra = all[Perf.STEPS[a].id];
+      if (ra && ra.stalled) { addBad = Perf.STEPS[a]; break; }
+    }
+    if (addBad && addBad.id === 11) {
+      var cleanRemoval = null;
+      for (var b = 11; b < Perf.STEPS.length; b++) {
+        var rb = all[Perf.STEPS[b].id];
+        if (rb && !rb.stalled && !rb.noData) { cleanRemoval = Perf.STEPS[b]; break; }
+      }
+      verdictEl.style.display = 'block';
+      verdictEl.className = 'found';
+      if (cleanRemoval) {
+        verdictEl.innerHTML = '<h2>Culprit: ' + cleanRemoval.name.replace('App minus ', '') + '</h2>' +
+          '<p>The real app stalls, but with this one thing removed it runs clean — ' +
+          'so removing or changing it is the fix.</p><p>' + cleanRemoval.adds + '</p>';
+      } else {
+        var r11 = all[11];
+        verdictEl.innerHTML = '<h2>The real app stalls; the primitives do not</h2>' +
+          '<p>Rungs 1–10 all ran clean, so it is not canvas allocation, draw cost, ' +
+          'photos, art, WebGL or script weight on their own. The real app froze: ' +
+          'worst paint <b>' + (r11 ? (r11.worstPaintMs / 1000).toFixed(1) : '?') + 's</b>, ' +
+          'fps <b>' + (r11 ? r11.fps : '?') + '</b>.</p>' +
+          '<p>Run the subtraction rungs (12–15) to find which subsystem is responsible.</p>';
+      }
+      return;
+    }
+
     if (firstBad) {
       var r2 = all[firstBad.id];
       verdictEl.className = 'found';
