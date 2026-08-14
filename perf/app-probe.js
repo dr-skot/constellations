@@ -79,6 +79,23 @@
     return true;
   }
 
+  // A click on the middle of the sky. The canvas listener reads clientX/clientY
+  // (js/explore.js:896), which a bare element.click() leaves at 0,0 — that lands
+  // outside the canvas and is silently ignored, so the event has to carry real
+  // coordinates. Still a synthetic click, not a finger: touch handling remains
+  // the one input this driver cannot reproduce.
+  function tapSky() {
+    var ec = document.getElementById('explore-canvas');
+    if (!ec) return;
+    var r = ec.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    ec.dispatchEvent(new MouseEvent('click', {
+      bubbles: true,
+      clientX: r.left + r.width / 2,
+      clientY: r.top + r.height / 2
+    }));
+  }
+
   function active(id) {
     var el = document.getElementById(id);
     return !!(el && el.classList.contains('active'));
@@ -105,12 +122,24 @@
     });
     if (answers.length) { answers[Math.floor(Math.random() * answers.length)].click(); return; }
 
-    // A find-in-the-sky question: the explorer is on screen. Sit on it, exactly
-    // as the first run did when it stalled — do NOT skip past it. Its Next button
-    // appears once answered, so honour that if it shows.
+    // A find-in-the-sky question: the explorer is on screen. Answer it by
+    // tapping the sky, then take the Next button that appears.
+    //
+    // ANYWHERE in the canvas will do. handleExploreClick hit-tests the tap
+    // against the constellation bounds and, on a miss, sets clicked = null,
+    // marks the question answered anyway and reveals Next. A wrong answer costs
+    // a frame-rate measurement nothing.
+    //
+    // This used to sit on the question instead, on the theory that the first
+    // observed stall happened while parked on one. That was a bad trade: an
+    // unanswered find question parks the driver for the entire 30s window, so
+    // the rung measured an idle explorer rather than the app being used — and
+    // it made rung 11 and rung 12 differ by two variables instead of one, since
+    // 12 seeds a choice-only lesson that is being actively clicked through.
+    // The freeze the user actually reports is on ordinary identify questions.
     var eq = document.getElementById('eq-next');
     if (active('screen-explore') && eq && eq.classList.contains('show')) { eq.click(); return; }
-    if (active('screen-explore')) return;
+    if (active('screen-explore')) { tapSky(); return; }
 
     // Result screen or nowhere useful — start another lesson.
     if (flag('choiceonly')) seedChoiceLesson();
