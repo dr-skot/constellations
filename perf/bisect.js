@@ -163,8 +163,41 @@
   function firstHalf(list) { return list.slice(0, Math.ceil(list.length / 2)); }
   function rest(list) { return list.slice(Math.ceil(list.length / 2)); }
 
+  // ── Delta debugging ────────────────────────────────────────────────────────
+  // Halving assumes ONE feature is responsible. On 2026-08-14 that assumption
+  // broke in the open: switching off all eight rendering features ran clean at
+  // 60fps, and switching off ANY ONE of them still stalled. No single culprit
+  // exists — the cost is cumulative — and a search that must name one either
+  // lies or gives up.
+  //
+  // So instead of hunting a culprit, shrink a CURE. Start from a set of kills
+  // known to fix it and try to remove pieces: if it still runs clean with a
+  // piece put back, that piece was not needed. What survives is a minimal set
+  // that must be switched off — which is the honest shape of an interaction.
+  //
+  //   F = kills known to fix it, n = how many chunks to cut F into
+  //   test F minus chunk i:
+  //     clean  -> that chunk was not needed; F shrinks; start over
+  //     stalls -> that chunk is load-bearing; try the next chunk
+  //   when no single chunk can be removed, cut finer (n doubles) until n = |F|
+  //
+  // Chunks are contiguous slices, so related work stays together and a run
+  // means something to read.
+  function chunk(list, n, i) {
+    var size = list.length / n;
+    return list.slice(Math.round(i * size), Math.round((i + 1) * size));
+  }
+  function without(list, sub) {
+    return list.filter(function (x) { return sub.indexOf(x) === -1; });
+  }
+
   // The set to test next, given where the search stands. Returns null when done.
   function nextTest(state) {
+    if (state.mode === 'ddmin') {
+      if (state.F.length === 0) return null;
+      if (state.chunkIdx >= state.n) return null;    // caller re-splits or finishes
+      return without(state.F, chunk(state.F, state.n, state.chunkIdx));
+    }
     var c = state.candidates;
     if (c.length === 0) return null;                 // contradiction; caller handles
     if (c.length === 1) {
@@ -175,6 +208,50 @@
       return c;
     }
     return firstHalf(c);
+  }
+
+  // One step of delta debugging. `kills` is what was just tested (F minus a
+  // chunk); `clean` says whether the app behaved with it applied.
+  function ddminStep(state, clean) {
+    if (clean) {
+      // That chunk was not needed to fix it — drop it and start cutting again.
+      // Coarser granularity after a shrink, because a smaller F usually needs
+      // fewer, bigger cuts.
+      state.F = state.lastTested.slice();
+      state.n = Math.max(state.n - 1, 2);
+      state.chunkIdx = 0;
+      if (state.F.length <= 1) { state.done = true; state.minimal = state.F.slice(); }
+      return;
+    }
+    // That chunk is load-bearing. Try the next one.
+    state.chunkIdx++;
+    if (state.chunkIdx >= state.n) {
+      if (state.n >= state.F.length) {
+        // No single piece can be removed at the finest granularity: F is minimal.
+        state.done = true;
+        state.minimal = state.F.slice();
+      } else {
+        state.n = Math.min(state.n * 2, state.F.length);
+        state.chunkIdx = 0;
+      }
+    }
+  }
+
+  // Begin shrinking a set already known to fix the stall.
+  function startDdmin(fixingSet) {
+    var state = {
+      mode: 'ddmin',
+      F: fixingSet.slice(),
+      n: 2,
+      chunkIdx: 0,
+      history: [],
+      startedAt: Date.now()
+    };
+    saveState(state);
+    var first = nextTest(state);
+    state.lastTested = first;
+    saveState(state);
+    return killUrl(first);
   }
 
   function describe(ids) {
@@ -254,6 +331,22 @@
       return resultsUrl();
     }
 
+    if (state.mode === 'ddmin') {
+      ddminStep(state, !result.stalled);
+      if (state.done) {
+        state.answer = null;
+        state.note = 'Minimal set that must be switched off: [' + describe(state.minimal) +
+          ']. Removing any one of these brings the stall back, so no single feature ' +
+          'is the cause — their combined cost is.';
+        saveState(state);
+        return resultsUrl();
+      }
+      var nextSet = nextTest(state);
+      state.lastTested = nextSet;
+      saveState(state);
+      return killUrl(nextSet);
+    }
+
     if (state.candidates.length > 1) {
       var tested = firstHalf(state.candidates);
       var other = rest(state.candidates);
@@ -297,6 +390,7 @@
   window.PerfBisect = {
     KILLS: KILLS,
     ALL: ALL,
+    startDdmin: startDdmin,
     applyFromUrl: applyFromUrl,
     recordAndAdvance: recordAndAdvance,
     start: start,

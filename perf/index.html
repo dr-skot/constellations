@@ -48,7 +48,8 @@
     button skips them and keeps their result. 11 is the real app; 12–16 each take one
     thing away from it, so the first that comes back clean is the culprit.</p>
 
-  <button class="go" id="bisect">Bisect the app (~3 min)</button>
+  <button class="go" id="ddmin">Shrink the cure (~4 min)</button>
+  <button class="alt" id="bisect">Bisect the app (~3 min)</button>
   <button class="alt" id="run-app">Run app steps (11–16, ~4 min)</button>
   <button class="alt" id="run">Re-run the whole ladder from 1 (~6 min)</button>
   <button class="alt" id="copy">Copy results</button>
@@ -66,8 +67,8 @@
 <!-- The ?v= is load-bearing: iOS Safari served a cached harness.js against a
      fresh index.html, so Perf.clearFrom did not exist and the run button threw
      and did nothing. Bump it whenever harness.js changes shape. -->
-<script src="harness.js?v=9"></script>
-<script src="bisect.js?v=9"></script>
+<script src="harness.js?v=10"></script>
+<script src="bisect.js?v=10"></script>
 <script>
 (function () {
   var tbody = document.querySelector('#results tbody');
@@ -126,7 +127,12 @@
     }).join('');
 
     var head = '<h2>Feature bisect</h2>';
-    if (st.done && st.answer) {
+    if (st.done && st.minimal) {
+      head = '<h2>Minimal set: ' + st.minimal.join(' + ') + '</h2>' +
+        '<p>Switch all of these off and the app runs clean. Put any single one ' +
+        'back and the stall returns — so no one feature is the cause; their ' +
+        'combined cost is.</p>';
+    } else if (st.done && st.answer) {
       var k = PerfBisect.KILLS.filter(function (x) { return x.id === st.answer; })[0];
       head = '<h2>Culprit: ' + st.answer + '</h2><p>' + (k ? k.what : '') + '</p>' +
         '<p>The real app stalls with this feature on, and runs clean with only this ' +
@@ -266,6 +272,14 @@
   // is exactly what happened on 2026-08-14, losing rungs the user had watched
   // choke. Each rung overwrites its own row as it completes, and rows carry the
   // run that produced them so anything left over from an older run is labelled.
+  // The eight rendering features measured CLEAN together at 60fps on 2026-08-14
+  // while every one of them alone still stalled, so this starts from a cure that
+  // is known to work and shrinks it, rather than hunting a culprit that the
+  // evidence says does not exist.
+  document.getElementById('ddmin').addEventListener('click', function () {
+    location.href = PerfBisect.startDdmin(
+      ['gl', 'explore', 'explorephoto', 'guide', 'quizdraw', 'bg', 'stars', 'labels']);
+  });
   document.getElementById('bisect').addEventListener('click', function () {
     location.href = PerfBisect.start();
   });
