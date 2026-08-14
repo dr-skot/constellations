@@ -79,6 +79,53 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   `revState` (quiz) and `eqRevState` (explorer). Persisted to `sessionStorage['lesson-session']`
   so a page reload resumes mid-lesson.
 
+## Navigation
+
+The pipeline reads: *hash → **route** → **screen***. `js/screens.js` is the single owner;
+`main.js` injects its impure half (a history port, the `setScreen` sink, one enter action per
+route and their exit actions) once at boot, so the whole router runs under node
+(`test/screens.js`). Before it, half the navigations wrote the hash and half did not — which is
+why code elsewhere asked the DOM which screen was showing and why leaving-and-returning was
+hand-rolled twice (spec #44).
+
+- **route** — a place the learner can navigate to, named by a hash and declared in one table:
+  `course`, `explore`, `explore/<abbr>`, `view/<abbr>`, `lesson`, `result`, `settings`,
+  `calibration`. `parseRoute(hash)` is the pure decode (an empty hash is the course home; an
+  unrecognized one is `null`, and the caller redirects). The table is also where hash `course`
+  maps to screen id `start` — a mapping that used to live only inside an `if`.
+
+- **screen** — one of the six `.screen` elements. `showScreen` is the *only* writer of the
+  active screen, which is what makes `currentScreen()` answerable without reading a CSS class.
+  A route's declared screen is applied **before** its enter action runs: the constellation
+  viewer measures `#canvas-wrap`, and an inactive screen has no layout.
+
+- **flow-owned route** — a route that declares no screen, because the flow picks one as it
+  advances: `lesson` shows the quiz screen or the explorer depending on the question, and
+  `calibration` shows its panels for the offer and payoff but the quiz screen for the probes.
+  The route does not change when the flow switches screens.
+
+- **transient route** — a route whose data lives only in memory, so it is enterable only from
+  inside the app. `result` is the only one: a finished lesson is gone after a reload, so a cold
+  entry redirects to the course home rather than resolving `#lesson`, failing to resume, and
+  starting a fresh lesson over the score.
+
+- **detour** — a navigation that means to come back. `beginDetour(resume)` records the route
+  being left plus a thunk that re-renders it; `endDetour()` restores the hash by replace and
+  runs the thunk, deliberately **not** re-running the enter action (re-entering `lesson` would
+  try to resume from storage a level check never wrote). The departure is not a departure, so
+  the departed route's **exit action** does not fire — which is why the finding guide launched
+  from a probe needs no saving and restoring of the level-check flag. Navigating on instead
+  cancels the detour and fires the exit action it deferred.
+
+- **exit action** — what leaving a route means. The level check clears its run flag here, so a
+  probe exit via a breadcrumb or the gear can't leak the flag into a later lesson. It replaced
+  a preamble that cleared the flag on *every* route change, because the old dispatcher could
+  not tell a departure from an arrival.
+
+Redirects — an unknown hash, a transient route entered cold — **replace** rather than push, so
+a dead URL leaves no history entry. Navigating to the hash already showing replaces too, but
+still runs the enter action.
+
 ## Diagram sources
 
 - **diagram source** — a set of constellation stick-figures (which stars, which connecting

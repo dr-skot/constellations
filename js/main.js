@@ -150,8 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btn-quit').addEventListener('click', () => {
     if (session.calibration) {         // quitting a level check → back to course, no seeding
-      session.calibration = false;
-      navigate('course');
+      navigate('course');              // leaving the route clears the flag (its exit action)
       return;
     }
     if (session.viewMode) {
