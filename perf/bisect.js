@@ -75,6 +75,30 @@
     //
     // Refusing the context at getContext() time means initExploreGL returns
     // false, gl stays null, and the app takes its genuine 2D fallback path.
+    // The complement of nogl2: keep the WebGL layers, remove every 2D draw on
+    // the explore canvas. Between them the two tests cut drawExplore in half
+    // along the line that matters, since WebGL draws only the photo tiles and
+    // the artwork and everything else is 2D.
+    //
+    // The no-ops go on the CONTEXT INSTANCE, not the prototype: instance
+    // properties shadow prototype methods, so this covers the ctx calls written
+    // inline inside drawExplore (the equator, the Milky Way, crosshairs, the
+    // compass) which cannot be stubbed by name — and leaves the quiz canvas and
+    // every other canvas in the app alone.
+    //
+    // Only rasterizing calls are cut. Path building (beginPath/moveTo/lineTo)
+    // and measureText stay, because they are CPU-side and other code reads
+    // their results.
+    { id: 'no2d', what: 'every 2D draw on the explore canvas (WebGL layers stay)', apply: function () {
+      var c = document.getElementById('explore-canvas');
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+      ['clearRect', 'fillRect', 'stroke', 'fill', 'fillText', 'strokeText',
+       'drawImage', 'putImageData', 'strokeRect'].forEach(function (name) {
+        ctx[name] = function () {};
+      });
+    } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
       var proto = HTMLCanvasElement.prototype;
       var real = proto.getContext;
