@@ -99,6 +99,28 @@
         set: function () { /* ignore */ }
       });
     } },
+    // The Milky Way band, surgically. galToRaDec is called from exactly one
+    // place in the codebase — the band's 721-point loop at explore.js:492 — so
+    // returning a constant collapses the band to a single point and erases it
+    // while every other part of drawExplore runs untouched. Unlike the shadow
+    // kill (which measured 4/4 stalls, so the blur is innocent) this removes the
+    // whole thing: the points, the path, and the ~90px stroke.
+    { id: 'milkyway', what: 'the Milky Way band (galToRaDec collapsed)', apply: function () {
+      window.galToRaDec = function () { return { ra: 0, dec: -89.9 }; };
+    } },
+    // Wide strokes, not blurred ones. If the band turns out to be the cause,
+    // this says whether the width is the mechanism: the band asks for
+    // lineWidth = W/13, about 90px on this phone.
+    { id: 'fatline', what: 'wide canvas strokes (lineWidth clamped to 4px)', apply: function () {
+      var proto = CanvasRenderingContext2D.prototype;
+      var d = Object.getOwnPropertyDescriptor(proto, 'lineWidth');
+      if (!d || !d.set || !d.get) return;
+      Object.defineProperty(proto, 'lineWidth', {
+        configurable: true,
+        get: function () { return d.get.call(this); },
+        set: function (v) { d.set.call(this, Math.min(v, 4)); }
+      });
+    } },
     { id: 'guide', what: 'finding-guide overlay and its animation', apply: function () {
       stub('guideStart'); stub('guideGoTo'); stub('guideDrawAnnotation'); stub('guideAnimateTo');
     } },
