@@ -30,6 +30,13 @@
 (function () {
   'use strict';
 
+  // Stamped by tmp/stamp-build.js on every deploy. Read back FROM THE PHONE
+  // before any measurement: fresh HTML does not prove fresh JavaScript, and the
+  // only thing that knows which bytes the device actually got is the device. A
+  // run measured against a cached bisect.js reports numbers for kills that were
+  // never applied — that happened twice today and wasted both runs.
+  var BUILD = '1786802575504';
+
   var STATE_KEY = 'perf-bisect-search';
 
   // Where the app and the results page live, resolved from THIS script's own
@@ -485,6 +492,7 @@
   }
 
   window.PerfBisect = {
+    BUILD: BUILD,
     KILLS: KILLS,
     ALL: ALL,
     startDdmin: startDdmin,
