@@ -66,7 +66,24 @@
   // questions and advance the lesson, or the run measures a dead page.
   var KILLS = [
     // -- the sky: the explorer and everything it paints ----------------------
-    { id: 'gl', what: 'WebGL context (sky falls back to 2D)', apply: function () {
+    // A REAL no-WebGL run. The 'gl' kill below does not do this: it sets
+    // window.gl = null, but explore-gl.js declares `let gl` at the top level of
+    // a classic script, which is a global LEXICAL binding and not a window
+    // property — so the app kept its context object, and after loseContext()
+    // spent every frame drawing into a dead one. That measured 4/4 stalls and I
+    // wrongly read it as "stalls without WebGL".
+    //
+    // Refusing the context at getContext() time means initExploreGL returns
+    // false, gl stays null, and the app takes its genuine 2D fallback path.
+    { id: 'nogl', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
+      var proto = HTMLCanvasElement.prototype;
+      var real = proto.getContext;
+      proto.getContext = function (type) {
+        if (type === 'webgl' || type === 'experimental-webgl' || type === 'webgl2') return null;
+        return real.apply(this, arguments);
+      };
+    } },
+    { id: 'gl', what: 'WebGL context lost mid-flight (NOT a no-WebGL test)', apply: function () {
       var gc = document.getElementById('explore-gl-canvas');
       if (gc) {
         var c = gc.getContext('webgl');
@@ -120,6 +137,23 @@
         get: function () { return d.get.call(this); },
         set: function (v) { d.set.call(this, Math.min(v, 4)); }
       });
+    } },
+    // Nine times fewer pixels. drawExplore sizes both canvases to
+    // wrap.offsetWidth * devicePixelRatio — 1107x1146 on this phone at dpr 3 —
+    // and does it for the 2D canvas AND the WebGL one. Redefining the ratio to
+    // 1 shrinks both to 369x382 without touching a line of drawing code.
+    //
+    // This is the last standing explanation. Destroying the WebGL context
+    // entirely still stalled 4/4, so whatever kills the GPU process is not a
+    // WebGL object — which leaves the pixel volume of a large accelerated
+    // canvas being cleared and redrawn.
+    { id: 'lowres', what: 'canvas resolution (devicePixelRatio forced to 1)', apply: function () {
+      try {
+        Object.defineProperty(window, 'devicePixelRatio', {
+          configurable: true,
+          get: function () { return 1; }
+        });
+      } catch (e) {}
     } },
     { id: 'guide', what: 'finding-guide overlay and its animation', apply: function () {
       stub('guideStart'); stub('guideGoTo'); stub('guideDrawAnnotation'); stub('guideAnimateTo');
