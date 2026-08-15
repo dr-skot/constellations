@@ -150,6 +150,16 @@
     var lastR = t0, lastT = t0;
     var ticks = 0;
 
+    // Keep the screen on for the duration. A sleeping screen stops frames
+    // exactly like a freeze does, which has cost several runs today — some
+    // recorded as "no result", and at least one nearly read as a stall.
+    // Supported on iOS 16.4+; harmless where it is not.
+    var wakeLock = null;
+    if (navigator.wakeLock && navigator.wakeLock.request) {
+      navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; },
+                                                function () { /* not permitted */ });
+    }
+
     // A hidden page gets no animation frames at all, which would otherwise be
     // recorded as a flawless zero-stall pass. Track it and refuse to report.
     var wasHidden = document.hidden;

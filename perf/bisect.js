@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786804704557';
+  var BUILD = '1786805346768';
 
   var STATE_KEY = 'perf-bisect-search';
 
