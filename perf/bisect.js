@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786804270118';
+  var BUILD = '1786804704557';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -146,6 +146,36 @@
       var ctx = c.getContext('2d');
       if (!ctx) return;
       ctx.stroke = function () {};
+    } },
+    // Start from the configuration that measured CLEAN (fill, stroke, fillText
+    // all suppressed) and reinstate exactly one thing: the diagram lines.
+    // Building up from a known-clean state is the half of this ladder that has
+    // actually been informative; subtracting from the broken state kept
+    // producing "still stalls" and naming nothing.
+    //
+    // drawLines is the densest stroke source in the frame: one beginPath and
+    // one stroke PER SEGMENT (render.js:61-65), each with shadowBlur = 5. A
+    // dozen visible constellations is a couple of hundred separately blurred
+    // stroke calls per frame.
+    { id: 'onlylines', what: 'nothing paints except the diagram lines', apply: function () {
+      var c = document.getElementById('explore-canvas');
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+      var realStroke = CanvasRenderingContext2D.prototype.stroke;
+      var noop = function () {};
+      ctx.fill = noop;
+      ctx.fillText = noop;
+      ctx.stroke = noop;
+
+      // Let the real stroke through for the duration of drawLines only.
+      var realDrawLines = window.drawLines;
+      if (typeof realDrawLines !== 'function') return;
+      window.drawLines = function () {
+        ctx.stroke = realStroke;
+        try { return realDrawLines.apply(this, arguments); }
+        finally { ctx.stroke = noop; }
+      };
     } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
       var proto = HTMLCanvasElement.prototype;
