@@ -82,6 +82,23 @@
     { id: 'explorephoto', what: 'explorer photo tiles', apply: function () {
       stub('loadExplorePhoto');
     } },
+    // Canvas shadow blur, everywhere. drawExplore is bimodal — about forty calls
+    // near-instant and three at ~3.5 SECONDS each — and the only thing in it
+    // that is both conditional and enormously expensive is the Milky Way band:
+    // a W/13-wide stroke (about 90px on this phone) under a W/40 shadow blur
+    // (about 29px) along a 721-point polyline, drawn only when the photo layer
+    // is off and the mode is diagram or stars. Neutralising the property tests
+    // that without touching the drawing code.
+    { id: 'shadow', what: 'canvas shadowBlur (the Milky Way glow and star glows)', apply: function () {
+      var proto = CanvasRenderingContext2D.prototype;
+      var d = Object.getOwnPropertyDescriptor(proto, 'shadowBlur');
+      if (!d || !d.set) return;
+      Object.defineProperty(proto, 'shadowBlur', {
+        configurable: true,
+        get: function () { return 0; },
+        set: function () { /* ignore */ }
+      });
+    } },
     { id: 'guide', what: 'finding-guide overlay and its animation', apply: function () {
       stub('guideStart'); stub('guideGoTo'); stub('guideDrawAnnotation'); stub('guideAnimateTo');
     } },
