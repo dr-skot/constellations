@@ -153,6 +153,42 @@ run('all facing<=0 strokes empty path', [P(1,2,-1), P(3,4,0)], false,
   check('real straddle clip vertex is off the canvas', !!offscreen, `clip = ${lineOp}`);
 }
 
+// 12. REGRESSION (the iPhone freeze, 2026-08-15). The clipped vertex must stay
+//     within a few canvas widths. Raw clipToNear divides by NEAR_EPS = 1e-6, and
+//     in the running app that put vertices 655,967,956 px from the visible end of
+//     their line, twelve per frame. Stroking paths that span half a million canvas
+//     widths killed the GPU process: 15-62 SECOND freezes with the main thread
+//     blocked, and webglcontextlost 59ms after one of them. It also broke
+//     rendering — the equator's dashes were spread across those millions of
+//     pixels, so the equator never appeared at all.
+{
+  const W = 1000, H = 1000;
+  const cam = makeCamera(raDecToVec(0, 0), [0, 0, 1], 90, W, H);
+  const front = cam.projectStars([[30, 0, 0]])[0];
+  const behind = cam.projectStars([[120, 0, 0]])[0];
+
+  const raw = clipToNear(front, behind);
+  const rawDist = Math.hypot(raw.x - front.x, raw.y - front.y);
+  check('unclamped clipToNear really does fly off to absurdity', rawDist > 1e5,
+    `raw distance = ${rawDist}`);
+
+  const ctx = makeCtx();
+  strokePolyline(ctx, [front, behind]);
+  const lineOp = ctx.log.find(o => o.startsWith('lineTo'));
+  const m = lineOp && lineOp.match(/lineTo\(([^,]+),([^)]+)\)/);
+  const dist = m && Math.hypot(parseFloat(m[1]) - front.x, parseFloat(m[2]) - front.y);
+  const limit = 4 * Math.max(ctx.canvas.width, ctx.canvas.height);
+  check('clipped vertex is clamped to a few screen widths',
+    dist !== null && dist <= limit + 1,
+    `distance = ${dist}, limit = ${limit}`);
+
+  // Still off-canvas, so the line runs to the edge — issue #1 stays fixed.
+  const stillOff = m && (parseFloat(m[1]) < 0 || parseFloat(m[1]) > W ||
+                         parseFloat(m[2]) < 0 || parseFloat(m[2]) > H);
+  check('clamped vertex is still off the canvas (issue #1 stays fixed)', !!stillOff,
+    `clip = ${lineOp}`);
+}
+
 origLog('');
 if (failures.length === 0) { origLog('✅ ALL PASSED'); process.exit(0); }
 else { origLog(`❌ ${failures.length} FAILURE(S)`); process.exit(1); }
