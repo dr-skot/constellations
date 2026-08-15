@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786804120963';
+  var BUILD = '1786804270118';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -135,6 +135,17 @@
       ['fill', 'fillText'].forEach(function (name) {
         ctx[name] = function () {};
       });
+    } },
+    // The complement of nofill. Suppressing fill+fillText (stroke kept) stalled
+    // in 5 seconds, which proves stroke is SUFFICIENT to cause it — not that
+    // fill and fillText are innocent. Each could be sufficient on its own.
+    // Only this run exonerates them: stroke off, fill and fillText restored.
+    { id: 'nostroke', what: 'stroke only, on the explore canvas (fill and fillText stay)', apply: function () {
+      var c = document.getElementById('explore-canvas');
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+      ctx.stroke = function () {};
     } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
       var proto = HTMLCanvasElement.prototype;
