@@ -59,6 +59,20 @@ function initExploreGL(canvas) {
        canvas.getContext('experimental-webgl', { alpha: false });
   if (!gl) { console.warn('WebGL not available'); return false; }
 
+  // A lost context is not hypothetical here: instrumenting the phone caught a
+  // 15087ms freeze followed 59ms later by webglcontextlost — the GPU process
+  // dying and being recovered while the whole web process waited. Without these
+  // handlers WebKit never restores the context, so every later frame drew into
+  // a dead one, and every cached texture, mesh buffer and program handle became
+  // a stale reference to an object that no longer exists.
+  canvas.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();          // required, or the context is never restored
+    glLostContext();
+  }, false);
+  canvas.addEventListener('webglcontextrestored', () => {
+    if (initExploreGL(canvas) && typeof drawExplore === 'function') drawExplore();
+  }, false);
+
   const vs = glCompile(gl.VERTEX_SHADER,   GL_VS);
   const fs = glCompile(gl.FRAGMENT_SHADER, GL_FS);
   if (!vs || !fs) return false;
@@ -84,6 +98,25 @@ function initExploreGL(canvas) {
 
   gl.enable(gl.BLEND);
   return true;
+}
+
+// Everything GPU-side is gone once the context is lost, so every handle we hold
+// is stale. Drop them all: the meshes keep their CPU-side Float32Arrays and
+// rebuild their buffers on the next draw, and the textures re-upload from the
+// images still in explorePhotoCache / artCache.
+function glLostContext() {
+  gl = null;
+  glProg = null;
+  glLoc = {};
+  for (const k in glPhotoTex) delete glPhotoTex[k];
+  for (const k in glArtTex) delete glArtTex[k];
+  for (const cache of [glPhotoMesh, glArtMesh]) {
+    for (const k in cache) {
+      const m = cache[k];
+      if (!m) continue;
+      m._svBuf = m._tcBuf = m._ixBuf = null;   // handles from the dead context
+    }
+  }
 }
 
 function glCompile(type, src) {
@@ -189,40 +222,71 @@ function glUploadTex(img) {
 }
 
 // ── Draw one mesh ─────────────────────────────────────────
+// The buffers live on the mesh and are created once. This used to create three
+// GPU buffers, upload ~9KB into them, draw, and delete all three — on EVERY
+// call. Measured on an iPhone 15 Pro: 710 calls in 28 seconds, so about 2,130
+// buffer allocations and frees and 6MB of uploads in half a minute, of which
+// two thirds was re-uploading data that never changes.
+//
+// That churn is the leading suspect for what kills the GPU process. The stall
+// being chased is not slow JavaScript: a heartbeat on the device caught a
+// 15087ms pause followed 59ms later by a webglcontextlost event, which is the
+// GPU process being recovered while the whole web process waits.
+//
+// sv and tc are static — glBuildPhotoMesh/glBuildArtMesh compute them once per
+// constellation and the mesh is cached. Only the index list changes, because
+// triangles behind the camera are culled per frame, so its buffer is allocated
+// once at full size and rewritten with bufferSubData.
 function glDrawMesh(mesh, tex, alpha, additive, camP, floor = 0) {
   if (!mesh || !tex) return;
   const { sv, tc, ix } = mesh;
 
+  // One-time GPU allocation per mesh. glLostContext() clears these, because a
+  // buffer from a dead context is a stale handle that must never be reused.
+  if (!mesh._svBuf) {
+    mesh._svBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh._svBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, sv, gl.STATIC_DRAW);
+
+    mesh._tcBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, mesh._tcBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, tc, gl.STATIC_DRAW);
+
+    mesh._ixBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh._ixBuf);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, ix.byteLength, gl.DYNAMIC_DRAW);
+
+    // Scratch arrays were also re-allocated per call; they belong to the mesh.
+    mesh._dots = new Float32Array(sv.length / 3);
+    mesh._filtered = new Uint16Array(ix.length);
+  }
+
   // Filter triangles where any vertex is behind the camera (d <= 0)
   const [cx, cy, cz] = camP;
   const n = sv.length / 3;
-  const d = new Float32Array(n);
+  const d = mesh._dots;
   for (let i = 0; i < n; i++)
     d[i] = sv[i*3]*cx + sv[i*3+1]*cy + sv[i*3+2]*cz;
 
-  const filteredIx = new Uint16Array(ix.length);
+  const filteredIx = mesh._filtered;
   let k = 0;
   for (let i = 0; i < ix.length; i += 3) {
     if (d[ix[i]] > 0 && d[ix[i+1]] > 0 && d[ix[i+2]] > 0) {
       filteredIx[k++] = ix[i]; filteredIx[k++] = ix[i+1]; filteredIx[k++] = ix[i+2];
     }
   }
+  if (!k) return;
 
-  const svBuf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, svBuf);
-  gl.bufferData(gl.ARRAY_BUFFER, sv, gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh._svBuf);
   gl.enableVertexAttribArray(glLoc.skyVec);
   gl.vertexAttribPointer(glLoc.skyVec, 3, gl.FLOAT, false, 0, 0);
 
-  const tcBuf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, tcBuf);
-  gl.bufferData(gl.ARRAY_BUFFER, tc, gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, mesh._tcBuf);
   gl.enableVertexAttribArray(glLoc.texCoord);
   gl.vertexAttribPointer(glLoc.texCoord, 2, gl.FLOAT, false, 0, 0);
 
-  const ixBuf = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ixBuf);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, filteredIx.subarray(0, k), gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh._ixBuf);
+  gl.bufferSubData(gl.ELEMENT_ARRAY_BUFFER, 0, filteredIx.subarray(0, k));
 
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, tex);
@@ -231,10 +295,6 @@ function glDrawMesh(mesh, tex, alpha, additive, camP, floor = 0) {
   gl.uniform1f(glLoc.floor, floor);
   gl.blendFunc(gl.SRC_ALPHA, additive ? gl.ONE : gl.ONE_MINUS_SRC_ALPHA);
   gl.drawElements(gl.TRIANGLES, k, gl.UNSIGNED_SHORT, 0);
-
-  gl.deleteBuffer(svBuf);
-  gl.deleteBuffer(tcBuf);
-  gl.deleteBuffer(ixBuf);
 }
 
 // ── Public: draw photo layer ───────────────────────────────
