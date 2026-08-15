@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786805797881';
+  var BUILD = '1786805939462';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -239,6 +239,47 @@
           ctx.stroke = real;
           try { return realDrawLines.apply(this, arguments); }
           finally { ctx.stroke = suppressed; }
+        };
+      } },
+    // The equator (and the pole crosshairs, which share its style) as the ONLY
+    // stroked thing. Adding it took the worst paint from 1002ms to 2785ms, so
+    // this measures it on its own against the diagram lines' 1002ms.
+    //
+    // Why it is a good suspect: setLineDash([6,5]) on a 721-point path that
+    // spans the whole sky. Dashing splits every segment into dash runs, so one
+    // stroke call becomes thousands of tiny sub-paths. The crosshairs are two
+    // small shapes and contribute almost nothing next to that.
+    { id: 'stroke_e', what: 'equator and poles are the only stroked thing',
+      apply: function () {
+        var c = document.getElementById('explore-canvas');
+        if (!c) return;
+        var ctx = c.getContext('2d');
+        if (!ctx) return;
+        var real = CanvasRenderingContext2D.prototype.stroke;
+        ctx.stroke = function () {
+          var s = this.strokeStyle;
+          if (typeof s === 'string' && s.indexOf('rgba(220, 180, 80') === 0) {
+            return real.apply(this, arguments);
+          }
+        };
+      } },
+    // The same, with the dashing removed, to separate "a long path" from "a long
+    // DASHED path". If the equator is expensive because of dash generation, this
+    // is much cheaper while drawing the same line.
+    { id: 'stroke_e_nodash', what: 'equator and poles only, and not dashed',
+      apply: function () {
+        var c = document.getElementById('explore-canvas');
+        if (!c) return;
+        var ctx = c.getContext('2d');
+        if (!ctx) return;
+        var real = CanvasRenderingContext2D.prototype.stroke;
+        var realDash = CanvasRenderingContext2D.prototype.setLineDash;
+        ctx.setLineDash = function () { return realDash.call(this, []); };
+        ctx.stroke = function () {
+          var s = this.strokeStyle;
+          if (typeof s === 'string' && s.indexOf('rgba(220, 180, 80') === 0) {
+            return real.apply(this, arguments);
+          }
         };
       } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
