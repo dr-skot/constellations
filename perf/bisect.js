@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786805616553';
+  var BUILD = '1786805797881';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -201,6 +201,44 @@
           ctx.stroke = realStroke;
           try { return realDrawLines.apply(this, arguments); }
           finally { ctx.stroke = off; }
+        };
+      } },
+    // Additive step 2: diagram lines PLUS the celestial equator and the pole
+    // crosshairs, which share a strokeStyle (rgba(220,180,80,a), explore.js:652
+    // and :480) and so travel together.
+    //
+    // Stroked layers are identified by their style, since most are written
+    // inline in drawExplore and cannot be stubbed by name:
+    //   rgba(80, 145, 230   diagram lines      (via the drawLines wrapper)
+    //   rgba(220, 180, 80   equator + poles
+    //   rgba(120, 200, 120  boundary rings
+    //   rgba(180, 200, 255  Milky Way
+    { id: 'stroke_le', what: 'stroke allowed for diagram lines, equator and poles',
+      apply: function () {
+        var c = document.getElementById('explore-canvas');
+        if (!c) return;
+        var ctx = c.getContext('2d');
+        if (!ctx) return;
+        var real = CanvasRenderingContext2D.prototype.stroke;
+        var ALLOW = ['rgba(220, 180, 80'];
+
+        ctx.stroke = function () {
+          var s = this.strokeStyle;
+          if (typeof s === 'string') {
+            for (var i = 0; i < ALLOW.length; i++) {
+              if (s.indexOf(ALLOW[i]) === 0) return real.apply(this, arguments);
+            }
+          }
+          // everything else suppressed
+        };
+
+        var realDrawLines = window.drawLines;
+        if (typeof realDrawLines !== 'function') return;
+        window.drawLines = function () {
+          var suppressed = ctx.stroke;
+          ctx.stroke = real;
+          try { return realDrawLines.apply(this, arguments); }
+          finally { ctx.stroke = suppressed; }
         };
       } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
