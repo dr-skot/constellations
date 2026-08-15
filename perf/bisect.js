@@ -75,7 +75,7 @@
     //
     // Refusing the context at getContext() time means initExploreGL returns
     // false, gl stays null, and the app takes its genuine 2D fallback path.
-    { id: 'nogl', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
+    { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
       var proto = HTMLCanvasElement.prototype;
       var real = proto.getContext;
       proto.getContext = function (type) {
