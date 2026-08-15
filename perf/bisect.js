@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786806252023';
+  var BUILD = '1786806788353';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -302,13 +302,21 @@
         var c = document.getElementById('explore-canvas');
         window.clipToNear = function (a, b) {
           var p = real(a, b);
+          // Anchor on the endpoint that is actually IN FRONT of the camera.
+          // strokePolyline calls this both ways: leaving the view (a visible,
+          // b behind) and entering it (a behind, b visible). A point behind the
+          // camera has meaningless projected coordinates, so anchoring on it
+          // sends the clamped vertex somewhere arbitrary — which showed up as
+          // rogue lines and a misshapen Milky Way.
+          var anchor = (a && a.facing > 0) ? a : b;
+          if (!anchor || !isFinite(anchor.x) || !isFinite(anchor.y)) return p;
           var lim = 4 * Math.max((c && c.width) || 1200, (c && c.height) || 1200);
-          var dx = p.x - a.x, dy = p.y - a.y;
+          var dx = p.x - anchor.x, dy = p.y - anchor.y;
           var d = Math.sqrt(dx * dx + dy * dy);
-          if (!isFinite(d) || d === 0) return { x: a.x, y: a.y };
+          if (!isFinite(d) || d === 0) return { x: anchor.x, y: anchor.y };
           if (d <= lim) return p;
           var k = lim / d;
-          return { x: a.x + dx * k, y: a.y + dy * k };
+          return { x: anchor.x + dx * k, y: anchor.y + dy * k };
         };
       } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {

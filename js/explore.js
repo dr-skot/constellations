@@ -332,6 +332,38 @@ function loadExplorePhoto(con) {
 // so the clipped vertex lands far off-screen and the visible line runs to the edge.
 const NEAR_EPS = 1e-6;
 
+// ...but "far off-screen" has to mean a few screen widths, not astronomically far.
+// Dividing by NEAR_EPS multiplies the coordinate by a million: measured on an
+// iPhone 15 Pro, the farthest clipped vertex sat 655,967,956 px from the visible
+// end of its line — half a million times the canvas width — and there were twelve
+// of them per frame. Every full-sky path (the celestial equator, the Milky Way)
+// crosses the horizon on every frame, so every frame handed the rasterizer paths
+// spanning that distance. That is what killed the GPU process: measured stalls of
+// 15-62 SECONDS with the main thread blocked, and a webglcontextlost event 59ms
+// after one of them. Clamping removed the thread blocks entirely (worst timer
+// 15,009ms -> 68ms).
+//
+// It was a rendering bug too. Dash patterns are laid out along path length, so
+// the equator's dashes were distributed across those millions of pixels and
+// almost none landed on screen — the equator simply did not appear.
+const CLIP_MAX_SCREENS = 4;
+
+// Pull a clipped vertex back to CLIP_MAX_SCREENS canvas-widths from the visible
+// end of the segment, along the same direction. Anything past the canvas edge is
+// invisible, so the line still runs off-screen exactly as intended.
+function clampClipped(p, anchor, ctx) {
+  if (!anchor || !isFinite(anchor.x) || !isFinite(anchor.y)) return p;
+  const canvas = ctx && ctx.canvas;
+  const lim = CLIP_MAX_SCREENS * Math.max((canvas && canvas.width) || 1200,
+                                          (canvas && canvas.height) || 1200);
+  const dx = p.x - anchor.x, dy = p.y - anchor.y;
+  const d = Math.hypot(dx, dy);
+  if (!isFinite(d) || d === 0) return { x: anchor.x, y: anchor.y };
+  if (d <= lim) return p;
+  const k = lim / d;
+  return { x: anchor.x + dx * k, y: anchor.y + dy * k };
+}
+
 // Perspective-correct screen point where the segment a→b crosses the near plane,
 // evaluated at facing = NEAR_EPS. Both (x·facing) and facing are linear along the
 // view-space chord (gnomonic projection maps that chord to a straight screen line),
@@ -363,13 +395,19 @@ function strokePolyline(ctx, pts, close = false) {
       } else {
         // Entering the front hemisphere: if the previous point was behind, start at
         // the near-plane crossing so the line runs in from the edge.
-        if (prev && prev.facing <= 0) { const c = clipToNear(prev, p); ctx.moveTo(c.x, c.y); ctx.lineTo(p.x, p.y); }
+        // Anchor the clamp on p: entering the view, `prev` is behind the camera
+        // and its projected coordinates are meaningless.
+        if (prev && prev.facing <= 0) {
+          const c = clampClipped(clipToNear(prev, p), p, ctx);
+          ctx.moveTo(c.x, c.y); ctx.lineTo(p.x, p.y);
+        }
         else ctx.moveTo(p.x, p.y);
         penDown = true;
       }
     } else {
       // Behind the camera: run the line out to the crossing before lifting the pen.
-      if (penDown) { const c = clipToNear(prev, p); ctx.lineTo(c.x, c.y); }
+      // Leaving the view: `prev` is the visible end, so anchor the clamp there.
+      if (penDown) { const c = clampClipped(clipToNear(prev, p), prev, ctx); ctx.lineTo(c.x, c.y); }
       penDown = false;
     }
     prev = p;
