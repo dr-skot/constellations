@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786803672100';
+  var BUILD = '1786804120963';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -120,6 +120,19 @@
       var ctx = c.getContext('2d');
       if (!ctx) return;
       ['fill', 'stroke', 'fillText'].forEach(function (name) {
+        ctx[name] = function () {};
+      });
+    } },
+    // Blur left ON. Only fill and fillText suppressed, so stroke still runs —
+    // the boundary rings, diagram lines, equator and Milky Way all still paint,
+    // blurred as usual. What goes is the per-star dot and its radial-gradient
+    // glow, plus every label.
+    { id: 'nofill', what: 'fill and fillText on the explore canvas (stroke and blur stay)', apply: function () {
+      var c = document.getElementById('explore-canvas');
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+      ['fill', 'fillText'].forEach(function (name) {
         ctx[name] = function () {};
       });
     } },
