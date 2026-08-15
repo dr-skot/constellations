@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786805939462';
+  var BUILD = '1786806252023';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -280,6 +280,35 @@
           if (typeof s === 'string' && s.indexOf('rgba(220, 180, 80') === 0) {
             return real.apply(this, arguments);
           }
+        };
+      } },
+    // Clamp the horizon-clipped vertex instead of letting it fly to a million
+    // pixels. clipToNear (explore.js:340, added by b511084 for issue #1)
+    // evaluates the crossing at facing = 1e-6 and divides by it, so the vertex
+    // lands up to ~1e6 px away. Every full-sky path — the equator, the Milky Way
+    // — crosses the horizon on every frame, so every frame strokes a path whose
+    // bounds are a thousand times the canvas.
+    //
+    // The equator alone, one stroke call, produced a 15.1s thread block. That is
+    // not a plausible cost for a 721-point hairline, but it is a very plausible
+    // cost for rasterizing across a span that size.
+    //
+    // Clamping preserves the visual intent exactly: the vertex still lands well
+    // off-screen so the line runs to the edge. It just stops being absurd.
+    { id: 'clipclamp', what: 'horizon-clipped vertices clamped to a few screen widths',
+      apply: function () {
+        var real = window.clipToNear;
+        if (typeof real !== 'function') return;
+        var c = document.getElementById('explore-canvas');
+        window.clipToNear = function (a, b) {
+          var p = real(a, b);
+          var lim = 4 * Math.max((c && c.width) || 1200, (c && c.height) || 1200);
+          var dx = p.x - a.x, dy = p.y - a.y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (!isFinite(d) || d === 0) return { x: a.x, y: a.y };
+          if (d <= lim) return p;
+          var k = lim / d;
+          return { x: a.x + dx * k, y: a.y + dy * k };
         };
       } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
