@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786802575504';
+  var BUILD = '1786803672100';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -103,6 +103,23 @@
       if (!ctx) return;
       ['clearRect', 'fillRect', 'stroke', 'fill', 'fillText', 'strokeText',
        'drawImage', 'putImageData', 'strokeRect'].forEach(function (name) {
+        ctx[name] = function () {};
+      });
+    } },
+    // Narrower than no2d: only the three calls that actually rasterize a shape
+    // through the current style — which is where shadowBlur is paid. shadowBlur
+    // is a property, not a method, so it can only cost anything when one of
+    // these runs; suppress them and the blur becomes inert.
+    //
+    // clearRect is deliberately RESTORED here. Suppressing it in no2d left the
+    // last pre-kill frame frozen on screen, which looked exactly like drawing
+    // still happening and cost a long detour to explain.
+    { id: 'nopaint3', what: 'fill, stroke and fillText on the explore canvas', apply: function () {
+      var c = document.getElementById('explore-canvas');
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+      ['fill', 'stroke', 'fillText'].forEach(function (name) {
         ctx[name] = function () {};
       });
     } },
