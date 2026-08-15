@@ -35,7 +35,7 @@
   // only thing that knows which bytes the device actually got is the device. A
   // run measured against a cached bisect.js reports numbers for kills that were
   // never applied — that happened twice today and wasted both runs.
-  var BUILD = '1786805346768';
+  var BUILD = '1786805616553';
 
   var STATE_KEY = 'perf-bisect-search';
 
@@ -177,6 +177,32 @@
         finally { ctx.stroke = noop; }
       };
     } },
+    // ADDITIVE, from the configuration that measured clean: everything paints
+    // normally — stars, labels, photo, art, blur — EXCEPT stroke. Then stroke is
+    // switched back on for the diagram lines alone.
+    //
+    // nostroke was clean (its one "stall" was 1832ms, an order of magnitude
+    // below the 15-62 SECOND freezes we are chasing, so it was a threshold
+    // artifact). fill is not the problem; stroke is. This adds the smallest
+    // sliver of stroke back to find out how little of it is enough.
+    { id: 'strokelines', what: 'everything on, stroke allowed only for diagram lines',
+      apply: function () {
+        var c = document.getElementById('explore-canvas');
+        if (!c) return;
+        var ctx = c.getContext('2d');
+        if (!ctx) return;
+        var realStroke = CanvasRenderingContext2D.prototype.stroke;
+        var off = function () {};
+        ctx.stroke = off;
+
+        var realDrawLines = window.drawLines;
+        if (typeof realDrawLines !== 'function') return;
+        window.drawLines = function () {
+          ctx.stroke = realStroke;
+          try { return realDrawLines.apply(this, arguments); }
+          finally { ctx.stroke = off; }
+        };
+      } },
     { id: 'nogl2', what: 'WebGL refused entirely (real 2D fallback)', apply: function () {
       var proto = HTMLCanvasElement.prototype;
       var real = proto.getContext;
