@@ -63,9 +63,10 @@ diagramSource = 'iau';
 loadDiagramSource();
 check('loadDiagramSource restores the saved key', diagramSource === 'rey');
 
-// A page that omits the alternate figure sets — find-help.html ships only
-// diagram-sources.js, not the ~139 KB of Rey/Stellarium/Ford data — must still
-// draw. Every source falls back to C's own figure instead of throwing.
+// A page that loads diagram-sources.js without the ~139 KB of Rey/Stellarium/Ford
+// data must still draw. Every source falls back to C's own figure instead of
+// throwing. (No entry point does this today — index.html and find-help.html both
+// ship all three — but the accessor's contract is what makes that a free choice.)
 {
   const sandbox = { console: { log() {}, warn() {}, error() {} }, localStorage: global.localStorage };
   vm.createContext(sandbox);

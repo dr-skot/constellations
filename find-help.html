@@ -143,8 +143,11 @@
 
   <script src="js/data.js"></script>
   <script src="js/lesson.js"></script>
-  <!-- IAU figures only here; the alternate figure sets (~139 KB) are not loaded,
-       and diagramFor falls back to C's own figure without them. -->
+  <!-- All four figure sets, as in index.html: the Figures setting applies wherever
+       figures are drawn, and this page reads it at boot. -->
+  <script src="js/stellarium-data.js"></script>
+  <script src="js/ford-data.js"></script>
+  <script src="js/rey-data.js"></script>
   <script src="js/diagram-sources.js"></script>
   <script src="js/draw-phases.js"></script>
   <script src="js/render-scheduler.js"></script>
@@ -155,6 +158,10 @@
   <script src="js/step-display.js"></script>
   <script src="js/guide-renderer.js"></script>
   <script>
+    // Honour the learner's Figures choice before anything draws. There is no
+    // switcher on this page, so this is the only read.
+    loadDiagramSource();
+
     // ── Resolve constellation from URL param ──────────────────────────────────
     const params = new URLSearchParams(location.search);
     const conParam = params.get('con');
