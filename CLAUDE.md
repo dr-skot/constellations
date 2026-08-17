@@ -7,6 +7,13 @@
 - Do all work locally and push to remote. Do NOT merge via the remote/PR (no `gh pr merge`, especially `--squash`); merge locally with `git merge` and push `main`. (`Closes #NN` in a commit message still auto-closes the issue — no PR needed.)
 - Never run a remote mutation that assumes `origin` is current without checking first: `git fetch`, then compare `git log origin/main..main` and `git log main..origin/main`. If local is ahead, push it before branching.
 
+## Measuring on the phone
+
+The iPhone is drivable from the Mac over the USB cable — probes can be run and results
+read back without anyone reading numbers off a phone screen. `perf/ios-eval.js` plus
+`ios_webkit_debug_proxy`. **Read `perf/README.md` before concluding the device is out of
+reach**, and put anything reusable there rather than in `tmp/`.
+
 ## Agent skills
 
 ### Issue tracker
