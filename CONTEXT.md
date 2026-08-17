@@ -192,6 +192,40 @@ still runs the enter action.
 
 ## Explore rendering
 
+- **render scheduler** — the explorer's single frame owner (`js/render-scheduler.js`,
+  `makeRenderScheduler({raf, cancel, draw, now})`). Nothing draws the sky directly: callers
+  **request** a draw and the scheduler renders at most **one per frame**, so a 120Hz touch
+  stream cannot outrun the renderer. `requestExploreDraw()` in explore.js is the app-wide
+  entry point; the only direct `drawExplore()` call left is the scheduler's own. Four
+  guarantees, pinned by `test/render-scheduler.js`: at most one draw per frame; **never zero
+  draws for an outstanding request** (a dirty flag cleared at the wrong moment loses the last
+  frame of a drag, leaving the sky one frame behind the finger); tickers run *before* the
+  draw in the same frame; `cancel()` leaves no frame and no tickers. Replaced sixteen callers
+  each drawing synchronously, plus two animation loops that owned frames of their own — a
+  pinch during a north-arrow fade used to render the whole sky twice (issues #53, #55).
+
+- **ticker** — an animation registered with the render scheduler via
+  `addTicker(tick, done)`. `tick(now)` advances state only and returns `false` when finished;
+  the scheduler then deregisters it and runs `done()` — **before** that frame's draw, so a
+  goto flight's final snap to its exact target is what gets rendered rather than the last
+  eased approximation. `removeTicker` deliberately does *not* run `done()`: removal means the
+  animation was interrupted, and running an abandoned flight's completion would snap the
+  camera to the target it was told to give up on. The goto flight and the north-arrow fade
+  are tickers (issue #54); `stopCameraAnimation()` interrupts whichever flight is running.
+  **Not yet a ticker**: `guideAnimateTo` in guide-renderer.js still owns its own frames via
+  `explore.animFrame`, so a guide step flight is the one remaining second frame owner.
+
+- **draw phases** — the per-layer timing hook in `js/draw-phases.js`
+  (`beginDrawPhases`/`markDrawPhase`/`endDrawPhases`), marking the section boundaries
+  `drawExplore` was already divided into. A phase runs from its mark to the next. Inert
+  unless the perf probe installs a sink, so a normal run pays a null check per boundary.
+  `makePhaseCollector({now, frames})` is the pure accumulator behind it (mean and max per
+  phase over a rolling window, ranked most expensive first), tested by `test/draw-phases.js`;
+  `perf/draw-probe.js` installs one under `?perf=1&draw=1` and reports to its own on-screen
+  panel. Measures **main-thread CPU only** — `gl.drawElements` returns before the GPU has
+  done the work, so the photo and art phases read near zero even when fill rate costs real
+  time (issue #52).
+
 - **display flags** — the discrete set of per-layer booleans that drive `drawExplore`'s passes:
   `showPhoto, showDiag, showStars, showLines, showBounds, showArt, showStarLabels, showConNames`
   plus `refMode` (`'always' | 'moving' | null`), the context flags `cm`/`isAnswered`, and the
