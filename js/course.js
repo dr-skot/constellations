@@ -257,7 +257,7 @@ function startLessonFindQuestion(q) {
   }
 
   showScreen('explore');
-  drawExplore();
+  requestExploreDraw();
 }
 
 // ═══════════════════════════════════════════════════════════

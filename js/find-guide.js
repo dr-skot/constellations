@@ -78,5 +78,5 @@ function exitFindGuide() {
   applyView(explore, saved);
   document.getElementById('explore-quiz-bar').style.display = saved.quizBarDisplay;
   document.getElementById('find-nav-row').style.display     = saved.navRowDisplay;
-  drawExplore();
+  requestExploreDraw();
 }

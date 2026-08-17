@@ -7,7 +7,7 @@
 function applyDiagramSource(key) {
   setDiagramSource(key);
   if (_settingsGroup) _settingsGroup.setValue(key, true);
-  if (typeof drawExplore === 'function') drawExplore();
+  if (typeof requestExploreDraw === 'function') requestExploreDraw();
   if (typeof redrawQuizFigure === 'function') redrawQuizFigure();
   if (typeof redrawSettingsFigure === 'function') redrawSettingsFigure();
 }
@@ -46,14 +46,14 @@ function _initRouting() {
       course: () => renderCourseMap(),
       explore: () => {
         restoreExploreState();
-        stopExploreQuiz(); drawExplore();
+        stopExploreQuiz(); requestExploreDraw();
       },
       // An explicit destination, so the saved free-explore state is deliberately
       // NOT restored — an unknown abbr just leaves the view where it is.
       exploreCon: abbr => {
         const con = C.find(c => c.abbr === abbr);
         if (con) { explore.P = raDecToVec(con.ra, con.dec); explore.R = 0; }
-        stopExploreQuiz(); drawExplore();
+        stopExploreQuiz(); requestExploreDraw();
       },
       view: abbr => {
         const con = C.find(c => c.abbr === abbr);
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof obj.fov === 'number') explore.fov = obj.fov;
         const northUpR = guideNorthUpR(explore.P);
         explore.R = northUpR + (typeof obj.rotation === 'number' ? obj.rotation : 0);
-        drawExplore();
+        requestExploreDraw();
         const btn = document.getElementById('btn-paste-view');
         btn.textContent = 'Pasted!';
         setTimeout(() => { btn.textContent = 'Paste View'; }, 1500);

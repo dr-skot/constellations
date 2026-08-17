@@ -245,7 +245,11 @@ function _stepR(step) {
 // ── Animation ─────────────────────────────────────────────────────────────────
 // shouldContinue: optional function returning false to abort mid-animation
 function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldContinue) {
-  if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
+  // Interrupts a goto flight as well as another guide flight. Since the goto became a
+  // scheduler ticker (issue #54) it is no longer reachable through `explore.animFrame`
+  // alone, and cancelling that handle by itself would leave the two flights fighting
+  // over the camera. This guide flight still owns its own frames — see #54's note.
+  stopCameraAnimation();
   const v1 = explore.P.slice(), f1 = explore.fov, R1 = explore.R;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
   const R2 = _stepR(step);
@@ -283,7 +287,7 @@ function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldCont
 // _gs holds all state for the active guide session
 let _gs = null;
 
-function _guideDraw() { explore.quiz = null; drawExplore(); }
+function _guideDraw() { explore.quiz = null; requestExploreDraw(); }
 
 window.addEventListener('resize', () => {
   const wrap = document.getElementById('explore-wrap');

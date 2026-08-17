@@ -70,7 +70,7 @@ function initExploreGL(canvas) {
     glLostContext();
   }, false);
   canvas.addEventListener('webglcontextrestored', () => {
-    if (initExploreGL(canvas) && typeof drawExplore === 'function') drawExplore();
+    if (initExploreGL(canvas) && typeof requestExploreDraw === 'function') requestExploreDraw();
   }, false);
 
   const vs = glCompile(gl.VERTEX_SHADER,   GL_VS);
@@ -322,7 +322,7 @@ function drawExploreArtLayerGL(con, cam) {
     img.onload = () => {
       artCache[src] = img;
       glArtTex[src] = glUploadTex(img);
-      if (document.getElementById('screen-explore').classList.contains('active')) drawExplore();
+      if (document.getElementById('screen-explore').classList.contains('active')) requestExploreDraw();
     };
     img.onerror = () => { artCache[src] = 'error'; };
     img.src = art.url;

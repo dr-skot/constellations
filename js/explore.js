@@ -6,6 +6,30 @@ const FOV_MIN = 10, FOV_MAX = 110;
 let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null, animFrame: null };
 let exploreDragMoved = false;
 
+// ── The one frame loop (js/render-scheduler.js, issue #53) ──
+// Nothing draws the sky directly any more: callers ask for a frame and the scheduler
+// renders at most one per display refresh, so a 120Hz touch stream cannot outrun the
+// renderer and build the backlog that made dragging lag behind the finger.
+//
+// Built on first use rather than at load: the node tests (test/stroke-polyline.js,
+// test/display-flags.js) load this file for its pure functions in an environment with
+// no requestAnimationFrame and no scheduler module, and must keep doing so.
+let _exploreScheduler = null;
+function exploreScheduler() {
+  if (!_exploreScheduler) {
+    _exploreScheduler = makeRenderScheduler({
+      raf: cb => requestAnimationFrame(cb),
+      cancel: h => cancelAnimationFrame(h),
+      draw: () => drawExplore(),
+    });
+  }
+  return _exploreScheduler;
+}
+
+// Ask for the sky to be redrawn on the next frame. Repeated calls within one frame
+// collapse into a single render; the most recent state is what gets drawn.
+function requestExploreDraw() { exploreScheduler().request(); }
+
 function copyViewToClipboard(btn) {
   const { ra, dec } = vecToRaDec(explore.P);
   const northUpR = guideNorthUpR(explore.P);
@@ -90,7 +114,7 @@ function initEqRevealToggles() {
       { label: 'Art', value: 'art', on: true },
       { label: 'Bounds', value: 'boundary', on: true },
     ],
-    onChange(value, on) { eqRevState[value] = on; saveLessonSession(); drawExplore(); },
+    onChange(value, on) { eqRevState[value] = on; saveLessonSession(); requestExploreDraw(); },
   });
 }
 
@@ -122,7 +146,7 @@ function initExploreToggles() {
   if (savedRef !== null) exState.reference = savedRef === 'null' ? null : savedRef;
 
   function persist(k, v) { localStorage.setItem('ex-' + k, typeof v === 'boolean' ? (v ? '1' : '0') : String(v)); }
-  function redraw() { drawExplore(); }
+  function redraw() { requestExploreDraw(); }
 
   _exToggleGroups.layers = createToggleGroup(document.getElementById('tg-layers'), {
     caption: 'Layers',
@@ -179,7 +203,7 @@ function initExploreToggles() {
         let display = ((offsetDeg % 360) + 540) % 360 - 180;
         dialReadout.textContent = display.toFixed(1) + '\u00B0';
       }
-      drawExplore();
+      requestExploreDraw();
     },
     onDragStart() { showNorthArrow(); },
     onDragEnd() {
@@ -205,7 +229,7 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
     // Schedule a redraw for when cache expires, in case nothing else triggers one
     if (!_conNameRefreshTimer) {
       const remaining = _conNameInterval - (now - cached.time);
-      _conNameRefreshTimer = setTimeout(() => { _conNameRefreshTimer = null; drawExplore(); }, remaining);
+      _conNameRefreshTimer = setTimeout(() => { _conNameRefreshTimer = null; requestExploreDraw(); }, remaining);
     }
     return cached;
   }
@@ -244,8 +268,24 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
   return result;
 }
 
-function animateGoTo(targetRa, targetDec) {
+// The goto flight, as a scheduler ticker (issue #54). It advances the camera and says
+// whether it wants another frame; the scheduler owns the frame and draws once, after
+// every ticker has run. It no longer draws for itself, which is what stops a flight
+// overlapping the north-arrow fade from rendering the sky twice per frame.
+let _gotoTicker = null;
+
+// Stop whichever camera flight is in progress. Two mechanisms still exist: the goto
+// ticker above, and the finding-guide flight in guide-renderer.js, which continues to
+// own `explore.animFrame` and its own frames. Both are cleared here so that starting
+// either kind of flight — or grabbing the sky — reliably interrupts the other, which is
+// what the shared `explore.animFrame` handle used to accomplish on its own.
+function stopCameraAnimation() {
+  if (_gotoTicker) { exploreScheduler().removeTicker(_gotoTicker); _gotoTicker = null; }
   if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
+}
+
+function animateGoTo(targetRa, targetDec) {
+  stopCameraAnimation();
   const v1 = explore.P.slice();
   const v2 = raDecToVec(targetRa, targetDec);
   const dotP = Math.max(-1, Math.min(1, v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]));
@@ -255,25 +295,24 @@ function animateGoTo(targetRa, targetDec) {
   // Duration proportional to arc length: 400ms–2000ms
   const duration = Math.max(400, Math.min(2000, angle / Math.PI * 2000));
   const startTime = performance.now();
-  function step(now) {
+  _gotoTicker = function (now) {
     const raw = Math.min(1, (now - startTime) / duration);
     // Ease in-out cubic
     const t = raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2;
     const f1 = Math.sin((1 - t) * angle) / sinA;
     const f2 = Math.sin(t * angle) / sinA;
     explore.P = [f1*v1[0]+f2*v2[0], f1*v1[1]+f2*v2[1], f1*v1[2]+f2*v2[2]];
-    drawExplore();
-    if (raw < 1) {
-      explore.animFrame = requestAnimationFrame(step);
-    } else {
-      explore.P = v2;
-      explore.animFrame = null;
-      _clearConNameCache();
-      drawExplore();
-      saveExploreState();
-    }
-  }
-  explore.animFrame = requestAnimationFrame(step);
+    return raw < 1;
+  };
+  // Completion work runs on deregistration — and, crucially, BEFORE the draw of the
+  // frame that finished the flight (see test/render-scheduler.js), so snapping to the
+  // exact target is what gets rendered rather than the last eased approximation.
+  exploreScheduler().addTicker(_gotoTicker, function () {
+    _gotoTicker = null;
+    explore.P = v2;
+    _clearConNameCache();
+    saveExploreState();
+  });
 }
 
 // Copy-safe snapshot of the core view state (camera position, rotation, fov).
@@ -321,7 +360,7 @@ function loadExplorePhoto(con) {
   const img = new Image();
   img.onload = () => {
     explorePhotoCache[con.abbr] = img;
-    if (document.getElementById('screen-explore').classList.contains('active')) drawExplore();
+    if (document.getElementById('screen-explore').classList.contains('active')) requestExploreDraw();
   };
   img.onerror = () => { explorePhotoCache[con.abbr] = 'error'; };
   img.src = photoUrl(con);
@@ -419,6 +458,12 @@ function strokePolyline(ctx, pts, close = false) {
 function drawExplore() {
   const canvas = document.getElementById('explore-canvas');
   if (!canvas) return;
+  // Per-phase timing (js/draw-phases.js). Inert unless the perf probe has installed a
+  // sink, so a normal run pays a null check per boundary. The marks below sit exactly
+  // on the section comments this function was already divided into — a phase runs from
+  // its mark to the next one, and `end` closes the last.
+  beginDrawPhases();
+  markDrawPhase('setup');
   const wrap = document.getElementById('explore-wrap');
   const glCanvas = document.getElementById('explore-gl-canvas');
   const dpr = window.devicePixelRatio || 1;
@@ -483,6 +528,7 @@ function drawExplore() {
   const showEquator    = _refAlpha > 0.01;
 
   // Photo layer (WebGL)
+  markDrawPhase('photo');
   if (showPhoto) {
     for (const con of visible) {
       drawExplorePhotoLayerGL(con, cam);
@@ -510,6 +556,7 @@ function drawExplore() {
   }
 
   // Celestial equator
+  markDrawPhase('equator');
   if (showEquator) {
     const eqPts = [];
     for (let ra = 0; ra <= 360; ra += 0.5) eqPts.push([ra, 0, 0]);
@@ -524,6 +571,7 @@ function drawExplore() {
 
   // Milky Way (galactic plane) — shown in diagram/stars quiz modes for orientation,
   // but not when the photo layer is visible (real photo has the real Milky Way).
+  markDrawPhase('milky-way');
   if (!showPhoto && (cm === 'diagram' || cm === 'stars')) {
     const mwPts = [];
     for (let l = 0; l <= 360; l += 0.5) {
@@ -542,6 +590,7 @@ function drawExplore() {
 
   // Pre-project boundaries for all visible constellations (reused for drawing, edge
   // collection, and label polygon PIP — avoids redundant projection passes).
+  markDrawPhase('bounds-project');
   const projBounds = {};
   for (const con of visible) {
     const rings = BOUNDS[con.abbr];
@@ -562,6 +611,7 @@ function drawExplore() {
   }
 
   // Boundaries
+  markDrawPhase('bounds-draw');
   if (showBounds) {
     ctx.save();
     ctx.strokeStyle = 'rgba(120,200,120,0.45)';
@@ -578,6 +628,7 @@ function drawExplore() {
   }
 
   // Diagram: two-pass so guide lines can sit between diagram lines and stars
+  markDrawPhase('diagram-lines');
   if (showStars || showLines) {
     // Pass 1: diagram lines only
     for (const con of visible) {
@@ -594,6 +645,7 @@ function drawExplore() {
   // Guide custom lines (above diagram lines, below stars)
   // Endpoints are already resolved to ra/dec by makeStepDisplay, so this pass no
   // longer carries a catalog on the bus or looks names up per frame.
+  markDrawPhase('guide-lines');
   const guideLines = explore.stepDisplay?.lines;
   if (guideLines) {
     const gc = guideLines.color;
@@ -620,15 +672,21 @@ function drawExplore() {
     for (const con of visible) {
       if (diagramOnly && !diagramOnly.includes(con.abbr)) continue;
       const dcon = diagramFor(con, diagramSource);
+      // Three marks inside the loop rather than one around it: projection, star
+      // drawing and label placement are the three things a future optimisation would
+      // treat separately, so they are worth separating in the measurement. A phase
+      // marked repeatedly sums across the loop (see test/draw-phases.js).
+      markDrawPhase('stars-project');
       const proj = cam.projectStars(dcon.stars)
         .map((p, i) => ({ ...p, _orig: dcon.stars[i] }))
         .filter(p => p.facing > 0 && Math.abs(p.x - W / 2) < W * 1.5 && Math.abs(p.y - H / 2) < H * 1.5);
-      if (showStars) drawStars(ctx, proj, explore.fov);
-      if (showStarLabels) drawLabels(ctx, proj, W);
+      if (showStars) { markDrawPhase('stars-draw'); drawStars(ctx, proj, explore.fov); }
+      if (showStarLabels) { markDrawPhase('star-labels'); drawLabels(ctx, proj, W); }
     }
   }
 
   // Constellation name labels — placement is throttled and cached in RA/dec.
+  markDrawPhase('con-names');
   if (showConNames) {
     const fs = Math.max(9, Math.round(W * 0.02));
     ctx.save();
@@ -647,6 +705,7 @@ function drawExplore() {
   }
 
   // Artwork layer (WebGL)
+  markDrawPhase('art');
   const exploreCredit = document.getElementById('explore-art-credit');
   if (showArt) {
     let hasArt = false;
@@ -662,6 +721,7 @@ function drawExplore() {
   }
 
   // Quiz: highlight boundaries after answering
+  markDrawPhase('quiz-highlight');
   if (explore.quiz && explore.quiz.answered) {
     const { target, clicked } = explore.quiz;
     const lw = Math.max(2, W / 320);
@@ -684,6 +744,7 @@ function drawExplore() {
   }
 
   // Crosshairs at celestial poles
+  markDrawPhase('poles');
   if (_refAlpha > 0.01) {
     const arm = 0.5 * (3 * celDash + 2 * celGap);
     ctx.save();
@@ -702,6 +763,7 @@ function drawExplore() {
   }
 
   // Compass arrow — N or S depending on hemisphere (fades in/out on interaction)
+  markDrawPhase('compass');
   const _compassAlpha = refMode === 'always' ? 0.35 : refMode === 'moving' ? (explore._northAlpha || 0) * 0.35 : 0;
   if (_compassAlpha > 0.005) {
     const cx = W / 2, cy = H / 2;
@@ -743,9 +805,12 @@ function drawExplore() {
   }
 
   // Redraw guide annotations so highlights follow drag/zoom
+  markDrawPhase('guide-annotation');
   if (_gs && !_gs.animating) {
     guideDrawAnnotation(explore.stepDisplay);
   }
+
+  endDrawPhases();
 }
 
 function startExploreQuiz() {
@@ -765,7 +830,7 @@ function stopExploreQuiz() {
   document.getElementById('find-nav-row').style.display = 'none';
   document.getElementById('explore-free-hdr').style.display = '';
   document.querySelector('.explore-layers').style.display = '';
-  drawExplore();
+  requestExploreDraw();
 }
 
 function nextExploreQuestion() {
@@ -783,7 +848,7 @@ function nextExploreQuestion() {
   document.getElementById('eq-label-area').classList.remove('answered');
   document.getElementById('eq-next').classList.remove('show');
   document.getElementById('eq-reveal-controls').style.display = 'none';
-  drawExplore();
+  requestExploreDraw();
 }
 
 function handleExploreClick(px, py) {
@@ -839,27 +904,36 @@ function handleExploreClick(px, py) {
     };
     saveLessonSession();
   }
-  drawExplore();
+  requestExploreDraw();
 }
 
 // ── North arrow fade (used by drag, dial, and zoom) ──────────────
-let _northFading = 0, _northFrame = null;
+// A scheduler ticker (issue #54) rather than a frame loop of its own. This is the fade
+// that pinch and wheel both start, so while it owned frames a zoom rendered the sky
+// twice per frame: once for the zoom, once for the fade. Now it only moves the alpha
+// and the scheduler decides what that costs.
+let _northFading = 0, _northTickerLive = false;
 function _northTick() {
-  _northFrame = null;
   const target = _northFading > 0 ? 1 : 0;
   const speed = _northFading > 0 ? 0.15 : 0.08;
   explore._northAlpha += (target - explore._northAlpha) * speed;
   if (Math.abs(explore._northAlpha - target) < 0.01) explore._northAlpha = target;
-  drawExplore();
-  if (explore._northAlpha !== target) _northFrame = requestAnimationFrame(_northTick);
+  return explore._northAlpha !== target;
+}
+// Registration is idempotent: reversing direction mid-fade re-points the same ticker at
+// a new target rather than stacking a second one.
+function _runNorthTicker() {
+  if (_northTickerLive) return;
+  _northTickerLive = true;
+  exploreScheduler().addTicker(_northTick, function () { _northTickerLive = false; });
 }
 function showNorthArrow() {
   _northFading = 1;
-  if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
+  _runNorthTicker();
 }
 function hideNorthArrow() {
   _northFading = -1;
-  if (!_northFrame) _northFrame = requestAnimationFrame(_northTick);
+  _runNorthTicker();
 }
 
 // ── Drag & zoom setup (shared by main.js and find-help.html) ──────────────
@@ -875,7 +949,7 @@ function initExploreDrag() {
   }
   explore._northAlpha = 0;
   function dragStart(cx, cy) {
-    if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
+    stopCameraAnimation();
     showNorthArrow();
     const { px, py } = clientToCanvas(cx, cy);
     const up0 = cameraReverse(explore.P, explore.R, [0, 1, 0]);
@@ -917,14 +991,14 @@ function initExploreDrag() {
     explore.R = R1;
     explore.drag.prevPx = px;
     explore.drag.prevPy = py;
-    drawExplore();
+    requestExploreDraw();
   }
   function dragEnd() {
     explore.drag = null;
     ew.classList.remove('dragging');
     hideNorthArrow();
     if (typeof saveExploreState === 'function') saveExploreState();
-    drawExplore();
+    requestExploreDraw();
   }
 
   ec.addEventListener('contextmenu', e => e.preventDefault());
@@ -960,7 +1034,7 @@ function initExploreDrag() {
       showNorthArrow();
       const dist = touchDist(e.touches);
       explore.fov = Math.max(FOV_MIN, Math.min(FOV_MAX, pinchStartFov * pinchStartDist / dist));
-      drawExplore();
+      requestExploreDraw();
     } else if (e.touches.length === 1) {
       dragMove(e.touches[0].clientX, e.touches[0].clientY);
     }
@@ -984,9 +1058,9 @@ function initExploreDrag() {
     showNorthArrow();
     const factor = e.ctrlKey ? Math.pow(1.03, e.deltaY) : Math.pow(1.003, e.deltaY);
     explore.fov = Math.max(FOV_MIN, Math.min(FOV_MAX, explore.fov * factor));
-    drawExplore();
+    requestExploreDraw();
     clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { hideNorthArrow(); if (typeof saveExploreState === 'function') saveExploreState(); drawExplore(); }, 300);
+    wheelTimer = setTimeout(() => { hideNorthArrow(); if (typeof saveExploreState === 'function') saveExploreState(); requestExploreDraw(); }, 300);
   }, { passive: false });
 
   return { clientToCanvas };
