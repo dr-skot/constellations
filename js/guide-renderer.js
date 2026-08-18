@@ -243,13 +243,20 @@ function _stepR(step) {
 }
 
 // ── Animation ─────────────────────────────────────────────────────────────────
+// A scheduler ticker (issue #58), like the goto flight and the north-arrow fade.
+// startCameraFlight interrupts whichever flight was in the air, so stepping through a
+// guide and using Go To reliably replace each other.
+//
+// The sky is NOT drawn here. A ticker having run is itself enough to mark the frame
+// dirty, so the camera move and the draw that shows it are the same frame. While this
+// owned its own rAF it could only REQUEST a draw, and if the scheduler's frame happened
+// to run first, that frame rendered a camera position the flight had already moved past.
+//
+// The annotation is different and stays per-frame here: it targets its own canvas, not
+// the sky, so it is unaffected by the sky's draw being scheduled.
+//
 // shouldContinue: optional function returning false to abort mid-animation
-function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldContinue) {
-  // Interrupts a goto flight as well as another guide flight. Since the goto became a
-  // scheduler ticker (issue #54) it is no longer reachable through `explore.animFrame`
-  // alone, and cancelling that handle by itself would leave the two flights fighting
-  // over the camera. This guide flight still owns its own frames — see #54's note.
-  stopCameraAnimation();
+function guideAnimateTo(step, prevStep, drawAnnotation, onDone, shouldContinue) {
   const v1 = explore.P.slice(), f1 = explore.fov, R1 = explore.R;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
   const R2 = _stepR(step);
@@ -260,8 +267,12 @@ function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldCont
   const angle = Math.acos(dot), sinA = Math.sin(angle);
   const duration = Math.max(700, Math.min(2600, (angle / Math.PI) * 2600 + Math.abs(f2 - f1) * 10));
   const start = performance.now();
-  function tick(now) {
-    if (shouldContinue && !shouldContinue()) return;
+  startCameraFlight(function (now) {
+    // An abort is not an arrival. Returning false is how a ticker says it finished, and
+    // that runs the completion work below — which would snap the camera onto the
+    // destination the guide has just been torn down away from. Standing down through
+    // stopCameraAnimation is the exit that skips it.
+    if (shouldContinue && !shouldContinue()) { stopCameraAnimation(); return; }
     const raw = Math.min(1, (now - start) / duration);
     const t   = raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2;
     if (angle > 0.001) {
@@ -270,17 +281,12 @@ function guideAnimateTo(step, prevStep, draw, drawAnnotation, onDone, shouldCont
     }
     explore.fov = f1 + (f2 - f1) * t;
     explore.R = R1 + dR * t;
-    draw();
     drawAnnotation(raw < 1 ? prevStep : step);
-    if (raw < 1) {
-      explore.animFrame = requestAnimationFrame(tick);
-    } else {
-      explore.P = v2; explore.fov = f2; explore.R = R2;
-      explore.animFrame = null;
-      if (onDone) onDone();
-    }
-  }
-  requestAnimationFrame(tick);
+    return raw < 1;
+  }, function () {
+    explore.P = v2; explore.fov = f2; explore.R = R2;
+    if (onDone) onDone();
+  });
 }
 
 // ── Guide session ─────────────────────────────────────────────────────────────
@@ -418,7 +424,7 @@ function guideGoTo(i, immediate) {
     _guideDraw();
     guideDrawAnnotation(explore.stepDisplay);
 
-    guideAnimateTo(s, null, _guideDraw, () => guideDrawAnnotation(explore.stepDisplay), () => {
+    guideAnimateTo(s, null, () => guideDrawAnnotation(explore.stepDisplay), () => {
       if (!_gs) return;
       _gs.applied = _gs.stepDisplay;
       _guidePublish();

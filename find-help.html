@@ -141,22 +141,27 @@
 
   </div>
 
-  <script src="js/data.js"></script>
-  <script src="js/lesson.js"></script>
+  <!-- Version-stamped like index.html, and for a sharper reason than staleness alone:
+       these files call across each other, so a visitor holding a cached explore.js and
+       a fresh guide-renderer.js gets a page that loads and then throws on the first
+       camera flight. The stamp makes the set arrive or not arrive together. Bump it
+       with index.html's whenever app JS changes. -->
+  <script src="js/data.js?v=1786941565769"></script>
+  <script src="js/lesson.js?v=1786941565769"></script>
   <!-- All four figure sets, as in index.html: the Figures setting applies wherever
        figures are drawn, and this page reads it at boot. -->
-  <script src="js/stellarium-data.js"></script>
-  <script src="js/ford-data.js"></script>
-  <script src="js/rey-data.js"></script>
-  <script src="js/diagram-sources.js"></script>
-  <script src="js/draw-phases.js"></script>
-  <script src="js/render-scheduler.js"></script>
-  <script src="js/projection.js"></script>
-  <script src="js/render.js"></script>
-  <script src="js/explore-gl.js"></script>
-  <script src="js/explore.js"></script>
-  <script src="js/step-display.js"></script>
-  <script src="js/guide-renderer.js"></script>
+  <script src="js/stellarium-data.js?v=1786941565769"></script>
+  <script src="js/ford-data.js?v=1786941565769"></script>
+  <script src="js/rey-data.js?v=1786941565769"></script>
+  <script src="js/diagram-sources.js?v=1786941565769"></script>
+  <script src="js/draw-phases.js?v=1786941565769"></script>
+  <script src="js/render-scheduler.js?v=1786941565769"></script>
+  <script src="js/projection.js?v=1786941565769"></script>
+  <script src="js/render.js?v=1786941565769"></script>
+  <script src="js/explore-gl.js?v=1786941565769"></script>
+  <script src="js/explore.js?v=1786941565769"></script>
+  <script src="js/step-display.js?v=1786941565769"></script>
+  <script src="js/guide-renderer.js?v=1786941565769"></script>
   <script>
     // Honour the learner's Figures choice before anything draws. There is no
     // switcher on this page, so this is the only read.

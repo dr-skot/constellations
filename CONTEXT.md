@@ -210,10 +210,20 @@ still runs the enter action.
   goto flight's final snap to its exact target is what gets rendered rather than the last
   eased approximation. `removeTicker` deliberately does *not* run `done()`: removal means the
   animation was interrupted, and running an abandoned flight's completion would snap the
-  camera to the target it was told to give up on. The goto flight and the north-arrow fade
-  are tickers (issue #54); `stopCameraAnimation()` interrupts whichever flight is running.
-  **Not yet a ticker**: `guideAnimateTo` in guide-renderer.js still owns its own frames via
-  `explore.animFrame`, so a guide step flight is the one remaining second frame owner.
+  camera to the target it was told to give up on. Every animation is now a ticker — the
+  north-arrow fade, and both camera flights (issues #54, #58) — so the scheduler is the
+  explorer's only frame owner with no exceptions.
+
+- **camera flight** — a ticker that moves the camera: `animateGoTo` in explore.js, or
+  `guideAnimateTo` in guide-renderer.js flying between finding-guide steps. Both go through
+  `startCameraFlight(tick, done)`, and there is exactly **one** handle (`_cameraTicker`)
+  because the camera has one flight — starting either kind stops the other, so a second
+  variable could only ever hold null. `stopCameraAnimation()` is the abandon path (a new
+  flight, a hand on the sky, a guide torn down mid-step) and skips `done` for the reason
+  above; a flight aborting itself stands down through it rather than returning `false`.
+  Registration being the handle is also what makes a flight cancellable from the moment it
+  starts: the guide flight used to record its frame handle on every frame *except the
+  first*, so grabbing the sky the instant a step began did nothing and it flew on (#58).
 
 - **draw phases** — the per-layer timing hook in `js/draw-phases.js`
   (`beginDrawPhases`/`markDrawPhase`/`endDrawPhases`), marking the section boundaries

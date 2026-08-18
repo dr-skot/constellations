@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════
 const explorePhotoCache = {};
 const FOV_MIN = 10, FOV_MAX = 110;
-let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null, animFrame: null };
+let explore = { P: raDecToVec(80, 5), R: 0, fov: 60, drag: null, quiz: null };
 let exploreDragMoved = false;
 
 // ── The one frame loop (js/render-scheduler.js, issue #53) ──
@@ -268,20 +268,39 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
   return result;
 }
 
-// The goto flight, as a scheduler ticker (issue #54). It advances the camera and says
+// ── Camera flights ────────────────────────────────────────────────────────────
+// Both flights — the goto here and the finding-guide flight in guide-renderer.js —
+// are scheduler tickers (issues #54, #58). A ticker advances the camera and says
 // whether it wants another frame; the scheduler owns the frame and draws once, after
-// every ticker has run. It no longer draws for itself, which is what stops a flight
-// overlapping the north-arrow fade from rendering the sky twice per frame.
-let _gotoTicker = null;
+// every ticker has run. Nothing here asks for a frame of its own.
+//
+// ONE handle, because the camera has one flight: starting either kind stops the other,
+// so a second variable could only ever hold null. That is also what makes
+// stopCameraAnimation a single line, and what stops a flight from being uncancellable
+// during the window before its first frame — registration IS the handle, so there is no
+// moment when a flight is running but unreachable (the bug #58 removed).
+let _cameraTicker = null;
 
-// Stop whichever camera flight is in progress. Two mechanisms still exist: the goto
-// ticker above, and the finding-guide flight in guide-renderer.js, which continues to
-// own `explore.animFrame` and its own frames. Both are cleared here so that starting
-// either kind of flight — or grabbing the sky — reliably interrupts the other, which is
-// what the shared `explore.animFrame` handle used to accomplish on its own.
+// Start a flight, replacing whatever was in the air. `tick` returns false when it has
+// arrived; `done` then runs on deregistration — and, crucially, BEFORE the draw of the
+// frame that finished the flight (see test/render-scheduler.js), so snapping to the
+// exact destination is what gets rendered rather than the last eased approximation.
+function startCameraFlight(tick, done) {
+  stopCameraAnimation();
+  _cameraTicker = tick;
+  exploreScheduler().addTicker(tick, function () {
+    _cameraTicker = null;
+    done();
+  });
+}
+
+// Stop the camera flight in progress, if any. Deliberately does NOT run its completion
+// work: this is the abandon path — a new flight replacing the old one, a hand grabbing
+// the sky, a guide torn down mid-step — and running completion would snap the camera to
+// the destination it was just told to give up on. `removeTicker` skips `done` for
+// exactly this reason.
 function stopCameraAnimation() {
-  if (_gotoTicker) { exploreScheduler().removeTicker(_gotoTicker); _gotoTicker = null; }
-  if (explore.animFrame) { cancelAnimationFrame(explore.animFrame); explore.animFrame = null; }
+  if (_cameraTicker) { exploreScheduler().removeTicker(_cameraTicker); _cameraTicker = null; }
 }
 
 function animateGoTo(targetRa, targetDec) {
@@ -295,7 +314,7 @@ function animateGoTo(targetRa, targetDec) {
   // Duration proportional to arc length: 400ms–2000ms
   const duration = Math.max(400, Math.min(2000, angle / Math.PI * 2000));
   const startTime = performance.now();
-  _gotoTicker = function (now) {
+  startCameraFlight(function (now) {
     const raw = Math.min(1, (now - startTime) / duration);
     // Ease in-out cubic
     const t = raw < 0.5 ? 4*raw*raw*raw : 1 - Math.pow(-2*raw + 2, 3) / 2;
@@ -303,12 +322,7 @@ function animateGoTo(targetRa, targetDec) {
     const f2 = Math.sin(t * angle) / sinA;
     explore.P = [f1*v1[0]+f2*v2[0], f1*v1[1]+f2*v2[1], f1*v1[2]+f2*v2[2]];
     return raw < 1;
-  };
-  // Completion work runs on deregistration — and, crucially, BEFORE the draw of the
-  // frame that finished the flight (see test/render-scheduler.js), so snapping to the
-  // exact target is what gets rendered rather than the last eased approximation.
-  exploreScheduler().addTicker(_gotoTicker, function () {
-    _gotoTicker = null;
+  }, function () {
     explore.P = v2;
     _clearConNameCache();
     saveExploreState();
