@@ -326,18 +326,26 @@ function mkRouter() {
     inDetour() === false && !rec.exits.includes('calibration'));
 }
 
-// ---- which routes come back, and how (issue #74) ---------------------------
+// ---- which routes come back, and how (issues #74, #76) ---------------------
 // Whether a departure means to come back is a property of the ROUTE being left, and
 // what to do on the way back differs per route. It used to be decided by asking which
-// SCREEN was showing and treating "the quiz screen" as "mid-question" — true in the
+// SCREEN was showing and treating the identify screen as "mid-question" — true in the
 // constellation viewer too, which is why leaving a finding guide re-rendered the
 // lesson's current question over the viewer (issue #69).
+//
+// Asking the screen was wrong a second way, which issue #76 fixed: a QUIZ renders an
+// identify question on the identify screen and a find question on the explorer, and both
+// are quiz questions. Treating "not the identify screen" as "no question to come back to"
+// stranded a learner who opened a finding guide from an answered find question (#75).
+// So an entry answers from the FLOW — is a question on display? — never from the surface
+// that question happens to be rendered on.
 //
 // The resume thunks are injected like the enter and exit actions, so the router can be
 // asked to start a detour without being told what coming back means.
 function mkDetourRouter() {
   const rec = mkRouter();
   rec.resumed = [];
+  rec.hasQuestion = true;   // does the flow have a question on display right now?
   initRouter({
     history: { push: h => rec.hist.push(['push', h]), replace: h => rec.hist.push(['replace', h]) },
     setScreen: s => rec.screens.push(s),
@@ -346,10 +354,12 @@ function mkDetourRouter() {
                exploreCon: p => rec.fired.push('exploreCon:' + p), course: () => rec.fired.push('course') },
     exits: { calibration: () => rec.exits.push('calibration') },
     // Each entry is asked for a resume thunk and may answer null — "not from here".
-    // rec.flowScreen stands in for the screen a flow-owned route is currently on.
+    // rec.hasQuestion stands in for what backToQuestion() asks the flow. It is
+    // deliberately NOT a screen: the same resume serves both kinds of question, because
+    // the question renderer picks its own surface.
     detours: {
-      lesson:      () => rec.flowScreen === 'explore' ? null : () => rec.resumed.push('question'),
-      calibration: () => () => rec.resumed.push('probe'),
+      lesson:      () => rec.hasQuestion ? () => rec.resumed.push('question') : null,
+      calibration: () => rec.hasQuestion ? () => rec.resumed.push('probe') : null,
       view:        param => () => rec.resumed.push('viewer:' + param),
     },
   });
@@ -371,15 +381,40 @@ function mkDetourRouter() {
 }
 
 {
-  // A lesson question comes back as that question (issue #35), unchanged.
+  // An identify question comes back as that question (issue #35), unchanged.
   const rec = mkDetourRouter();
   navigate('lesson');
   beginDetourFromRoute();
   navigate('explore/Ori');
   endDetour();
-  check('leaving a guide opened from a lesson returns to the question',
+  check('leaving a guide opened from an identify question returns to the question',
     rec.resumed.join() === 'question' && rec.lastHist().join() === 'replace,lesson',
     `${rec.resumed.join()} / ${rec.lastHist()}`);
+}
+
+{
+  // ...and so does a FIND question (issue #76), by the same route and the same resume.
+  // The guide is opened from the explorer, which is also the surface the find question was
+  // being rendered on, so the departure looks like "explore → explore" — and the router
+  // must still come back to #lesson rather than treating that as staying put.
+  //
+  // BE HONEST ABOUT WHAT THIS COVERS. The decision that a find question counts as "a
+  // question on display" is questionOnDisplay() in main.js, which node cannot load; here
+  // it is the rec.hasQuestion stand-in. So this block locks the ROUTER's half — one resume
+  // serves both kinds, and the round trip lands back on the lesson — and cannot catch a
+  // regression in the predicate itself. That half is covered by the live walk-through in
+  // the ticket, and by the fact that this file no longer asserts the old behaviour.
+  const rec = mkDetourRouter();
+  navigate('lesson');
+  check('a route with a question open a detour whichever surface renders it',
+    beginDetourFromRoute() === true);
+  navigate('explore/Ori');
+  endDetour();
+  check('leaving a guide opened from the explorer still returns to #lesson',
+    rec.resumed.join() === 'question' && rec.lastHist().join() === 'replace,lesson',
+    `${rec.resumed.join()} / ${rec.lastHist()}`);
+  check('and the lesson enter action does not re-run, so the question is not re-asked',
+    rec.fired.filter(f => f === 'lesson').length === 1, rec.fired.join());
 }
 
 {
@@ -406,18 +441,18 @@ function mkDetourRouter() {
 }
 
 {
-  // A route may decline from where it currently is. A lesson on a find-in-the-sky
-  // question already lives in the explorer, which the guide takes over: there is no
-  // question to re-render, and re-rendering one would re-ask a question the learner
-  // has answered and count the exposure twice. The guide's own exit restores it.
+  // A route may still decline from where it currently is — but the reason is now "there
+  // is no question here", not "the question is on the wrong surface". The level check
+  // shows its offer and its payoff on the calibration route with no probe on display;
+  // there is nothing to come back to, so the guide's own exit handles the return.
   const rec = mkDetourRouter();
-  rec.flowScreen = 'explore';
-  navigate('lesson');
-  check('a route that declines opens no detour', beginDetourFromRoute() === false);
+  rec.hasQuestion = false;
+  navigate('calibration');
+  check('a route with no question on display declines', beginDetourFromRoute() === false);
   check('and none is in flight', inDetour() === false);
 
-  rec.flowScreen = 'quiz';
-  check('the same route opens one from where it does come back',
+  rec.hasQuestion = true;
+  check('the same route opens one once a probe is showing',
     beginDetourFromRoute() === true);
 }
 

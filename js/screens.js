@@ -144,15 +144,17 @@ function beginDetour(resume) {
 // fact about a route.
 //
 // An entry is asked for a resume thunk and may answer null, meaning "not from here,
-// not now". A flow-owned route needs that: a lesson on the quiz screen has a question
-// to come back to, but a lesson on a find-in-the-sky question is already living in the
-// explorer, which the guide takes over — there is nothing to re-render, and the guide's
-// own exit restores it. A route with no entry at all never comes back: the explorer.
+// not now". A flow-owned route needs that: a lesson or level check answers with whatever
+// question is on display, of either kind, and answers null when the flow is showing
+// something that is not a question at all — the level check's offer and payoff panels.
+// A route with no entry at all never comes back: the explorer.
 //
-// This replaces callers deciding for themselves by asking which SCREEN was showing.
-// That question could not tell a lesson question from the constellation viewer, which
-// borrowed the quiz screen — so leaving a finding guide opened from the viewer
-// re-rendered the lesson's current question over it (issues #69, #74).
+// This replaces callers deciding for themselves by asking which SCREEN was showing, a
+// question that was wrong twice over. It could not tell a lesson question from the
+// constellation viewer, which borrowed the identify screen (issues #69, #74). And it read
+// "not the identify screen" as "no question here", which is false for a find question —
+// the surface a quiz renders a find question on is the explorer, and that stranded the
+// learner outside their own quiz (issues #75, #76).
 function beginDetourFromRoute() {
   const route = _route_;
   const make = route && _detours[route.name];

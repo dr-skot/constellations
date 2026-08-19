@@ -33,12 +33,28 @@ _loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
 // router owns everything else: which screen a route shows, when a redirect
 // replaces instead of pushes, and what leaving means (spec #44).
 
-// The resume a quiz-screen question comes back by, or null when the flow is showing a
-// find-in-the-sky question instead — that one lives in the explorer and the guide takes
-// it over, so it comes back through the guide's own exit, not through a re-render.
+// Is a question on display right now? A quiz renders an identify question on the identify
+// screen and a find question on the explorer, and BOTH are quiz questions — so this asks
+// the flow, never the surface alone. Asking only the surface is what stranded a learner
+// who opened a finding guide from an answered find question (#75): "not the identify
+// screen" was read as "no question here".
+// "On display" is deliberately strict, because abandoning a lesson by navigating away
+// clears neither half of the evidence: `session.questions` keeps the spent lesson, and
+// `explore.quiz` survives until something calls stopExploreQuiz(). So a current question
+// is necessary but not sufficient, and each clause has to name the surface it is claiming
+// — otherwise a lesson abandoned on a find question would still answer yes from the level
+// check's offer panel, which has no question on display at all.
+function questionOnDisplay() {
+  if (!session.questions[session.idx]) return false;
+  return currentScreen() === 'quiz'        // an identify question (screen rename: #78)
+      || (currentScreen() === 'explore' && !!explore.quiz?.lessonMode);   // a find question
+}
+
+// The resume a question comes back by. One thunk for both kinds: showLessonQuestion picks
+// its own surface — the identify screen for an identify question, the explorer for a find
+// question — so there is nothing to branch on here.
 function backToQuestion() {
-  if (currentScreen() !== 'quiz') return null;
-  return () => { showScreen('quiz'); showLessonQuestion(); };
+  return questionOnDisplay() ? () => showLessonQuestion() : null;
 }
 
 function _initRouting() {
@@ -80,11 +96,9 @@ function _initRouting() {
     // is why each of these says what re-rendering means for itself: re-entering a
     // lesson would try to resume from storage a level check never wrote.
     // Each entry is asked for a resume thunk, and may answer null for "not from here".
-    // A lesson or level check on a find-in-the-sky question is already living in the
-    // explorer, which the guide takes over: there is no question to re-render, and
-    // re-rendering one would re-ask a question the learner has answered and record the
-    // exposure a second time. Those return null and the guide's own exit restores the
-    // explorer, which is what happened before there was a table at all.
+    // A lesson or level check answers with the question on display, of either kind; it
+    // answers null only when no question is showing — the level check's offer and payoff
+    // panels — and then the guide's own exit restores wherever it took over.
     detours: {
       lesson:      () => backToQuestion(),
       calibration: () => backToQuestion(),

@@ -127,6 +127,7 @@ function updatePrevBtn() {
 function showLessonQuestion() {
   const q = session.questions[session.idx];
   if (!q) return;
+  const hist = session.history[session.idx];
   console.log('[quiz] question', session.idx, q.con.name, q.type, q.mode, 'answerMode:', q.answerMode, 'noBounds:', q.noBounds, 'distLevel:', q.distanceLevel);
 
   const total = session.questions.length;
@@ -134,17 +135,24 @@ function showLessonQuestion() {
   document.getElementById('hud-score').textContent = `${session.correct} correct`;
   document.getElementById('prog-fill').style.width = `${(session.idx / total) * 100}%`;
 
-  if (q.type === 'find') {
-    recordSeen(q.con.abbr, questionKey(q));
-    startLessonFindQuestion(q);
-    return;
-  }
+  // The one call site, deliberately above the fork so the two kinds of question cannot
+  // drift apart again: the find branch used to record unconditionally while the identify
+  // branch guarded, so re-rendering an ANSWERED find question — exactly what returning
+  // from a finding guide does — counted the exposure twice (#75, #76). The level check
+  // measures before it seeds (D*), so a probe records nothing: a lucky right answer must
+  // not credit the constellation.
+  // The guard is "not yet answered", which is not the same as "not yet asked": re-showing
+  // an UNANSWERED question still records again, so a reload or Previous double-counts.
+  // Pre-existing, both kinds, and unreachable from the guide — see #77, which replaces
+  // this guard with a real unasked → asked transition.
+  if (!hist && !session.calibration) recordSeen(q.con.abbr, questionKey(q));
+
+  if (q.type === 'find') { startLessonFindQuestion(q); return; }
 
   showScreen('quiz');
   settings.mode = q.mode;
 
   const con = q.con;
-  const hist = session.history[session.idx];
   const isAuto = q.answerMode === 'autocomplete';
 
   document.getElementById('feedback').textContent = '';
@@ -174,9 +182,6 @@ function showLessonQuestion() {
       saveLessonSession();
     }
     session.rotation = q.rotation;
-    // The calibration level check measures before it seeds (D*), so it must not
-    // record exposure per probe — a lucky right answer shouldn't credit the con.
-    if (!session.calibration) recordSeen(q.con.abbr, questionKey(q));
   }
 
   panel.resize();   // only when it changed — see sizeCanvas (projection.js)

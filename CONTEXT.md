@@ -134,7 +134,10 @@ hand-rolled twice (spec #44).
 
 - **detour** — see Navigation below. Which routes come back, and how, is a per-route entry
   injected at boot beside the enter and exit actions; an entry may decline from where the
-  flow currently is (a lesson showing a find question has no question to re-render).
+  flow currently is (the **level check** showing its offer or payoff has no question to
+  re-render). An entry answers from the flow, never from the surface: a **quiz** comes back
+  to whichever **question** is on display, and both kinds come back the same way, because
+  the question renderer picks its own screen (#76).
 
 - **flow-owned route** — a route that declares no screen, because the flow picks one as it
   advances: `lesson` renders an identify question on the identify screen and a find question on
