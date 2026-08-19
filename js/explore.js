@@ -280,16 +280,24 @@ function conNamePosition(con, ctx, fs, camP, camUp, fov, W, H, projBounds, allBo
 // during the window before its first frame — registration IS the handle, so there is no
 // moment when a flight is running but unreachable (the bug #58 removed).
 let _cameraTicker = null;
+let _cameraAbort  = null;
 
 // Start a flight, replacing whatever was in the air. `tick` returns false when it has
 // arrived; `done` then runs on deregistration — and, crucially, BEFORE the draw of the
 // frame that finished the flight (see test/render-scheduler.js), so snapping to the
 // exact destination is what gets rendered rather than the last eased approximation.
-function startCameraFlight(tick, done) {
-  stopCameraAnimation();
+//
+// `abort` is the flight's third exit (issue #60), for callers that keep state alongside
+// it. A flight ends in exactly one of three ways — it lands (`done`), it is abandoned
+// (`abort`), or the page goes away — and a caller that only hears about the first is
+// left holding state no event will ever clear.
+function startCameraFlight(tick, done, abort) {
+  stopCameraAnimation();                 // fires the previous flight's abort, if it had one
   _cameraTicker = tick;
+  _cameraAbort  = abort || null;
   exploreScheduler().addTicker(tick, function () {
     _cameraTicker = null;
+    _cameraAbort  = null;
     done();
   });
 }
@@ -299,8 +307,21 @@ function startCameraFlight(tick, done) {
 // the sky, a guide torn down mid-step — and running completion would snap the camera to
 // the destination it was just told to give up on. `removeTicker` skips `done` for
 // exactly this reason.
+//
+// The abort callback is the opposite case: it exists to say the flight is over WITHOUT
+// moving the camera, so whoever started it can put its own affairs in order. The handle
+// is cleared before the callback runs, so an abort that lands back here finds no stale
+// ticker to remove twice. An abort must NOT start a flight of its own, though: it runs
+// from inside startCameraFlight, before that call has registered its own ticker, and the
+// registration that follows would orphan it — still ticking, with nothing left to cancel
+// it by. Put state in order here and let the caller start what comes next.
 function stopCameraAnimation() {
-  if (_cameraTicker) { exploreScheduler().removeTicker(_cameraTicker); _cameraTicker = null; }
+  if (!_cameraTicker) return;
+  const abort = _cameraAbort;
+  exploreScheduler().removeTicker(_cameraTicker);
+  _cameraTicker = null;
+  _cameraAbort  = null;
+  if (abort) abort();
 }
 
 function animateGoTo(targetRa, targetDec) {

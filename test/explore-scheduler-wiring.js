@@ -25,7 +25,23 @@ let clock = 0;
 global.requestAnimationFrame = cb => { rafCalls++; rafQueue.push(cb); return rafQueue.length; };
 global.cancelAnimationFrame = () => { cancelCalls++; rafQueue = []; };
 global.performance = { now: () => clock };
-global.document = { getElementById: () => null, querySelector: () => null };
+// The finding guide's controls, faked just far enough to render into and click (issue
+// #60). Everything NOT in this map still answers null — the canvases especially, since
+// drawExplore bailing at its missing canvas is what keeps this file affordable.
+const elements = {};
+function fakeElement(id) {
+  const handlers = {};
+  return {
+    id, style: {}, textContent: '', innerHTML: '',
+    addEventListener(type, fn) { (handlers[type] = handlers[type] || []).push(fn); },
+    click() { for (const fn of handlers.click || []) fn(); },
+  };
+}
+for (const id of ['fg-step-dots', 'fg-step-count', 'fg-caption-label', 'fg-caption-text',
+                  'fg-btn-prev', 'fg-btn-next', 'fg-btn-toggle-diag', 'fg-back-btn']) {
+  elements[id] = fakeElement(id);
+}
+global.document = { getElementById: id => elements[id] || null, querySelector: () => null };
 global.sessionStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 global.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 global.window = global;
@@ -35,11 +51,20 @@ global.addEventListener = () => {};
 
 const jsDir = path.join(__dirname, '..', 'js');
 const origLog = console.log; console.log = () => {};
+// Loaded in the order index.html and find-help.html load them: these are plain scripts
+// sharing a global scope, so load order is part of what this file claims to cover.
 for (const f of ['draw-phases.js', 'render-scheduler.js', 'projection.js', 'explore.js',
-                 'guide-renderer.js']) {
+                 'step-display.js', 'guide-renderer.js']) {
   vm.runInThisContext(fs.readFileSync(path.join(jsDir, f), 'utf8'), { filename: f });
 }
 console.log = origLog;
+
+// The annotation painter is the one part of the guide that genuinely needs a canvas
+// pair: it reads explore-canvas for its dimensions before it looks at anything else.
+// Standing in for it here keeps the guide's step-to-step path drivable — the nav and
+// the published display are what these tests are about, not what gets painted.
+let annotationDraws = 0;
+globalThis.guideDrawAnnotation = () => { annotationDraws++; };
 
 const failures = [];
 const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
@@ -290,6 +315,218 @@ function startGuideFlight(step, opts = {}) {
 {
   check('explore.animFrame no longer exists', !('animFrame' in explore),
     `still ${JSON.stringify(explore.animFrame)}`);
+}
+
+// ══ An interrupted flight leaves the guide navigable (issue #60) ══════════════
+// Sections 9–11 prove the CAMERA stands down correctly when a flight is abandoned.
+// What they do not prove is that the GUIDE survives it: `animating` gates both the
+// nav's visibility and its handlers, and until #60 nothing cleared it on an abort, so
+// grabbing the sky mid-step hid Back and Next and disabled them at once — no second
+// path out, reload only. These drive the real buttons through the fake elements above.
+
+const CATALOG = {
+  Betelgeuse: { ra: 88.79, dec: 7.41, mag: 0.5 },
+  Rigel:      { ra: 78.63, dec: -8.2, mag: 0.1 },
+};
+// Both of the first two steps carry overlays, and they share none: the guide only
+// intersects when the step it is LEAVING has something showing, so a bare first step
+// would publish the arriving display in full and hide the difference section 17 turns on.
+const GUIDE_STEPS = [
+  { ra: 80, dec:  5, fov: 60, rotation: 0, title: 'The belt',   caption: 'Three stars in a row.',
+    highlight: ['Rigel'] },
+  { ra: 88, dec:  7, fov: 40, rotation: 0, title: 'The Hunter', caption: 'Betelgeuse and Rigel.',
+    diagram: true, highlight: ['Betelgeuse'] },
+  { ra: 95, dec: -8, fov: 25, rotation: 0, title: 'The sword',  caption: 'Below the belt.' },
+];
+
+const el       = id => elements[id];
+const counter  = () => el('fg-step-count').textContent;
+const caption  = () => el('fg-caption-label').textContent;
+const navShown = () => ({ prev: el('fg-btn-prev').style.visibility,
+                          next: el('fg-btn-next').style.visibility });
+const offFrom  = v => Math.abs(explore.P[0] - v[0]) + Math.abs(explore.P[1] - v[1]) +
+                      Math.abs(explore.P[2] - v[2]);
+function land() { for (let i = 0; i < 400 && rafQueue.length; i++) { clock += 16; runFrames(clock); } }
+
+// Put the guide on step 1 and set it flying to `to`, then run `frames` frames — the
+// state a learner is in at the moment their hand lands on the sky.
+function guideFlyingTo(to, frames) {
+  stopCameraAnimation();
+  guideStop();                                   // no leftover guide from the case before
+  for (let i = 0; i < 10 && rafQueue.length; i++) { clock += 16; runFrames(clock); }
+  clock += 1000;
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG);
+  guideGoTo(to);
+  for (let i = 0; i < frames; i++) { clock += 16; runFrames(clock); }
+}
+
+// ── 13. The nav hides for an ordinary transition and returns on landing ───────
+// The behaviour #60 must not disturb: mid-flight is still no time to offer a control.
+{
+  guideFlyingTo(1, 2);
+  const flying = navShown();
+  check('the nav hides during an ordinary flight',
+    flying.prev === 'hidden' && flying.next === 'hidden', JSON.stringify(flying));
+  land();
+  const landed = navShown();
+  check('the nav returns when the flight lands',
+    landed.prev === 'visible' && landed.next === 'visible', JSON.stringify(landed));
+}
+
+// ── 14. Grabbing the sky mid-flight brings the nav back ──────────────────────
+{
+  guideFlyingTo(1, 2);
+  const partway = explore.P.slice(), partwayFov = explore.fov;
+  check('the flight is genuinely partway, not landed', partwayFov !== GUIDE_STEPS[1].fov,
+    `fov ${partwayFov}`);
+
+  stopCameraAnimation();                         // exactly what dragStart calls
+  const nav = navShown();
+  check('grabbing the sky mid-flight leaves Next visible', nav.next === 'visible', nav.next);
+  check('grabbing the sky mid-flight leaves Back visible', nav.prev === 'visible', nav.prev);
+  check('the interrupt leaves the counter on the step', counter() === '2 / 3', counter());
+  check('the interrupt leaves the caption on the step', caption() === 'The Hunter', caption());
+
+  land();
+  check('the interrupt does not snap the camera to the step',
+    offFrom(partway) === 0 && explore.fov === partwayFov,
+    `moved ${offFrom(partway)}, fov ${explore.fov}`);
+  check('the interrupt does not advance the guide on its own', counter() === '2 / 3', counter());
+}
+
+// ── 15. Next still advances after an interrupt, from where the learner is ────
+{
+  guideFlyingTo(1, 2);
+  stopCameraAnimation();
+  el('fg-btn-next').click();
+  check('Next advances the guide after an interrupt', counter() === '3 / 3', counter());
+  check('the last step offers the exit', el('fg-btn-next').textContent === 'Done ✓',
+    el('fg-btn-next').textContent);
+
+  land();
+  const target = raDecToVec(GUIDE_STEPS[2].ra, GUIDE_STEPS[2].dec);
+  check('the guide flies on to the next step', offFrom(target) < 1e-12, `off by ${offFrom(target)}`);
+  check('and lands on its field of view', explore.fov === GUIDE_STEPS[2].fov, `fov ${explore.fov}`);
+}
+
+// ── 16. Back still retreats after an interrupt ───────────────────────────────
+{
+  guideFlyingTo(2, 2);
+  stopCameraAnimation();
+  el('fg-btn-prev').click();
+  check('Back retreats after an interrupt', counter() === '2 / 3', counter());
+  land();
+  const target = raDecToVec(GUIDE_STEPS[1].ra, GUIDE_STEPS[1].dec);
+  check('Back flies to the previous step', offFrom(target) < 1e-12, `off by ${offFrom(target)}`);
+}
+
+// ── 17. The interrupt settles the guide onto the step's own display ──────────
+// Mid-flight the guide publishes the intersection of departing and arriving steps, so
+// nothing pops in mid-motion. Left in place after an interrupt it would make Hide
+// overlays toggle against a set belonging to neither step.
+{
+  guideFlyingTo(1, 2);
+  check('mid-flight only what both steps share is published',
+    explore.stepDisplay.marks.length === 0 && explore.stepDisplay.layers.diagram.on === false,
+    JSON.stringify(explore.stepDisplay.layers.diagram));
+
+  stopCameraAnimation();
+  check('the interrupt publishes the step\'s own marks',
+    explore.stepDisplay.marks.length === 1 && explore.stepDisplay.marks[0].label === 'Betelgeuse',
+    JSON.stringify(explore.stepDisplay.marks));
+  check('the interrupt publishes the step\'s own layers',
+    explore.stepDisplay.layers.diagram.on === true,
+    JSON.stringify(explore.stepDisplay.layers.diagram));
+}
+
+// ── 18. A replaced flight does not disturb the flight replacing it ───────────
+// Starting a flight stops the one before it, so the abort of the OLD flight fires while
+// the NEW step has already declared itself animating. Without a per-flight token that
+// abort clears the new flight's flag and the nav stays up through the whole transition.
+{
+  guideFlyingTo(1, 2);
+  guideGoTo(2);                                  // replaces the flight in the air
+  const nav = navShown();
+  check('a replaced flight does not un-hide the replacing flight\'s nav',
+    nav.next === 'hidden' && nav.prev === 'hidden', JSON.stringify(nav));
+  land();
+  check('the replacing flight still returns the nav on landing',
+    navShown().next === 'visible', navShown().next);
+  check('the replacing flight is the one that lands', counter() === '3 / 3', counter());
+}
+
+// ── 19. A flight abandoned after the guide is gone is harmless ───────────────
+// exitFindGuide's own path, and it never calls stopCameraAnimation itself: guideStop
+// nulls the session, the view is restored, and the flight stands down on its NEXT frame
+// when shouldContinue goes false. So the abort fires re-entrantly, from inside the
+// scheduler's ticker pass — the ordering the app actually takes. Driving it with `land()`
+// rather than an explicit stop is what puts the test on that path.
+{
+  guideFlyingTo(1, 2);
+  const parked = explore.P.slice(), parkedFov = explore.fov;
+  let threw = null;
+  try {
+    guideStop();
+    land();
+  } catch (e) { threw = e; }
+  check('abandoning a flight after the guide is gone does not throw', threw === null,
+    threw && (threw.message + ' @ ' + String(threw.stack).split('\n')[1]));
+  check('and does not move the view the exit restored',
+    offFrom(parked) === 0 && explore.fov === parkedFov,
+    `moved ${offFrom(parked)}, fov ${explore.fov}`);
+  check('and stops asking for frames', rafQueue.length === 0, `${rafQueue.length} queued`);
+}
+
+// ── 20. A dead session's flight cannot speak for the guide that follows ──────
+// Tearing a guide down leaves its flight registered until the next frame. If flight
+// numbers restarted with each session, the new guide's first flight would be handed the
+// number the dead one is still holding, and starting it — which stops the dead flight —
+// would fire an abort that passes the guard and un-hides the new guide's nav.
+{
+  guideFlyingTo(1, 2);                             // session A, flight in the air
+  guideStop();                                     // torn down, no frame run
+  clock += 16;
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG);
+  guideGoTo(1);                                    // session B: stops A, fires A's abort
+  const nav = navShown();
+  check('a dead session\'s abort does not un-hide the next guide\'s nav',
+    nav.next === 'hidden' && nav.prev === 'hidden', JSON.stringify(nav));
+  check('nor settle the new flight onto its destination early',
+    explore.stepDisplay.marks.length === 0, JSON.stringify(explore.stepDisplay.marks));
+  land();
+  check('the new guide still lands normally', navShown().next === 'visible' && counter() === '2 / 3',
+    `${navShown().next} ${counter()}`);
+}
+
+// ── 21. Hiding the overlays mid-flight survives the interrupt ────────────────
+// The toggle is not hidden during a transition, so the learner can press it and then
+// grab the sky. Settling onto the step must respect that answer, or the button says
+// "Show overlays" over overlays that are already showing and clicking it does nothing.
+{
+  guideFlyingTo(1, 2);
+  el('fg-btn-toggle-diag').click();                // hidden mid-transition
+  stopCameraAnimation();
+  check('the interrupt keeps the learner\'s Hide overlays answer',
+    explore.stepDisplay.marks.length === 0 && explore.stepDisplay.layers.diagram.on === false,
+    JSON.stringify(explore.stepDisplay.layers));
+  check('and the button still offers to show them',
+    el('fg-btn-toggle-diag').textContent === 'Show overlays', el('fg-btn-toggle-diag').textContent);
+
+  el('fg-btn-toggle-diag').click();                // and showing them works
+  check('showing them again brings the step\'s overlays back',
+    explore.stepDisplay.marks.length === 1 && explore.stepDisplay.layers.diagram.on === true,
+    JSON.stringify(explore.stepDisplay.marks));
+}
+
+// ── 22. Landing respects the same answer ─────────────────────────────────────
+{
+  guideFlyingTo(1, 2);
+  el('fg-btn-toggle-diag').click();                // hidden mid-transition
+  land();
+  check('landing keeps the learner\'s Hide overlays answer',
+    explore.stepDisplay.marks.length === 0, JSON.stringify(explore.stepDisplay.marks));
+  check('and the button still offers to show them',
+    el('fg-btn-toggle-diag').textContent === 'Show overlays', el('fg-btn-toggle-diag').textContent);
 }
 
 console.log(failures.length ? `\n${failures.length} FAILED` : '\nall passed');

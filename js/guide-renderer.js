@@ -256,7 +256,11 @@ function _stepR(step) {
 // the sky, so it is unaffected by the sky's draw being scheduled.
 //
 // shouldContinue: optional function returning false to abort mid-animation
-function guideAnimateTo(step, prevStep, drawAnnotation, onDone, shouldContinue) {
+// onAbort: optional, called when the flight is abandoned rather than flown to the end —
+//   a hand on the sky, a pinch, a newer flight taking over. Passed straight through; the
+//   camera's business is the camera, and what an abandoned flight means for the guide is
+//   the guide's (issue #60).
+function guideAnimateTo(step, prevStep, drawAnnotation, onDone, shouldContinue, onAbort) {
   const v1 = explore.P.slice(), f1 = explore.fov, R1 = explore.R;
   const v2 = raDecToVec(step.ra, step.dec), f2 = step.fov;
   const R2 = _stepR(step);
@@ -286,12 +290,26 @@ function guideAnimateTo(step, prevStep, drawAnnotation, onDone, shouldContinue) 
   }, function () {
     explore.P = v2; explore.fov = f2; explore.R = R2;
     if (onDone) onDone();
-  });
+  }, onAbort);
 }
 
 // ── Guide session ─────────────────────────────────────────────────────────────
 // _gs holds all state for the active guide session
 let _gs = null;
+
+// Identity for the flight in the air (issue #60). Module-scope on purpose: a guide torn
+// down mid-flight leaves its flight registered until the next frame, and a counter that
+// restarted at zero with each session would hand the new guide a number the dead one is
+// still holding — letting the dead flight's abort speak for the live guide.
+let _guideFlightSeq = 0;
+
+// What the guide publishes when it settles on a step: the step's display, minus the
+// overlays if the learner has hidden them. Both settle points — landing and being
+// abandoned — go through here, because the toggle can be pressed mid-flight and its
+// answer must survive whichever way the flight ends.
+function _guideApplied() {
+  return _gs.overlaysHidden ? displayWithoutOverlays(_gs.stepDisplay) : _gs.stepDisplay;
+}
 
 function _guideDraw() { explore.quiz = null; requestExploreDraw(); }
 
@@ -424,20 +442,42 @@ function guideGoTo(i, immediate) {
     _guideDraw();
     guideDrawAnnotation(explore.stepDisplay);
 
+    // Each flight closes over its own number so its abort can tell whether it is still
+    // the flight in the air. Starting a flight stops the one before it, and `animating`
+    // is already true for THIS step by then — an unguarded abort from the outgoing
+    // flight would clear the incoming one's flag and leave the nav up all through the
+    // transition.
+    const flight = _gs.flight = ++_guideFlightSeq;
+
     guideAnimateTo(s, null, () => guideDrawAnnotation(explore.stepDisplay), () => {
       if (!_gs) return;
-      _gs.applied = _gs.stepDisplay;
+      _gs.applied = _guideApplied();
       _guidePublish();
       _guideDraw();
       guideDrawAnnotation(explore.stepDisplay);
       _gs.animating = false;
       _guideRenderUI();
-    }, () => !!_gs);
+    }, () => !!_gs, () => {
+      // Abandoned, not arrived: the learner grabbed the sky, or the guide was torn down
+      // under the flight. The camera stays exactly where it was left — restoring it is
+      // the one thing an interrupt must never do — and the guide settles onto the step
+      // it was flying to: still on that step, just looking around. Which means the nav
+      // comes back, and the transition intersection gives way to the step's own display
+      // so Hide overlays toggles against what the caption describes (issue #60).
+      if (!_gs || _gs.flight !== flight) return;
+      _gs.animating = false;
+      _gs.applied   = _guideApplied();
+      _guidePublish();
+      _guideDraw();
+      guideDrawAnnotation(explore.stepDisplay);
+      _guideRenderUI();
+    });
   }
 }
 
 function guideStart(steps, catalog, options = {}) {
   _gs = { steps, catalog, idx: -1, animating: false,
+          flight: 0,                // which flight is in the air (see _guideFlightSeq)
           stepDisplay: null,        // the full display of steps[idx]
           applied: null,            // what is actually published — full, intersection, or bare photo
           overlaysHidden: false,    // the learner's Hide overlays toggle
