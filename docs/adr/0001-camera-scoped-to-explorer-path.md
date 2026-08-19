@@ -2,6 +2,12 @@
 
 Status: Accepted (2026-07-27)
 
+> **Terminology note (2026-08-19, #78).** Where this record says "the quiz canvas" it means
+> the canvas on the **identify screen** — the surface was named `quiz` when this was written
+> and is `#screen-identify` now. The decision and its reasoning are unchanged; the body is
+> left as accepted rather than rewritten. See CONTEXT.md for why the two words are not
+> interchangeable.
+
 ## Context
 
 `makeCamera` (js/projection.js) unified the rolled TAN projection used by the explorer,
