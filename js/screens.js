@@ -63,17 +63,19 @@ let _history = null;    // { push(hash), replace(hash) }
 let _setScreen = null;  // (screenName) => void
 let _actions = {};      // { routeName: (param) => void }
 let _exits = {};        // { routeName: () => void } — fired when the route is left
+let _detours = {};      // { routeName: (param) => void } — how that route comes back
 
 // ── Live state ──────────────────────────────────────────────────────────────
 let _route_ = null;     // the current route value
 let _screen = null;     // the screen currently active
 let _detour = null;     // { route, resume, departed } while a detour is in flight
 
-function initRouter({ history, setScreen, actions, exits } = {}) {
+function initRouter({ history, setScreen, actions, exits, detours } = {}) {
   _history = history;
   _setScreen = setScreen;
   _actions = actions || {};
   _exits = exits || {};
+  _detours = detours || {};
   _route_ = null;
   _screen = null;
   _detour = null;
@@ -134,6 +136,25 @@ function _enter(hash, inApp, write) {
 // that a level check never wrote.
 function beginDetour(resume) {
   _detour = { route: _route_, resume, departed: false };
+}
+
+// Start a detour back to wherever we are, if this is a place that comes back. Which
+// routes do, and what coming back means for each, is declared once at boot in the
+// `detours` table — beside the enter and exit actions, because it is the same kind of
+// fact about a route. A route with no entry there is one the learner is simply left
+// away from: the explorer, for instance.
+//
+// This replaces callers deciding for themselves by asking which SCREEN was showing.
+// That question could not tell a lesson question from the constellation viewer, which
+// borrowed the quiz screen — so leaving a finding guide opened from the viewer
+// re-rendered the lesson's current question over it (issues #69, #74).
+function beginDetourFromRoute() {
+  const route = _route_;
+  const resume = route && _detours[route.name];
+  if (!resume) return false;
+  const param = route.param;
+  beginDetour(() => resume(param));
+  return true;
 }
 
 function inDetour() { return !!_detour; }

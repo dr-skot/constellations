@@ -65,6 +65,19 @@ function _initRouting() {
       settings: () => { if (typeof refreshSettings === 'function') refreshSettings(); },
       calibration: () => startCalibration(),
     },
+    // How a route comes back from a detour — a finding guide opened from it, today.
+    // A route absent here does not come back: the explorer leaves the learner where
+    // the guide put them. endDetour deliberately does not re-run enter actions, which
+    // is why each of these says what re-rendering means for itself: re-entering a
+    // lesson would try to resume from storage a level check never wrote.
+    detours: {
+      lesson:      () => { showScreen('quiz'); showLessonQuestion(); },
+      calibration: () => { showScreen('quiz'); showLessonQuestion(); },
+      view:        abbr => {
+        const con = C.find(c => c.abbr === abbr);
+        if (con) { showScreen('view'); showViewer(con); }
+      },
+    },
     exits: {
       // Leaving the level check leaves calibration mode, so a probe exit via a
       // breadcrumb or the gear (not just Quit) can't leak the flag into a later
@@ -314,21 +327,19 @@ document.addEventListener('DOMContentLoaded', () => {
     navigate('explore/' + abbr);
   });
 
-  // "Finding guide →" — jump into the explorer for this constellation and start
-  // its guided walkthrough. When opened from the quiz (the info link on an answered
-  // question or a level-check probe), the guide is a detour: on finish, return to
-  // the quiz at the same question rather than leaving the learner in explore (#35).
+  // "Finding guide →" — jump into the explorer for this constellation and start its
+  // guided walkthrough. Whether that trip means to come back, and what coming back
+  // looks like, is a property of the route being left, declared in the router's
+  // detours table: a lesson question or a level-check probe returns to that question
+  // (#35), the constellation viewer returns to the viewer (#74), and the explorer
+  // opens no detour at all. The departure is then not a departure, which is why the
+  // level-check flag needs no saving and restoring across it.
   modalGuideLink.addEventListener('click', e => {
     e.preventDefault();
     const con = C.find(c => c.abbr === modalAbbrCurrent);
-    const fromQuiz = currentScreen() === 'quiz';
     closeConModal();
     if (!con) return;
-    // From the quiz the guide is a DETOUR: record the route being left and how to
-    // re-render it, so finishing the guide returns to the same question. The
-    // departure below is then not a departure, which is why the level-check flag
-    // needs no saving and restoring across it.
-    if (fromQuiz) beginDetour(() => { showScreen('quiz'); showLessonQuestion(); });
+    beginDetourFromRoute();
     navigate('explore/' + con.abbr);
     startFindGuide(con);
   });

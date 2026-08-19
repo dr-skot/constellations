@@ -326,6 +326,94 @@ function mkRouter() {
     inDetour() === false && !rec.exits.includes('calibration'));
 }
 
+// ---- which routes come back, and how (issue #74) ---------------------------
+// Whether a departure means to come back is a property of the ROUTE being left, and
+// what to do on the way back differs per route. It used to be decided by asking which
+// SCREEN was showing and treating "the quiz screen" as "mid-question" — true in the
+// constellation viewer too, which is why leaving a finding guide re-rendered the
+// lesson's current question over the viewer (issue #69).
+//
+// The resume thunks are injected like the enter and exit actions, so the router can be
+// asked to start a detour without being told what coming back means.
+function mkDetourRouter() {
+  const rec = mkRouter();
+  rec.resumed = [];
+  initRouter({
+    history: { push: h => rec.hist.push(['push', h]), replace: h => rec.hist.push(['replace', h]) },
+    setScreen: s => rec.screens.push(s),
+    actions: { view: p => rec.fired.push('view:' + p), lesson: () => rec.fired.push('lesson'),
+               calibration: () => rec.fired.push('calibration'), explore: () => rec.fired.push('explore'),
+               exploreCon: p => rec.fired.push('exploreCon:' + p), course: () => rec.fired.push('course') },
+    exits: { calibration: () => rec.exits.push('calibration') },
+    detours: {
+      lesson:      () => rec.resumed.push('question'),
+      calibration: () => rec.resumed.push('probe'),
+      view:        param => rec.resumed.push('viewer:' + param),
+    },
+  });
+  return rec;
+}
+
+{
+  // The viewer comes back as the viewer, with the constellation it was showing.
+  const rec = mkDetourRouter();
+  navigate('view/Ori');
+  beginDetourFromRoute();
+  check('a detour from the viewer is in flight', inDetour() === true);
+  navigate('explore/Ori');                       // into the finding guide
+  endDetour();
+  check('leaving a guide opened from the viewer restores its hash',
+    rec.lastHist().join() === 'replace,view/Ori', String(rec.lastHist()));
+  check('and re-renders the VIEWER, not a lesson question',
+    rec.resumed.join() === 'viewer:Ori', rec.resumed.join());
+}
+
+{
+  // A lesson question comes back as that question (issue #35), unchanged.
+  const rec = mkDetourRouter();
+  navigate('lesson');
+  beginDetourFromRoute();
+  navigate('explore/Ori');
+  endDetour();
+  check('leaving a guide opened from a lesson returns to the question',
+    rec.resumed.join() === 'question' && rec.lastHist().join() === 'replace,lesson',
+    `${rec.resumed.join()} / ${rec.lastHist()}`);
+}
+
+{
+  // A level-check probe likewise.
+  const rec = mkDetourRouter();
+  navigate('calibration');
+  beginDetourFromRoute();
+  navigate('explore/Ori');
+  endDetour();
+  check('leaving a guide opened from a probe returns to the probe',
+    rec.resumed.join() === 'probe', rec.resumed.join());
+}
+
+{
+  // From the explorer there is nowhere to come back to: no detour at all, so the
+  // learner is simply left where the guide put them.
+  const rec = mkDetourRouter();
+  navigate('explore');
+  beginDetourFromRoute();
+  check('a guide opened from the explorer opens no detour', inDetour() === false);
+  navigate('explore/Ori');
+  endDetour();
+  check('and ending one that never began changes nothing', rec.resumed.join() === '');
+}
+
+{
+  // Abandoning it still behaves: navigating on cancels, and the deferred exit fires.
+  const rec = mkDetourRouter();
+  navigate('calibration');
+  beginDetourFromRoute();
+  navigate('explore/Ori');
+  navigate('course');
+  check('a route-chosen detour is still cancelled by navigating on',
+    inDetour() === false && rec.exits.includes('calibration') && rec.resumed.join() === '');
+}
+
 console.log('');
 if (failures.length === 0) { console.log('✅ ALL PASSED'); process.exit(0); }
 else { console.log(`❌ ${failures.length} FAILURE(S)`); process.exit(1); }
