@@ -168,7 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  initRevealToggles();
+  // The quiz's reveal panel builds its own picture and toggles, and mounts itself on
+  // first use (quizPanel in js/quiz.js) — there is nothing to initialise here.
   initCourseDetail();
   initCalibration();
 

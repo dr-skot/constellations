@@ -386,7 +386,7 @@ function initCourseDetail() {
 function viewConstellation(con) {
   settings.mode = 'diagram';
   revState.photo = false;
-  if (_revToggleGroup) _revToggleGroup.setValue('photo', false);
+  quizPanel().setLayer('photo', false);
   session.questions = [{ con, type: 'identify', mode: 'diagram' }];
   session.idx = 0;
   session.answered = true;
@@ -397,18 +397,16 @@ function viewConstellation(con) {
   document.getElementById('quiz-breadcrumb').style.display = '';
   const quizScreen = document.getElementById('screen-quiz');
   quizScreen.classList.add('viewer-mode');
-  document.getElementById('canvas-wrap').classList.add('quiz-circle');
   document.getElementById('con-select-viewer-input').value = con.name;
   document.getElementById('feedback').innerHTML = conLabel(con);
   showScreen('quiz');
-  const canvas = document.getElementById('quiz-canvas');
-  const sz = document.getElementById('canvas-wrap').offsetWidth;
-  const px = sz * displayScale();
-  sizeCanvas(canvas, px, px);
-  canvas.style.display = 'block';
-  document.getElementById('photo-box').classList.remove('show');
-  document.getElementById('photo-img').classList.remove('show');
-  // Still routed through the quiz's intent, because the viewer is still disguised as
-  // a pre-answered question at this point. Issue #73 gives it its own.
-  startReveal(con, quizRevealIntent());
+  // Still the QUIZ's panel and the quiz's intent, because the viewer is still
+  // disguised as a pre-answered question at this point. Issue #73 gives it its own.
+  const panel = quizPanel();
+  panel.circular(true);
+  panel.resize();
+  panel.canvas.style.display = 'block';
+  panel.photoBox.classList.remove('show');
+  panel.photoImg.classList.remove('show');
+  panel.showReveal(con, quizRevealIntent());
 }

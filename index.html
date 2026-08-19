@@ -77,19 +77,13 @@
         </div>
       </div>
       <div class="screen-body">
-        <div id="canvas-area">
-          <div id="canvas-wrap">
-            <canvas id="quiz-canvas"></canvas>
-            <div id="photo-box">
-              <img id="photo-img" alt="Night sky photograph">
-              <div id="photo-msg">Loading DSS sky photograph…</div>
-            </div>
-          </div>
-          <div id="art-credit"></div>
-        </div>
+        <!-- The picture and the layer toggles are built by createRevealPanel
+             (js/reveal-panel.js) into these two hosts. Two hosts because the toggles
+             share the question label's grid slot, so revealing an answer shifts
+             nothing. The constellation viewer mounts a panel of its own. -->
+        <div id="quiz-picture"></div>
         <div id="quiz-label-area">
           <p class="q-label">What constellation is this?</p>
-          <div id="reveal-controls" class="toggle-group"></div>
         </div>
         <div class="ans-grid" id="ans-grid"></div>
         <div id="autocomplete-area" style="display:none">
@@ -272,6 +266,7 @@
   <script src="js/projection.js?v=1787105104203"></script>
   <script src="js/reveal.js?v=1787105104203"></script>
   <script src="js/render.js?v=1787105104203"></script>
+  <script src="js/reveal-panel.js?v=1787105104203"></script>
   <script src="js/lesson-session.js?v=1787105104203"></script>
   <script src="js/quiz.js?v=1787105104203"></script>
   <script src="js/explore-gl.js?v=1787105104203"></script>

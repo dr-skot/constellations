@@ -13,6 +13,33 @@ function currentCon() {
   return q ? q.con : null;
 }
 
+// ── The quiz's panel ─────────────────────────────────────────────────────────
+// One panel, mounted on first use into the two hosts the quiz screen provides: the
+// picture above, the toggles sharing the question label's slot below. The viewer
+// mounts its own (issue #73), which is the whole reason this is a component.
+let _quizPanel = null;
+function quizPanel() {
+  if (!_quizPanel) {
+    _quizPanel = createRevealPanel({
+      picture: document.getElementById('quiz-picture'),
+      controls: document.getElementById('quiz-label-area'),
+      layers: revState,
+      onLayerChange(value, on) {
+        revState[value] = on;
+        saveLessonSession();
+        // Only a reveal already on screen redraws — the panel knows whether there is
+        // one, which is what the lesson session used to be asked.
+        if (!_quizPanel.shownIntent()) return;
+        const redraw = () => _quizPanel.redraw(quizRevealIntent());
+        const img = _quizPanel.photoImg;
+        if (value === 'photo' && (!img.complete || img.naturalWidth === 0)) img.onload = redraw;
+        else redraw();
+      },
+    });
+  }
+  return _quizPanel;
+}
+
 // The reveal the QUIZ is asking for: its own toggles, the quiz mode, this question's
 // rotation, and the learner's chosen star-figure set. The painter adds what only it
 // knows — whether the photograph and artwork have loaded — and resolves the two into
@@ -36,12 +63,8 @@ function redrawQuizFigure() {
   const q = session.questions[session.idx];
   if (!q) return;
   const con = q.con;
-  if (session.answered) { redrawReveal(con, quizRevealIntent()); return; }
-  const canvas = document.getElementById('quiz-canvas');
-  if (!canvas) return;
-  clearReveal();                     // an unanswered question is not a reveal
-  if (settings.mode === 'photo') showPhotoMode(con, session.rotation);
-  else renderCanvas(canvas, con, settings.mode, false, session.rotation);
+  if (session.answered) { quizPanel().redraw(quizRevealIntent(), con); return; }
+  quizPanel().showFigure(con, { mode: settings.mode, rotation: session.rotation });
 }
 
 // Thin adapters over the pure round-trip in js/lesson-session.js. This layer owns
@@ -72,7 +95,7 @@ function tryResumeLesson() {
     if (restored.revState) {
       for (const k of Object.keys(restored.revState)) {
         revState[k] = restored.revState[k];
-        if (_revToggleGroup) _revToggleGroup.setValue(k, restored.revState[k]);
+        quizPanel().setLayer(k, restored.revState[k]);
       }
     }
     if (restored.eqRevState) {
@@ -127,23 +150,21 @@ function showLessonQuestion() {
   const isAuto = q.answerMode === 'autocomplete';
 
   document.getElementById('feedback').textContent = '';
-  document.getElementById('art-credit').innerHTML = '';
-  document.getElementById('reveal-controls').classList.remove('show');
+  quizPanel().clear();
   // Reset reveal toggles to all-on only for unanswered questions
-  if (!hist && _revToggleGroup) {
+  if (!hist) {
     for (const k of ['photo', 'diagram', 'art', 'boundary']) {
       revState[k] = true;
-      _revToggleGroup.setValue(k, true);
+      quizPanel().setLayer(k, true);
     }
   }
   document.getElementById('btn-next').classList.remove('show');
 
-  const canvas = document.getElementById('quiz-canvas');
-  const box = document.getElementById('photo-box');
-  box.classList.remove('show');
-  document.getElementById('photo-img').classList.remove('show');
-  canvas.style.display = 'block';
-  document.getElementById('canvas-wrap').classList.add('quiz-circle');
+  const panel = quizPanel();
+  panel.photoBox.classList.remove('show');
+  panel.photoImg.classList.remove('show');
+  panel.canvas.style.display = 'block';
+  panel.circular(true);
 
   if (hist) {
     session.answered = true;
@@ -160,16 +181,12 @@ function showLessonQuestion() {
     if (!session.calibration) recordSeen(q.con.abbr, questionKey(q));
   }
 
-  const sz = document.getElementById('canvas-wrap').offsetWidth;
-  const px = sz * displayScale();
-  sizeCanvas(canvas, px, px);   // only when it changed — see sizeCanvas (projection.js)
+  panel.resize();   // only when it changed — see sizeCanvas (projection.js)
 
-  clearReveal();                     // the question is drawn first; a reveal may follow
-  if (settings.mode === 'photo') {
-    showPhotoMode(con, session.rotation);
-  } else {
-    renderCanvas(canvas, con, settings.mode, false, session.rotation);
-  }
+  // The question is drawn first; a reveal may follow. showFigure also clears the
+  // panel's record of what it is showing, so a late image cannot paint a reveal over
+  // a question the learner has not answered.
+  panel.showFigure(con, { mode: settings.mode, rotation: session.rotation });
 
   const grid = document.getElementById('ans-grid');
   const autoArea = document.getElementById('autocomplete-area');
@@ -209,7 +226,7 @@ function showLessonQuestion() {
     document.getElementById('feedback').innerHTML = hist.wasCorrect
       ? `✓ Correct! — ${conLabel(con)}`
       : `✗ That was ${conLabel(con)}`;
-    startReveal(con, quizRevealIntent());
+    quizPanel().showReveal(con, quizRevealIntent());
     document.getElementById('btn-next').classList.add('show');
   } else if (!isAuto) {
     grid.innerHTML = '';
@@ -274,7 +291,7 @@ function handleAnswer(chosen, correct) {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
 
-  startReveal(correct, quizRevealIntent());
+  quizPanel().showReveal(correct, quizRevealIntent());
 
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
@@ -305,7 +322,7 @@ function handleAutocompleteAnswer() {
   } else {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
-  startReveal(correct, quizRevealIntent());
+  quizPanel().showReveal(correct, quizRevealIntent());
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
   saveLessonSession();

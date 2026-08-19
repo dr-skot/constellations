@@ -12,8 +12,8 @@
 /* Course map */
 .course-header { text-align:center; padding:20px 0 8px; }
 .course-header h1 { font-size:1.4rem; }
-#canvas-wrap.quiz-circle { border-radius: 50%; }
-#art-credit { position:absolute; bottom:6px; right:8px; font-size:.65rem;
+.con-canvas-wrap.con-circle { border-radius: 50%; }
+.con-art-credit { position:absolute; bottom:6px; right:8px; font-size:.65rem;
               color:rgba(255,255,255,0.35); pointer-events:none;
               text-align:right; line-height:1.4; }
 .viewer-row { display:flex; gap:8px; justify-content:center; margin-top:10px; }

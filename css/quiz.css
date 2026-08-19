@@ -47,7 +47,12 @@
   transition: width .35s
 }
 
-#canvas-area {
+/* The panel's host is a mounting point, not a layout box: the picture area the
+   component builds has to be the flex child of the screen body, exactly as the markup
+   it replaced was. */
+#quiz-picture { display: contents; }
+
+.con-canvas-area {
   position: relative;
   /* Cap the circle's height (basis) so it can't spread on tall windows; grow:0 keeps it
      from filling, shrink:1 + min-height:0 still lets it shrink on short windows. (#16) */
@@ -65,7 +70,7 @@
    `safe` center falls back to top-aligned (no clipping) when content exceeds a short window. */
 #screen-quiz { justify-content: safe center; }
 #screen-quiz .screen-body { flex: 0 1 auto; }
-#canvas-wrap {
+.con-canvas-wrap {
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -85,7 +90,7 @@ canvas {
   height: 100%
 }
 
-#photo-box {
+.con-photo-box {
   display: none;
   position: absolute;
   inset: 0;
@@ -96,11 +101,11 @@ canvas {
   gap: 12px
 }
 
-#photo-box.show {
+.con-photo-box.show {
   display: flex
 }
 
-#photo-img {
+.con-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -108,11 +113,11 @@ canvas {
   border-radius: inherit
 }
 
-#photo-img.show {
+.con-photo.show {
   display: block
 }
 
-#photo-msg {
+.con-photo-msg {
   color: var(--dim);
   font-size: .82rem;
   text-align: center;
@@ -140,7 +145,7 @@ canvas {
   letter-spacing: .1em
 }
 
-#quiz-label-area:has(#reveal-controls.show) .q-label {
+#quiz-label-area:has(.con-toggles.show) .q-label {
   visibility: hidden
 }
 
@@ -248,12 +253,12 @@ canvas {
   color: var(--text)
 }
 
-#reveal-controls {
+.con-toggles {
   visibility: hidden;
   pointer-events: none
 }
 
-#reveal-controls.show {
+.con-toggles.show {
   visibility: visible;
   pointer-events: auto
 }

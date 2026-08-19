@@ -4,36 +4,11 @@
 
 const artCache = {};  // abbr -> HTMLImageElement | 'loading' | 'error'
 
-// ── Reveal controls state (driven by toggle group) ──
+// ── Reveal controls state ──
+// The quiz's layer choices, persisted with its lesson session. The buttons that
+// drive them belong to the panel showing the reveal (js/reveal-panel.js); the
+// constellation viewer will keep its own state rather than share this one (#73).
 const revState = { photo: true, diagram: true, art: true, boundary: true };
-let _revToggleGroup = null;
-
-function initRevealToggles() {
-  _revToggleGroup = createToggleGroup(document.getElementById('reveal-controls'), {
-    buttons: [
-      { label: 'Photo', value: 'photo', on: true },
-      { label: 'Diagram', value: 'diagram', on: true },
-      { label: 'Art', value: 'art', on: true },
-      { label: 'Bounds', value: 'boundary', on: true },
-    ],
-    onChange(value, on) {
-      revState[value] = on;
-      saveLessonSession();
-      // Only a reveal already on screen redraws. Asking the painter what it is
-      // showing replaces asking the lesson session whether a question was answered.
-      if (!_shownReveal) return;
-      const con = _shownReveal.con;
-      const redraw = () => redrawReveal(con, quizRevealIntent());
-      if (value === 'photo') {
-        const img = document.getElementById('photo-img');
-        if (!img.complete || img.naturalWidth === 0) img.onload = redraw;
-        else redraw();
-      } else {
-        redraw();
-      }
-    },
-  });
-}
 
 function drawBackground(ctx, W, H, con, starField) {
   const bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.hypot(W, H) / 2);
@@ -204,7 +179,9 @@ function showArtworkMode(canvas, con, showLabels = false) {
 // drawArtwork: composites the artwork image over the existing canvas content.
 // angle (radians): if set, rotate anchor points around canvas centre so the
 // artwork follows the same rotation as the rest of the scene.
-function drawArtwork(canvas, con, img, showLabels = false, angle = 0) {
+// creditEl belongs to the panel that owns the canvas (js/reveal-panel.js) — the credit
+// has to land next to the artwork it credits, and a panel is what knows where that is.
+function drawArtwork(canvas, con, img, showLabels = false, angle = 0, creditEl = null) {
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   const art = ART[artSrc(con.abbr)];
@@ -237,16 +214,17 @@ function drawArtwork(canvas, con, img, showLabels = false, angle = 0) {
     drawLabels(ctx, starProj, W);
   }
 
-  const creditEl = document.getElementById('art-credit');
   if (creditEl) creditEl.innerHTML = 'Art: Johan Meuris<br>Free Art Licence';
-
 }
 
-function showPhotoMode(con, angle = 0) {
-  const canvas = document.getElementById('quiz-canvas');
-  const box = document.getElementById('photo-box');
-  const img = document.getElementById('photo-img');
-  const msg = document.getElementById('photo-msg');
+// A photo-mode question: the photograph itself, shown in front of the canvas rather
+// than painted into it, so it can be rotated by CSS. The elements come from the panel
+// that owns them (js/reveal-panel.js).
+function showPhotoMode(con, angle = 0, panel) {
+  const canvas = panel.canvas;
+  const box = panel.photoBox;
+  const img = panel.photoImg;
+  const msg = panel.photoMsg;
 
   canvas.style.display = 'none';
   box.classList.add('show');
@@ -402,31 +380,18 @@ function popoverPosition(card, pop, vp, opts = {}) {
   return { left, top, above: !below, arrow };
 }
 
-// ── The reveal on screen ──────────────────────────────────────────────────────
-// What the painter is currently showing, or null. A photograph and an artwork both
-// load late and then ask to be drawn; the question they must answer is "is this
-// still the reveal on screen?", and this is what answers it. It used to be asked as
-// "is this the current question, and has it been answered?" — a question about the
-// lesson session, which is what stopped the viewer from sharing the reveal without
-// faking one (issue #71).
-let _shownReveal = null;
-
-function revealShowing(con) { return !!_shownReveal && _shownReveal.con === con; }
-function clearReveal() { _shownReveal = null; }
-
-// Paint a reveal. `intent` is the caller's half of the decision — which layers, which
-// quiz mode, what rotation, which star-figure set — and this adds the half only the
-// painter knows: whether the photograph and the artwork have actually loaded.
-// resolveReveal (js/reveal.js) merges them into the flags below.
-function redrawReveal(con, intent) {
+// Paint a reveal into a panel's elements. `intent` is the caller's half of the
+// decision — which layers, which quiz mode, what rotation, which star-figure set —
+// and this adds the half only the painter knows: whether the photograph and the
+// artwork have actually loaded. resolveReveal (js/reveal.js) merges them into the
+// flags below. Which reveal is on screen, and what to do when a late image lands,
+// belong to the panel (js/reveal-panel.js), not here.
+function paintReveal({ canvas, photoImg, creditEl }, con, intent) {
   const origAbbr = con.abbr;
-  const creditEl = document.getElementById('art-credit');
   if (creditEl) creditEl.textContent = '';
-  const canvas = document.getElementById('quiz-canvas');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   const artImg = artCache[artSrc(origAbbr)] instanceof HTMLImageElement ? artCache[artSrc(origAbbr)] : null;
-  const photoImg = document.getElementById('photo-img');
 
   const reveal = resolveReveal({
     layers: intent.layers,
@@ -436,7 +401,6 @@ function redrawReveal(con, intent) {
     photoReady: !!(photoImg && photoImg.complete && photoImg.naturalWidth > 0),
     artReady: !!artImg,
   });
-  _shownReveal = { con, intent };
 
   const showBound = reveal.showBounds;
   const showDiag = reveal.showLines;
@@ -458,7 +422,7 @@ function redrawReveal(con, intent) {
   }
 
   // Artwork overlay — same for all modes
-  if (reveal.showArt) drawArtwork(canvas, con, artImg, false, angle);
+  if (reveal.showArt) drawArtwork(canvas, con, artImg, false, angle, creditEl);
 
   // Lines and stars — selected star-figure (dcon), framed by con.
   const dcon = diagramFor(con, reveal.source);
@@ -594,7 +558,11 @@ function redrawReveal(con, intent) {
   }
 }
 
-function ensureArtLoaded(con) {
+// Load a constellation's artwork once, and tell the caller when it lands — the
+// caller being the panel, which knows whether the reveal it belongs to is still on
+// screen. Artwork that arrives after the learner has moved on must not paint over
+// what replaced it.
+function ensureArtLoaded(con, onLoaded) {
   const src = artSrc(con.abbr);
   const art = ART[src];
   if (!art || artCache[src]) return;
@@ -602,40 +570,10 @@ function ensureArtLoaded(con) {
   const img = new Image();
   img.onload = () => {
     artCache[src] = img;
-    // Artwork that arrives after the learner has moved on must not paint over what
-    // replaced it — so the question is what the painter is showing, nothing else.
-    if (revealShowing(con)) redrawReveal(con, _shownReveal.intent);
+    if (onLoaded) onLoaded();
   };
   img.onerror = () => { artCache[src] = 'error'; };
   img.src = art.url;
-}
-
-function startReveal(con, intent) {
-  // For photo mode, swap photo-box → canvas
-  if (intent.mode === 'photo') {
-    document.getElementById('photo-box').classList.remove('show');
-    const img = document.getElementById('photo-img');
-    img.classList.remove('show');
-    img.style.transform = '';
-    document.getElementById('quiz-canvas').style.display = 'block';
-  }
-  // Show/hide toggle buttons for unavailable layers
-  if (_revToggleGroup) {
-    const btns = _revToggleGroup.getButtons();
-    for (const b of btns) {
-      if (b.dataset.value === 'art') b.style.display = ART[artSrc(con.abbr)] ? '' : 'none';
-      if (b.dataset.value === 'boundary') b.style.display = BOUNDS[con.abbr] ? '' : 'none';
-    }
-  }
-  const photoImg = document.getElementById('photo-img');
-  if (photoImg.dataset.abbr !== con.abbr) {
-    photoImg.dataset.abbr = con.abbr;
-    photoImg.onload = () => { if (revealShowing(con)) redrawReveal(con, _shownReveal.intent); };
-    photoImg.src = photoUrl(con);
-  }
-  document.getElementById('reveal-controls').classList.add('show');
-  redrawReveal(con, intent);
-  ensureArtLoaded(con);
 }
 
 function conLabel(con) {
