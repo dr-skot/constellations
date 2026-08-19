@@ -55,9 +55,15 @@ function mkRouter() {
   check('parseRoute: explore', parseRoute('explore').name === 'explore' && parseRoute('explore').screen === 'explore');
   check('parseRoute: explore/<abbr> carries its parameter',
     parseRoute('explore/Ori').name === 'exploreCon' && parseRoute('explore/Ori').param === 'Ori');
-  check('parseRoute: view/<abbr> carries its parameter and shows the quiz screen',
+  // The constellation viewer is its own screen (issue #73). It used to declare the
+  // quiz screen, which made "am I in a quiz?" answerable only wrongly: the viewer
+  // borrowed the screen, wrote a one-question lesson session and marked it answered.
+  check('parseRoute: view/<abbr> carries its parameter and shows the viewer screen',
     parseRoute('view/Ori').name === 'view' && parseRoute('view/Ori').param === 'Ori'
-    && parseRoute('view/Ori').screen === 'quiz');
+    && parseRoute('view/Ori').screen === 'view');
+  check('parseRoute: only a real quiz declares the quiz screen',
+    ['course', 'explore', 'explore/Ori', 'view/Ori', 'settings']
+      .every(h => parseRoute(h).screen !== 'quiz'));
   check('parseRoute: lesson is flow-owned (declares no screen)',
     parseRoute('lesson').name === 'lesson' && parseRoute('lesson').screen === null);
   check('parseRoute: calibration is flow-owned (declares no screen)',
@@ -91,12 +97,12 @@ function mkRouter() {
 }
 
 // ---- the screen is applied BEFORE the enter action runs ---------------------
-// The constellation viewer measures #canvas-wrap, which has no layout while its
-// screen is inactive — so this ordering is load-bearing, not cosmetic.
+// The constellation viewer measures its picture, which has no layout while its screen
+// is inactive — so this ordering is load-bearing, not cosmetic.
 {
   const rec = mkRouter();
   navigate('view/Ori');
-  check('the enter action observes its screen already active', rec.seenScreen.join() === 'quiz');
+  check('the enter action observes its screen already active', rec.seenScreen.join() === 'view');
 }
 
 // ---- redirects replace, never push -----------------------------------------

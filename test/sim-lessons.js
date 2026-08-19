@@ -305,7 +305,6 @@ check('questionKey: find/photo noBounds:true → find/photo-nb',
   ];
   session.lessonIdx = 0;
   session.lessonLabel = 'Test Lesson';
-  session.viewMode = false;
 
   saveLessonSession();
 

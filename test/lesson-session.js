@@ -42,7 +42,6 @@ function snapshotRestored(r) {
     correct: r.correct,
     lessonIdx: 0,          // adapter always sets this; capture snapshot has it too
     answered: false,
-    viewMode: false,
     questions: r.questions.map(q => ({
       abbr: q.con.abbr, type: q.type, mode: q.mode, answerMode: q.answerMode ?? null,
       distanceLevel: q.distanceLevel ?? null, noBounds: q.noBounds ?? null,

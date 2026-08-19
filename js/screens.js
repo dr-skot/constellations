@@ -22,7 +22,10 @@ const ROUTES = [
   { name: 'course',      screen: 'start'  },
   { name: 'explore',     screen: 'explore' },
   { name: 'exploreCon',  screen: 'explore', prefix: 'explore/' },
-  { name: 'view',        screen: 'quiz',    prefix: 'view/' },
+  // The constellation viewer, on a screen of its own. It used to declare the quiz
+  // screen and write a pre-answered one-question lesson session to borrow the reveal,
+  // which made currentScreen() === 'quiz' true in a place that is not a quiz (#73).
+  { name: 'view',        screen: 'view',    prefix: 'view/' },
   { name: 'lesson',      screen: null     },
   { name: 'result',      screen: 'result',  transient: true },
   { name: 'settings',    screen: 'settings' },

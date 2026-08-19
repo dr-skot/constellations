@@ -60,12 +60,6 @@
           <div id="quiz-breadcrumb" style="display:none">
             <a href="#" id="quiz-breadcrumb-course">Course</a> › <span id="quiz-breadcrumb-stage"></span>
           </div>
-          <div id="viewer-select-row">
-            <div id="viewer-search-inline">
-              <input type="text" id="con-select-viewer-input" list="con-search-list" placeholder="Find constellation…" autocomplete="off">
-              <button id="btn-viewer-go">View ›</button>
-            </div>
-          </div>
         </div>
         <div class="hud">
           <span id="hud-progress">1 / 10</span>
@@ -99,6 +93,27 @@
       <div class="nav-row screen-ftr">
         <button class="btn-prev" id="btn-prev">← Previous</button>
         <button class="btn-next" id="btn-next">Next →</button>
+      </div>
+    </div>
+
+    <!-- The constellation viewer: its own screen, not the quiz's with the quiz hidden
+         (issue #73). Its picture and layer toggles are a reveal panel of its own. -->
+    <div id="screen-view" class="screen">
+      <div id="view-hdr">
+        <div id="view-hdr-row">
+          <div id="view-breadcrumb">
+            <a href="#" id="view-breadcrumb-course">Course</a> › <span id="view-breadcrumb-stage"></span>
+          </div>
+          <div id="view-picker">
+            <input type="text" id="view-picker-input" list="con-search-list" placeholder="Find constellation…" autocomplete="off">
+            <button id="view-picker-go">View ›</button>
+          </div>
+        </div>
+      </div>
+      <div class="screen-body">
+        <div id="view-picture"></div>
+        <div id="view-controls"></div>
+        <div id="view-caption"></div>
       </div>
     </div>
 
@@ -267,6 +282,7 @@
   <script src="js/reveal.js?v=1787105104203"></script>
   <script src="js/render.js?v=1787105104203"></script>
   <script src="js/reveal-panel.js?v=1787105104203"></script>
+  <script src="js/viewer.js?v=1787105104203"></script>
   <script src="js/lesson-session.js?v=1787105104203"></script>
   <script src="js/quiz.js?v=1787105104203"></script>
   <script src="js/explore-gl.js?v=1787105104203"></script>

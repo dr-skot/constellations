@@ -99,9 +99,7 @@ function startLesson() {
   session.idx = 0; session.correct = 0; session.answered = false;
   session.history = []; session.lessonIdx = 0;
   session.lessonLabel = label;
-  session.viewMode = false;
   session.calibration = false;
-  document.getElementById('screen-quiz').classList.remove('viewer-mode');
   document.getElementById('quiz-breadcrumb-stage').textContent = label;
   document.getElementById('quiz-breadcrumb').style.display = '';
   saveLessonSession();
@@ -379,34 +377,6 @@ function initCourseDetail() {
   window.addEventListener('resize', closeCourseDetail);
 }
 
-// ═══════════════════════════════════════════════════════════
-// CONSTELLATION VIEWER
-// ═══════════════════════════════════════════════════════════
-
-function viewConstellation(con) {
-  settings.mode = 'diagram';
-  revState.photo = false;
-  quizPanel().setLayer('photo', false);
-  session.questions = [{ con, type: 'identify', mode: 'diagram' }];
-  session.idx = 0;
-  session.answered = true;
-  session.rotation = 0;
-  session.lessonIdx = null;
-  session.viewMode = true;
-  document.getElementById('quiz-breadcrumb-stage').textContent = con.name;
-  document.getElementById('quiz-breadcrumb').style.display = '';
-  const quizScreen = document.getElementById('screen-quiz');
-  quizScreen.classList.add('viewer-mode');
-  document.getElementById('con-select-viewer-input').value = con.name;
-  document.getElementById('feedback').innerHTML = conLabel(con);
-  showScreen('quiz');
-  // Still the QUIZ's panel and the quiz's intent, because the viewer is still
-  // disguised as a pre-answered question at this point. Issue #73 gives it its own.
-  const panel = quizPanel();
-  panel.circular(true);
-  panel.resize();
-  panel.canvas.style.display = 'block';
-  panel.photoBox.classList.remove('show');
-  panel.photoImg.classList.remove('show');
-  panel.showReveal(con, quizRevealIntent());
-}
+// The constellation viewer lives in js/viewer.js now, on a screen of its own. What
+// used to be here wrote a pre-answered one-question lesson session so that it could
+// borrow the quiz screen and its reveal (issue #73).

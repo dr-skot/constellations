@@ -59,7 +59,7 @@ function _initRouting() {
         const con = C.find(c => c.abbr === abbr);
         // An unknown abbr is a dead URL, so it replaces rather than pushes — the
         // same rule the router applies to a hash that names no route at all.
-        con ? viewConstellation(con) : navigate('course', { replace: true });
+        con ? showViewer(con) : navigate('course', { replace: true });
       },
       lesson: () => { if (!tryResumeLesson()) startLesson(); },
       settings: () => { if (typeof refreshSettings === 'function') refreshSettings(); },
@@ -117,15 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-explore-free').addEventListener('click', () => {
     navigate('explore');
   });
-  function goToViewerInline() {
-    const val = document.getElementById('con-select-viewer-input').value.trim();
-    const con = C.find(c => c.name.toLowerCase() === val.toLowerCase());
-    if (con) navigate('view/' + con.abbr);
-  }
-  document.getElementById('btn-viewer-go').addEventListener('click', goToViewerInline);
-  document.getElementById('con-select-viewer-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') goToViewerInline();
-  });
+  initViewer();      // the viewer's own picker, on the viewer's own screen
 
   document.getElementById('btn-next').addEventListener('click', nextLessonQuestion);
   document.getElementById('quiz-autocomplete-input')
@@ -155,12 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
       navigate('course');              // leaving the route clears the flag (its exit action)
       return;
     }
-    if (session.viewMode) {
-      session.viewMode = false;
-      document.getElementById('screen-quiz').classList.remove('viewer-mode');
-      navigate('course');
-      return;
-    }
+    // Quit belongs to the quiz. It used to need a third meaning — "leave the viewer" —
+    // because the viewer was showing on this screen (issue #73); the viewer leaves by
+    // its own breadcrumb now.
     if (session.lessonIdx != null) {
       endLesson();
     } else {
@@ -190,6 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault(); navigate('course');
   });
   document.getElementById('quiz-breadcrumb-course').addEventListener('click', e => {
+    e.preventDefault(); navigate('course');
+  });
+  document.getElementById('view-breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
 

@@ -45,7 +45,6 @@ function startCalibration() {
 function calBegin() {
   const probes = shuffleInPlace(calibrationProbes(C));
   session.calibration = true;
-  session.viewMode = false;
   session.lessonIdx = null;
   session.questions = probes.map(con =>
     ({ con, type: 'identify', mode: 'diagram', answerMode: 'choice', rotation: 0 }));
@@ -55,7 +54,6 @@ function calBegin() {
   session.history = [];
   session.calResults = [];
   session.lessonLabel = 'Level check';
-  document.getElementById('screen-quiz').classList.remove('viewer-mode');
   document.getElementById('quiz-breadcrumb-stage').textContent = 'Level check';
   document.getElementById('quiz-breadcrumb').style.display = '';
   showLessonQuestion();

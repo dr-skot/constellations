@@ -4,7 +4,7 @@
 let settings = { mode: 'diagram', diff: '1', hem: 'B' };
 let session = {
   questions: [], idx: 0, correct: 0, answered: false,
-  history: [], choices: [], viewMode: false,
+  history: [], choices: [],
   lessonIdx: null, lessonLabel: '', lastMastered: false,
   calibration: false, calResults: []   // level-check mode (see js/calibration-ui.js)
 };
@@ -90,7 +90,6 @@ function tryResumeLesson() {
     session.lessonIdx = 0;
     session.lessonLabel = restored.lessonLabel;
     session.answered = false;
-    session.viewMode = false;
     // Restore reveal toggle states (globals + toggle-group DOM)
     if (restored.revState) {
       for (const k of Object.keys(restored.revState)) {
@@ -104,7 +103,6 @@ function tryResumeLesson() {
         if (_eqRevToggleGroup) _eqRevToggleGroup.setValue(k, restored.eqRevState[k]);
       }
     }
-    document.getElementById('screen-quiz').classList.remove('viewer-mode');
     document.getElementById('quiz-breadcrumb-stage').textContent = restored.lessonLabel;
     document.getElementById('quiz-breadcrumb').style.display = '';
     showLessonQuestion();

@@ -64,7 +64,6 @@ function loadSession(s) {
   session.lessonIdx = s.lessonIdx;
   session.lessonLabel = s.lessonLabel;
   session.answered = false;
-  session.viewMode = false;
 }
 
 // Snapshot restored state with con→abbr so it is JSON-comparable.
@@ -75,7 +74,6 @@ function snapshotSession() {
     correct: session.correct,
     lessonIdx: session.lessonIdx,
     answered: session.answered,
-    viewMode: session.viewMode,
     questions: session.questions.map(q => ({
       abbr: q.con.abbr, type: q.type, mode: q.mode, answerMode: q.answerMode ?? null,
       distanceLevel: q.distanceLevel ?? null, noBounds: q.noBounds ?? null,
