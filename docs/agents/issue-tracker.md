@@ -11,6 +11,13 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
 - **Comment on an issue**: `gh issue comment <number> --body-file tmp/comment.md` (or `--body "..."` for a short one-liner).
 - **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
 - **Close**: `gh issue close <number> --comment "..."`
+- **Closing by commit**: a commit that finishes a ticket says `Closes #<n>`, not `Refs #<n>`.
+  GitHub closes the issue on push to the default branch, so the tracker and the code cannot
+  drift apart while nobody is looking. `Refs #<n>` is for work that touches a ticket without
+  finishing it — a partial landing, a follow-up fix, a commit under a parent that stays open.
+  Getting this wrong is silent: the work ships, the ticket stays open, and the only thing that
+  notices is a person reading the list later. A parent spec has no keyword of its own; close it
+  by hand once its children are closed, or name it in the last child's `Closes`.
 
 Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone (`dr-skot/constellations`).
 
