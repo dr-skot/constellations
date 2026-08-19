@@ -19,17 +19,17 @@ function initRevealToggles() {
     onChange(value, on) {
       revState[value] = on;
       saveLessonSession();
-      const con = currentCon();
-      if (!con || !session.answered) return;
+      // Only a reveal already on screen redraws. Asking the painter what it is
+      // showing replaces asking the lesson session whether a question was answered.
+      if (!_shownReveal) return;
+      const con = _shownReveal.con;
+      const redraw = () => redrawReveal(con, quizRevealIntent());
       if (value === 'photo') {
         const img = document.getElementById('photo-img');
-        if (!img.complete || img.naturalWidth === 0) {
-          img.onload = () => redrawReveal(con);
-        } else {
-          redrawReveal(con);
-        }
+        if (!img.complete || img.naturalWidth === 0) img.onload = redraw;
+        else redraw();
       } else {
-        redrawReveal(con);
+        redraw();
       }
     },
   });
@@ -402,19 +402,46 @@ function popoverPosition(card, pop, vp, opts = {}) {
   return { left, top, above: !below, arrow };
 }
 
-function redrawReveal(con) {
+// ── The reveal on screen ──────────────────────────────────────────────────────
+// What the painter is currently showing, or null. A photograph and an artwork both
+// load late and then ask to be drawn; the question they must answer is "is this
+// still the reveal on screen?", and this is what answers it. It used to be asked as
+// "is this the current question, and has it been answered?" — a question about the
+// lesson session, which is what stopped the viewer from sharing the reveal without
+// faking one (issue #71).
+let _shownReveal = null;
+
+function revealShowing(con) { return !!_shownReveal && _shownReveal.con === con; }
+function clearReveal() { _shownReveal = null; }
+
+// Paint a reveal. `intent` is the caller's half of the decision — which layers, which
+// quiz mode, what rotation, which star-figure set — and this adds the half only the
+// painter knows: whether the photograph and the artwork have actually loaded.
+// resolveReveal (js/reveal.js) merges them into the flags below.
+function redrawReveal(con, intent) {
   const origAbbr = con.abbr;
-  const showBound = revState.boundary;
-  const showDiag = revState.diagram;
-  const showArt = revState.art;
   const creditEl = document.getElementById('art-credit');
   if (creditEl) creditEl.textContent = '';
   const canvas = document.getElementById('quiz-canvas');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   const artImg = artCache[artSrc(origAbbr)] instanceof HTMLImageElement ? artCache[artSrc(origAbbr)] : null;
+  const photoImg = document.getElementById('photo-img');
 
-  const angle = session.rotation || 0;
+  const reveal = resolveReveal({
+    layers: intent.layers,
+    mode: intent.mode,
+    rotation: intent.rotation,
+    source: intent.source,
+    photoReady: !!(photoImg && photoImg.complete && photoImg.naturalWidth > 0),
+    artReady: !!artImg,
+  });
+  _shownReveal = { con, intent };
+
+  const showBound = reveal.showBounds;
+  const showDiag = reveal.showLines;
+
+  const angle = reveal.rotation;
   if (angle) {
     ctx.save();
     ctx.translate(W/2, H/2);
@@ -422,24 +449,22 @@ function redrawReveal(con) {
     ctx.translate(-W/2, -H/2);
   }
 
-  const showPhoto = revState.photo;
   let revealProj = null;
   // Background
-  const photoImg = document.getElementById('photo-img');
-  if (showPhoto && photoImg.complete && photoImg.naturalWidth > 0) {
+  if (reveal.background === 'photo') {
     ctx.drawImage(photoImg, 0, 0, W, H);
   } else {
-    drawBackground(ctx, W, H, con, settings.mode === 'stars');
+    drawBackground(ctx, W, H, con, reveal.background === 'stars');
   }
 
   // Artwork overlay — same for all modes
-  if (showArt && artImg) drawArtwork(canvas, con, artImg, false, angle);
+  if (reveal.showArt) drawArtwork(canvas, con, artImg, false, angle);
 
   // Lines and stars — selected star-figure (dcon), framed by con.
-  const dcon = diagramFor(con, diagramSource);
+  const dcon = diagramFor(con, reveal.source);
   revealProj = projectStarsTAN(dcon.stars, con, W, H);
   if (showDiag) drawLines(ctx, revealProj, dcon);
-  if (!showPhoto || showDiag) drawStars(ctx, revealProj);
+  if (reveal.showStars) drawStars(ctx, revealProj);
 
   // Boundary overlay — draw all visible constellation boundaries and label neighbors.
   const R = W / 2, cirCx = W / 2, cirCy = H / 2;
@@ -551,7 +576,7 @@ function redrawReveal(con) {
   if (angle) ctx.restore();
 
   // Star labels after rotation restore so text stays upright.
-  if (showDiag && revealProj) drawLabels(ctx, rotateProj(revealProj, angle, W, H), W);
+  if (reveal.showStarLabels && revealProj) drawLabels(ctx, rotateProj(revealProj, angle, W, H), W);
 
   // Neighbor labels — already in canvas space; convert to screen for drawing.
   if (neighborLabelPts.length > 0) {
@@ -577,15 +602,17 @@ function ensureArtLoaded(con) {
   const img = new Image();
   img.onload = () => {
     artCache[src] = img;
-    if (currentCon() === con && session.answered) redrawReveal(con);
+    // Artwork that arrives after the learner has moved on must not paint over what
+    // replaced it — so the question is what the painter is showing, nothing else.
+    if (revealShowing(con)) redrawReveal(con, _shownReveal.intent);
   };
   img.onerror = () => { artCache[src] = 'error'; };
   img.src = art.url;
 }
 
-function startReveal(con) {
+function startReveal(con, intent) {
   // For photo mode, swap photo-box → canvas
-  if (settings.mode === 'photo') {
+  if (intent.mode === 'photo') {
     document.getElementById('photo-box').classList.remove('show');
     const img = document.getElementById('photo-img');
     img.classList.remove('show');
@@ -603,11 +630,11 @@ function startReveal(con) {
   const photoImg = document.getElementById('photo-img');
   if (photoImg.dataset.abbr !== con.abbr) {
     photoImg.dataset.abbr = con.abbr;
-    photoImg.onload = () => { if (currentCon() === con && session.answered) redrawReveal(con); };
+    photoImg.onload = () => { if (revealShowing(con)) redrawReveal(con, _shownReveal.intent); };
     photoImg.src = photoUrl(con);
   }
   document.getElementById('reveal-controls').classList.add('show');
-  redrawReveal(con);
+  redrawReveal(con, intent);
   ensureArtLoaded(con);
 }
 

@@ -13,15 +13,33 @@ function currentCon() {
   return q ? q.con : null;
 }
 
+// The reveal the QUIZ is asking for: its own toggles, the quiz mode, this question's
+// rotation, and the learner's chosen star-figure set. The painter adds what only it
+// knows — whether the photograph and artwork have loaded — and resolves the two into
+// draw flags (js/reveal.js). The constellation viewer will build its own intent from
+// its own state rather than borrowing this one (issue #73).
+function quizRevealIntent() {
+  return {
+    layers: {
+      photo: revState.photo, diagram: revState.diagram,
+      art: revState.art, boundary: revState.boundary,
+    },
+    mode: settings.mode,
+    rotation: session.rotation,
+    source: diagramSource,
+  };
+}
+
 // Redraw the current quiz question's canvas in place (e.g. after switching the
 // diagram source) without the full showLessonQuestion side effects.
 function redrawQuizFigure() {
   const q = session.questions[session.idx];
   if (!q) return;
   const con = q.con;
-  if (session.answered) { redrawReveal(con); return; }
+  if (session.answered) { redrawReveal(con, quizRevealIntent()); return; }
   const canvas = document.getElementById('quiz-canvas');
   if (!canvas) return;
+  clearReveal();                     // an unanswered question is not a reveal
   if (settings.mode === 'photo') showPhotoMode(con, session.rotation);
   else renderCanvas(canvas, con, settings.mode, false, session.rotation);
 }
@@ -146,6 +164,7 @@ function showLessonQuestion() {
   const px = sz * displayScale();
   sizeCanvas(canvas, px, px);   // only when it changed — see sizeCanvas (projection.js)
 
+  clearReveal();                     // the question is drawn first; a reveal may follow
   if (settings.mode === 'photo') {
     showPhotoMode(con, session.rotation);
   } else {
@@ -190,7 +209,7 @@ function showLessonQuestion() {
     document.getElementById('feedback').innerHTML = hist.wasCorrect
       ? `✓ Correct! — ${conLabel(con)}`
       : `✗ That was ${conLabel(con)}`;
-    startReveal(con);
+    startReveal(con, quizRevealIntent());
     document.getElementById('btn-next').classList.add('show');
   } else if (!isAuto) {
     grid.innerHTML = '';
@@ -255,7 +274,7 @@ function handleAnswer(chosen, correct) {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
 
-  startReveal(correct);
+  startReveal(correct, quizRevealIntent());
 
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
@@ -286,7 +305,7 @@ function handleAutocompleteAnswer() {
   } else {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
-  startReveal(correct);
+  startReveal(correct, quizRevealIntent());
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
   saveLessonSession();

@@ -408,5 +408,7 @@ function viewConstellation(con) {
   canvas.style.display = 'block';
   document.getElementById('photo-box').classList.remove('show');
   document.getElementById('photo-img').classList.remove('show');
-  startReveal(con);
+  // Still routed through the quiz's intent, because the viewer is still disguised as
+  // a pre-answered question at this point. Issue #73 gives it its own.
+  startReveal(con, quizRevealIntent());
 }
