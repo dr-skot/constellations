@@ -23,7 +23,8 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   form `W/(fov·π/180)` once shipped — keeping the half-angle in one place prevents recurrence.
 
 - **north-up projection** — `projectStarsTAN` / `pixelToRADec` project a fixed image centred on
-  a constellation with north up; roll is applied downstream by the quiz canvas via `ctx.rotate`.
+  a constellation with north up; roll is applied downstream by the identify screen's canvas via
+  `ctx.rotate`.
   Deliberately separate from the **Camera** (which bakes roll into `up`). See ADR-0001.
 
 ## Scheduling
@@ -74,9 +75,31 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 
 ## Session
 
+- **quiz** — a sequence of **questions** put to the learner one at a time, carrying a score and
+  a progress readout. One of the things the learner can be doing, alongside the **level check**,
+  free explore, and the constellation viewer. A **lesson** is a quiz of 12 questions chosen by
+  **planLesson**; the explorer's practice quiz (`startExploreQuiz`) is a quiz that is not a lesson.
+
+- **question** — one item of a quiz, of exactly two kinds. An **identify question** shows a
+  figure and asks for its name (by choice buttons or autocomplete). A **find question** shows
+  the sky and asks the learner to tap a named constellation in it. Both are quiz questions:
+  they differ in what they ask and which **screen** renders them, not in whether they belong to
+  the quiz. `q.type` is `'identify'` or `'find'`, and the **tier** ladder runs from
+  `identify/diagram` to `find/photo-nb` across both kinds.
+
+  **Never use "quiz" to mean "identify question".** The two words sit on different axes: *quiz*
+  says what the learner is doing, *identify* says what this question asks. The screen that
+  renders identify questions is currently named `quiz` (`#screen-quiz`), which is what made
+  `currentScreen() === 'quiz'` read as "is this a quiz question?" when it only means "is this an
+  identify question?". That misreading is the whole of issue #75: the finding-guide return asked
+  it, got "no" for a find question, and stranded the learner outside their own quiz. A rename is
+  pending — until it lands, write "the identify screen" for the surface and keep "quiz" for the
+  sequence.
+
 - **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
   correct, answered, history, lessonIdx/Label) plus the two reveal-toggle states
-  `revState` (quiz) and `eqRevState` (explorer). Persisted to `sessionStorage['lesson-session']`
+  `revState` (identify questions) and `eqRevState` (the explorer, so find questions and the
+  practice quiz). Persisted to `sessionStorage['lesson-session']`
   so a page reload resumes mid-lesson. It belongs to lessons alone: the constellation viewer
   used to write a one-question session and mark it answered in order to borrow the reveal,
   which is what issue #73 removed.
@@ -100,17 +123,24 @@ hand-rolled twice (spec #44).
   active screen, which is what makes `currentScreen()` answerable without reading a CSS class.
   A route's declared screen is applied **before** its enter action runs: the constellation
   viewer measures its picture, and an inactive screen has no layout. The viewer has a screen
-  of its own (#73); while it borrowed the quiz's, `currentScreen() === 'quiz'` was true in a
-  place that is not a quiz, which is what made the finding-guide return pick the wrong resume.
+  of its own (#73); while it borrowed the identify screen, `currentScreen() === 'quiz'` was true
+  in a place that is not a quiz, which is what made the finding-guide return pick the wrong resume.
+
+  A screen is a **rendering surface, not a mode**. The `explore` screen hosts free explore *and*
+  a quiz's find questions; the identify screen hosts a quiz's identify questions *and* **level
+  check** probes. So asking which screen is showing never answers what the learner is doing, and
+  code that wants the latter must ask the flow. Both bugs that came of forgetting this — #69 and
+  #75 — were `currentScreen()` standing in for a fact it does not carry.
 
 - **detour** — see Navigation below. Which routes come back, and how, is a per-route entry
   injected at boot beside the enter and exit actions; an entry may decline from where the
   flow currently is (a lesson showing a find question has no question to re-render).
 
 - **flow-owned route** — a route that declares no screen, because the flow picks one as it
-  advances: `lesson` shows the quiz screen or the explorer depending on the question, and
-  `calibration` shows its panels for the offer and payoff but the quiz screen for the probes.
-  The route does not change when the flow switches screens.
+  advances: `lesson` renders an identify question on the identify screen and a find question on
+  the explorer, and `calibration` shows its panels for the offer and payoff but the identify
+  screen for the probes. The route does not change when the flow switches screens — a lesson is
+  one quiz throughout, whichever surface each question needs.
 
 - **transient route** — a route whose data lives only in memory, so it is enterable only from
   inside the app. `result` is the only one: a finished lesson is gone after a reload, so a cold
@@ -147,9 +177,9 @@ still runs the enter action.
   the source lacks it or the key is unknown. Swaps **only the drawn stars+lines** — framing
   (ra/dec/fov comes from `con`=`C`), answer-checking, bounds, art, and exposure all stay keyed
   to `C`, so choosing a figure style is purely visual. `diagramSource` is the app-global selected
-  key (persisted under `ex-diagramSource`); both the explorer draw path and the quiz `renderCanvas`
-  read it. `_diagFor`/`_diagSource`/`_diagSources` in explore.js were the earlier, explore-only,
-  never-wired version this replaced.
+  key (persisted under `ex-diagramSource`); both the explorer draw path and the identify screen's
+  `renderCanvas` read it. `_diagFor`/`_diagSource`/`_diagSources` in explore.js were the earlier,
+  explore-only, never-wired version this replaced.
 
 - **sessionToJSON / sessionFromJSON** — the pure round-trip in `js/lesson-session.js`:
   `sessionToJSON(session, revState, eqRevState) → payload` and
@@ -301,7 +331,8 @@ alongside the geometry primitives it uses (`pointInPoly2D`, `edgesHitRect`).
   `center`, returning the first `{x,y}` where `valid` holds, else `null`.
 
 - **findNeighborLabelSpot(view, neighborPts, hint, box)** — places a neighbor's name in the
-  rotated, circular quiz reveal; lifted out of a closure that used to live inside `redrawReveal`.
+  rotated, circular reveal on the identify screen; lifted out of a closure that used to live
+  inside `redrawReveal`.
   Pure (screen-space 2D in, point out): `view = { cx, cy, R, cosA, sinA, currentPts, edges }` is the
   per-reveal geometry, built once and passed per neighbor. Characterized by `test/neighbor-label.js`
   against a golden captured from the pre-refactor closure.
