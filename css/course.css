@@ -100,5 +100,14 @@
 #view-picture { display:contents; }
 #view-controls { display:flex; justify-content:center; padding:5px 0; }
 #view-caption { text-align:center; padding:6px 0 10px; color:var(--dim); font-size:.85rem; }
+/* The breadcrumb and the caption's info link — the way into the finding guide — carry
+   the same styling they had while the viewer borrowed the quiz screen. Without these
+   they fall back to the browser's default blue underline on a dark background. */
+#view-breadcrumb { font-size:.8rem; color:var(--dim); padding:2px 0 6px; }
+#view-breadcrumb a { color:var(--accent); text-decoration:none; }
+#view-breadcrumb a:hover { text-decoration:underline; }
+#view-breadcrumb span { color:var(--text); }
+#view-caption a { color:inherit; text-decoration:underline; text-underline-offset:2px; }
+#view-caption a:hover { color:var(--text); }
 #screen-view { justify-content:safe center; }
 #screen-view .screen-body { flex:0 1 auto; }

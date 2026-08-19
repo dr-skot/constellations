@@ -9,6 +9,7 @@ function applyDiagramSource(key) {
   if (_settingsGroup) _settingsGroup.setValue(key, true);
   if (typeof requestExploreDraw === 'function') requestExploreDraw();
   if (typeof redrawQuizFigure === 'function') redrawQuizFigure();
+  if (typeof redrawViewer === 'function') redrawViewer();
   if (typeof redrawSettingsFigure === 'function') redrawSettingsFigure();
 }
 
@@ -31,6 +32,14 @@ _loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
 // the real history, the real screen toggle, and one enter action per route. The
 // router owns everything else: which screen a route shows, when a redirect
 // replaces instead of pushes, and what leaving means (spec #44).
+
+// The resume a quiz-screen question comes back by, or null when the flow is showing a
+// find-in-the-sky question instead — that one lives in the explorer and the guide takes
+// it over, so it comes back through the guide's own exit, not through a re-render.
+function backToQuestion() {
+  if (currentScreen() !== 'quiz') return null;
+  return () => { showScreen('quiz'); showLessonQuestion(); };
+}
 
 function _initRouting() {
   initRouter({
@@ -70,12 +79,18 @@ function _initRouting() {
     // the guide put them. endDetour deliberately does not re-run enter actions, which
     // is why each of these says what re-rendering means for itself: re-entering a
     // lesson would try to resume from storage a level check never wrote.
+    // Each entry is asked for a resume thunk, and may answer null for "not from here".
+    // A lesson or level check on a find-in-the-sky question is already living in the
+    // explorer, which the guide takes over: there is no question to re-render, and
+    // re-rendering one would re-ask a question the learner has answered and record the
+    // exposure a second time. Those return null and the guide's own exit restores the
+    // explorer, which is what happened before there was a table at all.
     detours: {
-      lesson:      () => { showScreen('quiz'); showLessonQuestion(); },
-      calibration: () => { showScreen('quiz'); showLessonQuestion(); },
+      lesson:      () => backToQuestion(),
+      calibration: () => backToQuestion(),
       view:        abbr => {
         const con = C.find(c => c.abbr === abbr);
-        if (con) { showScreen('view'); showViewer(con); }
+        return con ? (() => { showScreen('view'); showViewer(con); }) : null;
       },
     },
     exits: {

@@ -141,8 +141,13 @@ function beginDetour(resume) {
 // Start a detour back to wherever we are, if this is a place that comes back. Which
 // routes do, and what coming back means for each, is declared once at boot in the
 // `detours` table — beside the enter and exit actions, because it is the same kind of
-// fact about a route. A route with no entry there is one the learner is simply left
-// away from: the explorer, for instance.
+// fact about a route.
+//
+// An entry is asked for a resume thunk and may answer null, meaning "not from here,
+// not now". A flow-owned route needs that: a lesson on the quiz screen has a question
+// to come back to, but a lesson on a find-in-the-sky question is already living in the
+// explorer, which the guide takes over — there is nothing to re-render, and the guide's
+// own exit restores it. A route with no entry at all never comes back: the explorer.
 //
 // This replaces callers deciding for themselves by asking which SCREEN was showing.
 // That question could not tell a lesson question from the constellation viewer, which
@@ -150,10 +155,10 @@ function beginDetour(resume) {
 // re-rendered the lesson's current question over it (issues #69, #74).
 function beginDetourFromRoute() {
   const route = _route_;
-  const resume = route && _detours[route.name];
+  const make = route && _detours[route.name];
+  const resume = make && make(route.param);
   if (!resume) return false;
-  const param = route.param;
-  beginDetour(() => resume(param));
+  beginDetour(resume);
   return true;
 }
 
@@ -192,7 +197,7 @@ function _apply(route) {
   if (!departing) _leave(route);
   _route_ = route;
   // The declared screen goes up BEFORE the enter action runs: the constellation
-  // viewer measures #canvas-wrap, and an inactive screen has no layout.
+  // viewer measures its picture, and an inactive screen has no layout.
   if (route.screen) showScreen(route.screen);
   const action = _actions[route.name];
   if (action) action(route.param);

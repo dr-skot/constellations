@@ -418,18 +418,22 @@
     } },
 
     // -- media ---------------------------------------------------------------
+    // The picture's elements are built by createRevealPanel and carry classes, not
+    // ids (issue #72) — a getElementById here would silently kill nothing and
+    // exonerate the reveal path.
     { id: 'photo', what: 'quiz photographs', apply: function () {
       window.photoUrl = function () { return BLANK; };
       stub('showPhotoMode');
-      var pi = document.getElementById('photo-img');
-      if (pi) pi.src = BLANK;
+      var imgs = document.querySelectorAll('.con-photo');
+      for (var i = 0; i < imgs.length; i++) imgs[i].src = BLANK;
     } },
     { id: 'art', what: 'constellation artwork', apply: function () {
       if (typeof ART === 'object' && ART) { for (var k in ART) delete ART[k]; }
       stub('ensureArtLoaded'); stub('drawArtwork'); stub('showArtworkMode');
     } },
+    // paintReveal replaced redrawReveal/startReveal; the panel calls it (issue #71).
     { id: 'reveal', what: 'the answer reveal redraw', apply: function () {
-      stub('redrawReveal'); stub('startReveal');
+      stub('paintReveal');
     } },
     { id: 'progress', what: 'progress grid and chart (a canvas per constellation)', apply: function () {
       stub('renderProgressGrid'); stub('progressCard');
@@ -452,11 +456,14 @@
       });
     } },
     { id: 'toggles', what: 'toggle groups and reveal controls', apply: function () {
-      ['reveal-controls', 'eq-reveal-controls', 'explore-toggles'].forEach(function (id) {
+      ['eq-reveal-controls', 'explore-toggles'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.innerHTML = '';
       });
-      stub('initRevealToggles'); stub('initEqRevealToggles'); stub('initExploreToggles');
+      // The reveal panels build their own toggles (issue #72), so they go by class.
+      var groups = document.querySelectorAll('.con-toggles');
+      for (var i = 0; i < groups.length; i++) groups[i].innerHTML = '';
+      stub('initEqRevealToggles'); stub('initExploreToggles');
     } },
     { id: 'find', what: 'find-in-the-sky questions (choice-only lesson)', apply: function () {
       // Applied by app-probe's seedChoiceLesson, which needs the lesson to exist

@@ -345,10 +345,12 @@ function mkDetourRouter() {
                calibration: () => rec.fired.push('calibration'), explore: () => rec.fired.push('explore'),
                exploreCon: p => rec.fired.push('exploreCon:' + p), course: () => rec.fired.push('course') },
     exits: { calibration: () => rec.exits.push('calibration') },
+    // Each entry is asked for a resume thunk and may answer null — "not from here".
+    // rec.flowScreen stands in for the screen a flow-owned route is currently on.
     detours: {
-      lesson:      () => rec.resumed.push('question'),
-      calibration: () => rec.resumed.push('probe'),
-      view:        param => rec.resumed.push('viewer:' + param),
+      lesson:      () => rec.flowScreen === 'explore' ? null : () => rec.resumed.push('question'),
+      calibration: () => () => rec.resumed.push('probe'),
+      view:        param => () => rec.resumed.push('viewer:' + param),
     },
   });
   return rec;
@@ -401,6 +403,22 @@ function mkDetourRouter() {
   navigate('explore/Ori');
   endDetour();
   check('and ending one that never began changes nothing', rec.resumed.join() === '');
+}
+
+{
+  // A route may decline from where it currently is. A lesson on a find-in-the-sky
+  // question already lives in the explorer, which the guide takes over: there is no
+  // question to re-render, and re-rendering one would re-ask a question the learner
+  // has answered and count the exposure twice. The guide's own exit restores it.
+  const rec = mkDetourRouter();
+  rec.flowScreen = 'explore';
+  navigate('lesson');
+  check('a route that declines opens no detour', beginDetourFromRoute() === false);
+  check('and none is in flight', inDetour() === false);
+
+  rec.flowScreen = 'quiz';
+  check('the same route opens one from where it does come back',
+    beginDetourFromRoute() === true);
 }
 
 {

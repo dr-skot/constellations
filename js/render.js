@@ -562,17 +562,31 @@ function paintReveal({ canvas, photoImg, creditEl }, con, intent) {
 // caller being the panel, which knows whether the reveal it belongs to is still on
 // screen. Artwork that arrives after the learner has moved on must not paint over
 // what replaced it.
+// Everyone waiting on an artwork that is still loading, by source. While the callback
+// was global there was only ever one waiter; now that each panel passes its own, a
+// second panel asking for the same artwork mid-flight would otherwise be told nothing
+// and paint without it — its Art toggle on, showing none.
+const _artWaiting = {};
+
 function ensureArtLoaded(con, onLoaded) {
   const src = artSrc(con.abbr);
   const art = ART[src];
-  if (!art || artCache[src]) return;
+  if (!art) return;
+  if (artCache[src] === 'loading') {          // someone else started it; queue up
+    if (onLoaded) (_artWaiting[src] = _artWaiting[src] || []).push(onLoaded);
+    return;
+  }
+  if (artCache[src]) return;                  // loaded already, or known bad
   artCache[src] = 'loading';
+  if (onLoaded) (_artWaiting[src] = _artWaiting[src] || []).push(onLoaded);
   const img = new Image();
   img.onload = () => {
     artCache[src] = img;
-    if (onLoaded) onLoaded();
+    const waiting = _artWaiting[src] || [];
+    delete _artWaiting[src];
+    for (const cb of waiting) cb();
   };
-  img.onerror = () => { artCache[src] = 'error'; };
+  img.onerror = () => { artCache[src] = 'error'; delete _artWaiting[src]; };
   img.src = art.url;
 }
 

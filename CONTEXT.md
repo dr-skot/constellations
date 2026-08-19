@@ -75,9 +75,11 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 ## Session
 
 - **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
-  correct, answered, history, viewMode, lessonIdx/Label) plus the two reveal-toggle states
+  correct, answered, history, lessonIdx/Label) plus the two reveal-toggle states
   `revState` (quiz) and `eqRevState` (explorer). Persisted to `sessionStorage['lesson-session']`
-  so a page reload resumes mid-lesson.
+  so a page reload resumes mid-lesson. It belongs to lessons alone: the constellation viewer
+  used to write a one-question session and mark it answered in order to borrow the reveal,
+  which is what issue #73 removed.
 
 ## Navigation
 
@@ -94,10 +96,16 @@ hand-rolled twice (spec #44).
   unrecognized one is `null`, and the caller redirects). The table is also where hash `course`
   maps to screen id `start` — a mapping that used to live only inside an `if`.
 
-- **screen** — one of the six `.screen` elements. `showScreen` is the *only* writer of the
+- **screen** — one of the seven `.screen` elements. `showScreen` is the *only* writer of the
   active screen, which is what makes `currentScreen()` answerable without reading a CSS class.
   A route's declared screen is applied **before** its enter action runs: the constellation
-  viewer measures `#canvas-wrap`, and an inactive screen has no layout.
+  viewer measures its picture, and an inactive screen has no layout. The viewer has a screen
+  of its own (#73); while it borrowed the quiz's, `currentScreen() === 'quiz'` was true in a
+  place that is not a quiz, which is what made the finding-guide return pick the wrong resume.
+
+- **detour** — see Navigation below. Which routes come back, and how, is a per-route entry
+  injected at boot beside the enter and exit actions; an entry may decline from where the
+  flow currently is (a lesson showing a find question has no question to re-render).
 
 - **flow-owned route** — a route that declares no screen, because the flow picks one as it
   advances: `lesson` shows the quiz screen or the explorer depending on the question, and
