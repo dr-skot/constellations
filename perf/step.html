@@ -39,7 +39,7 @@
     <button>Orion</button><button>Cygnus</button><button>Lyra</button><button>Draco</button>
   </div>
 
-<script src="harness.js?v=48c0e70ac223"></script>
+<script src="harness.js?v=b102ae3000d9"></script>
 <script>
 (function () {
   var step = parseInt(Perf.param('step') || '1', 10);
@@ -74,7 +74,7 @@
   if (F.canvas)   { wrap.style.display = 'flex'; }
   if (F.photo)    { photo.style.display = 'block'; }
 
-  // ── Canvas sized exactly the way the real quiz sizes it ────────────────────
+  // ── Canvas sized exactly the way the identify screen sizes it ──────────────
   var ctx = null, SIDE = 0;
   function sizeIt() {
     var box = Math.min(wrap.clientWidth || 320, wrap.clientHeight || 320);

@@ -133,9 +133,9 @@
       if (again) { again.click(); return; }
     }
 
-    // Answered already? Advance — but only while the quiz screen is genuinely up.
+    // Answered already? Advance — but only while the identify screen is genuinely up.
     var next = document.getElementById('btn-next');
-    if (active('screen-quiz') && visible(next) && next.classList.contains('show')) {
+    if (active('screen-identify') && visible(next) && next.classList.contains('show')) {
       next.click();
       return;
     }
@@ -151,9 +151,9 @@
     // constellation" and returns WITHOUT marking the question answered — so
     // anything approximate parks the driver for the whole window, exactly as
     // find questions used to. Type the real answer.
-    var ac = document.getElementById('quiz-autocomplete-input');
-    var check = document.getElementById('quiz-autocomplete-submit');
-    if (active('screen-quiz') && visible(ac) && visible(check)) {
+    var ac = document.getElementById('identify-autocomplete-input');
+    var check = document.getElementById('identify-autocomplete-submit');
+    if (active('screen-identify') && visible(ac) && visible(check)) {
       ac.value = currentConName();
       check.click();
       return;
@@ -207,7 +207,7 @@
       // an idle page measures a flawless 60fps. Without this, "the app is dead"
       // and "the app is fine" are the same reading, and the bisect would follow
       // the dead half. Verified the hard way: emptying inactive screens took
-      // #screen-quiz with it, btn-next vanished, and the run went silent.
+      // #screen-identify with it, btn-next vanished, and the run went silent.
       var progress = 0, lastIdx = -1, lastAns = null;
       var watch = setInterval(function () {
         try {

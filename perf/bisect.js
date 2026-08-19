@@ -90,8 +90,8 @@
     // The no-ops go on the CONTEXT INSTANCE, not the prototype: instance
     // properties shadow prototype methods, so this covers the ctx calls written
     // inline inside drawExplore (the equator, the Milky Way, crosshairs, the
-    // compass) which cannot be stubbed by name — and leaves the quiz canvas and
-    // every other canvas in the app alone.
+    // compass) which cannot be stubbed by name — and leaves the identify screen's
+    // canvas and every other canvas in the app alone.
     //
     // Only rasterizing calls are cut. Path building (beginPath/moveTo/lineTo)
     // and measureText stay, because they are CPU-side and other code reads
@@ -403,8 +403,10 @@
       stub('guideStart'); stub('guideGoTo'); stub('guideDrawAnnotation'); stub('guideAnimateTo');
     } },
 
-    // -- the quiz canvas -----------------------------------------------------
-    { id: 'quizdraw', what: 'renderCanvas (the quiz diagram)', apply: function () {
+    // -- the identify screen's canvas -----------------------------------------
+    // The knob id stays 'quizdraw': it is a wire identifier, named in bisect URLs
+    // and in perf/index.html's candidate list, so renaming it would break saved runs.
+    { id: 'quizdraw', what: 'renderCanvas (the identify diagram)', apply: function () {
       stub('renderCanvas');
     } },
     { id: 'bg', what: 'drawBackground (gradient + 180 background stars)', apply: function () {
@@ -421,7 +423,7 @@
     // The picture's elements are built by createRevealPanel and carry classes, not
     // ids (issue #72) — a getElementById here would silently kill nothing and
     // exonerate the reveal path.
-    { id: 'photo', what: 'quiz photographs', apply: function () {
+    { id: 'photo', what: 'reveal photographs', apply: function () {
       window.photoUrl = function () { return BLANK; };
       stub('showPhotoMode');
       var imgs = document.querySelectorAll('.con-photo');
@@ -445,7 +447,7 @@
       for (var i = 0; i < lists.length; i++) lists[i].innerHTML = '';
     } },
     // Only the screens a run never visits. Emptying by "not currently active"
-    // destroyed #screen-quiz whenever the app happened to be elsewhere at kill
+    // destroyed #screen-identify whenever the app happened to be elsewhere at kill
     // time, which took btn-next with it: the driver could no longer advance,
     // the page went idle, and an idle page measures CLEAN. That would have
     // convicted this half of the app on a run where nothing was happening.
