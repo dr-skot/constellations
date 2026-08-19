@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════
 //
 // The offer and payoff are panels on #screen-calibration; the 8 probes run on the
-// real quiz screen (#screen-quiz) as ordinary identify/diagram questions — see
+// real identify screen (#screen-identify) as ordinary identify/diagram questions — see
 // calBegin. Pure pieces live in js/calibration.js (calibrationProbes,
 // dStarFromProbeResults, seedExposureFromCalibration); this is the impure DOM adapter.
 
@@ -36,10 +36,10 @@ function startCalibration() {
   showCalPanel('offer');
 }
 
-// Offer → run the 8 shuffled probes on the REAL quiz screen (#screen-quiz), so a probe
+// Offer → run the 8 shuffled probes on the REAL identify screen (#screen-identify), so a probe
 // is literally an identify/diagram question — same header, circle, choices, feedback.
-// We build a calibration `session` and hand off to showLessonQuestion; the quiz's
-// answer/next handlers branch on session.calibration (see js/quiz.js). lessonIdx:null
+// We build a calibration `session` and hand off to showLessonQuestion; the identify
+// screen's answer/next handlers branch on session.calibration (js/quiz.js). lessonIdx:null
 // keeps saveLessonSession a no-op (a level check never persists as a resumable lesson);
 // rotation:0 keeps each probe north-up so it measures recognition fairly.
 function calBegin() {
@@ -54,8 +54,8 @@ function calBegin() {
   session.history = [];
   session.calResults = [];
   session.lessonLabel = 'Level check';
-  document.getElementById('quiz-breadcrumb-stage').textContent = 'Level check';
-  document.getElementById('quiz-breadcrumb').style.display = '';
+  document.getElementById('identify-breadcrumb-stage').textContent = 'Level check';
+  document.getElementById('identify-breadcrumb').style.display = '';
   showLessonQuestion();
 }
 
@@ -103,7 +103,7 @@ function calibrationPayoffCopy(dStar, unlocked, hadProgress) {
 }
 
 function showCalPayoff(dStar, before, after) {
-  // The probes run on #screen-quiz, so return to the calibration screen for the payoff
+  // The probes run on #screen-identify, so return to the calibration screen for the payoff
   // (a skip from the offer is already here — harmless to re-assert).
   showScreen('calibration');
   // Count derives from the same targets the seed wrote, so the two never drift.

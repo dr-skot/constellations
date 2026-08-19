@@ -1,5 +1,5 @@
 /* Level-check / calibration screen (issue #33). Offer + payoff panels; only .active
-   shows. The 8 probes run on the real quiz screen (#screen-quiz), so no probe styles
+   shows. The 8 probes run on the real identify screen (#screen-identify), so no probe styles
    live here. Uses the app's design tokens; the payoff grid reuses the shared
    .grid / .con-card / .diff-header styles. */
 

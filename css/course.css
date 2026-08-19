@@ -80,7 +80,7 @@
 .cdp-name { color:var(--dim); flex:1; }
 .cdp-row.passed .cdp-name { color:var(--text); }
 .cdp-counts { color:var(--text); white-space:nowrap; font-size:.76rem; font-variant-numeric:tabular-nums; }
-#quiz-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
+#identify-hdr-row { display:flex; align-items:center; justify-content:space-between; min-height:28px; }
 
 /* ── The constellation viewer's own screen (issue #73) ──
    It used to be the quiz screen wearing a .viewer-mode class that hid the HUD, the

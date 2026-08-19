@@ -13,39 +13,39 @@ function currentCon() {
   return q ? q.con : null;
 }
 
-// ── The quiz's panel ─────────────────────────────────────────────────────────
-// One panel, mounted on first use into the two hosts the quiz screen provides: the
+// ── The identify screen's panel ──────────────────────────────────────────────
+// One panel, mounted on first use into the two hosts that screen provides: the
 // picture above, the toggles sharing the question label's slot below. The viewer
 // mounts its own (issue #73), which is the whole reason this is a component.
-let _quizPanel = null;
-function quizPanel() {
-  if (!_quizPanel) {
-    _quizPanel = createRevealPanel({
-      picture: document.getElementById('quiz-picture'),
-      controls: document.getElementById('quiz-label-area'),
+let _identifyPanel = null;
+function identifyPanel() {
+  if (!_identifyPanel) {
+    _identifyPanel = createRevealPanel({
+      picture: document.getElementById('identify-picture'),
+      controls: document.getElementById('identify-label-area'),
       layers: revState,
       onLayerChange(value, on) {
         revState[value] = on;
         saveLessonSession();
         // Only a reveal already on screen redraws — the panel knows whether there is
         // one, which is what the lesson session used to be asked.
-        if (!_quizPanel.shownIntent()) return;
-        const redraw = () => _quizPanel.redraw(quizRevealIntent());
-        const img = _quizPanel.photoImg;
+        if (!_identifyPanel.shownIntent()) return;
+        const redraw = () => _identifyPanel.redraw(identifyRevealIntent());
+        const img = _identifyPanel.photoImg;
         if (value === 'photo' && (!img.complete || img.naturalWidth === 0)) img.onload = redraw;
         else redraw();
       },
     });
   }
-  return _quizPanel;
+  return _identifyPanel;
 }
 
-// The reveal the QUIZ is asking for: its own toggles, the quiz mode, this question's
+// The reveal the IDENTIFY SCREEN is asking for: its own toggles, the question's mode,
 // rotation, and the learner's chosen star-figure set. The painter adds what only it
 // knows — whether the photograph and artwork have loaded — and resolves the two into
 // draw flags (js/reveal.js). The constellation viewer will build its own intent from
 // its own state rather than borrowing this one (issue #73).
-function quizRevealIntent() {
+function identifyRevealIntent() {
   return {
     layers: {
       photo: revState.photo, diagram: revState.diagram,
@@ -57,14 +57,14 @@ function quizRevealIntent() {
   };
 }
 
-// Redraw the current quiz question's canvas in place (e.g. after switching the
-// diagram source) without the full showLessonQuestion side effects.
-function redrawQuizFigure() {
+// Redraw the identify screen's canvas in place (e.g. after switching the diagram
+// source) without the full showLessonQuestion side effects.
+function redrawIdentifyFigure() {
   const q = session.questions[session.idx];
   if (!q) return;
   const con = q.con;
-  if (session.answered) { quizPanel().redraw(quizRevealIntent(), con); return; }
-  quizPanel().showFigure(con, { mode: settings.mode, rotation: session.rotation });
+  if (session.answered) { identifyPanel().redraw(identifyRevealIntent(), con); return; }
+  identifyPanel().showFigure(con, { mode: settings.mode, rotation: session.rotation });
 }
 
 // Thin adapters over the pure round-trip in js/lesson-session.js. This layer owns
@@ -94,7 +94,7 @@ function tryResumeLesson() {
     if (restored.revState) {
       for (const k of Object.keys(restored.revState)) {
         revState[k] = restored.revState[k];
-        quizPanel().setLayer(k, restored.revState[k]);
+        identifyPanel().setLayer(k, restored.revState[k]);
       }
     }
     if (restored.eqRevState) {
@@ -103,8 +103,8 @@ function tryResumeLesson() {
         if (_eqRevToggleGroup) _eqRevToggleGroup.setValue(k, restored.eqRevState[k]);
       }
     }
-    document.getElementById('quiz-breadcrumb-stage').textContent = restored.lessonLabel;
-    document.getElementById('quiz-breadcrumb').style.display = '';
+    document.getElementById('identify-breadcrumb-stage').textContent = restored.lessonLabel;
+    document.getElementById('identify-breadcrumb').style.display = '';
     showLessonQuestion();
     return true;
   } catch { return false; }
@@ -149,24 +149,24 @@ function showLessonQuestion() {
 
   if (q.type === 'find') { startLessonFindQuestion(q); return; }
 
-  showScreen('quiz');
+  showScreen('identify');
   settings.mode = q.mode;
 
   const con = q.con;
   const isAuto = q.answerMode === 'autocomplete';
 
   document.getElementById('feedback').textContent = '';
-  quizPanel().clear();
+  identifyPanel().clear();
   // Reset reveal toggles to all-on only for unanswered questions
   if (!hist) {
     for (const k of ['photo', 'diagram', 'art', 'boundary']) {
       revState[k] = true;
-      quizPanel().setLayer(k, true);
+      identifyPanel().setLayer(k, true);
     }
   }
   document.getElementById('btn-next').classList.remove('show');
 
-  const panel = quizPanel();
+  const panel = identifyPanel();
   panel.photoBox.classList.remove('show');
   panel.photoImg.classList.remove('show');
   panel.canvas.style.display = 'block';
@@ -196,11 +196,11 @@ function showLessonQuestion() {
   grid.style.display = isAuto ? 'none' : '';
   autoArea.style.display = isAuto ? '' : 'none';
   if (isAuto) {
-    const acInput = document.getElementById('quiz-autocomplete-input');
+    const acInput = document.getElementById('identify-autocomplete-input');
     acInput.value = hist ? (hist.chosen?.name || '') : '';
     document.getElementById('autocomplete-msg').textContent = '';
     acInput.disabled = !!hist;
-    document.getElementById('quiz-autocomplete-submit').style.display = hist ? 'none' : '';
+    document.getElementById('identify-autocomplete-submit').style.display = hist ? 'none' : '';
     if (!hist) acInput.focus();
   }
 
@@ -229,7 +229,7 @@ function showLessonQuestion() {
     document.getElementById('feedback').innerHTML = hist.wasCorrect
       ? `✓ Correct! — ${conLabel(con)}`
       : `✗ That was ${conLabel(con)}`;
-    quizPanel().showReveal(con, quizRevealIntent());
+    identifyPanel().showReveal(con, identifyRevealIntent());
     document.getElementById('btn-next').classList.add('show');
   } else if (!isAuto) {
     grid.innerHTML = '';
@@ -294,7 +294,7 @@ function handleAnswer(chosen, correct) {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
 
-  quizPanel().showReveal(correct, quizRevealIntent());
+  identifyPanel().showReveal(correct, identifyRevealIntent());
 
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
@@ -303,15 +303,15 @@ function handleAnswer(chosen, correct) {
 
 function handleAutocompleteAnswer() {
   if (session.answered) return;
-  const val    = document.getElementById('quiz-autocomplete-input').value.trim();
+  const val    = document.getElementById('identify-autocomplete-input').value.trim();
   const chosen = C.find(c => c.name.toLowerCase() === val.toLowerCase());
   if (!chosen) {
     document.getElementById('autocomplete-msg').textContent = 'Unknown constellation';
     return;
   }
   document.getElementById('autocomplete-msg').textContent = '';
-  document.getElementById('quiz-autocomplete-input').disabled = true;
-  document.getElementById('quiz-autocomplete-submit').style.display = 'none';
+  document.getElementById('identify-autocomplete-input').disabled = true;
+  document.getElementById('identify-autocomplete-submit').style.display = 'none';
   session.answered = true;
   const q = session.questions[session.idx];
   const correct = q.con;
@@ -325,7 +325,7 @@ function handleAutocompleteAnswer() {
   } else {
     document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
   }
-  quizPanel().showReveal(correct, quizRevealIntent());
+  identifyPanel().showReveal(correct, identifyRevealIntent());
   document.getElementById('btn-next').classList.add('show');
   updatePrevBtn();
   saveLessonSession();

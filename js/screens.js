@@ -14,17 +14,18 @@
 
 // ── The route table ─────────────────────────────────────────────────────────
 // One row per route. `screen: null` marks a FLOW-OWNED route: the flow picks the
-// screen as it advances (a lesson shows the quiz screen or the explorer depending
+// screen as it advances (a lesson shows the identify screen or the explorer depending
 // on the question; a level check shows its panels for the offer and payoff and the
-// quiz screen for the probes). `transient` marks a route whose data lives only in
+// identify screen for the probes). `transient` marks a route whose data lives only in
 // memory, so it can only be entered from inside the app.
 const ROUTES = [
   { name: 'course',      screen: 'start'  },
   { name: 'explore',     screen: 'explore' },
   { name: 'exploreCon',  screen: 'explore', prefix: 'explore/' },
-  // The constellation viewer, on a screen of its own. It used to declare the quiz
-  // screen and write a pre-answered one-question lesson session to borrow the reveal,
-  // which made currentScreen() === 'quiz' true in a place that is not a quiz (#73).
+  // The constellation viewer, on a screen of its own. It used to declare the identify
+  // screen and write a pre-answered one-question lesson session to borrow the reveal —
+  // and while that screen was still called `quiz`, currentScreen() === 'quiz' was then
+  // true in a place that is not a quiz (#73, and the rename that followed in #78).
   { name: 'view',        screen: 'view',    prefix: 'view/' },
   { name: 'lesson',      screen: null     },
   { name: 'result',      screen: 'result',  transient: true },

@@ -51,7 +51,7 @@ function diagramFor(con, sourceKey) {
   return map[con.abbr] || con;          // fall back when a source omits this con
 }
 
-// ── Selected source (app-global, persisted; read by explorer + quiz draw) ──
+// ── Selected source (app-global, persisted; read by explorer + identify draw) ──
 let diagramSource = 'iau';
 
 function loadDiagramSource() {

@@ -8,7 +8,7 @@ function applyDiagramSource(key) {
   setDiagramSource(key);
   if (_settingsGroup) _settingsGroup.setValue(key, true);
   if (typeof requestExploreDraw === 'function') requestExploreDraw();
-  if (typeof redrawQuizFigure === 'function') redrawQuizFigure();
+  if (typeof redrawIdentifyFigure === 'function') redrawIdentifyFigure();
   if (typeof redrawViewer === 'function') redrawViewer();
   if (typeof redrawSettingsFigure === 'function') redrawSettingsFigure();
 }
@@ -46,7 +46,7 @@ _loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
 // check's offer panel, which has no question on display at all.
 function questionOnDisplay() {
   if (!session.questions[session.idx]) return false;
-  return currentScreen() === 'quiz'        // an identify question (screen rename: #78)
+  return currentScreen() === 'identify'    // an identify question
       || (currentScreen() === 'explore' && !!explore.quiz?.lessonMode);   // a find question
 }
 
@@ -162,9 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initViewer();      // the viewer's own picker, on the viewer's own screen
 
   document.getElementById('btn-next').addEventListener('click', nextLessonQuestion);
-  document.getElementById('quiz-autocomplete-input')
+  document.getElementById('identify-autocomplete-input')
     .addEventListener('keydown', e => { if (e.key === 'Enter' && !e.target.disabled) { e.stopPropagation(); handleAutocompleteAnswer(); } });
-  document.getElementById('quiz-autocomplete-submit')
+  document.getElementById('identify-autocomplete-submit')
     .addEventListener('click', handleAutocompleteAnswer);
   document.getElementById('btn-prev').addEventListener('click', () => {
     if (session.calibration) return;   // no going back within a level check
@@ -199,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // The quiz's reveal panel builds its own picture and toggles, and mounts itself on
-  // first use (quizPanel in js/quiz.js) — there is nothing to initialise here.
+  // The identify screen's reveal panel builds its own picture and toggles, and mounts
+  // itself on first use (identifyPanel in js/quiz.js) — nothing to initialise here.
   initCourseDetail();
   initCalibration();
 
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('explore-breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
-  document.getElementById('quiz-breadcrumb-course').addEventListener('click', e => {
+  document.getElementById('identify-breadcrumb-course').addEventListener('click', e => {
     e.preventDefault(); navigate('course');
   });
   document.getElementById('view-breadcrumb-course').addEventListener('click', e => {
@@ -303,7 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       return;
     }
-    if (currentScreen() !== 'quiz') return;
+    // A genuine rendering question, unlike the one questionOnDisplay() asks: these keys
+    // mean "pick answer N" only while the identify screen is the surface showing.
+    if (currentScreen() !== 'identify') return;
     const btns = [...document.querySelectorAll('.ans-btn')];
     const idx = { '1': 0, '2': 1, '3': 2, '4': 3 }[e.key];
     if (idx !== undefined && btns[idx] && !btns[idx].disabled) btns[idx].click();

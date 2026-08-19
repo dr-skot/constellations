@@ -56,14 +56,14 @@ function mkRouter() {
   check('parseRoute: explore/<abbr> carries its parameter',
     parseRoute('explore/Ori').name === 'exploreCon' && parseRoute('explore/Ori').param === 'Ori');
   // The constellation viewer is its own screen (issue #73). It used to declare the
-  // quiz screen, which made "am I in a quiz?" answerable only wrongly: the viewer
+  // identify screen, which made "am I in a quiz?" answerable only wrongly: the viewer
   // borrowed the screen, wrote a one-question lesson session and marked it answered.
   check('parseRoute: view/<abbr> carries its parameter and shows the viewer screen',
     parseRoute('view/Ori').name === 'view' && parseRoute('view/Ori').param === 'Ori'
     && parseRoute('view/Ori').screen === 'view');
-  check('parseRoute: only a real quiz declares the quiz screen',
+  check('parseRoute: no route declares the identify screen — only a flow puts it up',
     ['course', 'explore', 'explore/Ori', 'view/Ori', 'settings']
-      .every(h => parseRoute(h).screen !== 'quiz'));
+      .every(h => parseRoute(h).screen !== 'identify'));
   check('parseRoute: lesson is flow-owned (declares no screen)',
     parseRoute('lesson').name === 'lesson' && parseRoute('lesson').screen === null);
   check('parseRoute: calibration is flow-owned (declares no screen)',
@@ -221,8 +221,8 @@ function mkRouter() {
   navigate('lesson');
   check('flow-owned: entering sets no screen by itself', rec.screens.length === 0);
   check('flow-owned: the screen from before the entry is still current', currentScreen() === 'start');
-  showScreen('quiz');
-  check('flow-owned: the flow can set the screen', currentScreen() === 'quiz' && rec.lastScreen() === 'quiz');
+  showScreen('identify');
+  check('flow-owned: the flow can set the screen', currentScreen() === 'identify' && rec.lastScreen() === 'identify');
   check('flow-owned: setting a screen does not change the route', currentRoute().name === 'lesson');
   showScreen('explore');                            // a find question
   check('flow-owned: the flow can switch screens again within the route',
@@ -278,12 +278,12 @@ function mkRouter() {
   // to resume from storage, which a level check never wrote.
   const rec = mkRouter();
   navigate('lesson');
-  showScreen('quiz');
-  beginDetour(() => showScreen('quiz'));
+  showScreen('identify');
+  beginDetour(() => showScreen('identify'));
   navigate('explore/Ori');
   endDetour();
   check('detour: returning to a flow-owned route restores its screen via the resume thunk',
-    currentRoute().name === 'lesson' && currentScreen() === 'quiz');
+    currentRoute().name === 'lesson' && currentScreen() === 'identify');
   check('detour: the lesson enter action ran exactly once', rec.fired.filter(f => f === 'lesson').length === 1);
 }
 {

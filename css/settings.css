@@ -86,7 +86,7 @@
    the header rows that have right-aligned controls (explorer + quiz). */
 @media (max-width: 720px) {
   #explore-free-hdr,
-  #quiz-hdr-row {
+  #identify-hdr-row {
     padding-right: 46px;
   }
 }

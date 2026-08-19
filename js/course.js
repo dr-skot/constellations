@@ -100,8 +100,8 @@ function startLesson() {
   session.history = []; session.lessonIdx = 0;
   session.lessonLabel = label;
   session.calibration = false;
-  document.getElementById('quiz-breadcrumb-stage').textContent = label;
-  document.getElementById('quiz-breadcrumb').style.display = '';
+  document.getElementById('identify-breadcrumb-stage').textContent = label;
+  document.getElementById('identify-breadcrumb').style.display = '';
   saveLessonSession();
   showLessonQuestion();
 }
@@ -109,7 +109,7 @@ function startLesson() {
 function endLesson() {
   stopExploreQuiz();
   sessionStorage.removeItem('lesson-session');
-  document.getElementById('quiz-breadcrumb').style.display = 'none';
+  document.getElementById('identify-breadcrumb').style.display = 'none';
   const n = session.questions.length, c = session.correct;
   const pct = n > 0 ? c / n : 0;
   const good = pct >= 0.8;
@@ -286,7 +286,7 @@ let _activeCourseCard = null;
 let _coursePopover = null;
 
 // A tiny north-up stick figure of `con`, bounding-box-fit into `size` px. Reuses the
-// app's projectStarsTAN, so the glyph is oriented (north up) like the quiz diagram.
+// app's projectStarsTAN, so the glyph is oriented (north up) like the identify diagram.
 // Draws the default catalog figure (con.stars/con.lines); honoring the selected
 // diagram source (Rey/Stellarium/Ford) for the glyph is out of scope here (issue #22).
 // Shared widget: used by the course detail popover and the constellation info modal.
@@ -379,4 +379,4 @@ function initCourseDetail() {
 
 // The constellation viewer lives in js/viewer.js now, on a screen of its own. What
 // used to be here wrote a pre-answered one-question lesson session so that it could
-// borrow the quiz screen and its reveal (issue #73).
+// borrow the identify screen and its reveal (issue #73).

@@ -54,11 +54,11 @@
       </div>
     </div>
 
-    <div id="screen-quiz" class="screen">
-      <div id="quiz-hdr">
-        <div id="quiz-hdr-row">
-          <div id="quiz-breadcrumb" style="display:none">
-            <a href="#" id="quiz-breadcrumb-course">Course</a> › <span id="quiz-breadcrumb-stage"></span>
+    <div id="screen-identify" class="screen">
+      <div id="identify-hdr">
+        <div id="identify-hdr-row">
+          <div id="identify-breadcrumb" style="display:none">
+            <a href="#" id="identify-breadcrumb-course">Course</a> › <span id="identify-breadcrumb-stage"></span>
           </div>
         </div>
         <div class="hud">
@@ -75,16 +75,16 @@
              (js/reveal-panel.js) into these two hosts. Two hosts because the toggles
              share the question label's grid slot, so revealing an answer shifts
              nothing. The constellation viewer mounts a panel of its own. -->
-        <div id="quiz-picture"></div>
-        <div id="quiz-label-area">
+        <div id="identify-picture"></div>
+        <div id="identify-label-area">
           <p class="q-label">What constellation is this?</p>
         </div>
         <div class="ans-grid" id="ans-grid"></div>
         <div id="autocomplete-area" style="display:none">
           <div id="autocomplete-input-row">
-            <input type="text" id="quiz-autocomplete-input" list="con-search-list"
+            <input type="text" id="identify-autocomplete-input" list="con-search-list"
                    placeholder="Type constellation name…" autocomplete="off">
-            <button id="quiz-autocomplete-submit">Check</button>
+            <button id="identify-autocomplete-submit">Check</button>
           </div>
           <div id="autocomplete-msg"></div>
         </div>
@@ -96,8 +96,8 @@
       </div>
     </div>
 
-    <!-- The constellation viewer: its own screen, not the quiz's with the quiz hidden
-         (issue #73). Its picture and layer toggles are a reveal panel of its own. -->
+    <!-- The constellation viewer: its own screen, not the identify screen with its own
+         parts hidden (issue #73). Picture and layer toggles are a reveal panel of its own. -->
     <div id="screen-view" class="screen">
       <div id="view-hdr">
         <div id="view-hdr-row">
@@ -269,41 +269,41 @@
        before commit 14d37a2 — makeCamera present, displayScale and sizeCanvas
        missing from the same file — which would silently invalidate any
        measurement taken on it. Bump the number when app JS changes. -->
-  <script src="js/data.js?v=0901042a9ab3"></script>
-  <script src="js/lesson.js?v=0901042a9ab3"></script>
-  <script src="js/calibration.js?v=0901042a9ab3"></script>
-  <script src="js/stellarium-data.js?v=0901042a9ab3"></script>
-  <script src="js/ford-data.js?v=0901042a9ab3"></script>
-  <script src="js/rey-data.js?v=0901042a9ab3"></script>
-  <script src="js/diagram-sources.js?v=0901042a9ab3"></script>
-  <script src="js/draw-phases.js?v=0901042a9ab3"></script>
-  <script src="js/render-scheduler.js?v=0901042a9ab3"></script>
-  <script src="js/projection.js?v=0901042a9ab3"></script>
-  <script src="js/reveal.js?v=0901042a9ab3"></script>
-  <script src="js/render.js?v=0901042a9ab3"></script>
-  <script src="js/reveal-panel.js?v=0901042a9ab3"></script>
-  <script src="js/viewer.js?v=0901042a9ab3"></script>
-  <script src="js/lesson-session.js?v=0901042a9ab3"></script>
-  <script src="js/quiz.js?v=0901042a9ab3"></script>
-  <script src="js/explore-gl.js?v=0901042a9ab3"></script>
-  <script src="js/components.js?v=0901042a9ab3"></script>
-  <script src="js/explore.js?v=0901042a9ab3"></script>
-  <script src="js/step-display.js?v=0901042a9ab3"></script>
-  <script src="js/guide-renderer.js?v=0901042a9ab3"></script>
-  <script src="js/find-guide.js?v=0901042a9ab3"></script>
-  <script src="js/course.js?v=0901042a9ab3"></script>
-  <script src="js/progress-grid.js?v=0901042a9ab3"></script>
-  <script src="js/calibration-ui.js?v=0901042a9ab3"></script>
-  <script src="js/settings.js?v=0901042a9ab3"></script>
-  <script src="js/screens.js?v=0901042a9ab3"></script>
-  <script src="js/main.js?v=0901042a9ab3"></script>
+  <script src="js/data.js?v=9fde99163bf2"></script>
+  <script src="js/lesson.js?v=9fde99163bf2"></script>
+  <script src="js/calibration.js?v=9fde99163bf2"></script>
+  <script src="js/stellarium-data.js?v=9fde99163bf2"></script>
+  <script src="js/ford-data.js?v=9fde99163bf2"></script>
+  <script src="js/rey-data.js?v=9fde99163bf2"></script>
+  <script src="js/diagram-sources.js?v=9fde99163bf2"></script>
+  <script src="js/draw-phases.js?v=9fde99163bf2"></script>
+  <script src="js/render-scheduler.js?v=9fde99163bf2"></script>
+  <script src="js/projection.js?v=9fde99163bf2"></script>
+  <script src="js/reveal.js?v=9fde99163bf2"></script>
+  <script src="js/render.js?v=9fde99163bf2"></script>
+  <script src="js/reveal-panel.js?v=9fde99163bf2"></script>
+  <script src="js/viewer.js?v=9fde99163bf2"></script>
+  <script src="js/lesson-session.js?v=9fde99163bf2"></script>
+  <script src="js/quiz.js?v=9fde99163bf2"></script>
+  <script src="js/explore-gl.js?v=9fde99163bf2"></script>
+  <script src="js/components.js?v=9fde99163bf2"></script>
+  <script src="js/explore.js?v=9fde99163bf2"></script>
+  <script src="js/step-display.js?v=9fde99163bf2"></script>
+  <script src="js/guide-renderer.js?v=9fde99163bf2"></script>
+  <script src="js/find-guide.js?v=9fde99163bf2"></script>
+  <script src="js/course.js?v=9fde99163bf2"></script>
+  <script src="js/progress-grid.js?v=9fde99163bf2"></script>
+  <script src="js/calibration-ui.js?v=9fde99163bf2"></script>
+  <script src="js/settings.js?v=9fde99163bf2"></script>
+  <script src="js/screens.js?v=9fde99163bf2"></script>
+  <script src="js/main.js?v=9fde99163bf2"></script>
   <!-- Perf bisect rung 11: only loaded with ?perf=1, so normal runs pay nothing. -->
   <script>
     if (/[?&]perf=1/.test(location.search)) {
-      document.write('<script src="perf/harness.js?v=0901042a9ab3"><\/script>');
-      document.write('<script src="perf/bisect.js?v=0901042a9ab3"><\/script>');
-      document.write('<script src="perf/app-probe.js?v=0901042a9ab3"><\/script>');
-      document.write('<script src="perf/draw-probe.js?v=0901042a9ab3"><\/script>');
+      document.write('<script src="perf/harness.js?v=9fde99163bf2"><\/script>');
+      document.write('<script src="perf/bisect.js?v=9fde99163bf2"><\/script>');
+      document.write('<script src="perf/app-probe.js?v=9fde99163bf2"><\/script>');
+      document.write('<script src="perf/draw-probe.js?v=9fde99163bf2"><\/script>');
     }
   </script>
 </body>

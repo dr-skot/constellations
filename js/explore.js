@@ -604,7 +604,7 @@ function drawExplore() {
     ctx.restore();
   }
 
-  // Milky Way (galactic plane) — shown in diagram/stars quiz modes for orientation,
+  // Milky Way (galactic plane) — shown in diagram/stars question modes for orientation,
   // but not when the photo layer is visible (real photo has the real Milky Way).
   markDrawPhase('milky-way');
   if (!showPhoto && (cm === 'diagram' || cm === 'stars')) {

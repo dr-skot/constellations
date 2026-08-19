@@ -4,21 +4,22 @@
 // or straight from the address as view/<abbr>.
 //
 // It has its own screen and its own state (issue #73). It used to have neither: it
-// declared the quiz screen, wrote a one-question LESSON SESSION, marked that question
+// declared the identify screen, wrote a one-question LESSON SESSION, marked that question
 // answered before the learner had seen anything — an answered question is what shows a
-// REVEAL — and hid the quiz parts with CSS. Every flow that later wanted the quiz
-// screen had to undo that disguise, Quit had to ask whether this "lesson" was really a
-// viewer, and opening the viewer turned the Photo toggle off in the learner's lesson.
+// REVEAL — and hid that screen's own parts with CSS. Every flow that later wanted the
+// identify screen had to undo the disguise, Quit had to ask whether this "lesson" was
+// really a viewer, and opening the viewer turned the Photo toggle off in the learner's
+// lesson.
 //
 // None of that is here. The viewer mounts its own reveal panel, keeps its own layer
-// choices, and writes nothing the quiz reads.
+// choices, and writes nothing a quiz reads.
 
-// The viewer's own layer choices. Deliberately NOT the quiz's revState and not part of
+// The viewer's own layer choices. Deliberately NOT the identify screen's revState, and not part of
 // the lesson session: studying one constellation and being questioned about others are
 // different activities, and one must not silently reconfigure the other.
 //
 // The photograph starts off, which is how the viewer has always opened — it used to
-// reach into the quiz's toggles and switch it off on the way in, which is exactly the
+// reach into the identify screen's toggles and switch it off on the way in, which is exactly the
 // contamination this removes. The default is kept; only the reaching is gone.
 const viewerLayers = { photo: false, diagram: true, art: true, boundary: true };
 
@@ -44,7 +45,7 @@ function viewerPanel() {
   return _viewerPanel;
 }
 
-// What the viewer asks the reveal for: its own layers, no quiz mode, no rotation —
+// What the viewer asks the reveal for: its own layers, no question mode, no rotation —
 // a constellation you looked up sits north-up, not at the angle a question happened
 // to spin it to — and the learner's chosen star-figure set.
 function viewerIntent() {

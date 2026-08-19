@@ -3,7 +3,7 @@
 //
 // Before this, viewing a constellation wrote a one-question LESSON SESSION, marked
 // that question answered, set its rotation and turned the learner's Photo toggle off —
-// because the viewer had no state of its own and borrowed the quiz's. A learner who
+// because the viewer had no state of its own and borrowed the identify screen's. A learner who
 // looked something up mid-course had their lesson's reveal quietly reconfigured.
 //
 // Two things are asserted here: what the viewer asks the reveal for, and that its
@@ -15,7 +15,7 @@ const vm = require('vm');
 
 const jsDir = path.join(__dirname, '..', 'js');
 
-// The quiz's toggles live in render.js, which needs a browser; the two lines that
+// The identify screen's toggles live in render.js, which needs a browser; the two lines that
 // declare them are all this test needs from it, so they are stood up directly rather
 // than dragging a canvas in. viewer.js itself touches no DOM until it is called.
 global.revState = { photo: true, diagram: true, art: true, boundary: true };
@@ -34,7 +34,7 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
   check('the viewer shows a constellation north-up', intent.rotation === 0, String(intent.rotation));
   check('a lesson question\'s rotation does not reach the viewer',
     intent.rotation !== session.rotation, `session.rotation ${session.rotation}`);
-  check('the viewer asks for the diagram, not a quiz mode', intent.mode === 'diagram', intent.mode);
+  check('the viewer asks for the diagram, not a question mode', intent.mode === 'diagram', intent.mode);
   check('the viewer carries the learner\'s figure set', intent.source === 'iau', String(intent.source));
 }
 
@@ -47,7 +47,7 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
   check('and the viewer asks for what it was set to', viewerIntent().layers.photo === false);
 
   revState.art = false;
-  check('and the quiz\'s layers do not reach the viewer', viewerIntent().layers.art === true);
+  check('and the identify screen\'s layers do not reach the viewer', viewerIntent().layers.art === true);
   viewerLayers.photo = true; revState.art = true;
 }
 

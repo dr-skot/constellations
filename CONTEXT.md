@@ -88,13 +88,13 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   `identify/diagram` to `find/photo-nb` across both kinds.
 
   **Never use "quiz" to mean "identify question".** The two words sit on different axes: *quiz*
-  says what the learner is doing, *identify* says what this question asks. The screen that
-  renders identify questions is currently named `quiz` (`#screen-quiz`), which is what made
-  `currentScreen() === 'quiz'` read as "is this a quiz question?" when it only means "is this an
-  identify question?". That misreading is the whole of issue #75: the finding-guide return asked
-  it, got "no" for a find question, and stranded the learner outside their own quiz. A rename is
-  pending — until it lands, write "the identify screen" for the surface and keep "quiz" for the
-  sequence.
+  says what the learner is doing, *identify* says what this question asks. The screen that renders
+  identify questions was named `quiz` until #78, which is what let `currentScreen() === 'quiz'`
+  read as "is this a quiz question?" when it only ever meant "is this an identify question?". That
+  misreading is the whole of issue #75: the finding-guide return asked it, got "no" for a find
+  question, and stranded the learner outside their own quiz. The surface is now `#screen-identify`
+  and `showScreen('identify')`; `js/quiz.js` and `css/quiz.css` keep their names, because each
+  holds quiz-level things too.
 
 - **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
   correct, answered, history, lessonIdx/Label) plus the two reveal-toggle states
@@ -123,8 +123,9 @@ hand-rolled twice (spec #44).
   active screen, which is what makes `currentScreen()` answerable without reading a CSS class.
   A route's declared screen is applied **before** its enter action runs: the constellation
   viewer measures its picture, and an inactive screen has no layout. The viewer has a screen
-  of its own (#73); while it borrowed the identify screen, `currentScreen() === 'quiz'` was true
-  in a place that is not a quiz, which is what made the finding-guide return pick the wrong resume.
+  of its own (#73); while it borrowed the identify screen — then still named `quiz` —
+  `currentScreen() === 'quiz'` was true in a place that is not a quiz, which is what made the
+  finding-guide return pick the wrong resume.
 
   A screen is a **rendering surface, not a mode**. The `explore` screen hosts free explore *and*
   a quiz's find questions; the identify screen hosts a quiz's identify questions *and* **level

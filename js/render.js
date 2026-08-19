@@ -5,7 +5,7 @@
 const artCache = {};  // abbr -> HTMLImageElement | 'loading' | 'error'
 
 // ── Reveal controls state ──
-// The quiz's layer choices, persisted with its lesson session. The buttons that
+// The identify screen's layer choices, persisted with the lesson session. The buttons that
 // drive them belong to the panel showing the reveal (js/reveal-panel.js); the
 // constellation viewer will keep its own state rather than share this one (#73).
 const revState = { photo: true, diagram: true, art: true, boundary: true };
@@ -289,7 +289,7 @@ function pointInPoly2D(px, py, pts) {
 // Shared machinery for dropping a text label where it clears constellation
 // boundaries. Two callers: conNamePosition (explore.js — a constellation's own
 // name, canvas space) and findNeighborLabelSpot (below — neighbor names in the
-// rotated quiz reveal). See CONTEXT.md "label placement".
+// rotated identify-screen reveal). See CONTEXT.md "label placement".
 
 // Does an hw×hh label box centred at (cx,cy) satisfy the polygon/edge
 // constraints? Samples the centre + 4 corners; every sample must lie inside
@@ -321,7 +321,7 @@ function searchLabelSpot(preScan, center, radii, valid) {
   return null;
 }
 
-// Place a neighbor constellation's name in the circular, rotated quiz-reveal
+// Place a neighbor constellation's name in the circular, rotated identify-screen
 // view. All points are screen-space 2D (already projected). `view` carries the
 // per-reveal geometry: circle centre (cx,cy) + radius R, rotation (cosA,sinA),
 // the current constellation's polygon (currentPts), and every visible boundary
@@ -381,7 +381,7 @@ function popoverPosition(card, pop, vp, opts = {}) {
 }
 
 // Paint a reveal into a panel's elements. `intent` is the caller's half of the
-// decision — which layers, which quiz mode, what rotation, which star-figure set —
+// decision — which layers, which question mode, what rotation, which star-figure set —
 // and this adds the half only the painter knows: whether the photograph and the
 // artwork have actually loaded. resolveReveal (js/reveal.js) merges them into the
 // flags below. Which reveal is on screen, and what to do when a late image lands,

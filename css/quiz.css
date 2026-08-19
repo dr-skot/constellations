@@ -1,8 +1,8 @@
-/* quiz */
-#quiz-breadcrumb { font-size: .8rem; color: var(--dim); padding: 2px 0 6px }
-#quiz-breadcrumb a { color: var(--accent); text-decoration: none }
-#quiz-breadcrumb a:hover { text-decoration: underline }
-#quiz-breadcrumb span { color: var(--text) }
+/* the identify screen (the file keeps its name — see #78 decision 1) */
+#identify-breadcrumb { font-size: .8rem; color: var(--dim); padding: 2px 0 6px }
+#identify-breadcrumb a { color: var(--accent); text-decoration: none }
+#identify-breadcrumb a:hover { text-decoration: underline }
+#identify-breadcrumb span { color: var(--text) }
 
 .hud {
   display: flex;
@@ -50,7 +50,7 @@
 /* The panel's host is a mounting point, not a layout box: the picture area the
    component builds has to be the flex child of the screen body, exactly as the markup
    it replaced was. */
-#quiz-picture { display: contents; }
+#identify-picture { display: contents; }
 
 .con-canvas-area {
   position: relative;
@@ -68,8 +68,8 @@
 /* Tall-window (#16): center the quiz block (header/circle/answers/nav) as one group so
    the buttons stop hugging the bottom. Body must not grow, else it eats the free space;
    `safe` center falls back to top-aligned (no clipping) when content exceeds a short window. */
-#screen-quiz { justify-content: safe center; }
-#screen-quiz .screen-body { flex: 0 1 auto; }
+#screen-identify { justify-content: safe center; }
+#screen-identify .screen-body { flex: 0 1 auto; }
 .con-canvas-wrap {
   border-radius: 14px;
   overflow: hidden;
@@ -125,14 +125,14 @@ canvas {
 }
 
 /* q-label and reveal-controls share the same slot; no layout shift on reveal */
-#quiz-label-area {
+#identify-label-area {
   display: grid;
   align-items: center;
   justify-items: center;
   padding: 5px 0
 }
 
-#quiz-label-area > * {
+#identify-label-area > * {
   grid-column: 1;
   grid-row: 1
 }
@@ -145,7 +145,7 @@ canvas {
   letter-spacing: .1em
 }
 
-#quiz-label-area:has(.con-toggles.show) .q-label {
+#identify-label-area:has(.con-toggles.show) .q-label {
   visibility: hidden
 }
 
@@ -283,18 +283,18 @@ canvas {
 /* autocomplete answer area */
 #autocomplete-area { display:flex; flex-direction:column; gap:6px; }
 #autocomplete-input-row { display:flex; gap:8px; align-items:center; justify-content:center; }
-#quiz-autocomplete-input {
+#identify-autocomplete-input {
   width:280px; background:var(--bg); color:var(--text); border:1px solid var(--border);
   border-radius:8px; padding:9px 12px; font-size:.88rem;
 }
-#quiz-autocomplete-input:focus { outline:none; border-color:var(--accent); }
+#identify-autocomplete-input:focus { outline:none; border-color:var(--accent); }
 #autocomplete-msg { font-size:.8rem; color:var(--err); min-height:1.2em; }
-#quiz-autocomplete-submit {
+#identify-autocomplete-submit {
   flex-shrink:0; padding:9px 18px; border:1px solid var(--accent);
   background:rgba(91,138,245,.12); color:#b0ccff; border-radius:10px;
   cursor:pointer; font-size:.88rem; transition:all .18s;
 }
-#quiz-autocomplete-submit:hover { background:rgba(91,138,245,.22); }
+#identify-autocomplete-submit:hover { background:rgba(91,138,245,.22); }
 
 /* mastered result state */
 .result-wrap.mastered .result-grade { color:#ffd700; font-size:1.6rem; }
