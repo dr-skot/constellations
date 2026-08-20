@@ -3,11 +3,64 @@
 // ═══════════════════════════════════════════════════════════
 let settings = { mode: 'diagram', diff: '1', hem: 'B' };
 let session = {
-  questions: [], idx: 0, correct: 0, answered: false,
+  questions: [], idx: 0, correct: 0,
   history: [], choices: [],
   lessonIdx: null, lessonLabel: '', lastMastered: false,
   calibration: false, calResults: []   // level-check mode (see js/calibration-ui.js)
 };
+
+// ═══════════════════════════════════════════════════════════
+// QUESTION STATE  (issue #77)
+// ═══════════════════════════════════════════════════════════
+// A question has three states and the code used to model two, across three flags that
+// already disagreed: session.answered (identify path only, and stale while a find
+// question is up, because it is assigned below the find early-return), history[idx]
+// (which cannot tell "never shown" from "shown, not answered"), and
+// explore.quiz.answered (find path only).
+//
+//   unasked ──ask──▶ asked ──answer──▶ answered
+//
+// `asked` is the state that was missing, and recordSeen is the side effect that belongs
+// on the transition into it: it records that the question was PUT TO the learner. With
+// no transition to hang it on it was a guard on a state — "no answer yet" — which is
+// true on EVERY re-render of an unanswered question, so a reload mid-question or a step
+// back with Previous recorded the exposure again. That inflated `seen` without touching
+// `correct`, which cools a constellation early in the review queue.
+//
+// askQuestion returns whether it actually transitioned, and that return value is what
+// the caller gates recordSeen on. A second ask is not a transition, so it cannot record.
+const QUESTION_UNASKED  = 'unasked';
+const QUESTION_ASKED    = 'asked';
+const QUESTION_ANSWERED = 'answered';
+
+function questionState(q) { return q?.state || QUESTION_UNASKED; }
+function questionIsAnswered(q) { return questionState(q) === QUESTION_ANSWERED; }
+
+// unasked → asked. Returns true only for the transition itself; an already-asked or
+// already-answered question stays where it is and answers false.
+// Compares the state rather than testing q.state for truthiness: a question restored
+// from storage carries the string 'unasked' where a freshly-planned one carries nothing,
+// and both mean the same thing. Truthiness got this wrong and silently stopped every
+// resumed lesson from recording exposures at all.
+function askQuestion(q) {
+  if (!q || questionState(q) !== QUESTION_UNASKED) return false;
+  q.state = QUESTION_ASKED;
+  return true;
+}
+
+// → answered, from wherever. A find question can be answered without a separate ask
+// (its ask and its first render are the same moment), so this does not require `asked`.
+function answerQuestion(q) { if (q) q.state = QUESTION_ANSWERED; }
+
+// The two session-level halves, so no caller has to reach through to the current
+// question itself — the reading side is what replaced session.answered: one value, asked
+// of the question, with no second copy to go stale.
+function sessionAnswered(session) {
+  return questionIsAnswered(session.questions[session.idx]);
+}
+function answerCurrentQuestion(session) {
+  answerQuestion(session.questions[session.idx]);
+}
 function currentCon() {
   const q = session.questions[session.idx];
   return q ? q.con : null;
@@ -80,7 +133,7 @@ function redrawIdentifyFigure() {
   const q = session.questions[session.idx];
   if (!q) return;
   const con = q.con;
-  if (session.answered) { identifyPanel().redraw(identifyRevealIntent(), con); return; }
+  if (sessionAnswered(session)) { identifyPanel().redraw(identifyRevealIntent(), con); return; }
   identifyPanel().showFigure(con, { mode: settings.mode, rotation: session.rotation });
 }
 
@@ -106,7 +159,9 @@ function tryResumeLesson() {
     session.history = restored.history;
     session.lessonIdx = 0;
     session.lessonLabel = restored.lessonLabel;
-    session.answered = false;
+    // No session.answered to reset — each question carries its own state, restored from
+    // the payload (#77). Resetting it here is exactly how a reload used to land on an
+    // already-asked question looking untouched, and record its exposure a second time.
     // Restore reveal toggle states (globals + toggle-group DOM)
     if (restored.revState) {
       for (const k of Object.keys(restored.revState)) {
@@ -155,14 +210,22 @@ function showLessonQuestion() {
   // The one call site, deliberately above the fork so the two kinds of question cannot
   // drift apart again: the find branch used to record unconditionally while the identify
   // branch guarded, so re-rendering an ANSWERED find question — exactly what returning
-  // from a finding guide does — counted the exposure twice (#75, #76). The level check
-  // measures before it seeds (D*), so a probe records nothing: a lucky right answer must
-  // not credit the constellation.
-  // The guard is "not yet answered", which is not the same as "not yet asked": re-showing
-  // an UNANSWERED question still records again, so a reload or Previous double-counts.
-  // Pre-existing, both kinds, and unreachable from the guide — see #77, which replaces
-  // this guard with a real unasked → asked transition.
-  if (!hist && !session.calibration) recordSeen(q.con.abbr, questionKey(q));
+  // from a finding guide does — counted the exposure twice (#75, #76).
+  //
+  // And it is a TRANSITION now, not a guard on a state (#77). askQuestion answers true
+  // only for unasked → asked, so re-showing a question the learner has already been
+  // shown — a reload mid-question, a step back with Previous — records nothing. The old
+  // guard asked "no answer yet", which is true every one of those times.
+  //
+  // The level check measures before it seeds (D*), so a probe records nothing: a lucky
+  // right answer must not credit the constellation. It still transitions, because the
+  // state describes the question, not the bookkeeping.
+  const firstAsk = askQuestion(q);
+  if (firstAsk && !session.calibration) recordSeen(q.con.abbr, questionKey(q));
+  // Persist the transition itself. Both branches below happen to save when they set
+  // their own first-ask field (q.rotation, q.startP) — which is exactly the accidental
+  // encoding #77 removes, so the state must not depend on it still being true.
+  if (firstAsk) saveLessonSession();
 
   if (q.type === 'find') { startLessonFindQuestion(q); return; }
 
@@ -190,10 +253,8 @@ function showLessonQuestion() {
   panel.circular(true);
 
   if (hist) {
-    session.answered = true;
     session.rotation = hist.rotation;
   } else {
-    session.answered = false;
     if (q.rotation == null) {
       q.rotation = Math.random() * Math.PI * 2;
       saveLessonSession();
@@ -269,8 +330,9 @@ function showLessonQuestion() {
 }
 
 function handleAnswer(chosen, correct) {
-  if (session.answered) return;
-  session.answered = true;
+  // The double-answer guard asks the question, not a session-level flag (#77).
+  if (sessionAnswered(session)) return;
+  answerCurrentQuestion(session);
 
   session.history[session.idx] = {
     chosen, wasCorrect: chosen === correct,
@@ -323,7 +385,7 @@ function handleAnswer(chosen, correct) {
 }
 
 function handleAutocompleteAnswer() {
-  if (session.answered) return;
+  if (sessionAnswered(session)) return;
   const val    = document.getElementById('identify-autocomplete-input').value.trim();
   const chosen = C.find(c => c.name.toLowerCase() === val.toLowerCase());
   if (!chosen) {
@@ -333,8 +395,8 @@ function handleAutocompleteAnswer() {
   document.getElementById('autocomplete-msg').textContent = '';
   document.getElementById('identify-autocomplete-input').disabled = true;
   document.getElementById('identify-autocomplete-submit').style.display = 'none';
-  session.answered = true;
   const q = session.questions[session.idx];
+  answerCurrentQuestion(session);
   const correct = q.con;
   const wasCorrect = chosen === correct;
   session.history[session.idx] = { chosen, wasCorrect, rotation: session.rotation, choices: [] };

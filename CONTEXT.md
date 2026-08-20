@@ -96,8 +96,33 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   and `showScreen('identify')`; `js/quiz.js` and `css/quiz.css` keep their names, because each
   holds quiz-level things too.
 
+- **link depth** — how far a **question**'s reveal may take the learner: at most one step, and
+  which step is a property of the question kind. `conLabel(con, { link })` in `js/render.js`
+  takes it as an argument rather than reading a global — `false` for a **level check** probe
+  (plain text, no anchor at all: a placement test is not an opportunity to learn), `'blurb'` for
+  an **identify question** (the modal with the blurb and no onward actions, so closing it is the
+  only exit), `'guide'` for a **find question** (the **finding guide** for the right answer,
+  opened directly — no modal in between), and `'full'` everywhere outside a question, which is
+  the default and is what the **constellation viewer** keeps. The mode rides on the anchor as
+  `data-link`, because the click is handled by delegation in `js/main.js` long after the string
+  was built. Before #64 the chain was unbounded: caption → modal → guide → the fully interactive
+  explorer, several levels away from a lesson in progress.
+
+- **question state** — a question is `unasked → asked → answered`, one value carried on the
+  question itself (`q.state`, `js/quiz.js`). It replaced three flags that already disagreed:
+  `session.answered` (identify path only, and stale while a find question was up, because it
+  was assigned below the find early-return), `history[idx] == null` (which could not tell
+  *never shown* from *shown, not answered*), and `explore.quiz.answered`. **`recordSeen` fires
+  on the transition into `asked`** — `askQuestion(q)` returns true only for that transition, so
+  a reload mid-question or a step back with Previous cannot record a second **exposure**. The
+  old guard asked "no answer yet", which is true on every one of those renders (#77).
+  `explore.quiz.answered` survives, because the explorer's practice **quiz** is a quiz that is
+  not a **lesson** and has nothing else to keep it in; on the lesson path it is a projection of
+  the question's state, not an independent copy.
+
 - **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
-  correct, answered, history, lessonIdx/Label) plus the two reveal-toggle states
+  correct, history, lessonIdx/Label — no `answered`, see **question state**) plus the two
+  reveal-toggle states
   `revState` (identify questions) and `eqRevState` (the explorer, so find questions and the
   practice quiz). Persisted to `sessionStorage['lesson-session']`
   so a page reload resumes mid-lesson. It belongs to lessons alone: the constellation viewer
@@ -200,9 +225,14 @@ still runs the enter action.
   `sessionToJSON(session, revState, eqRevState) → payload` and
   `sessionFromJSON(payload, catalog) → restored | null`. The single home for the con↔abbr
   conversion (a question stores `con.abbr` on disk, resolves it against the catalog on load) and
-  the optional per-question fields (distanceLevel, noBounds, rotation, startP/startFov, choices).
-  `sessionFromJSON` returns `null` when the payload is unusable (`_v` mismatch, missing
-  lessonLabel, or any abbr that doesn't resolve). Pure obj↔obj: sessionStorage and the DOM
+  the optional per-question fields (distanceLevel, noBounds, rotation, startP/startFov, choices,
+  and the **question state**). `sessionFromJSON` returns `null` when the payload is unusable
+  (a version outside `LESSON_SESSION_V_MIN`…`LESSON_SESSION_V`, missing lessonLabel, or any abbr
+  that doesn't resolve). The payload is at **v3**; a **v2 payload migrates rather than being
+  discarded** — `asked` is inferred from the first-ask side effects v2 already persisted by
+  accident (`q.rotation` for identify, `q.startP` for find), and an answer record outranks both.
+  Only a non-default state is written, so a missing `state` key means `unasked` and the
+  round-trip stays a fixed point. Pure obj↔obj: sessionStorage and the DOM
   toggle-group application stay in the quiz.js adapter (`saveLessonSession`/`tryResumeLesson`).
 
 ## Finding guides

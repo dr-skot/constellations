@@ -309,7 +309,9 @@ check('questionKey: find/photo noBounds:true → find/photo-nb',
   saveLessonSession();
 
   const stored = JSON.parse(sessionStorage.getItem('lesson-session'));
-  check('Save/resume: _v is 2', stored?._v === 2, `got _v=${stored?._v}`);
+  // v3 added the question's state (#77); v2 payloads still resume, via the migration
+  // covered in test/lesson-session.js.
+  check('Save/resume: _v is 3', stored?._v === 3, `got _v=${stored?._v}`);
   check('Save/resume: idx preserved', stored?.idx === 2);
   check('Save/resume: correct preserved', stored?.correct === 1);
   check('Save/resume: questions length preserved', stored?.questions?.length === 4);

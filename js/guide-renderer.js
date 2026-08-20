@@ -367,7 +367,7 @@ function _guideRenderUI() {
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
   nextBtn.style.visibility = animating ? 'hidden' : 'visible';
   // The exit's label belongs to the guide, not the step — the caller works out where
-  // leaving goes (findGuideExitLabel, issue #66) and it holds for the whole session.
+  // leaving goes (guideExitLabel, issue #66) and it holds for the whole session.
   // Guarded twice: find-help.html has no such button and names no destination.
   const backBtn = document.getElementById('fg-back-btn');
   if (backBtn && _gs.exitLabel) backBtn.textContent = _gs.exitLabel;

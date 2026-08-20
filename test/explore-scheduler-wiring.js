@@ -530,7 +530,7 @@ function guideFlyingTo(to, frames) {
 }
 
 // ── 23. The exit says where it goes, for as long as the guide is open ────────
-// The caller names the destination (findGuideExitLabel, issue #66); the renderer's job
+// The caller names the destination (guideExitLabel, issue #66); the renderer's job
 // is to put it on the button and keep it there — the label belongs to the guide, not to
 // the step, so stepping must not overwrite it. find-help.html has no #fg-back-btn and
 // passes no label, which is why the write is guarded on both.

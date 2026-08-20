@@ -128,6 +128,65 @@ check('any unresolvable abbr → whole-session null',
     questions: [{ abbr: 'Ori', type: 'identify', mode: 'diagram' },
                 { abbr: 'NOPE', type: 'identify', mode: 'diagram' }] }, C) === null);
 
+// ═══════════════════════════════════════════════════════════
+// 3. QUESTION STATE AND THE v2 → v3 MIGRATION  (issue #77)
+// ═══════════════════════════════════════════════════════════
+// The `asked` state has to survive a reload, or the reload path still double-counts the
+// exposure, which is half the bug. So it joins the payload and the version goes 2 → 3.
+//
+// sessionFromJSON returns null on a version mismatch, which would DISCARD an in-flight
+// lesson from a tab opened before this change. That is avoidable: both paths already
+// persist a first-ask side effect by accident — an identify question sets q.rotation on
+// first ask, a find question sets q.startP — so a v2 payload can say whether each
+// question was asked without losing anything. (That incidental encoding is itself an
+// argument for the ticket: "has this been asked" was already recorded, twice, in fields
+// that exist for other reasons.)
+origLog('── Question state + v2 migration ───────────────');
+{
+  const V3 = { _v: 3, lessonLabel: 'x', idx: 0, correct: 0,
+               questions: [{ abbr: 'Ori', type: 'identify', mode: 'diagram', state: 'asked' },
+                           { abbr: 'Cas', type: 'identify', mode: 'diagram', state: 'answered' },
+                           { abbr: 'Leo', type: 'identify', mode: 'diagram' }],
+               history: [null, { chosen: 'Cas', wasCorrect: true }, null] };
+  const r = sessionFromJSON(V3, C);
+  check('a v3 payload resumes', !!r);
+  check('v3 carries each question state through',
+    r && r.questions.map(q => q.state).join() === 'asked,answered,unasked',
+    r && r.questions.map(q => q.state).join());
+  const back = sessionToJSON({ ...V3, questions: r.questions, history: r.history }, null, null);
+  check('and serializing puts the non-default ones back',
+    back.questions[0].state === 'asked' && back.questions[1].state === 'answered',
+    JSON.stringify(back.questions.map(q => q.state)));
+  check('an unasked question writes no state key — that is what absence means',
+    !('state' in back.questions[2]), JSON.stringify(back.questions[2]));
+  check('the payload declares v3', back._v === 3, String(back._v));
+}
+{
+  // A v2 payload written by the previous version of the app. Question 0 was answered,
+  // 1 was asked and not answered (it carries the rotation its first render set), 2 has
+  // never been shown. A find question is inferred from startP the same way.
+  const V2 = { _v: 2, lessonLabel: 'x', idx: 1, correct: 1,
+               questions: [{ abbr: 'Ori', type: 'identify', mode: 'diagram', rotation: 1.2 },
+                           { abbr: 'Cas', type: 'identify', mode: 'diagram', rotation: 0.4 },
+                           { abbr: 'Leo', type: 'identify', mode: 'diagram' },
+                           { abbr: 'Cru', type: 'find', mode: 'stars', startP: [0, 0, 1], startFov: 40 }],
+               history: [{ chosen: 'Ori', wasCorrect: true }, null, null, null] };
+  const r = sessionFromJSON(V2, C);
+  check('a v2 payload resumes rather than being discarded', !!r);
+  check('an answered v2 question migrates to answered',
+    r && r.questions[0].state === 'answered', r && r.questions[0].state);
+  check('a rotation-carrying v2 question migrates to asked',
+    r && r.questions[1].state === 'asked', r && r.questions[1].state);
+  check('an untouched v2 question migrates to unasked',
+    r && r.questions[2].state === 'unasked', r && r.questions[2].state);
+  check('a startP-carrying v2 find question migrates to asked',
+    r && r.questions[3].state === 'asked', r && r.questions[3].state);
+  check('the resumed session re-serializes at v3',
+    sessionToJSON({ ...V2, questions: r.questions, history: r.history }, null, null)._v === 3);
+}
+check('a version older than v2 is still discarded',
+  sessionFromJSON({ _v: 1, lessonLabel: 'x', questions: [] }, C) === null);
+
 // Purity: sessionToJSON must not mutate its inputs.
 {
   const c = serializeCases[1];

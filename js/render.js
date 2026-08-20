@@ -169,7 +169,10 @@ function showArtworkMode(canvas, con, showLabels = false) {
   const img = new Image();
   img.onload = () => {
     artCache[src] = img;
-    if (currentCon() === con && session.answered)
+    // Artwork that arrives late only draws if the question it belongs to is still up and
+    // still answered — asked of the question itself now, not a session flag that the find
+    // path never wrote (#77).
+    if (currentCon() === con && sessionAnswered(session))
       drawArtwork(canvas, con, img, showLabels);
   };
   img.onerror = () => { artCache[src] = 'error'; };

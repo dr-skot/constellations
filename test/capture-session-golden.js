@@ -63,7 +63,8 @@ function loadSession(s) {
   session.history = s.history;
   session.lessonIdx = s.lessonIdx;
   session.lessonLabel = s.lessonLabel;
-  session.answered = false;
+  // session.answered is gone (#77) — the question carries its own state now. Nothing to
+  // reset here; the vestigial snapshot field below is explained where it is emitted.
 }
 
 // Snapshot restored state with con→abbr so it is JSON-comparable.
@@ -73,7 +74,10 @@ function snapshotSession() {
     idx: session.idx,
     correct: session.correct,
     lessonIdx: session.lessonIdx,
-    answered: session.answered,
+    // Vestigial: session.answered was retired by #77, but the frozen snapshots in
+    // session-golden.json carry the key. Emitting the constant it always held at this
+    // point keeps a re-capture byte-comparable with the goldens captured before it.
+    answered: false,
     questions: session.questions.map(q => ({
       abbr: q.con.abbr, type: q.type, mode: q.mode, answerMode: q.answerMode ?? null,
       distanceLevel: q.distanceLevel ?? null, noBounds: q.noBounds ?? null,

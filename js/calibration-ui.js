@@ -50,7 +50,6 @@ function calBegin() {
     ({ con, type: 'identify', mode: 'diagram', answerMode: 'choice', rotation: 0 }));
   session.idx = 0;
   session.correct = 0;
-  session.answered = false;
   session.history = [];
   session.calResults = [];
   session.lessonLabel = 'Level check';

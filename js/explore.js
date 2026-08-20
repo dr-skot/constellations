@@ -909,6 +909,10 @@ function handleExploreClick(px, py) {
   }) || null;
   const correct = clicked && clicked.abbr === q.target.abbr;
   q.answered = true;
+  // On the lesson path the question owns the fact; explore.quiz.answered is the
+  // explorer's own projection of it, for the draw pass and the click/drag guards. The
+  // practice quiz has no question behind it and keeps the flag as its only record (#77).
+  if (q.lessonMode) answerCurrentQuestion(session);
   q.clicked = clicked;
   q.total++;
   if (correct) q.score++;

@@ -96,7 +96,7 @@ function startLesson() {
   _exposureAtLessonStart = loadExposure();
   const { label, questions } = generateNextLesson();
   session.questions = questions;
-  session.idx = 0; session.correct = 0; session.answered = false;
+  session.idx = 0; session.correct = 0;
   session.history = []; session.lessonIdx = 0;
   session.lessonLabel = label;
   session.calibration = false;
@@ -213,7 +213,9 @@ function startLessonFindQuestion(q) {
 
   explore.quiz = {
     target: q.con,
-    answered: !!hist,
+    // Projected from the question's state, not decided here (#77). It was `!!hist`, a
+    // third reading of "answered" alongside session.answered and this flag itself.
+    answered: questionIsAnswered(q),
     clicked: hist?.chosen || null,
     stageMode: q.mode,
     bounds: !q.noBounds,

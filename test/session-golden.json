@@ -4,7 +4,7 @@
     {
       "name": "minimal",
       "expected": {
-        "_v": 2,
+        "_v": 3,
         "lessonLabel": "Minimal",
         "questions": [
           {
@@ -28,7 +28,7 @@
     {
       "name": "full-fields",
       "expected": {
-        "_v": 2,
+        "_v": 3,
         "lessonLabel": "Full",
         "questions": [
           {
@@ -569,7 +569,7 @@
     {
       "name": "history-with-null",
       "expected": {
-        "_v": 2,
+        "_v": 3,
         "lessonLabel": "Hist",
         "questions": [
           {
