@@ -304,9 +304,16 @@ function showLessonQuestion() {
         grid.appendChild(btn);
       });
     }
+    // Re-rendering an answered question has to make the same depth decision the live
+    // answer made below, including the level check's "no way out" (#64). It is above
+    // the calibration fork rather than below it, so the flag is asked here too —
+    // otherwise a re-shown probe would sprout the link the live one refuses. Not
+    // reachable today (a probe's caption has no anchor, so nothing can start a detour
+    // back to one), which is exactly the kind of fork the #64 Background warned about.
+    const revealLink = session.calibration ? false : 'blurb';
     document.getElementById('feedback').innerHTML = hist.wasCorrect
-      ? `✓ Correct! — ${conLabel(con, { link: 'blurb' })}`
-      : `✗ That was ${conLabel(con, { link: 'blurb' })}`;
+      ? `✓ Correct! — ${conLabel(con, { link: revealLink })}`
+      : `✗ That was ${conLabel(con, { link: revealLink })}`;
     identifyPanel().showReveal(con, identifyRevealIntent());
     document.getElementById('btn-next').classList.add('show');
   } else if (!isAuto) {

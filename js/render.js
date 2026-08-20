@@ -154,6 +154,11 @@ function renderCanvas(canvas, con, mode, showLabels = false, angle = 0) {
 
 // showArtworkMode: overlay artwork on top of whatever is already on the canvas.
 // showLabels=true draws star name labels after the artwork is composited.
+//
+// NO CALLERS as of 2026-08-19 — the only other mention in the repo is
+// perf/bisect.js stubbing it out by name. The reveal panel composites its own
+// artwork now. Left in place rather than deleted as a drive-by; the late-arrival
+// guard below is therefore inert, whatever it says.
 function showArtworkMode(canvas, con, showLabels = false) {
   const src = artSrc(con.abbr);
   const art = ART[src];

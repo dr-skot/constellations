@@ -69,7 +69,6 @@
     });
     session.idx = 0;
     session.correct = 0;
-    session.answered = false;
     session.history = [];
     session.lessonIdx = 0;
     session.lessonLabel = 'Perf run';
@@ -208,12 +207,18 @@
       // and "the app is fine" are the same reading, and the bisect would follow
       // the dead half. Verified the hard way: emptying inactive screens took
       // #screen-identify with it, btn-next vanished, and the run went silent.
+      // Asks the QUESTION, not a session flag. session.answered was retired by #77
+      // and read `undefined` forever after, so this disjunct was dead and the
+      // watcher silently tracked session.idx alone — a kill that freezes the app ON
+      // a question would have read as healthy, which is the exact failure the note
+      // above says this exists to prevent.
       var progress = 0, lastIdx = -1, lastAns = null;
       var watch = setInterval(function () {
         try {
-          if (session.idx !== lastIdx || session.answered !== lastAns) progress++;
+          var ans = sessionAnswered(session);
+          if (session.idx !== lastIdx || ans !== lastAns) progress++;
           lastIdx = session.idx;
-          lastAns = session.answered;
+          lastAns = ans;
         } catch (e) {}
       }, 500);
 
