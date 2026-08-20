@@ -62,6 +62,27 @@ function survey(pages) {
   return { files: [...files].sort(), stamps };
 }
 
+// Files fetched at RUNTIME through stampedUrl() (js/cache-stamp.js). These carry the
+// stamp in their URL but are invisible to the HTML scan above, so without this they
+// would be hashed by nobody: editing js/constellation-blurbs.json alone would leave the
+// stamp unchanged, the URL identical, and the cached copy in place. The stamp has to
+// cover what it versions or it is decoration.
+function fetchedAtRuntime() {
+  const found = new Set();
+  const dir = path.join(root, 'js');
+  const CALL = /stampedUrl\(\s*(['"])([^'"]+)\1/g;
+  for (const name of fs.readdirSync(dir)) {
+    if (!name.endsWith('.js')) continue;
+    const src = fs.readFileSync(path.join(dir, name), 'utf8');
+    let m;
+    CALL.lastIndex = 0;
+    while ((m = CALL.exec(src))) {
+      if (fs.existsSync(path.join(root, m[2]))) found.add(m[2]);
+    }
+  }
+  return [...found];
+}
+
 // One hash over every versioned file. Paths are included so that moving code between
 // files changes the stamp even when the bytes are merely rearranged.
 function fingerprint(files) {
@@ -76,7 +97,8 @@ function fingerprint(files) {
 }
 
 const pages = entryPoints();
-const { files, stamps } = survey(pages);
+const { files: htmlFiles, stamps } = survey(pages);
+const files = [...new Set([...htmlFiles, ...fetchedAtRuntime()])].sort();
 const want = fingerprint(files);
 
 const wrong = pages.filter(p => stamps[p].length !== 1 || stamps[p][0] !== want);

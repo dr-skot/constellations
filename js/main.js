@@ -21,7 +21,7 @@ function applyDiagramSource(key) {
 let _blurbs = null;
 function _loadBlurbs() {
   if (_blurbs) return Promise.resolve(_blurbs);
-  return fetch('js/constellation-blurbs.json').then(r => r.json()).then(b => (_blurbs = b));
+  return fetch(stampedUrl('js/constellation-blurbs.json')).then(r => r.json()).then(b => (_blurbs = b));
 }
 _loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
 

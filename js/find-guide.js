@@ -9,8 +9,8 @@ let _guideSaved   = null;   // saved quiz state while guide is open
 function _loadGuides() {
   if (_guidesCache) return Promise.resolve(_guidesCache);
   return Promise.all([
-    fetch('js/finding-guides.json').then(r => r.json()),
-    fetch('js/sky-objects.json').then(r => r.json()),
+    fetch(stampedUrl('js/finding-guides.json')).then(r => r.json()),
+    fetch(stampedUrl('js/sky-objects.json')).then(r => r.json()),
   ]).then(([guides, catalog]) => {
     _guidesCache  = guides;
     _catalogCache = catalog;
