@@ -227,8 +227,8 @@ function showLessonQuestion() {
       });
     }
     document.getElementById('feedback').innerHTML = hist.wasCorrect
-      ? `✓ Correct! — ${conLabel(con)}`
-      : `✗ That was ${conLabel(con)}`;
+      ? `✓ Correct! — ${conLabel(con, { link: 'blurb' })}`
+      : `✗ That was ${conLabel(con, { link: 'blurb' })}`;
     identifyPanel().showReveal(con, identifyRevealIntent());
     document.getElementById('btn-next').classList.add('show');
   } else if (!isAuto) {
@@ -276,9 +276,11 @@ function handleAnswer(chosen, correct) {
       session.correct++;
       document.getElementById('hud-score').textContent = `${session.correct} correct`;
     }
+    // A level check offers no way out of itself: no link, no blurb, no guide, no
+    // explorer (#64). It is a test of what you already know, not a place to learn.
     document.getElementById('feedback').innerHTML = right
-      ? `✓ Correct! — ${conLabel(correct)}`
-      : `✗ That was ${conLabel(correct)}`;
+      ? `✓ Correct! — ${conLabel(correct, { link: false })}`
+      : `✗ That was ${conLabel(correct, { link: false })}`;
     document.getElementById('btn-next').classList.add('show');
     updatePrevBtn();
     return;
@@ -287,11 +289,11 @@ function handleAnswer(chosen, correct) {
   if (chosen === correct) {
     session.correct++;
     document.getElementById('hud-score').textContent = `${session.correct} correct`;
-    document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct)}`;
+    document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct, { link: 'blurb' })}`;
     const q = session.questions[session.idx];
     if (q) recordCorrect(q.con.abbr, questionKey(q));
   } else {
-    document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
+    document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct, { link: 'blurb' })}`;
   }
 
   identifyPanel().showReveal(correct, identifyRevealIntent());
@@ -320,10 +322,10 @@ function handleAutocompleteAnswer() {
   if (wasCorrect) {
     session.correct++;
     document.getElementById('hud-score').textContent = `${session.correct} correct`;
-    document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct)}`;
+    document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct, { link: 'blurb' })}`;
     if (q) recordCorrect(q.con.abbr, questionKey(q));
   } else {
-    document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct)}`;
+    document.getElementById('feedback').innerHTML = `✗ That was ${conLabel(correct, { link: 'blurb' })}`;
   }
   identifyPanel().showReveal(correct, identifyRevealIntent());
   document.getElementById('btn-next').classList.add('show');

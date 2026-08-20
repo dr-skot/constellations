@@ -922,9 +922,12 @@ function handleExploreClick(px, py) {
     document.getElementById('find-hud-score').textContent = `${session.correct} correct`;
   }
   const fb = document.getElementById('eq-feedback');
-  fb.innerHTML = correct
-    ? `✓ Correct! — ${conLabel(q.target)}`
-    : `✗ That was ${conLabel(clicked || q.target)}`;
+  // A find question's one step away is the finding guide for the RIGHT answer, opened
+  // directly (#64). The practice quiz is not a lesson and is not depth-limited, so it
+  // keeps the full modal.
+  fb.innerHTML = findAnswerCaption({
+    target: q.target, clicked, correct, link: q.lessonMode ? 'guide' : 'full',
+  });
   fb.className = correct ? 'correct' : 'wrong';
   document.getElementById('eq-label-area').classList.add('answered');
   document.getElementById('eq-next').classList.add('show');

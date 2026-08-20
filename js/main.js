@@ -322,10 +322,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalGlyph = document.getElementById('modal-glyph');
   let modalAbbrCurrent = null;
 
-  function openConModal(con) {
+  // `actions: false` opens the blurb and nothing else — no "Finding guide →", no "View
+  // in Explorer →". That is an identify question's reveal (#64): one step away, and
+  // closing it is the only exit. Those two controls are exactly what turned one step
+  // into an open-ended walk out of the middle of a lesson.
+  function openConModal(con, { actions = true } = {}) {
     modalAbbrCurrent = con.abbr;
     modalTitle.textContent = con.name;
     modalBody.textContent = '';
+    modalExploreBtn.style.display = actions ? '' : 'none';
     // Mini north-up figure, same glyph the course detail popover uses (issue #22).
     modalGlyph.replaceChildren(conGlyph(con, 64));
     conModal.style.display = 'flex';
@@ -335,8 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modalAbbrCurrent !== con.abbr) return;
       modalBody.textContent = blurbs[con.abbr] || 'No description available.';
     }).catch(() => {});
-    // Offer the finding guide only when one exists for this constellation.
+    // Offer the finding guide only when one exists for this constellation — and only
+    // when this modal offers actions at all. The async resolve re-checks both, or a
+    // blurb-only modal would sprout the link a moment after opening.
     modalGuideLink.style.display = 'none';
+    if (!actions) return;
     _loadGuides().then(guides => {
       if (modalAbbrCurrent !== con.abbr) return;
       if (guides[con.name]?.steps?.length) modalGuideLink.style.display = '';
@@ -375,13 +383,25 @@ document.addEventListener('DOMContentLoaded', () => {
     startFindGuide(con);
   });
 
-  // Delegated handler for .con-info-link clicks (generated dynamically by conLabel)
+  // Delegated handler for .con-info-link clicks (generated dynamically by conLabel).
+  // How far the link may take the learner was decided when the caption was built, and
+  // rides on the anchor as data-link (#64): a find question goes straight to the guide,
+  // an identify question gets the blurb with no onward actions, and everywhere outside a
+  // question keeps the modal it always had. A probe's caption has no anchor to click.
   document.addEventListener('click', e => {
     const link = e.target.closest('.con-info-link');
     if (!link) return;
     e.preventDefault();
     const con = C.find(c => c.abbr === link.dataset.abbr);
-    if (con) openConModal(con);
+    if (!con) return;
+    if (link.dataset.link === 'guide') {
+      // The same departure the modal's "Finding guide →" makes, minus the modal.
+      beginDetourFromRoute();
+      navigate('explore/' + con.abbr);
+      startFindGuide(con);
+      return;
+    }
+    openConModal(con, { actions: link.dataset.link !== 'blurb' });
   });
 
   // Entry point — route based on current URL hash, but a first-run learner (empty

@@ -238,9 +238,11 @@ function startLessonFindQuestion(q) {
   if (hist) {
     // Restore answered state
     const fb = document.getElementById('eq-feedback');
-    fb.innerHTML = hist.wasCorrect
-      ? `✓ Correct! — ${conLabel(q.con)}`
-      : `✗ That was ${conLabel(hist.chosen || q.con)}`;
+    // Same sentence as the live answer, from the same function — these were two copies
+    // and both carried the wrong-answer bug (#64).
+    fb.innerHTML = findAnswerCaption({
+      target: q.con, clicked: hist.chosen, correct: hist.wasCorrect, link: 'guide',
+    });
     fb.className = hist.wasCorrect ? 'correct' : 'wrong';
     document.getElementById('eq-label-area').classList.add('answered');
     document.getElementById('eq-next').classList.add('show');

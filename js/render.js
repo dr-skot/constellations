@@ -590,9 +590,51 @@ function ensureArtLoaded(con, onLoaded) {
   img.src = art.url;
 }
 
-function conLabel(con) {
+// The constellation's name, gloss and hemisphere, with the name linked — or not.
+//
+// How far a reveal may take the learner is a property of the QUESTION, so it arrives as
+// an argument rather than being read from a global (issue #64, the shape planLesson and
+// resolveDisplayFlags already use):
+//
+//   false     plain text. The level-check probe: a placement test is not an
+//             opportunity to learn, so there is nowhere to go from it. Genuinely
+//             plain — no anchor at all, because a signifier pointing at nothing is
+//             its own bug.
+//   'blurb'   the modal, showing the blurb and no onward actions. An identify
+//             question: one step, terminal, closing it returns to the question.
+//   'guide'   the finding guide for this constellation, directly — no modal in
+//             between, which is what keeps the find path one step deep instead of two.
+//   'full'    the modal with every action it has ever had. The DEFAULT, and the
+//             ticket's one under-specification: it names 'blurb' as the default, but
+//             the constellation viewer reaches its caption through this same function
+//             and must keep the guide and explorer actions. Defaulting to today's
+//             behaviour keeps that true without the viewer having to ask for it.
+//
+// The mode rides on the anchor because the click is handled by delegation — main.js
+// reads data-link when the anchor is clicked, long after this string was built.
+function conLabel(con, { link = 'full' } = {}) {
   const hem = con.hem === 'N' ? 'northern' : con.hem === 'S' ? 'southern' : 'equatorial';
   const meaning = con.meaning ? `, ${con.meaning}` : '';
-  const link = `<a href="#" class="con-info-link" data-abbr="${con.abbr}">${con.name}</a>`;
-  return `${link}${meaning} (${hem})`;
+  const name = link === false
+    ? con.name
+    : `<a href="#" class="con-info-link" data-abbr="${con.abbr}" data-link="${link}">${con.name}</a>`;
+  return `${name}${meaning} (${hem})`;
+}
+
+// The caption under an answered FIND question, for both the live answer and the history
+// re-render — one function because they were two copies of the same sentence, and the
+// bug below was in both.
+//
+// "✗ That was X" used to mean what the learner CLICKED when they hit a constellation and
+// what they SHOULD HAVE clicked when they hit empty sky: one sentence, two opposite
+// referents. Worse, the link was built from whichever it named, so a wrong answer
+// offered a finding guide for the constellation they had just been wrong about.
+//
+// Both roles are named now, and the link is on the target in every branch.
+function findAnswerCaption({ target, clicked, correct, link = 'full' }) {
+  if (correct) return `✓ Correct! — ${conLabel(target, { link })}`;
+  // Empty sky: there is no clicked constellation to contrast with, so naming one would
+  // be a lie. Deliberately not the same sentence as the case above it.
+  if (!clicked || clicked === target) return `✗ That was ${conLabel(target, { link })}`;
+  return `✗ Sorry, that was ${clicked.name}, not ${conLabel(target, { link })}`;
 }
