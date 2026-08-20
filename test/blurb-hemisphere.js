@@ -44,7 +44,10 @@ const ASTERISM = /(Winter|Summer)\s+Triangle/g;
 // is empty. It exists so the rule can be enforced against new prose today rather than
 // waiting for the fix — a test that cannot land until the bug is fixed guards nothing in
 // the meantime.
-const KNOWN = new Set(['Aur', 'Peg', 'CMa', 'Gru']);
+//
+// Empty as of #62: Aur, Peg, CMa and Gru were rewritten. The debt is paid, and the rule
+// above now applies to all 88 with nothing exempted.
+const KNOWN = new Set([]);
 
 const hits = [];
 for (const [abbr, text] of Object.entries(blurbs)) {
