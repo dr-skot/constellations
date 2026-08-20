@@ -13,6 +13,23 @@ function currentCon() {
   return q ? q.con : null;
 }
 
+// What the header's score slot says. A lesson counts; a level check does not (#67).
+//
+// A level check works by climbing PAST the point where the learner stops being right —
+// computeDStar looks for the band where misses start outnumbering hits — so wrong later
+// probes are the measurement working, not failure. Reporting "0 correct" through that
+// contradicts the offer screen one step earlier, which promised placement in about 90
+// seconds, and invites the one expensive error path here: quitting partway, which scores
+// D* = 0 and drops the learner into the introduction grind the feature exists to spare
+// them.
+//
+// A parameter rather than a fork, in the same spirit as #64: both flows ask this, so the
+// wording cannot later change for only one of them. The x / 8 counter and the progress
+// bar are untouched — position is honest, score is not.
+function quizScoreReadout({ correct, calibration }) {
+  return calibration ? 'Finding your level…' : `${correct} correct`;
+}
+
 // ── The identify screen's panel ──────────────────────────────────────────────
 // One panel, mounted on first use into the two hosts that screen provides: the
 // picture above, the toggles sharing the question label's slot below. The viewer
@@ -132,7 +149,7 @@ function showLessonQuestion() {
 
   const total = session.questions.length;
   document.getElementById('hud-progress').textContent = `${session.idx + 1} / ${total}`;
-  document.getElementById('hud-score').textContent = `${session.correct} correct`;
+  document.getElementById('hud-score').textContent = quizScoreReadout(session);
   document.getElementById('prog-fill').style.width = `${(session.idx / total) * 100}%`;
 
   // The one call site, deliberately above the fork so the two kinds of question cannot
@@ -272,9 +289,11 @@ function handleAnswer(chosen, correct) {
   if (session.calibration) {
     const right = chosen === correct;
     session.calResults[session.idx] = { diff: correct.diff, correct: right };
+    // session.correct still counts — the payoff panel reports it once at the end. It is
+    // the RUNNING readout that misleads, so the header keeps saying what it is doing.
     if (right) {
       session.correct++;
-      document.getElementById('hud-score').textContent = `${session.correct} correct`;
+      document.getElementById('hud-score').textContent = quizScoreReadout(session);
     }
     // A level check offers no way out of itself: no link, no blurb, no guide, no
     // explorer (#64). It is a test of what you already know, not a place to learn.
@@ -288,7 +307,7 @@ function handleAnswer(chosen, correct) {
 
   if (chosen === correct) {
     session.correct++;
-    document.getElementById('hud-score').textContent = `${session.correct} correct`;
+    document.getElementById('hud-score').textContent = quizScoreReadout(session);
     document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct, { link: 'blurb' })}`;
     const q = session.questions[session.idx];
     if (q) recordCorrect(q.con.abbr, questionKey(q));
@@ -321,7 +340,7 @@ function handleAutocompleteAnswer() {
   session.history[session.idx] = { chosen, wasCorrect, rotation: session.rotation, choices: [] };
   if (wasCorrect) {
     session.correct++;
-    document.getElementById('hud-score').textContent = `${session.correct} correct`;
+    document.getElementById('hud-score').textContent = quizScoreReadout(session);
     document.getElementById('feedback').innerHTML = `✓ Correct! — ${conLabel(correct, { link: 'blurb' })}`;
     if (q) recordCorrect(q.con.abbr, questionKey(q));
   } else {

@@ -229,7 +229,10 @@ function startLessonFindQuestion(q) {
   document.getElementById('find-nav-row').style.display = '';
   const total = session.questions.length;
   document.getElementById('find-hud-progress').textContent = `${session.idx + 1} / ${total}`;
-  document.getElementById('find-hud-score').textContent = `${session.correct} correct`;
+  // Same readout function as the identify header — a find question is only ever a
+  // lesson's today, but nothing should have to remember that if a probe ever becomes
+  // one (#67).
+  document.getElementById('find-hud-score').textContent = quizScoreReadout(session);
   document.getElementById('find-prog-fill').style.width = `${(session.idx / total) * 100}%`;
   document.getElementById('eq-target-name').textContent = q.con.name;
   document.getElementById('find-btn-prev').classList.toggle('show', session.idx > 0);

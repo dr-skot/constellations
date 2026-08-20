@@ -919,7 +919,7 @@ function handleExploreClick(px, py) {
     }));
   }
   if (q.lessonMode) {
-    document.getElementById('find-hud-score').textContent = `${session.correct} correct`;
+    document.getElementById('find-hud-score').textContent = quizScoreReadout(session);
   }
   const fb = document.getElementById('eq-feedback');
   // A find question's one step away is the finding guide for the RIGHT answer, opened
