@@ -18,6 +18,12 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
   Getting this wrong is silent: the work ships, the ticket stays open, and the only thing that
   notices is a person reading the list later. A parent spec has no keyword of its own; close it
   by hand once its children are closed, or name it in the last child's `Closes`.
+- **Closing several tickets in one commit**: repeat the keyword before EVERY number.
+  `Closes #75, closes #76` closes both. `Closes #75, #76` closes only #75 — GitHub reads the
+  second as a bare reference and leaves it open. Same silent failure as using `Refs`, and
+  harder to spot, because the line looks correct. Verified the wrong way on 2026-08-19: the
+  commit fixing #75 and #76 closed one of them. After a multi-ticket push, check
+  `gh issue list --state open` rather than trusting the message.
 
 Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone (`dr-skot/constellations`).
 
