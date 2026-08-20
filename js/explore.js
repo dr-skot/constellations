@@ -490,6 +490,20 @@ function strokePolyline(ctx, pts, close = false) {
   ctx.stroke();
 }
 
+// Backing-store scale for the explore canvases: normally the device pixel ratio.
+// perf/draw-probe.js multiplies it via `?load=N` to scale shaded pixels without
+// touching geometry — the knob that measures GPU fill-rate headroom rather than
+// main-thread cost (issue #63). Unset, `_perfLoadScale` is undefined and this is
+// exactly `devicePixelRatio`, so a normal run is unchanged.
+//
+// Hit-testing (clientToCanvas) reads this same function. Computing dpr separately
+// in the two places is what would break under a load multiplier: the backing store
+// would grow while the drag handler kept converting touches at 1x, so the reading
+// would be taken while the finger pointed somewhere other than where it looked.
+function exploreBackingScale() {
+  return (window.devicePixelRatio || 1) * (window._perfLoadScale || 1);
+}
+
 function drawExplore() {
   const canvas = document.getElementById('explore-canvas');
   if (!canvas) return;
@@ -501,7 +515,7 @@ function drawExplore() {
   markDrawPhase('setup');
   const wrap = document.getElementById('explore-wrap');
   const glCanvas = document.getElementById('explore-gl-canvas');
-  const dpr = window.devicePixelRatio || 1;
+  const dpr = exploreBackingScale();
   const sz = wrap.offsetWidth;
   const wrapH = wrap.offsetHeight;
   if (sz > 0 && wrapH > 0) {
@@ -985,7 +999,7 @@ function initExploreDrag() {
   let wheelTimer = null;
 
   function clientToCanvas(cx, cy) {
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = exploreBackingScale();
     const rect = ec.getBoundingClientRect();
     return { px: (cx - rect.left) * dpr, py: (cy - rect.top) * dpr };
   }

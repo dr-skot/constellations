@@ -224,5 +224,172 @@ const phase = (s, name) => s.phases.find(p => p.name === name) || null;
     `got ${c.stats().frames}`);
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// makeIntervalCollector (issue #63) — the gap BETWEEN frames, not the work inside
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── 13. Intervals are the gaps between ticks, and the first tick is not one ────
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now });
+  now.at(0);  c.tick();          // no previous timestamp: opens the series, records nothing
+  now.at(8);  c.tick();
+  now.at(16); c.tick();
+  const s = c.stats();
+  check('interval: first tick records no interval', s.frames === 2, `got ${s.frames}`);
+  check('interval: gaps are measured between ticks', s.p50 === 8, `got ${s.p50}`);
+  check('interval: worst is the largest gap', s.worst === 8, `got ${s.worst}`);
+}
+
+// Intervals accumulate by repeated addition, exactly as they do on the device, so
+// 8.3ms six times reads back as 8.299999999999997. Comparing to the tenth of a
+// millisecond the panel actually prints keeps the assertion about the collector
+// rather than about float representation.
+const near = (a, b) => Math.abs(a - b) < 0.05;
+
+// ── 14. The display period is derived from the observed floor ─────────────────
+// The whole point of deriving it: a 120Hz device must read ~8.3 and a 60Hz device
+// ~16.7 with no code change. Hard-coding 16.7 would call a ProMotion phone healthy
+// at exactly the point it is dropping every second frame.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now });
+  let t = 0;
+  // The first tick opens the series without recording, so a quorum of 3 needs four
+  // fast entries here, not three.
+  for (const dt of [8.3, 8.4, 25, 8.3, 40, 8.3, 8.4]) { t += dt; now.at(t); c.tick(); }
+  check('interval: period is the fastest RECURRING interval', near(c.stats().period, 8),
+    `got ${c.stats().period}`);
+}
+
+// ── 14b. One spurious fast gap cannot define the period ───────────────────────
+// Measured on the device 2026-08-20: a single ~4ms gap during page load set the
+// floor by raw minimum, and the panel then reported 90 of 90 frames late on a phone
+// idling comfortably at 17ms. An interval has to recur before it counts as a refresh
+// rate, or the budget is set by the worst artefact of startup.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now });
+  let t = 0;
+  for (const dt of [17, 17, 4.2, 17, 17, 17]) { t += dt; now.at(t); c.tick(); }
+  check('interval: a one-off fast gap does not become the period',
+    near(c.stats().period, 17), `got ${c.stats().period}`);
+  check('interval: a device idling at its refresh rate is not reported late',
+    c.stats().late === 0, `got ${c.stats().late} late`);
+}
+
+// ── 14c. A small cluster of fast gaps does not undercut the period ────────────
+// Measured on the device 2026-08-20, the day after a flat quorum of 3 shipped: a few
+// 14ms gaps in a long 17ms series met the quorum and pulled the budget 3ms under the
+// real period — enough to flip the WITHIN/OVER verdict by itself. The floor has to
+// hold a real share of the series, not merely recur.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now, frames: 200 });
+  let t = 0;
+  for (let i = 0; i < 100; i++) { t += 17; now.at(t); c.tick(); }
+  for (let i = 0; i < 4; i++)   { t += 14; now.at(t); c.tick(); }
+  check('interval: a 4-in-104 fast cluster does not define the period',
+    near(c.stats().period, 17), `got ${c.stats().period}`);
+}
+
+// ── 14d. A genuine refresh rate still wins once it dominates ──────────────────
+// The share rule must not be so strict that a real 120Hz device never derives 8.3ms.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now, frames: 200 });
+  let t = 0;
+  for (let i = 0; i < 80; i++) { t += 8; now.at(t); c.tick(); }
+  for (let i = 0; i < 20; i++) { t += 33; now.at(t); c.tick(); }
+  check('interval: a dominant fast interval is the period',
+    near(c.stats().period, 8), `got ${c.stats().period}`);
+  check('interval: the slow tail is counted late against it',
+    c.stats().late === 20, `got ${c.stats().late}`);
+}
+
+// ── 15. A spuriously short interval cannot become the period ──────────────────
+// Two callbacks delivered back to back after the main thread blocked would otherwise
+// halve the derived budget and report a healthy device as permanently late.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now });
+  let t = 0;
+  for (const dt of [16.7, 0.5, 16.7, 16.8, 16.7]) { t += dt; now.at(t); c.tick(); }
+  check('interval: sub-5ms gaps are not treated as the display period',
+    near(c.stats().period, 17), `got ${c.stats().period}`);
+}
+
+// ── 16. The period does not drift upward when frames start missing ────────────
+// Deriving it from the rolling window instead of all ticks would raise the budget
+// exactly when the thing being measured starts happening, hiding it.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now, frames: 3 });
+  let t = 0;
+  for (const dt of [8.3, 8.3, 8.3, 8.3, 50, 50, 50, 50]) { t += dt; now.at(t); c.tick(); }
+  const s = c.stats();
+  check('interval: period survives eviction from the window', near(s.period, 8),
+    `got ${s.period}`);
+  check('interval: window still holds only the recent gaps', s.frames === 3,
+    `got ${s.frames}`);
+  check('interval: late frames are counted against the derived period', s.late === 3,
+    `got ${s.late}`);
+}
+
+// ── 17. p95 is nearest-rank and reports a real observation ────────────────────
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now, frames: 100 });
+  let t = 0;
+  for (let i = 0; i < 100; i++) { t += (i === 99 ? 100 : 10); now.at(t); c.tick(); }
+  const s = c.stats();
+  check('interval: p50 of a flat series is that value', s.p50 === 10, `got ${s.p50}`);
+  check('interval: one outlier in 100 does not move p95', s.p95 === 10, `got ${s.p95}`);
+  check('interval: worst still shows the outlier', s.worst === 100, `got ${s.worst}`);
+}
+
+// ── 18. An announced gap is not recorded as one enormous interval ─────────────
+// The page being hidden and a genuine 400ms stall look identical from inside the
+// collector, and one is the finding while the other is a mistake — so the caller
+// announces it rather than the collector guessing from the size of the gap.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now });
+  now.at(0);    c.tick();
+  now.at(8);    c.tick();
+  c.gap();                       // page hidden here
+  now.at(9000); c.tick();        // must not record an 8992ms interval
+  now.at(9008); c.tick();
+  const s = c.stats();
+  check('interval: an announced gap records no interval', s.frames === 2, `got ${s.frames}`);
+  check('interval: an announced gap does not become the worst', s.worst === 8,
+    `got ${s.worst}`);
+}
+
+// ── 19. Empty stats are safe to render ────────────────────────────────────────
+{
+  const s = makeIntervalCollector({ now: fakeClock() }).stats();
+  check('interval empty: no frames', s.frames === 0);
+  check('interval empty: period is zero, not Infinity',
+    s.period === 0, `got ${s.period}`);
+  check('interval empty: percentiles are zero, not NaN',
+    s.p50 === 0 && s.p95 === 0 && s.worst === 0);
+  check('interval empty: nothing is late', s.late === 0);
+}
+
+// ── 20. reset() clears the derived period too ─────────────────────────────────
+// Moving between normal and Low Power Mode changes the display period, so a stale
+// floor from the previous reading would be measured against the wrong budget.
+{
+  const now = fakeClock();
+  const c = makeIntervalCollector({ now });
+  let t = 0;
+  for (const dt of [8.3, 8.3, 8.3, 8.3]) { t += dt; now.at(t); c.tick(); }
+  c.reset();
+  for (const dt of [16.7, 16.7, 16.8, 16.7]) { t += dt; now.at(t); c.tick(); }
+  check('interval: reset clears the floor', near(c.stats().period, 17),
+    `got ${c.stats().period}`);
+}
+
 console.log(failures.length ? `\n${failures.length} FAILED` : '\nall passed');
 process.exit(failures.length ? 1 : 0);

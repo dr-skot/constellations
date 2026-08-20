@@ -10,6 +10,7 @@ question, and the device was right.
 | Where does a frame's time go, on the real device? | `draw-probe.js` |
 | Does the app stall, and which subsystem causes it? | `index.html` (the ladder + bisect) |
 | How does per-frame work scale as the view widens? | `fov-cost.js` |
+| Is the app frame-limited, and by what? | `ab-draw.js` (draw vs no-draw), `load-sweep.js` (vs pixels) |
 | How do I run any of this on the phone? | `ios-eval.js` — see below |
 
 ## Driving the phone from the Mac
@@ -75,6 +76,64 @@ It measures **main-thread CPU only**. `gl.drawElements` returns before the GPU h
 the work, so the photo and art phases read near zero even when fill rate costs real
 time. All phases small with a bad frame total therefore means GPU or input rate, not any
 layer.
+
+## Frame rate and the load multiplier (issue #63)
+
+```
+index.html?perf=1&draw=1&load=2      # 2x the backing store, same geometry
+```
+
+The panel's verdict line reads from frames **produced**, not from rAF delivery:
+
+```
+render peak 28/s of 63   338/1046 served
+verdict: DROPPING FRAMES (peak 28/s of 63)
+rAF gap 17.0 p50  17.0 p95  17.0 worst   (delivery, not draws)
+```
+
+`of 63` is derived from the observed rAF floor, not assumed — a 60Hz phone reads 63, and
+the same phone in **Low Power Mode reads 30**, because LPM halves the refresh rate. No
+code change either way.
+
+**Read `peak`, never the instantaneous rate.** A reading is taken after the finger lifts,
+and by then the current rate is zero whether the run was healthy or catastrophic.
+
+**`load=N` scales the canvas backing store.** It was built to isolate fill rate from
+main-thread cost, and on this hardware it found nothing to isolate — see below.
+
+### What was measured, 2026-08-20 (iPhone "Monolith", iOS 26.6, 60Hz)
+
+Frame rate is **flat at ~17fps across a 25x range of pixels** (0.39 Mpx to 9.65 Mpx),
+and ~24-28fps in both normal and Low Power Mode. Roughly 3ms per frame is main thread;
+the remaining ~35-55ms is a **fixed** per-draw cost that scales with neither pixels nor
+clock speed. The explorer therefore runs at about half the display rate during a drag,
+which the CPU-only phase table could never show. It is not fill-rate limited, so no
+headroom multiplier exists to report. Root cause is open.
+
+### Three ways to take a wrong reading here
+
+1. **The Web Inspector taxes what it measures.** The same drag read 17 draws/s while
+   `ios-eval.js` was polling and 28 draws/s when the number was read off the phone
+   screen by eye. Anything measured over the cable understates the app by roughly 40%.
+   For a headline number, put the value on screen and read it with your eyes.
+2. **Only one `ios-eval.js` may be in flight at a time.** Every invocation resets
+   `window.__evDone` / `window.__evOut`, so a second call clobbers the result the first
+   is still waiting for, and the first then polls until `IOS_TIMEOUT` and reports a
+   timeout for a probe that finished.
+3. **The interval window is 90 frames (~1.5s).** Reading the panel a few seconds after
+   the finger lifts shows the idle period, not the drag — which is how a stuttering run
+   reported `17.0 p50 / 0 of 90 late` all afternoon. Sample a fixed window under known
+   conditions instead (`tmp/ab-draw.js`, `tmp/load-sweep.js` are the pattern), or read
+   `peak`, which survives the lift.
+
+Also: iOS throttles rAF to ~16Hz on an untouched device with `document.hidden` still
+`false`, so a finger-free probe measures the idle timer. Measure while dragging.
+
+### What this does NOT cover
+
+**GPU memory pressure and process kills.** The 15-second freeze in `52acbc2` was the GPU
+process being killed, and no amount of frame timing predicts that — the frames before a
+jetsam kill look fine. A good number here does not close that class of bug.
 
 ## The stall ladder and bisect
 
