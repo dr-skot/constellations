@@ -12,6 +12,14 @@
   --accent2: #a456f7;
   --text: #d8e2ff;
   --dim: #5a6480;
+  /* The reveal caption, one step up from --dim. --dim measures 3.43:1 on --bg and
+     fails WCAG AA 1.4.3, which wants 4.5:1 for normal text — and the caption is the
+     richest teaching surface in the app, plausibly read outdoors at night on a dimmed
+     phone, where contrast sensitivity is worse than the threshold assumes (#65).
+     #7c86a4 measures 5.58:1. Deliberately its own token rather than a change to --dim:
+     --dim also carries hints and chrome all over the app, and this ticket is about the
+     sentence a learner reads after answering. test/caption-contrast.js holds the bar. */
+  --caption: #7c86a4;
   --ok: #22c55e;
   --err: #ef4444;
 }

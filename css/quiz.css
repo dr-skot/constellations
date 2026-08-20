@@ -192,11 +192,14 @@ canvas {
   text-align: center;
   min-height: 22px;
   font-size: .88rem;
-  color: var(--dim)
+  color: var(--caption)
 }
 
+/* The link carries the app's link colour rather than inheriting the caption's, so it
+   is not identified by its underline alone (#65). Same colour the breadcrumbs use —
+   additive emphasis, nothing moves, and the underline stays. */
 #feedback a {
-  color: inherit;
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px
 }
