@@ -529,5 +529,31 @@ function guideFlyingTo(to, frames) {
     el('fg-btn-toggle-diag').textContent === 'Show overlays', el('fg-btn-toggle-diag').textContent);
 }
 
+// ── 23. The exit says where it goes, for as long as the guide is open ────────
+// The caller names the destination (findGuideExitLabel, issue #66); the renderer's job
+// is to put it on the button and keep it there — the label belongs to the guide, not to
+// the step, so stepping must not overwrite it. find-help.html has no #fg-back-btn and
+// passes no label, which is why the write is guarded on both.
+{
+  guideStop();
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG,
+             { exitLabel: '← Back to lesson' });
+  check('the exit carries the caller\'s label',
+    el('fg-back-btn').textContent === '← Back to lesson', el('fg-back-btn').textContent);
+
+  el('fg-btn-next').click();
+  land();
+  check('and keeps it across a step',
+    el('fg-back-btn').textContent === '← Back to lesson', el('fg-back-btn').textContent);
+
+  // A guide started without one leaves whatever the markup says — the find-help.html case.
+  el('fg-back-btn').textContent = 'untouched';
+  guideStop();
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG);
+  check('a guide with no label of its own leaves the button alone',
+    el('fg-back-btn').textContent === 'untouched', el('fg-back-btn').textContent);
+  land();
+}
+
 console.log(failures.length ? `\n${failures.length} FAILED` : '\nall passed');
 process.exit(failures.length ? 1 : 0);

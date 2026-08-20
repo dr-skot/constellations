@@ -167,6 +167,11 @@ function beginDetourFromRoute() {
 
 function inDetour() { return !!_detour; }
 
+// The route a detour in flight will return to, or null. What "back" MEANS is the
+// detour's own business (its resume thunk), but a control that offers to go back has
+// to be able to name the place — "← Back to lesson", "← Back to Orion" (issue #66).
+function detourOrigin() { return _detour ? _detour.route : null; }
+
 function endDetour() {
   if (!_detour) return;
   const { route, resume } = _detour;

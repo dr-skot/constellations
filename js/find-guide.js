@@ -30,6 +30,9 @@ function updateFindHelpBtn(con) {
   }).catch(() => {});
 }
 
+// The wording of the exit is a pure decision and lives in js/guide-exit-label.js;
+// what reaches it from here are the two facts this module already holds.
+
 // ── Public: open the guide ───────────────────────────────────────────────────
 // Where the learner goes on exit is not this module's business: if a detour is in
 // flight (the guide was launched from a quiz question or a level-check probe, see
@@ -57,7 +60,20 @@ function startFindGuide(con) {
     const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
     explore.R = guide.rotation != null ? defaultR + guide.rotation : defaultR;
 
-    guideStart(steps, _catalogCache, { onLastNext: exitFindGuide });
+    // Two places the exit can return to, and they are asked in the order exitFindGuide
+    // takes them: a detour in flight wins, otherwise it is whatever the saved state puts
+    // back — a lesson's find question if "? Help" opened the guide over one, free
+    // explore if nothing did.
+    const origin = detourOrigin();
+    const originCon = origin?.name === 'view' ? C.find(c => c.abbr === origin.param) : null;
+    guideStart(steps, _catalogCache, {
+      onLastNext: exitFindGuide,
+      exitLabel: guideExitLabel({
+        route: origin?.name || null,
+        conName: originCon?.name || null,
+        lessonFindQuestion: !!_guideSaved.quiz?.lessonMode,
+      }),
+    });
   });
 }
 

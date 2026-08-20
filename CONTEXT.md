@@ -157,7 +157,18 @@ hand-rolled twice (spec #44).
   try to resume from storage a level check never wrote). The departure is not a departure, so
   the departed route's **exit action** does not fire — which is why the finding guide launched
   from a probe needs no saving and restoring of the level-check flag. Navigating on instead
-  cancels the detour and fires the exit action it deferred.
+  cancels the detour and fires the exit action it deferred. `detourOrigin()` reads the route
+  one will return to, which is how a control can *name* where it goes rather than saying
+  "Back" (see **exit label**).
+
+- **exit label** — what the finding guide's exit control says. `guideExitLabel`
+  (`js/guide-exit-label.js`) is a pure function of the **detour** in flight and whether a
+  lesson's find question is waiting underneath: the destination gets named where there is one
+  ("← Back to lesson", "← Back to level check", "← Back to Orion", or "← Back to the figure"
+  for a viewer detour whose constellation cannot be named), and the action gets named where
+  there isn't ("Close guide" from free explore — the learner is already looking at the
+  explorer, so nothing is being retraced). The label belongs to the guide session, not the
+  step, and travels as `guideStart`'s `exitLabel` option (#66).
 
 - **exit action** — what leaving a route means. The level check clears its run flag here, so a
   probe exit via a breadcrumb or the gear can't leak the flag into a later lesson. It replaced

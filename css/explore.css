@@ -149,6 +149,12 @@
 .fg-dot.active { background: var(--accent); }
 #fg-step-count { font-size: .72rem; color: var(--dim); }
 #fg-back-btn {
+  /* The exit names its destination (#66), so its width is content and the longest
+     constellation name is the worst case: "← Back to Triangulum Australe" measures
+     187px against a 390px phone. It fits — these two lines are what keep it fitting
+     rather than wrapping or being squeezed by the step dots beside it. */
+  white-space: nowrap;
+  flex-shrink: 0;
   padding: 3px 10px;
   border: 1px solid var(--border);
   background: transparent;

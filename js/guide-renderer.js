@@ -366,6 +366,11 @@ function _guideRenderUI() {
   const nextBtn = document.getElementById('fg-btn-next');
   nextBtn.textContent = isLast ? 'Done ✓' : 'Next →';
   nextBtn.style.visibility = animating ? 'hidden' : 'visible';
+  // The exit's label belongs to the guide, not the step — the caller works out where
+  // leaving goes (findGuideExitLabel, issue #66) and it holds for the whole session.
+  // Guarded twice: find-help.html has no such button and names no destination.
+  const backBtn = document.getElementById('fg-back-btn');
+  if (backBtn && _gs.exitLabel) backBtn.textContent = _gs.exitLabel;
 }
 
 let _guideListenersAdded = false;
@@ -482,6 +487,7 @@ function guideStart(steps, catalog, options = {}) {
           applied: null,            // what is actually published — full, intersection, or bare photo
           overlaysHidden: false,    // the learner's Hide overlays toggle
           onLastNext: options.onLastNext || null, stepKey: options.stepKey || null,
+          exitLabel: options.exitLabel || null,   // what the exit says, if the caller says
           defaultR: explore.R };
   _guideAddListeners();
   const saved = _gs.stepKey ? parseInt(localStorage.getItem(_gs.stepKey), 10) : NaN;

@@ -457,6 +457,27 @@ function mkDetourRouter() {
 }
 
 {
+  // The detour in flight is readable, not just countable (issue #66). A guide that has
+  // to say where its exit goes needs the route it came from, and its param: "← Back to
+  // Orion" is the viewer's name for itself.
+  const rec = mkDetourRouter();
+  check('with none in flight there is no origin', detourOrigin() === null);
+
+  navigate('view/Ori');
+  beginDetourFromRoute();
+  check('the origin names the route the detour left',
+    detourOrigin()?.name === 'view', JSON.stringify(detourOrigin()));
+  check('and carries its param', detourOrigin()?.param === 'Ori',
+    JSON.stringify(detourOrigin()));
+
+  navigate('explore/Ori');
+  check('the origin survives the departure', detourOrigin()?.name === 'view',
+    JSON.stringify(detourOrigin()));
+  endDetour();
+  check('and is gone once the detour ends', detourOrigin() === null);
+}
+
+{
   // Abandoning it still behaves: navigating on cancels, and the deferred exit fires.
   const rec = mkDetourRouter();
   navigate('calibration');
