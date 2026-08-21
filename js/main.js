@@ -259,37 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initEqRevealToggles();
   initSettings();
 
-  // Copy View button — copies RA/Dec/FOV/rotation to clipboard
-  document.getElementById('btn-copy-view').addEventListener('click', () => {
-    copyViewToClipboard(document.getElementById('btn-copy-view'));
-  });
-
-  // Paste View button — reads RA/Dec/FOV/rotation JSON from clipboard and applies it
-  document.getElementById('btn-paste-view').addEventListener('click', () => {
-    navigator.clipboard.readText().then(text => {
-      // Accept either a JSON object or bare key:value lines from Copy View
-      let clean = text.trim();
-      if (!clean.startsWith('{')) clean = '{' + clean + '}';
-      // Strip trailing commas before closing brace
-      clean = clean.replace(/,\s*}/g, '}');
-      const obj = JSON.parse(clean);
-      if (typeof obj.ra === 'number' && typeof obj.dec === 'number') {
-        explore.P = raDecToVec(obj.ra, obj.dec);
-        if (typeof obj.fov === 'number') explore.fov = obj.fov;
-        const northUpR = guideNorthUpR(explore.P);
-        explore.R = northUpR + (typeof obj.rotation === 'number' ? obj.rotation : 0);
-        requestExploreDraw();
-        const btn = document.getElementById('btn-paste-view');
-        btn.textContent = 'Pasted!';
-        setTimeout(() => { btn.textContent = 'Paste View'; }, 1500);
-      }
-    }).catch(() => {
-      const btn = document.getElementById('btn-paste-view');
-      btn.textContent = 'Error';
-      setTimeout(() => { btn.textContent = 'Paste View'; }, 1500);
-    });
-  });
-
   // Explore drag (mouse + touch + wheel zoom)
   initExploreDrag();
 

@@ -30,23 +30,6 @@ function exploreScheduler() {
 // collapse into a single render; the most recent state is what gets drawn.
 function requestExploreDraw() { exploreScheduler().request(); }
 
-function copyViewToClipboard(btn) {
-  const { ra, dec } = vecToRaDec(explore.P);
-  const northUpR = guideNorthUpR(explore.P);
-  const obj = {
-    ra: Math.round(ra * 100) / 100,
-    dec: Math.round(dec * 100) / 100,
-    fov: Math.round(explore.fov * 100) / 100
-  };
-  const guideR = explore.R - northUpR;
-  if (Math.abs(guideR) > 0.001) obj.rotation = Math.round(guideR * 10000) / 10000;
-  const lines = Object.entries(obj).map(([k, v]) => `        "${k}": ${JSON.stringify(v)},`);
-  navigator.clipboard.writeText(lines.join('\n')).then(() => {
-    btn.textContent = 'Copied!';
-    setTimeout(() => { btn.textContent = 'Copy View'; }, 1500);
-  });
-}
-
 // Diagram source (which star-figure set to draw) lives in js/diagram-sources.js
 // as the app-global `diagramSource`; the drawing below routes through diagramFor().
 

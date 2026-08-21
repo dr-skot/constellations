@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Finding … — Sky Trainer</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/base.css?v=7af1baa67791">
-  <link rel="stylesheet" href="css/explore.css?v=7af1baa67791">
+  <link rel="stylesheet" href="css/base.css?v=b362a20e76a7">
+  <link rel="stylesheet" href="css/explore.css?v=b362a20e76a7">
   <style>
     header {
       display: flex;
@@ -133,7 +133,6 @@
         <div id="fg-nav-row">
           <button id="fg-btn-prev">← Previous</button>
           <button id="fg-btn-toggle-diag" style="display:none">Show overlays</button>
-          <button id="fg-btn-copy-view" style="font-size:.75rem;padding:3px 10px;border:1px solid var(--border);background:transparent;color:var(--dim);border-radius:6px;cursor:pointer">Copy View</button>
           <button id="fg-btn-next">Next →</button>
         </div>
       </div>
@@ -146,24 +145,24 @@
        a fresh guide-renderer.js gets a page that loads and then throws on the first
        camera flight. The stamp makes the set arrive or not arrive together. Bump it
        with index.html's whenever app JS changes. -->
-  <script src="js/cache-stamp.js?v=7af1baa67791"></script>
-  <script src="js/data.js?v=7af1baa67791"></script>
-  <script src="js/lesson.js?v=7af1baa67791"></script>
+  <script src="js/cache-stamp.js?v=b362a20e76a7"></script>
+  <script src="js/data.js?v=b362a20e76a7"></script>
+  <script src="js/lesson.js?v=b362a20e76a7"></script>
   <!-- All four figure sets, as in index.html: the Figures setting applies wherever
        figures are drawn, and this page reads it at boot. -->
-  <script src="js/stellarium-data.js?v=7af1baa67791"></script>
-  <script src="js/ford-data.js?v=7af1baa67791"></script>
-  <script src="js/rey-data.js?v=7af1baa67791"></script>
-  <script src="js/diagram-sources.js?v=7af1baa67791"></script>
-  <script src="js/draw-phases.js?v=7af1baa67791"></script>
-  <script src="js/render-scheduler.js?v=7af1baa67791"></script>
-  <script src="js/projection.js?v=7af1baa67791"></script>
-  <script src="js/reveal.js?v=7af1baa67791"></script>
-  <script src="js/render.js?v=7af1baa67791"></script>
-  <script src="js/explore-gl.js?v=7af1baa67791"></script>
-  <script src="js/explore.js?v=7af1baa67791"></script>
-  <script src="js/step-display.js?v=7af1baa67791"></script>
-  <script src="js/guide-renderer.js?v=7af1baa67791"></script>
+  <script src="js/stellarium-data.js?v=b362a20e76a7"></script>
+  <script src="js/ford-data.js?v=b362a20e76a7"></script>
+  <script src="js/rey-data.js?v=b362a20e76a7"></script>
+  <script src="js/diagram-sources.js?v=b362a20e76a7"></script>
+  <script src="js/draw-phases.js?v=b362a20e76a7"></script>
+  <script src="js/render-scheduler.js?v=b362a20e76a7"></script>
+  <script src="js/projection.js?v=b362a20e76a7"></script>
+  <script src="js/reveal.js?v=b362a20e76a7"></script>
+  <script src="js/render.js?v=b362a20e76a7"></script>
+  <script src="js/explore-gl.js?v=b362a20e76a7"></script>
+  <script src="js/explore.js?v=b362a20e76a7"></script>
+  <script src="js/step-display.js?v=b362a20e76a7"></script>
+  <script src="js/guide-renderer.js?v=b362a20e76a7"></script>
   <script>
     // Honour the learner's Figures choice before anything draws. There is no
     // switcher on this page, so this is the only read.
@@ -238,10 +237,6 @@
       document.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') document.getElementById('fg-btn-next').click();
         if (e.key === 'ArrowLeft') document.getElementById('fg-btn-prev').click();
-      });
-
-      document.getElementById('fg-btn-copy-view').addEventListener('click', () => {
-        copyViewToClipboard(document.getElementById('fg-btn-copy-view'));
       });
 
       document.getElementById('back-link').addEventListener('click', e => {
