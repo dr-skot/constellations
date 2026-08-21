@@ -3,7 +3,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Andromeda — home of the Andromeda Galaxy, the most distant object visible to the naked eye.",
+        "caption": "Let’s find Andromeda, home of the Andromeda Galaxy, the most distant object visible to the naked eye.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -13,7 +13,7 @@
       },
       {
         "title": "Follow the W to the Great Square",
-        "caption": "The third zag of Cassiopeia's W points to Andromeda's brightest star, Alpheratz, at one corner of the Great Square of Pegasus.",
+        "caption": "The third zag of Cassiopeia’s W points to Andromeda’s brightest star, Alpheratz, at one corner of the Great Square of Pegasus.",
         "ra": 15,
         "dec": 35,
         "fov": 80,
@@ -35,7 +35,7 @@
       },
       {
         "title": "Three stars in a chain",
-        "caption": "Andromeda's backbone is a curving chain of three bright stars: Alpheratz, Mirach, and Almach. They stretch away from the Great Square in a gentle arc.",
+        "caption": "Andromeda’s backbone is a curving chain of three bright stars: Alpheratz, Mirach, and Almach. They stretch away from the Great Square in a gentle arc.",
         "ra": 16,
         "dec": 36,
         "fov": 52,
@@ -51,7 +51,7 @@
       },
       {
         "title": "The myth of Andromeda",
-        "caption": "Andromeda is at the center of a six-constellation mythological group. Her father, King Cepheus, offers her as a sacrifice to the sea monster Cetus, hoping to appease a god offended by her mother Cassiopeia's vanity. She's rescued in the nick of time by Perseus, who rides to her on the winged horse Pegasus.",
+        "caption": "Andromeda is at the center of a six-constellation mythological group. Her father, King Cepheus, offers her as a sacrifice to the sea monster Cetus, hoping to appease a god offended by her mother Cassiopeia’s vanity. She’s rescued in the nick of time by Perseus, who rides to her on the winged horse Pegasus.",
         "ra": 8,
         "dec": 30,
         "fov": 90,
@@ -76,7 +76,7 @@
       },
       {
         "title": "The Andromeda Galaxy",
-        "caption": "The Andromeda Galaxy is the farthest object most people will ever see with unaided eyes—2.5 million light-years. Look for a fuzzy oval near Mirach—under dark skies it appears several times wider than the full Moon.",
+        "caption": "The Andromeda Galaxy is the farthest object most people will ever see with unaided eyes, 2.5 million light-years away. Look for a fuzzy oval near Mirach. Under dark skies it appears several times wider than the full Moon.",
         "ra": 13,
         "dec": 38,
         "fov": 32,
@@ -96,7 +96,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Antlia — the Air Pump, one of the faintest constellations in the sky, invented by Lacaille in the 1750s and lying between Hydra and Vela in the southern spring sky.",
+        "caption": "Let’s find Antlia, the Air Pump. It is one of the faintest constellations in the sky, invented by Lacaille in the 1750s, and it lies between Hydra and Vela in the southern spring sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -106,7 +106,7 @@
       },
       {
         "title": "Between Hydra and Vela",
-        "caption": "From Alphard — the solitary orange star that marks Hydra's heart — drop south toward the bright stars of Vela. Antlia sits in that empty-looking gap. It is best seen from February to April and is invisible north of about 45°N.",
+        "caption": "From Alphard, the solitary orange star that marks Hydra’s heart, drop south toward the bright stars of Vela. Antlia sits in that empty-looking gap. It is best seen from February to April and is invisible north of about 45°N.",
         "ra": 150,
         "dec": -22,
         "fov": 70,
@@ -119,8 +119,8 @@
         ]
       },
       {
-        "title": "Lacaille's air pump",
-        "caption": "Antlia honors the vacuum pump, a cutting-edge scientific instrument of the Age of Enlightenment. The region contains NGC 2997, a face-on spiral galaxy about 40 million light-years away visible in a small telescope from dark southern sites.",
+        "title": "Lacaille’s air pump",
+        "caption": "Antlia honors the vacuum pump, a new and much-argued-about instrument in the Age of Enlightenment. The region contains NGC 2997, a face-on spiral galaxy about 40 million light-years away, visible in a small telescope from dark southern sites.",
         "ra": 153,
         "dec": -33,
         "fov": 35,
@@ -142,7 +142,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Apus — the Bird of Paradise, a small faint constellation near the south celestial pole.",
+        "caption": "Let’s find Apus, the Bird of Paradise, a small faint constellation near the south celestial pole.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -166,7 +166,7 @@
       },
       {
         "title": "Bird of Paradise",
-        "caption": "Apus was named by Dutch navigators Keyser and de Houtman in the late 16th century, after the exotic Birds of Paradise encountered on their East Indies voyages — birds so beautiful they were believed to spend their entire lives in flight, never touching the ground.",
+        "caption": "Apus was named by the Dutch navigators Keyser and de Houtman in the late 16th century, after the birds of paradise they met on their East Indies voyages. The birds were so beautiful that people believed they spent their entire lives in flight, never touching the ground.",
         "ra": 236,
         "dec": -78,
         "fov": 28,
@@ -184,7 +184,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Aquarius — the Water Bearer, a sprawling zodiacal constellation. It has no bright stars, so dark skies help considerably.",
+        "caption": "Let’s find Aquarius, the Water Bearer, a sprawling zodiacal constellation. It has no bright stars, so dark skies help.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -194,7 +194,7 @@
       },
       {
         "title": "Find the Water Jar",
-        "caption": "The Y-shaped Water Jar asterism is the key landmark. Fomalhaut — the lone bright star to the south in Piscis Austrinus — is a useful anchor: the Water Jar floats above it. Sadalsud, the brightest star in Aquarius, sits just to the west of the jar.",
+        "caption": "The Y-shaped Water Jar asterism is the key landmark. Fomalhaut, the lone bright star to the south in Piscis Austrinus, is a useful anchor. The Water Jar floats above it. Sadalsud, the brightest star in Aquarius, sits just to the west of the jar.",
         "ra": 335,
         "dec": -10,
         "fov": 48,
@@ -210,7 +210,7 @@
       },
       {
         "title": "Two remarkable nebulae",
-        "caption": "The Saturn Nebula and the Helix Nebula both lie within Aquarius. The Helix is the closest planetary nebula to Earth at about 650 light-years — in a telescope it appears as a ghostly ring, larger than a full moon. The Saturn Nebula earns its name from the lobes flanking its disc, visible in larger telescopes.",
+        "caption": "The Saturn Nebula and the Helix Nebula both lie within Aquarius. The Helix is the closest planetary nebula to Earth at about 650 light-years. In a telescope it appears as a ghostly ring, larger than a full moon. The Saturn Nebula earns its name from the lobes flanking its disc, visible in larger telescopes.",
         "ra": 330,
         "dec": -10,
         "fov": 40,
@@ -232,7 +232,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Aquila — the Eagle, whose heart is Altair, the southernmost star of the Summer Triangle.",
+        "caption": "Let’s find Aquila the Eagle. Its heart is Altair, the southernmost star of the Summer Triangle.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -242,7 +242,7 @@
       },
       {
         "title": "Straddling the Milky Way",
-        "caption": "Aquila straddles the Milky Way right on the celestial equator, making it visible from every inhabited place on Earth. Altair is the brightest star in the constellation and one of the closest naked-eye stars to us, just 17 light-years away.",
+        "caption": "Aquila straddles the Milky Way right on the celestial equator, so it is visible from every inhabited place on Earth. Altair is the brightest star in the constellation and one of the closest naked-eye stars to us, just 17 light-years away.",
         "ra": 294,
         "dec": 6,
         "fov": 38,
@@ -255,8 +255,8 @@
         ]
       },
       {
-        "title": "The eagle's head",
-        "caption": "Altair is flanked closely by Tarazed to the north and Alshain to the south — three stars nearly in a line that form the eagle's head. Tarazed has a warm orange tint that sets it apart from the other two.",
+        "title": "The eagle’s head",
+        "caption": "Altair is flanked closely by Tarazed to the north and Alshain to the south, three stars nearly in a line that form the eagle’s head. Tarazed has a warm orange tint that sets it apart from the other two.",
         "ra": 297,
         "dec": 9,
         "fov": 16,
@@ -296,7 +296,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Ara — the Altar, a compact southern constellation just south of Scorpius's stinger.",
+        "caption": "Let’s find Ara, the Altar, a compact southern constellation just south of Scorpius’s stinger.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -305,8 +305,8 @@
         "bounds": false
       },
       {
-        "title": "Below the scorpion's tail",
-        "caption": "Find Shaula, the brightest star at the tip of the scorpion's stinger, then look south — the compact outline of the Altar sits just beyond. The Milky Way runs richly through this region.",
+        "title": "Below the scorpion’s tail",
+        "caption": "Find Shaula, the brightest star at the tip of the scorpion’s stinger, then look south. The compact outline of the Altar sits just beyond. The Milky Way runs thick through this region.",
         "ra": 263,
         "dec": -46,
         "fov": 65,
@@ -320,7 +320,7 @@
       },
       {
         "title": "The ancient altar",
-        "caption": "Ara is one of the 48 original Ptolemaic constellations — the altar upon which the Olympian gods swore their oaths before the Titanomachy, the great war against the Titans. NGC 6397 is one of the nearest globular clusters to Earth at about 7,800 light-years — visible as a fuzzy star in binoculars.",
+        "caption": "Ara is one of the 48 original Ptolemaic constellations, the altar on which the Olympian gods swore their oaths before the Titanomachy, their great war against the Titans. NGC 6397 is one of the nearest globular clusters to Earth at about 7,800 light-years, and shows as a fuzzy star in binoculars.",
         "ra": 261,
         "dec": -55,
         "fov": 28,
@@ -341,7 +341,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Aries — the Ram, a small but historically important zodiacal constellation that was once the location of the vernal equinox.",
+        "caption": "Let’s find Aries, the Ram, a small but historically important zodiacal constellation that was once the location of the vernal equinox.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -351,7 +351,7 @@
       },
       {
         "title": "West of the Pleiades",
-        "caption": "The Pleiades cluster in Taurus is the easiest landmark — Aries lies just to the west of it, a small curved arc of stars in an otherwise sparse region.",
+        "caption": "The Pleiades cluster in Taurus is the easiest landmark. Aries lies just to the west of it, a small curved arc of stars in an otherwise sparse region.",
         "ra": 38,
         "dec": 22,
         "fov": 65,
@@ -365,7 +365,7 @@
       },
       {
         "title": "Hamal, Sheratan, and Mesarthim",
-        "caption": "Hamal is the brightest star, an orange giant. Sheratan forms an obvious pair with it. Mesarthim, the faintest of the three, is historically notable — it was one of the first double stars ever observed through a telescope.",
+        "caption": "Hamal is the brightest star, an orange giant. Sheratan forms an obvious pair with it. Mesarthim, the faintest of the three, was one of the first double stars ever observed through a telescope.",
         "ra": 33,
         "dec": 22,
         "fov": 28,
@@ -381,7 +381,7 @@
       },
       {
         "title": "The First Point of Aries",
-        "caption": "Though small and modest, Aries was the most important constellation in ancient astronomy: the vernal equinox — where the Sun crosses the celestial equator each March — was once located here. Due to precession it has since drifted into Pisces, but the term “First Point of Aries” endures as the name for the vernal equinox direction.",
+        "caption": "Small and modest as it is, Aries was once the most important constellation in ancient astronomy. The vernal equinox, where the Sun crosses the celestial equator each March, was located here. Precession has since carried it into Pisces, but the vernal equinox direction is still called the “First Point of Aries.”",
         "ra": 35,
         "dec": 22,
         "fov": 24,
@@ -399,7 +399,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Auriga — the Charioteer, anchored by Capella, one of the brightest stars in the sky and easy to spot by its warm golden colour.",
+        "caption": "Let’s find Auriga the Charioteer, anchored by Capella. Capella is one of the brightest stars in the sky and easy to spot by its warm golden colour.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -409,7 +409,7 @@
       },
       {
         "title": "Find Capella",
-        "caption": "If you can see Orion, Capella is the bright golden star on the far side of the belt from Sirius. Look for a prominent pentagon of stars with Capella at the top — that is Auriga.",
+        "caption": "If you can see Orion, Capella is the bright golden star on the far side of the belt from Sirius. Look for a prominent pentagon of stars with Capella at the top. That is Auriga.",
         "ra": 87,
         "dec": 12,
         "fov": 75,
@@ -432,7 +432,7 @@
       },
       {
         "title": "Capella and the Kids",
-        "caption": "Capella is actually two golden giant stars — both remarkably similar to the Sun in colour, but far more luminous. Three faint stars called the Kids cluster nearby. One of them, Epsilon Aurigae, is a remarkable eclipsing system: a supergiant eclipsed every 27 years by a vast disc of unknown material.",
+        "caption": "Capella is actually two golden giant stars, both close to the Sun in colour but far more luminous. Three faint stars called the Kids cluster nearby. One of them, Epsilon Aurigae, is an eclipsing system like no other: every 27 years a vast disc of unknown material passes in front of the supergiant.",
         "ra": 82,
         "dec": 42,
         "fov": 36,
@@ -447,7 +447,7 @@
       },
       {
         "title": "Three Messier clusters",
-        "caption": "The Milky Way passes through Auriga, bringing three fine open clusters: M36, M37, and M38. All three are visible as hazy patches in binoculars and resolve into beautiful star fields in a small telescope.",
+        "caption": "The Milky Way passes through Auriga, and with it three open clusters: M36, M37, and M38. All three show as hazy patches in binoculars and resolve into star fields in a small telescope.",
         "ra": 83,
         "dec": 37,
         "fov": 30,
@@ -470,7 +470,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let’s find Boötes — the Herdsman, home to Arcturus, the brightest star north of the celestial equator and an unmistakably orange beacon in the sky.",
+        "caption": "Let’s find Boötes the Herdsman, home to Arcturus, the brightest star north of the celestial equator and plainly orange to the naked eye.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -480,7 +480,7 @@
       },
       {
         "title": "Arc to Arcturus",
-        "caption": "The classic star-hop: follow the curved arc of the Big Dipper’s handle outward and you land on Arcturus. “Arc to Arcturus” is one of the most reliable mnemonics in astronomy.",
+        "caption": "The classic star-hop: follow the curved arc of the Big Dipper’s handle outward and you land on Arcturus. “Arc to Arcturus” is the mnemonic, and it works every time.",
         "ra": 196,
         "dec": 42,
         "fov": 75,
@@ -503,7 +503,7 @@
       },
       {
         "title": "Arcturus",
-        "caption": "Arcturus is the fourth-brightest star in the night sky — its orange colour unmistakable. It moves through space at an unusually high velocity relative to the Sun, a member of the older thick disk of the Milky Way with a very different orbital history from most nearby stars.",
+        "caption": "Arcturus is the fourth-brightest star in the night sky, and its orange colour is obvious at a glance. It moves through space at an unusually high velocity relative to the Sun, a member of the older thick disk of the Milky Way with a very different orbital history from most nearby stars.",
         "ra": 215,
         "dec": 22,
         "fov": 35,
@@ -517,7 +517,7 @@
       },
       {
         "title": "The kite",
-        "caption": "Boötes forms a kite shape with Arcturus at its southern tip. Izar, on the side of the kite, is a stunning orange-and-blue double star in a small telescope — nicknamed Pulcherrima, “most beautiful,” by astronomers.",
+        "caption": "Boötes forms a kite shape with Arcturus at its southern tip. Izar, on the side of the kite, splits into an orange-and-blue pair in a small telescope. Astronomers nicknamed it Pulcherrima, “most beautiful.”",
         "ra": 217,
         "dec": 31,
         "fov": 52,
@@ -540,7 +540,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let’s find Caelum — the Chisel, one of the smallest and faintest constellations, invented by Lacaille and tucked between Eridanus, Columba, and Horologium in the southern sky.",
+        "caption": "Let’s find Caelum, the Chisel, one of the smallest and faintest constellations. Lacaille invented it, and it sits between Eridanus, Columba, and Horologium in the southern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -550,7 +550,7 @@
       },
       {
         "title": "Between Eridanus and Columba",
-        "caption": "Caelum sits in a sparse corner of the southern sky, nestled beside the winding river Eridanus. Rigel in Orion is the brightest nearby star — look south from there into the empty-looking region between Eridanus and Columba.",
+        "caption": "Caelum sits in a sparse corner of the southern sky, beside the winding river Eridanus. Rigel in Orion is the brightest nearby star. Look south from there into the empty-looking region between Eridanus and Columba.",
         "ra": 74,
         "dec": -38,
         "fov": 65,
@@ -564,7 +564,7 @@
       },
       {
         "title": "Lacaille’s engraving tool",
-        "caption": "Caelum honors the burin — the engraving tool used by printmakers and sculptors. One of 14 instrument constellations Lacaille introduced after his 1751–52 Cape of Good Hope survey, it is among the most challenging to identify, with no bright stars and no deep-sky objects of note. A completionist’s target.",
+        "caption": "Caelum honors the burin, the engraving tool printmakers and sculptors cut with. It is one of 14 instrument constellations Lacaille introduced after his 1751–52 Cape of Good Hope survey, and one of the hardest to identify: no bright stars, no deep-sky objects of note. A completionist’s target.",
         "ra": 71,
         "dec": -41,
         "fov": 28,
@@ -583,7 +583,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Camelopardalis — the Giraffe, a very large but very faint circumpolar constellation filling the gap between Polaris and Auriga.",
+        "caption": "Let’s find Camelopardalis, the Giraffe, a very large but very faint circumpolar constellation filling the gap between Polaris and Auriga.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -593,7 +593,7 @@
       },
       {
         "title": "Sprawling but dim",
-        "caption": "The left arm of Cassiopeia's W points to the dark void between Polaris and Capella where the Giraffe lives. It's the third largest constellation by area, but easy to miss because its main stars are so faint.",
+        "caption": "The left arm of Cassiopeia’s W points to the dark void between Polaris and Capella where the Giraffe lives. It’s the third largest constellation by area, but easy to miss because its main stars are so faint.",
         "ra": 68,
         "dec": 70,
         "fov": 60,
@@ -608,7 +608,7 @@
       },
       {
         "title": "NGC 2403",
-        "caption": "Invented by Petrus Plancius in 1613, it represents the giraffe that carried Rebekah to Isaac. Its most rewarding target is NGC 2403 — one of the nearest spiral galaxies beyond our Local Group and a fine binocular object from dark skies.",
+        "caption": "Petrus Plancius invented it in 1613, and it represents the giraffe that carried Rebekah to Isaac. Its best target is NGC 2403, one of the nearest spiral galaxies beyond our Local Group and a fine binocular object from dark skies.",
         "ra": 72,
         "dec": 63,
         "fov": 50,
@@ -629,7 +629,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cancer — the Crab, the faintest of the zodiacal constellations, but home to the beautiful Beehive, a naked-eye star cluster known since antiquity.",
+        "caption": "Let’s find Cancer, the Crab. It is the faintest of the zodiacal constellations, but it holds the Beehive, a naked-eye star cluster known since antiquity.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -639,7 +639,7 @@
       },
       {
         "title": "Look between Gemini and Leo",
-        "caption": "Cancer sits in the sparse gap between Pollux and Castor in Gemini and bright Regulus in Leo. Cancer's inconspicuous stars make it an ideal dark-sky test: if you can see them with the naked eye, conditions are excellent.",
+        "caption": "Cancer sits in the sparse gap between Pollux and Castor in Gemini and bright Regulus in Leo. Cancer’s inconspicuous stars make it an ideal dark-sky test: if you can see them with the naked eye, conditions are excellent.",
         "ra": 130,
         "dec": 18,
         "fov": 70,
@@ -680,7 +680,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Canes Venatici — the Hunting Dogs, a small constellation below the handle of the Big Dipper, anchored by the bright blue-white star Cor Caroli.",
+        "caption": "Let’s find Canes Venatici, the Hunting Dogs, a small constellation below the handle of the Big Dipper, anchored by the bright blue-white star Cor Caroli.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -690,7 +690,7 @@
       },
       {
         "title": "Below the Big Dipper handle",
-        "caption": "Find Alkaid — the star at the tip of the Dipper's handle. Cor Caroli is the bright blue-white star sitting just below it.",
+        "caption": "Find Alkaid, the star at the tip of the Dipper’s handle. Cor Caroli is the bright blue-white star sitting just below it.",
         "ra": 198,
         "dec": 44,
         "fov": 55,
@@ -705,7 +705,7 @@
       },
       {
         "title": "Cor Caroli",
-        "caption": "Cor Caroli (‘Charles’s Heart’) is a beautiful double star in a small telescope and the brightest of the two named stars in the constellation. Nearby shines Chara. Despite having only two named stars, the constellation is rich in background galaxies.",
+        "caption": "Cor Caroli (‘Charles’s Heart’) splits into a wide double in a small telescope, and it is the brighter of the constellation’s two named stars. The other is Chara. Two named stars is all it has, but the background is thick with galaxies.",
         "ra": 193,
         "dec": 38,
         "fov": 22,
@@ -720,7 +720,7 @@
       },
       {
         "title": "Galaxy country",
-        "caption": "Canes Venatici sits away from the Milky Way’s dust, giving clear sightlines into the deep universe. M51, the Whirlpool Galaxy, is one of the most photogenic spirals in the sky. M3 is among the finest globular clusters — visible in binoculars as a fuzzy star.",
+        "caption": "Canes Venatici sits away from the Milky Way’s dust, which gives clear sightlines into the deep universe. M51, the Whirlpool Galaxy, gets photographed more than almost any other spiral. M3 is among the finest globular clusters, a fuzzy star in binoculars.",
         "ra": 200,
         "dec": 40,
         "fov": 35,
@@ -742,7 +742,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Canis Major — the Great Dog, home of Sirius, the brightest star in the night sky.",
+        "caption": "Let’s find Canis Major, the Great Dog, home of Sirius, the brightest star in the night sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -752,7 +752,7 @@
       },
       {
         "title": "Find the Dog Star",
-        "caption": "Canis Major follows Orion across the sky. Sirius marks the dog’s shoulder. Follow the line of Orion's belt and you'll find it. The ancient Egyptians timed the annual Nile flood by the first dawn rising of Sirius and called it Sopdet.",
+        "caption": "Canis Major follows Orion across the sky. Sirius marks the dog’s shoulder. Follow the line of Orion’s belt and you’ll find it. The ancient Egyptians timed the annual Nile flood by the first dawn rising of Sirius and called it Sopdet.",
         "ra": 92,
         "dec": -8,
         "fov": 60,
@@ -775,7 +775,7 @@
       },
       {
         "title": "The Great Dog",
-        "caption": "Adhara, at the hindquarters, is intrinsically far more luminous than Sirius, but appears dimmer because it's nearly 30 times as far away.",
+        "caption": "Adhara, at the hindquarters, is intrinsically far more luminous than Sirius, but appears dimmer because it’s nearly 30 times as far away.",
         "ra": 103,
         "dec": -21,
         "fov": 36,
@@ -797,7 +797,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Canis Minor — the Lesser Dog, a tiny constellation defined almost entirely by one brilliant star: Procyon, the eighth-brightest in the night sky.",
+        "caption": "Let’s find Canis Minor, the Lesser Dog. One star does nearly all the work: Procyon, the eighth-brightest in the night sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -823,7 +823,7 @@
       },
       {
         "title": "Two stars",
-        "caption": "Canis Minor has only two stars worth finding: Procyon and Gomeisa. The dog body is largely imaginary — there is little else to see. Procyon is one of the Sun's nearest neighbors and, like Sirius, has a white dwarf companion detectable only with large telescopes.",
+        "caption": "Canis Minor has only two stars worth finding: Procyon and Gomeisa. The dog’s body is largely imaginary, and there is little else to see. Procyon is one of the Sun’s nearest neighbors and, like Sirius, has a white dwarf companion detectable only with large telescopes.",
         "ra": 113,
         "dec": 7,
         "fov": 16,
@@ -845,7 +845,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Capricornus — the Sea Goat, one of the oldest recognized constellations. Its stars are faint but form a distinctive arrowhead shape.",
+        "caption": "Let’s find Capricornus, the Sea Goat, one of the oldest recognized constellations. Its stars are faint but form a distinctive arrowhead shape.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -855,7 +855,7 @@
       },
       {
         "title": "Follow the Beak",
-        "caption": "Start at Altair in Aquila and follow the direction of the eagle's beak.",
+        "caption": "Start at Altair in Aquila and follow the direction of the eagle’s beak.",
         "ra": 316,
         "dec": -18,
         "fov": 70,
@@ -869,7 +869,7 @@
       },
       {
         "title": "Find Algedi and Dabih",
-        "caption": "The tip of the arrowhead nearest Aquila is marked by Algedi and Dabih. Look closely at Algedi — it's actually two unrelated stars that happen to line up, forming one of the easiest naked-eye doubles in the sky.",
+        "caption": "The tip of the arrowhead nearest Aquila is marked by Algedi and Dabih. Look closely at Algedi. It is two unrelated stars that happen to line up, and one of the easiest naked-eye doubles in the sky.",
         "ra": 307,
         "dec": -14,
         "fov": 15,
@@ -890,8 +890,8 @@
         ]
       },
       {
-        "title": "The sea goat's outline",
-        "caption": "Deneb Algedi at the tail is the brightest star — an eclipsing binary that dips every 24.5 hours. Neptune was first spotted in Capricornus in 1846.",
+        "title": "The sea goat’s outline",
+        "caption": "Deneb Algedi at the tail is the brightest star, an eclipsing binary that dips every 24.5 hours. Neptune was first spotted in Capricornus in 1846.",
         "ra": 315,
         "dec": -20,
         "fov": 33,
@@ -913,7 +913,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Carina — the Keel, the brightest part of the ancient ship Argo Navis. It contains Canopus, the second-brightest star in the entire sky.",
+        "caption": "Let’s find Carina, the Keel, the brightest part of the ancient ship Argo Navis. It contains Canopus, the second-brightest star in the entire sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -938,7 +938,7 @@
       },
       {
         "title": "The Ship Argo",
-        "caption": "Carina was once part of Argo Navis — the great ship of Jason and the Argonauts, and the largest of Ptolemy's original 48 constellations. French astronomer Nicolas-Louis de Lacaille split it into three parts in 1755: Carina (the keel), Vela (the sails), and Puppis (the stern).",
+        "caption": "Carina was once part of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille broke it up in 1755 into Carina the keel, Vela the sails, and Puppis the stern.",
         "ra": 130,
         "dec": -48,
         "fov": 55,
@@ -967,7 +967,7 @@
       },
       {
         "title": "The False Cross",
-        "caption": "Two of Carina's bright stars — orange Avior and Aspidiske — join two stars in neighbouring Vela to form the False Cross, a diamond sometimes mistaken for the Southern Cross.",
+        "caption": "Two of Carina’s bright stars, orange Avior and Aspidiske, join two stars in neighbouring Vela to form the False Cross, a diamond people mistake for the Southern Cross.",
         "ra": 133,
         "dec": -58,
         "fov": 35,
@@ -1009,7 +1009,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cassiopeia — the Queen, one of the most recognizable patterns in the sky. Five bright stars form an unmistakable W shape.",
+        "caption": "Let’s find Cassiopeia, the Queen. Five bright stars form a W you will not confuse with anything else in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1019,7 +1019,7 @@
       },
       {
         "title": "Across from the Big Dipper",
-        "caption": "Cassiopeia and the Big Dipper sit on opposite sides of Polaris. Find the W on the far side of the pole from the Dipper's handle.",
+        "caption": "Cassiopeia and the Big Dipper sit on opposite sides of Polaris. Find the W on the far side of the pole from the Dipper’s handle.",
         "ra": 13,
         "dec": 90,
         "fov": 80,
@@ -1033,7 +1033,7 @@
       },
       {
         "title": "The W",
-        "caption": "Schedar and Caph mark one end of the W, with Cih at the sharp central peak. The W — or M, depending on its orientation — is unlike any other pattern near the pole.",
+        "caption": "Schedar and Caph mark one end of the W, with Cih at the sharp central peak. The W, or M depending on which way up it is, looks like nothing else near the pole.",
         "ra": 14,
         "dec": 59,
         "fov": 28,
@@ -1049,7 +1049,7 @@
       },
       {
         "title": "The myth of Andromeda",
-        "caption": "Cassiopeia is part of the largest mythological group in the sky — six neighbouring constellations tell the story of Andromeda's rescue from a sea monster.",
+        "caption": "Cassiopeia belongs to the largest mythological group in the sky. Six neighbouring constellations tell the story of Andromeda’s rescue from a sea monster.",
         "ra": 8,
         "dec": 30,
         "fov": 90,
@@ -1073,8 +1073,8 @@
         ]
       },
       {
-        "title": "The Queen's vanity",
-        "caption": "Cassiopeia boasted she was more beautiful than the sea nymphs, angering Poseidon, which eventually placed her daughter Andromeda in mortal peril. As punishment the Queen is forever bound to her throne, circling the pole and never setting (in northern latitudes).",
+        "title": "The Queen’s vanity",
+        "caption": "Cassiopeia boasted she was more beautiful than the sea nymphs. That angered Poseidon, and it put her daughter Andromeda in mortal peril. As punishment the Queen is bound forever to her throne, circling the pole and never setting (in northern latitudes).",
         "ra": 14,
         "dec": 59,
         "fov": 33,
@@ -1092,7 +1092,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Centaurus — the Centaur, a large southern constellation anchored by two of the brightest stars in the sky.",
+        "caption": "Let’s find Centaurus, the Centaur, a large southern constellation anchored by two of the brightest stars in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1102,7 +1102,7 @@
       },
       {
         "title": "The Southern Pointers",
-        "caption": "Two brilliant stars close together — Rigil Kentaurus and Hadar — are the Centaur's front hooves. They're called the Southern Pointers because a line through them leads straight to the Southern Cross.",
+        "caption": "Two brilliant stars close together, Rigil Kentaurus and Hadar, are the Centaur’s front hooves. They’re called the Southern Pointers because a line through them leads straight to the Southern Cross.",
         "ra": 200,
         "dec": -58,
         "fov": 45,
@@ -1117,7 +1117,7 @@
       },
       {
         "title": "Nearest star",
-        "caption": "Rigil Kentaurus, also popularly known as Alpha Centauri, is the nearest star system to the Sun and the third-brightest star in the night sky. Together with Hadar, the pair is unmistakable.",
+        "caption": "Rigil Kentaurus, also popularly known as Alpha Centauri, is the nearest star system to the Sun and the third-brightest star in the night sky. Paired with Hadar, it is impossible to miss.",
         "ra": 213,
         "dec": -59,
         "fov": 20,
@@ -1132,7 +1132,7 @@
       },
       {
         "title": "The full centaur",
-        "caption": "Menkent marks the Centaur's head, far from the bright pointers at the hooves. Omega Centauri, the sky's brightest globular cluster, is visible as a fuzzy star near the boundary.",
+        "caption": "Menkent marks the Centaur’s head, far from the bright pointers at the hooves. Omega Centauri, the sky’s brightest globular cluster, is visible as a fuzzy star near the boundary.",
         "ra": 201,
         "dec": -48,
         "fov": 55,
@@ -1153,7 +1153,7 @@
       },
       {
         "title": "A forgotten sky",
-        "caption": "Centaurus is one of the oldest constellations — the Babylonians mapped a centaur figure over 3,000 years ago, and the Greeks associated it with Chiron, the wise teacher of heroes. Precession has since carried it below the European horizon; stars the ancients knew by heart are now a purely southern sight.",
+        "caption": "Centaurus is one of the oldest constellations. The Babylonians mapped a centaur figure here over 3,000 years ago, and the Greeks tied it to Chiron, the wise teacher of heroes. Precession has since carried it below the European horizon. Stars the ancients knew by heart are now a purely southern sight.",
         "ra": 201,
         "dec": -48,
         "fov": 55,
@@ -1171,7 +1171,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cepheus — the King, shaped like a child's drawing of a house. Look for it between Cassiopeia and Polaris.",
+        "caption": "Let’s find Cepheus, the King, shaped like a child’s drawing of a house. Look for it between Cassiopeia and Polaris.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1181,7 +1181,7 @@
       },
       {
         "title": "Between Cassiopeia and Polaris",
-        "caption": "Find Cassiopeia's W first. Cepheus is the blunt pentagon on the Polaris side of the W.",
+        "caption": "Find Cassiopeia’s W first. Cepheus is the blunt pentagon on the Polaris side of the W.",
         "ra": 335,
         "dec": 68,
         "fov": 65,
@@ -1209,7 +1209,7 @@
       },
       {
         "title": "The myth of Andromeda",
-        "caption": "Cepheus is part of the largest mythological group in the sky — six neighbouring constellations tell the story of Andromeda's rescue from a sea monster.",
+        "caption": "Cepheus is one of six neighbouring constellations that tell the story of Andromeda’s rescue from a sea monster, the largest mythological group in the sky.",
         "ra": 8,
         "dec": 30,
         "fov": 90,
@@ -1234,7 +1234,7 @@
       },
       {
         "title": "The reluctant King",
-        "caption": "Cepheus is Cassiopeia's husband — the king who reluctantly agreed to sacrifice his daughter Andromeda to appease Poseidon's sea monster. The Garnet Star on the base of the house is one of the largest and reddest stars visible to the naked eye.",
+        "caption": "Cepheus is Cassiopeia’s husband, the king who reluctantly agreed to sacrifice his daughter Andromeda to appease Poseidon’s sea monster. The Garnet Star on the base of the house is one of the largest and reddest stars visible to the naked eye.",
         "ra": 332,
         "dec": 68,
         "fov": 35,
@@ -1255,7 +1255,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cetus — the sea monster from the Andromeda myth, one of the largest constellations in the sky.",
+        "caption": "Let’s find Cetus, the sea monster from the Andromeda myth, one of the largest constellations in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1298,7 +1298,7 @@
       },
       {
         "title": "The myth of Andromeda",
-        "caption": "Cetus is the sea monster sent by Poseidon to devour Andromeda — part of the largest mythological group in the sky, spanning six neighbouring constellations.",
+        "caption": "Cetus is the sea monster Poseidon sent to devour Andromeda. Six neighbouring constellations carry that story, the largest mythological group in the sky.",
         "ra": 8,
         "dec": 30,
         "fov": 90,
@@ -1323,7 +1323,7 @@
       },
       {
         "title": "Mira the Wonderful",
-        "caption": "Mira is one of the sky's most famous variable stars, pulsating over about 332 days. At maximum it outshines every other star in Cetus; at minimum it vanishes entirely. Tau Ceti, just 12 light-years away, is one of the nearest Sun-like stars.",
+        "caption": "Mira is one of the sky’s most famous variable stars, pulsating over about 332 days. At maximum it outshines every other star in Cetus; at minimum it vanishes entirely. Tau Ceti, just 12 light-years away, is one of the nearest Sun-like stars.",
         "ra": 30,
         "dec": -8,
         "fov": 35,
@@ -1342,7 +1342,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Chamaeleon — the Chameleon, a small faint constellation near the south celestial pole.",
+        "caption": "Let’s find Chamaeleon, the Chameleon, a small faint constellation near the south celestial pole.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1367,7 +1367,7 @@
       },
       {
         "title": "A loose kite of faint stars",
-        "caption": "Four faint stars form a loose kite shape. Dark skies are needed to trace the pattern — none of the stars stands out on its own.",
+        "caption": "Four faint stars form a loose kite shape. You need dark skies to trace it, because none of the four stands out on its own.",
         "ra": 160,
         "dec": -79,
         "fov": 30,
@@ -1397,7 +1397,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Circinus — the Drawing Compass, one of the smallest constellations in the sky, tucked right next to the Southern Pointers.",
+        "caption": "Let’s find Circinus, the Drawing Compass, one of the smallest constellations in the sky, right next to the Southern Pointers.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1407,7 +1407,7 @@
       },
       {
         "title": "Next to the Southern Pointers",
-        "caption": "Circinus sits right beside the Southern Pointers (so named because they point at the Southern Cross). Find Rigil Kentaurus — the brighter of the two — and Alpha Circini is the next noticeable star beside it.",
+        "caption": "Circinus sits right beside the Southern Pointers (so named because they point at the Southern Cross). Find Rigil Kentaurus, the brighter of the two, and Alpha Circini is the next noticeable star beside it.",
         "ra": 220,
         "dec": -61,
         "fov": 45,
@@ -1422,7 +1422,7 @@
       },
       {
         "title": "The tiny compass",
-        "caption": "Three faint stars form the compass shape — so small the whole constellation fits in a single binocular field.",
+        "caption": "Three faint stars form the compass. The whole constellation fits in a single binocular field.",
         "ra": 224,
         "dec": -63,
         "fov": 12,
@@ -1436,7 +1436,7 @@
       },
       {
         "title": "The Circinus Galaxy",
-        "caption": "Circinus hides a remarkable object: the Circinus Galaxy, one of the nearest active galaxies at 13 million light-years. It's heavily obscured by the Milky Way's dust lanes and requires a telescope to spot.",
+        "caption": "Circinus hides the Circinus Galaxy, one of the nearest active galaxies at 13 million light-years. The Milky Way’s dust lanes obscure it heavily, and it takes a telescope to spot.",
         "ra": 224,
         "dec": -63,
         "fov": 20,
@@ -1456,7 +1456,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Columba — the Dove, a small constellation south of Lepus the Hare, anchored by the blue-white star Phact.",
+        "caption": "Let’s find Columba, the Dove, a small constellation south of Lepus the Hare, anchored by the blue-white star Phact.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1482,7 +1482,7 @@
       },
       {
         "title": "Phact and Wazn",
-        "caption": "Blue-white Phact and orange Wazn mark the body of the Dove — a nice color contrast in binoculars.",
+        "caption": "Blue-white Phact and orange Wazn mark the body of the Dove, a nice color contrast in binoculars.",
         "ra": 86,
         "dec": -36,
         "fov": 28,
@@ -1496,8 +1496,8 @@
         ]
       },
       {
-        "title": "Noah's dove",
-        "caption": "Columba likely represents Noah's dove returning with an olive branch. The faint star Mu Columbae is a runaway — a blue star hurled from the Orion Nebula region at over 100 km/s by a supernova explosion millions of years ago, now racing away through this quiet corner of sky.",
+        "title": "Noah’s dove",
+        "caption": "Columba likely represents Noah’s dove returning with an olive branch. The faint star Mu Columbae is a runaway. A supernova millions of years ago hurled it out of the Orion Nebula region at over 100 km/s, and it is still racing through this quiet corner of sky.",
         "ra": 89,
         "dec": -36,
         "fov": 18,
@@ -1519,7 +1519,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Coma Berenices — Berenice's Hair, a large sparse constellation whose stars form a glittering open cluster visible to the naked eye from dark sites.",
+        "caption": "Let’s find Coma Berenices, Berenice’s Hair, a large sparse constellation whose stars form a glittering open cluster visible to the naked eye from dark sites.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1529,7 +1529,7 @@
       },
       {
         "title": "Between Leo and Boötes",
-        "caption": "Coma Berenices lies between Leo and Boötes. Look past Denebola, Leo's tail, for a large, loose, fuzzy glow. That's the Coma Star Cluster, 40 stars at 290 light-years, one of the sky's finest binocular clusters.",
+        "caption": "Coma Berenices lies between Leo and Boötes. Look past Denebola, Leo’s tail, for a large, loose, fuzzy glow. That’s the Coma Star Cluster, 40 stars at 290 light-years, one of the sky’s finest binocular clusters.",
         "ra": 196,
         "dec": 27,
         "fov": 60,
@@ -1561,8 +1561,8 @@
         ]
       },
       {
-        "title": "Berenice's Hair",
-        "caption": "Queen Berenice II of Egypt pledged to cut off her famous long hair if her husband returned safely from war. He did, she did, and when the shorn hair vanished from the temple overnight, the court astronomer reported that the gods had placed it among the stars. It's the only modern constellation named after a real person.",
+        "title": "Berenice’s Hair",
+        "caption": "Queen Berenice II of Egypt pledged to cut off her famous long hair if her husband returned safely from war. He did, she did, and when the shorn hair vanished from the temple overnight, the court astronomer reported that the gods had placed it among the stars. It’s the only modern constellation named after a real person.",
         "ra": 190,
         "dec": 24,
         "fov": 22,
@@ -1581,7 +1581,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Corona Australis — the Southern Crown, a small but delicate arc of stars just south of Sagittarius's Teapot.",
+        "caption": "Let’s find Corona Australis, the Southern Crown, a small but delicate arc of stars just south of Sagittarius’s Teapot.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1605,7 +1605,7 @@
       },
       {
         "title": "A faint semicircle",
-        "caption": "The crown is fainter than its northern counterpart but the same lovely shape — a curving arc of stars that fits in a single binocular field.",
+        "caption": "The crown is fainter than its northern counterpart but the same shape, a curving arc of stars that fits in a single binocular field.",
         "ra": 280,
         "dec": -39,
         "fov": 18,
@@ -1637,7 +1637,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Corona Borealis — the Northern Crown, one of the most charming small constellations: a perfect semicircle of stars resembling a jeweled crown or laurel wreath.",
+        "caption": "Let’s find Corona Borealis, the Northern Crown, a small semicircle of stars that reads as a jewelled crown or a laurel wreath depending on who is describing it.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1647,7 +1647,7 @@
       },
       {
         "title": "Between Arcturus and Vega",
-        "caption": "Find brilliant orange Arcturus in Boötes — the crown's semicircle sits in the stretch between Arcturus and Vega, making it easy to spot despite its modest stars.",
+        "caption": "Find brilliant orange Arcturus in Boötes. The crown’s semicircle sits in the stretch between Arcturus and Vega, which is what makes it easy to spot despite its modest stars.",
         "ra": 242,
         "dec": 28,
         "fov": 70,
@@ -1661,8 +1661,8 @@
         ]
       },
       {
-        "title": "Alphecca — the gem in the crown",
-        "caption": "Alphecca is the brightest point in the arc. Seven stars curve into one of the tightest, most recognizable small patterns in the sky — no similar arc exists nearby.",
+        "title": "Alphecca, the gem in the crown",
+        "caption": "Alphecca is the brightest point in the arc. Seven stars curve into one of the tightest small patterns in the sky, and no other arc nearby looks like it.",
         "ra": 236,
         "dec": 28,
         "fov": 18,
@@ -1676,7 +1676,7 @@
       },
       {
         "title": "The Blaze Star",
-        "caption": "The Blaze Star (T CrB) is a recurrent nova lurking near the crown — normally invisible, it erupts to naked-eye brightness roughly every 80 years. It last blew in 1946, and astronomers expect the next eruption any time now.",
+        "caption": "The Blaze Star (T CrB) is a recurrent nova near the crown. It is normally invisible, and erupts to naked-eye brightness roughly every 80 years. It last blew in 1946, so the next one is due any time.",
         "ra": 236,
         "dec": 29,
         "fov": 10,
@@ -1697,7 +1697,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Corvus — the Crow, a compact quadrilateral that's one of the easiest small constellations to recognize.",
+        "caption": "Let’s find Corvus, the Crow, a compact quadrilateral that’s one of the easiest small constellations to recognize.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1707,7 +1707,7 @@
       },
       {
         "title": "Arc to Arcturus, speed on to Spica",
-        "caption": "Follow the Big Dipper's handle to arc to Arcturus, then speed on to Spica. Once you've found Spica, the compact tilted quadrilateral of Corvus is the next obvious group of stars.",
+        "caption": "Follow the Big Dipper’s handle to arc to Arcturus, then speed on to Spica. Once you’ve found Spica, the compact tilted quadrilateral of Corvus is the next obvious group of stars.",
         "ra": 185,
         "dec": 15,
         "fov": 90,
@@ -1723,7 +1723,7 @@
       },
       {
         "title": "The compact crow",
-        "caption": "Four stars of similar brightness form a tight, lopsided quadrilateral — the body of the Crow.",
+        "caption": "Four stars of similar brightness form a tight, lopsided quadrilateral. That is the body of the Crow.",
         "ra": 185,
         "dec": -20,
         "fov": 18,
@@ -1737,7 +1737,7 @@
       },
       {
         "title": "The crow and the cup",
-        "caption": "Corvus and neighboring Crater (the Cup) both sit on the back of Hydra the Water Snake, which stretches across this part of the sky. In myth, Apollo sent the Crow to fetch water in the Cup, but the bird dawdled and was punished — all three were flung into the sky together.",
+        "caption": "Corvus and neighboring Crater (the Cup) both sit on the back of Hydra the Water Snake, which stretches across this part of the sky. In myth, Apollo sent the Crow to fetch water in the Cup, but the bird dawdled, so Apollo punished it and flung all three into the sky together.",
         "ra": 160,
         "dec": -10,
         "fov": 75,
@@ -1758,7 +1758,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Crater — the Cup, a small faint constellation sitting on the back of Hydra, next to the more prominent Corvus.",
+        "caption": "Let’s find Crater, the Cup, a small faint constellation sitting on the back of Hydra, next to the more prominent Corvus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1767,8 +1767,8 @@
         "bounds": false
       },
       {
-        "title": "Next to Corvus on Hydra's back",
-        "caption": "Find the compact quadrilateral of Corvus, then look for the faint ring of stars next to it, also sitting on Hydra's back. Crater is dim but its circular cup shape is distinctive once you spot it.",
+        "title": "Next to Corvus on Hydra’s back",
+        "caption": "Find the compact quadrilateral of Corvus, then look for the faint ring of stars next to it, also sitting on Hydra’s back. Crater is dim but its circular cup shape is distinctive once you spot it.",
         "ra": 183,
         "dec": -11,
         "fov": 55,
@@ -1782,7 +1782,7 @@
       },
       {
         "title": "The Cup",
-        "caption": "A ring of faint stars traces the outline of a goblet. None are bright, but the shape is satisfying — a nearly complete circle with a short stem.",
+        "caption": "A ring of faint stars traces the outline of a goblet. None are bright, but the shape is satisfying once you have it: a nearly complete circle with a short stem.",
         "ra": 172,
         "dec": -16,
         "fov": 28,
@@ -1796,7 +1796,7 @@
       },
       {
         "title": "The cup, the crow, and the snake",
-        "caption": "Apollo sent the Crow to fetch water in this Cup, carried on Hydra the Water Snake — but the bird dawdled, so Apollo flung all three into the sky. That's why Crater, Corvus, and Hydra are still neighbors.",
+        "caption": "Apollo sent the Crow to fetch water in this Cup, carried on Hydra the Water Snake. The bird dawdled, so Apollo flung all three into the sky. That’s why Crater, Corvus, and Hydra are still neighbors.",
         "ra": 160,
         "dec": -10,
         "fov": 75,
@@ -1816,7 +1816,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Crux — the Southern Cross, the smallest constellation in the sky and the most iconic in the southern hemisphere.",
+        "caption": "Let’s find Crux, the Southern Cross, the smallest constellation in the sky and the one the southern hemisphere put on its flags.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1826,7 +1826,7 @@
       },
       {
         "title": "A bright compact kite",
-        "caption": "Crux is only visible from latitudes south of about 25°N — the further south you are, the higher it rides. Look for a bright, compact kite of four stars embedded in a rich stretch of the Milky Way.",
+        "caption": "Crux is only visible from latitudes south of about 25°N, and the further south you are, the higher it rides. Look for a bright, compact kite of four stars embedded in a rich stretch of the Milky Way.",
         "ra": 188,
         "dec": -45,
         "fov": 80,
@@ -1853,7 +1853,7 @@
       },
       {
         "title": "Beware the False Cross",
-        "caption": "Nearby lies the False Cross — four stars in Vela and Carina that form a similar pattern but are larger and less symmetrical. If your cross looks large and lopsided, you've found the impostor.",
+        "caption": "Nearby lies the False Cross, four stars in Vela and Carina that form a similar pattern but are larger and less symmetrical. If your cross looks large and lopsided, you’ve found the impostor.",
         "ra": 161,
         "dec": -58,
         "fov": 56,
@@ -1882,7 +1882,7 @@
       },
       {
         "title": "Finding south",
-        "caption": "The long axis — from Gacrux through Acrux — points toward the south celestial pole. Extend it about 4.5 times its own length beyond Acrux and you arrive near the pole. Unlike the north, there is no bright star marking it.",
+        "caption": "The long axis, from Gacrux through Acrux, points toward the south celestial pole. Extend it about 4.5 times its own length beyond Acrux and you arrive near the pole. Unlike the north, there is no bright star marking it.",
         "ra": 188,
         "dec": -73,
         "fov": 38,
@@ -1902,7 +1902,7 @@
       },
       {
         "title": "The Coalsack",
-        "caption": "Adjacent to Crux lies the Coalsack — a dark nebula, a patch conspicuously empty of stars where interstellar dust blocks the Milky Way behind it. Indigenous Australians saw it as a celestial emu's head, part of a sky mythology drawn in dark shapes rather than star patterns.",
+        "caption": "Next to Crux lies the Coalsack, a dark nebula: a patch conspicuously empty of stars where interstellar dust blocks the Milky Way behind it. Indigenous Australians saw it as a celestial emu’s head, part of a sky mythology drawn in dark shapes rather than star patterns.",
         "ra": 188,
         "dec": -58,
         "fov": 25,
@@ -1920,7 +1920,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Cygnus — the Swan, whose stars form the unmistakable Northern Cross.",
+        "caption": "Let’s find Cygnus, the Swan, whose stars form the unmistakable Northern Cross.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -1930,7 +1930,7 @@
       },
       {
         "title": "The Northern Cross in the Milky Way",
-        "caption": "Cygnus rides through one of the richest stretches of the Milky Way. Look for a large, bright cross shape. It's one of the most recognizable patterns in the sky once you know it.",
+        "caption": "Cygnus rides through one of the richest stretches of the Milky Way. Look for a large, bright cross shape. Once you know it, you’ll pick it out every time.",
         "ra": 302,
         "dec": 40,
         "fov": 40,
@@ -1959,7 +1959,7 @@
       },
       {
         "title": "Deneb",
-        "caption": "Deneb marks the swan's tail at the top of the cross. It looks similar in brightness to nearby stars, but Deneb is a distant supergiant roughly 2,600 light-years away — one of the most intrinsically luminous stars visible to the naked eye.",
+        "caption": "Deneb marks the swan’s tail at the top of the cross. It looks similar in brightness to nearby stars, but Deneb is a distant supergiant roughly 2,600 light-years away. Few stars the naked eye can see put out more light.",
         "ra": 303,
         "dec": 39,
         "fov": 48,
@@ -1973,7 +1973,7 @@
       },
       {
         "title": "The swan in flight",
-        "caption": "Sadr sits at the swan's chest in the center of the cross. Albireo at the beak is a celebrated double star, gold and blue in a small telescope.",
+        "caption": "Sadr sits at the swan’s chest in the center of the cross. Albireo at the beak is a celebrated double star, gold and blue in a small telescope.",
         "ra": 303,
         "dec": 39,
         "fov": 48,
@@ -2057,7 +2057,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Delphinus — the Dolphin, a tiny diamond of stars that genuinely resembles a leaping dolphin.",
+        "caption": "Let’s find Delphinus, the Dolphin, a tiny diamond of stars that really does look like a leaping dolphin.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2067,7 +2067,7 @@
       },
       {
         "title": "Find Altair, then look nearby",
-        "caption": "Start with Altair, the bright anchor of Aquila. Delphinus swims just above the eagle's head — a compact diamond shape that's easy to spot once you know where to look.",
+        "caption": "Start with Altair, the bright anchor of Aquila. Delphinus swims just above the eagle’s head, a compact diamond that’s easy to spot once you know where to look.",
         "ra": 310,
         "dec": 14,
         "fov": 55,
@@ -2080,8 +2080,8 @@
         ]
       },
       {
-        "title": "Job's Coffin",
-        "caption": "The four-star diamond is sometimes called Job's Coffin — nobody knows why. The two brightest stars, Sualocin and Rotanev, are the reversed spelling of Nicolaus Venator — the Latinization of Niccolò Cacciatore, an assistant at Palermo Observatory who snuck his own name into the 1814 star catalog.",
+        "title": "Job’s Coffin",
+        "caption": "The four-star diamond is sometimes called Job’s Coffin, and nobody knows why. The two brightest stars, Sualocin and Rotanev, are Nicolaus Venator spelled backwards. That is the Latin form of Niccolò Cacciatore, an assistant at Palermo Observatory who snuck his own name into the 1814 star catalog.",
         "ra": 310,
         "dec": 12,
         "fov": 20,
@@ -2104,7 +2104,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Dorado — the Swordfish, a southern constellation best known for containing most of the Large Magellanic Cloud.",
+        "caption": "Let’s find Dorado, the Swordfish, a southern constellation best known for containing most of the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2114,7 +2114,7 @@
       },
       {
         "title": "Start from Canopus",
-        "caption": "Start from Canopus, the second-brightest star in the sky. The Large Magellanic Cloud — a detached patch of milky light, clearly visible to the naked eye in dark skies — makes Dorado easy to locate.",
+        "caption": "Start from Canopus, the second-brightest star in the sky. The Large Magellanic Cloud, a detached patch of milky light plainly visible to the naked eye in dark skies, makes Dorado easy to locate.",
         "ra": 78,
         "dec": -57,
         "fov": 65,
@@ -2129,7 +2129,7 @@
       },
       {
         "title": "The Large Magellanic Cloud",
-        "caption": "The LMC is a nearby satellite galaxy of the Milky Way, spanning about seven degrees. It dominates Dorado's territory, dwarfing the constellation's own stars.",
+        "caption": "The LMC is a nearby satellite galaxy of the Milky Way, spanning about seven degrees. It dominates Dorado’s territory, dwarfing the constellation’s own stars.",
         "ra": 73,
         "dec": -60,
         "fov": 28,
@@ -2166,7 +2166,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Draco — the Dragon, a long winding constellation that coils around the north celestial pole between Ursa Major and Ursa Minor.",
+        "caption": "Let’s find Draco, the Dragon, a long winding constellation that coils around the north celestial pole between Ursa Major and Ursa Minor.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2176,7 +2176,7 @@
       },
       {
         "title": "Between the Bears",
-        "caption": "Draco winds between Ursa Major and Ursa Minor through the northern sky. The most recognizable feature is the Dragon's Head — a quadrilateral of four stars near Vega.",
+        "caption": "Draco winds between Ursa Major and Ursa Minor through the northern sky. The most recognizable feature is the Dragon’s Head, a quadrilateral of four stars near Vega.",
         "ra": 250,
         "dec": 68,
         "fov": 75,
@@ -2191,8 +2191,8 @@
         ]
       },
       {
-        "title": "Find the Dragon's Head",
-        "caption": "The Dragon's Head is a compact trapezoid of four stars with Eltanin as its brightest corner. It's the most distinctive part of this otherwise long, winding constellation.",
+        "title": "Find the Dragon’s Head",
+        "caption": "The Dragon’s Head is a compact trapezoid of four stars with Eltanin as its brightest corner. It’s the most distinctive part of this otherwise long, winding constellation.",
         "ra": 268,
         "dec": 57,
         "fov": 25,
@@ -2205,8 +2205,8 @@
         ]
       },
       {
-        "title": "The dragon's long body",
-        "caption": "From the head, the Dragon's body snakes around Ursa Minor. Thuban, deep in the body, was the pole star around 2700 BC when the pyramids were being built.",
+        "title": "The dragon’s long body",
+        "caption": "From the head, the Dragon’s body snakes around Ursa Minor. Thuban, deep in the body, was the pole star around 2700 BC when the pyramids were being built.",
         "ra": 245,
         "dec": 64,
         "fov": 60,
@@ -2224,7 +2224,7 @@
       },
       {
         "title": "Heracles and the dragon",
-        "caption": "In Greek myth, Draco is Ladon, the dragon that guarded the golden apples in the garden of the Hesperides. Heracles killed it as one of his twelve labors. In the sky, Hercules kneels with one foot on the dragon's head. In a Roman telling, Minerva hurled the serpent into the sky during the war with the Titans, where it wrapped around the pole and froze.",
+        "caption": "In Greek myth, Draco is Ladon, the dragon that guarded the golden apples in the garden of the Hesperides. Heracles killed it as one of his twelve labors. In the sky, Hercules kneels with one foot on the dragon’s head. In a Roman telling, Minerva hurled the serpent into the sky during the war with the Titans, where it wrapped around the pole and froze.",
         "ra": 258,
         "dec": 50,
         "fov": 60,
@@ -2247,7 +2247,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Equuleus — the Little Horse, the second-smallest constellation in the sky, a tiny group of faint stars next to Delphinus.",
+        "caption": "Let’s find Equuleus, the Little Horse, the second-smallest constellation in the sky, a tiny group of faint stars next to Delphinus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2257,7 +2257,7 @@
       },
       {
         "title": "Next to Delphinus",
-        "caption": "Find Delphinus first — the compact diamond of Job's Coffin near Altair. Equuleus sits right next to it, a small pattern that's easy to overlook.",
+        "caption": "Find Delphinus first, the compact diamond of Job’s Coffin near Altair. Equuleus sits right next to it, a small pattern that’s easy to overlook.",
         "ra": 311,
         "dec": 9,
         "fov": 40,
@@ -2271,7 +2271,7 @@
       },
       {
         "title": "The ancient foal",
-        "caption": "Kitalpha, the brightest star, takes its name from the Arabic for 'part of a horse.' Equuleus is one of Ptolemy's original 48 constellations, recognized since antiquity as a horse's head. Despite being tiny, it has been continuously catalogued for over 2,000 years.",
+        "caption": "Kitalpha, the brightest star, takes its name from the Arabic for ‘part of a horse.’ Equuleus is one of Ptolemy’s original 48 constellations, recognized since antiquity as a horse’s head. Despite being tiny, it has been continuously catalogued for over 2,000 years.",
         "ra": 318.5,
         "dec": 7.5,
         "fov": 12,
@@ -2293,7 +2293,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Eridanus — the River, a vast winding constellation stretching from near Orion all the way to the brilliant star Achernar deep in the southern sky.",
+        "caption": "Let’s find Eridanus, the River, a vast winding constellation stretching from near Orion all the way to the brilliant star Achernar deep in the southern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2318,7 +2318,7 @@
         ]
       },
       {
-        "title": "Phaethon's fall",
+        "title": "Phaethon’s fall",
         "caption": "In Greek myth, Eridanus is the path scorched across the sky by Phaethon, son of the sun god Helios, who lost control of the sun chariot. Zeus struck him down with a thunderbolt, and he fell into the river below. The winding chain of stars traces his fiery arc from Orion to the southern horizon.",
         "ra": 55,
         "dec": -32,
@@ -2336,7 +2336,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Fornax — the Furnace, a faint southern constellation tucked inside a large southward bend of the river Eridanus.",
+        "caption": "Let’s find Fornax, the Furnace, a faint southern constellation inside a large southward bend of the river Eridanus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2365,7 +2365,7 @@
       },
       {
         "title": "The Chemical Furnace",
-        "caption": "Fornax is one of 14 southern constellations invented by Nicolas-Louis de Lacaille in the 1750s. He filled blank patches of the sky with instruments of the Enlightenment. The original name was le Fourneau Chymique — the Chemical Furnace, depicting a distillation furnace with an alembic and receiver.",
+        "caption": "Fornax is one of 14 southern constellations invented by Nicolas-Louis de Lacaille in the 1750s. He filled blank patches of the sky with instruments of the Enlightenment. He called this one le Fourneau Chymique, the Chemical Furnace, a distillation furnace with an alembic and receiver.",
         "ra": 43,
         "dec": -31,
         "fov": 28,
@@ -2404,7 +2404,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Gemini — the Twins, crowned by the bright pair Castor and Pollux.",
+        "caption": "Let’s find Gemini, the Twins, crowned by the bright pair Castor and Pollux.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2431,7 +2431,7 @@
       },
       {
         "title": "The Twins",
-        "caption": "Pollux has a warm orange colour that betrays its giant status. Castor, right next to it, is actually six stars — three gravitationally bound pairs — all masquerading as one point of light.",
+        "caption": "Pollux has a warm orange colour that betrays its giant status. Castor, right next to it, is actually six stars: three gravitationally bound pairs, all masquerading as one point of light.",
         "ra": 115,
         "dec": 30,
         "fov": 20,
@@ -2446,7 +2446,7 @@
       },
       {
         "title": "The Geminids",
-        "caption": "Gemini hosts the radiant of the Geminid meteor shower every December, with up to 120 meteors per hour emanating from just above Castor.",
+        "caption": "Gemini hosts the radiant of the Geminid meteor shower every December, with up to 120 meteors per hour coming from just above Castor.",
         "ra": 106,
         "dec": 23,
         "fov": 36,
@@ -2467,7 +2467,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Grus — the Crane, a southern constellation with a distinctive kite shape anchored by two bright stars, Alnair and Tiaki.",
+        "caption": "Let’s find Grus, the Crane, a southern constellation with a distinctive kite shape anchored by two bright stars, Alnair and Tiaki.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2493,7 +2493,7 @@
       },
       {
         "title": "Alnair and Tiaki",
-        "caption": "Alnair is blue-white; Tiaki is a cool red giant. Together they anchor the kite-shaped body of the crane, with a chain of stars extending out as the bird's long neck. The Grus Quartet, a set of four interacting galaxies, is visible in a single telescope field.",
+        "caption": "Alnair is blue-white; Tiaki is a cool red giant. Together they anchor the kite-shaped body of the crane, with a chain of stars extending out as the bird’s long neck. The Grus Quartet, a set of four interacting galaxies, is visible in a single telescope field.",
         "ra": 336,
         "dec": -45,
         "fov": 30,
@@ -2518,7 +2518,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Hercules — the Hero, a large constellation identified by the distinctive Keystone asterism and home to M13, a spectacular globular cluster.",
+        "caption": "Let’s find Hercules, the Hero, a large constellation you locate by its Keystone asterism. It holds M13, the finest globular cluster in the northern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2528,7 +2528,7 @@
       },
       {
         "title": "Between Vega and Arcturus",
-        "caption": "Draw an imaginary line from Vega to Arcturus — the Keystone of Hercules lies about a third of the way from Vega.",
+        "caption": "Draw an imaginary line from Vega to Arcturus. The Keystone of Hercules lies about a third of the way along it from Vega.",
         "ra": 244,
         "dec": 30,
         "fov": 75,
@@ -2574,7 +2574,7 @@
         ]
       },
       {
-        "title": "M13 — the Great Globular",
+        "title": "M13, the Great Globular",
         "caption": "The Great Globular Cluster M13 sits on the edge of the Keystone, visible to the naked eye under dark skies as a faint fuzzy star. It contains roughly 300,000 stars packed into a sphere about 145 light-years across.",
         "ra": 253,
         "dec": 35,
@@ -2589,7 +2589,7 @@
       },
       {
         "title": "The poisoned cloak",
-        "caption": "Hercules killed the centaur Nessus for assaulting his wife Deianeira. Dying, Nessus told her to keep his blood as a love charm. Years later she smeared it on a cloak for Hercules, not knowing the blood carried Hydra venom from the arrow that killed Nessus. The poison burned away Hercules' mortal flesh; his immortal half ascended to Olympus, and Zeus placed him in the sky.",
+        "caption": "Hercules killed the centaur Nessus for assaulting his wife Deianeira. Dying, Nessus told her to keep his blood as a love charm. Years later she smeared it on a cloak for Hercules, not knowing the blood carried Hydra venom from the arrow that killed Nessus. The poison burned away Hercules’ mortal flesh; his immortal half ascended to Olympus, and Zeus placed him in the sky.",
         "ra": 256,
         "dec": 29,
         "fov": 52,
@@ -2610,7 +2610,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Horologium, the Pendulum Clock — a faint constellation tucked between Eridanus and Reticulum.",
+        "caption": "Let’s find Horologium, the Pendulum Clock, a faint constellation between Eridanus and Reticulum.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2620,7 +2620,7 @@
       },
       {
         "title": "Find it near Achernar",
-        "caption": "Look for Achernar, the brilliant blue star at the end of Eridanus. Alpha Horologii, an orange giant and the clock's only conspicuous star, sits nearby. The rest are so faint they're a challenge even from dark sites.",
+        "caption": "Look for Achernar, the brilliant blue star at the end of Eridanus. Alpha Horologii, an orange giant and the clock’s only conspicuous star, sits nearby. The rest are so faint they’re a challenge even from dark sites.",
         "ra": 54,
         "dec": -50,
         "fov": 65,
@@ -2634,8 +2634,8 @@
         ]
       },
       {
-        "title": "Lacaille's instruments",
-        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled the gaps between ancient constellations with 14 new ones, all named after instruments of the Enlightenment. Horologium honors Huygens's pendulum clock, which made accurate navigation at sea possible for the first time.",
+        "title": "Lacaille’s instruments",
+        "caption": "Horologium honors Huygens’s pendulum clock, the invention that first made accurate navigation at sea possible. It is one of 14 constellations Lacaille named after instruments of the Enlightenment during his 1751 survey of the southern sky.",
         "ra": 48,
         "dec": -50,
         "fov": 30,
@@ -2652,7 +2652,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Hydra, the Water Snake — the largest constellation in the sky, winding across more than a hundred degrees.",
+        "caption": "Let’s find Hydra, the Water Snake, the largest constellation in the sky. It winds across more than a hundred degrees.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2662,7 +2662,7 @@
       },
       {
         "title": "The solitary one",
-        "caption": "Look for Alphard, a lonely orange star glowing in an otherwise empty stretch of sky. Its Arabic name means 'the solitary one.' Follow a line from Castor through Pollux to find it.",
+        "caption": "Look for Alphard, a lonely orange star glowing in an otherwise empty stretch of sky. Its Arabic name means ‘the solitary one.’ Follow a line from Castor through Pollux to find it.",
         "ra": 132,
         "dec": 10,
         "fov": 65,
@@ -2678,7 +2678,7 @@
       },
       {
         "title": "The longest snake",
-        "caption": "A ring of faint stars marks the snake's head, and the body winds on and on with the Crow and the Cup riding on its back. Apollo sent the crow to fetch water in the cup, but it dawdled eating figs and brought back a water snake as an excuse. Apollo flung all three into the sky.",
+        "caption": "A ring of faint stars marks the snake’s head, and the body winds on and on with the Crow and the Cup riding on its back. Apollo sent the crow to fetch water in the cup, but it dawdled eating figs and brought back a water snake as an excuse. Apollo flung all three into the sky.",
         "ra": 170,
         "dec": -18,
         "fov": 100,
@@ -2702,7 +2702,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Hydrus, the Lesser Water Snake — a small triangle of stars near the Magellanic Clouds, not to be confused with the much larger Hydra.",
+        "caption": "Let’s find Hydrus, the Lesser Water Snake, a small triangle of stars near the Magellanic Clouds. Don’t confuse it with the much larger Hydra.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2712,7 +2712,7 @@
       },
       {
         "title": "Between the Clouds",
-        "caption": "In the area dominated by Achernar and the two Magellanic Clouds you'll find a triangle of three stars. Beta Hydri, the one near the Small Cloud, is the nearest bright star to the south celestial pole.",
+        "caption": "In the area dominated by Achernar and the two Magellanic Clouds you’ll find a triangle of three stars. Beta Hydri, the one near the Small Cloud, is the nearest bright star to the south celestial pole.",
         "ra": 28,
         "dec": -68,
         "fov": 60,
@@ -2733,8 +2733,8 @@
         ]
       },
       {
-        "title": "Our Sun's future",
-        "caption": "At just 24 light-years away, Beta Hydri is one of the nearest Sun-like stars. It's old enough to have evolved slightly off the main sequence — a preview of what our own Sun will look like in about a billion years.",
+        "title": "Our Sun’s future",
+        "caption": "At just 24 light-years away, Beta Hydri is one of the nearest Sun-like stars. It is old enough to have evolved slightly off the main sequence, a preview of what our own Sun will look like in about a billion years.",
         "ra": 27,
         "dec": -68,
         "fov": 35,
@@ -2750,7 +2750,7 @@
       },
       {
         "title": "Charting new stars",
-        "caption": "In 1595, Dutch navigator Pieter Keyser began charting stars invisible from Europe during a trade voyage to the East Indies. He died at sea, but his colleague Frederick de Houtman completed the catalog — adding twelve new constellations to the southern sky, Hydrus among them.",
+        "caption": "In 1595, Dutch navigator Pieter Keyser began charting stars invisible from Europe during a trade voyage to the East Indies. He died at sea, but his colleague Frederick de Houtman finished the catalog, which added twelve new constellations to the southern sky, Hydrus among them.",
         "ra": 27,
         "dec": -71,
         "fov": 24,
@@ -2770,7 +2770,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Indus, the Indian — a faint constellation between Pavo and Grus.",
+        "caption": "Let’s find Indus, the Indian, a faint constellation between Pavo and Grus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2780,7 +2780,7 @@
       },
       {
         "title": "Find it near Alnair",
-        "caption": "Look for Alnair in Grus, then find Alpha Indi nearby — an orange giant and the constellation's only conspicuous star.",
+        "caption": "Look for Alnair in Grus, then find Alpha Indi nearby, an orange giant and the constellation’s only conspicuous star.",
         "ra": 314,
         "dec": -51,
         "fov": 60,
@@ -2795,7 +2795,7 @@
       },
       {
         "title": "A nearby neighbor",
-        "caption": "Epsilon Indi is one of the nearest Sun-like stars at just 12 light-years. It hosts a pair of brown dwarfs — objects too small to sustain hydrogen fusion but larger than any planet.",
+        "caption": "Epsilon Indi is one of the nearest Sun-like stars at just 12 light-years. It hosts a pair of brown dwarfs, objects too small to sustain hydrogen fusion but larger than any planet.",
         "ra": 316,
         "dec": -50,
         "fov": 25,
@@ -2821,7 +2821,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lacerta, the Lizard — a small constellation sandwiched between Cygnus and Cassiopeia.",
+        "caption": "Let’s find Lacerta, the Lizard, a small constellation squeezed between Cygnus and Cassiopeia.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2845,7 +2845,7 @@
       },
       {
         "title": "BL Lacertae",
-        "caption": "Lacerta gives its name to BL Lacertae objects — a class of active galactic nuclei whose jets point nearly straight at Earth. BL Lac itself was first cataloged as a variable star before its extragalactic nature was discovered.",
+        "caption": "Lacerta gives its name to BL Lacertae objects, a class of active galactic nuclei whose jets point nearly straight at Earth. BL Lac itself was first cataloged as a variable star, before anyone knew it was extragalactic.",
         "ra": 336,
         "dec": 46,
         "fov": 26,
@@ -2870,7 +2870,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Leo, the Lion — one of the sky's most recognizable constellations, anchored by bright Regulus.",
+        "caption": "Let’s find Leo the Lion, one of the sky’s most recognizable constellations, anchored by bright Regulus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2880,7 +2880,7 @@
       },
       {
         "title": "The Pointer Stars",
-        "caption": "The Big Dipper's Pointer Stars — Dubhe and Merak — point toward Polaris in one direction and Regulus in the other.",
+        "caption": "The Big Dipper’s Pointer Stars, Dubhe and Merak, point toward Polaris in one direction and Regulus in the other.",
         "ra": 159,
         "dec": 45,
         "fov": 100,
@@ -2897,7 +2897,7 @@
       },
       {
         "title": "The Sickle and the Lion",
-        "caption": "Leo's head and mane form a backward question mark called the Sickle. Regulus, a hot blue-white star, anchors the base. A triangle of stars traces the haunches and tail, with Denebola at the tip.",
+        "caption": "Leo’s head and mane form a backward question mark called the Sickle. Regulus, a hot blue-white star, anchors the base. A triangle of stars traces the haunches and tail, with Denebola at the tip.",
         "ra": 160,
         "dec": 17,
         "fov": 52,
@@ -2937,7 +2937,7 @@
       },
       {
         "title": "The Nemean Lion",
-        "caption": "Leo represents the Nemean Lion, a beast whose hide no weapon could pierce. Heracles tracked it to its cave, blocked one entrance, and strangled it with his bare hands. He wore the lion's pelt as armor for the rest of his labors.",
+        "caption": "Leo represents the Nemean Lion, a beast whose hide no weapon could pierce. Heracles tracked it to its cave, blocked one entrance, and strangled it with his bare hands. He wore the lion’s pelt as armor for the rest of his labors.",
         "ra": 160,
         "dec": 17,
         "fov": 44,
@@ -2955,7 +2955,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Leo Minor, the Lesser Lion — a faint constellation wedged between Leo and the Big Dipper.",
+        "caption": "Let’s find Leo Minor, the Lesser Lion, a faint constellation in the gap between Leo and the Big Dipper.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2965,7 +2965,7 @@
       },
       {
         "title": "Between Leo and the Dipper",
-        "caption": "Leo Minor lies between Regulus and the Big Dipper's bowl. Praecipua is the only easily visible star in the gap.",
+        "caption": "Leo Minor lies between Regulus and the Big Dipper’s bowl. Praecipua is the only easily visible star in the gap.",
         "ra": 158,
         "dec": 37,
         "fov": 60,
@@ -3010,7 +3010,7 @@
       },
       {
         "title": "Filling the gap",
-        "caption": "Polish astronomer Johannes Hevelius created Leo Minor in 1687 from unclaimed stars between Leo and Ursa Major. It has no mythology — just a small lion keeping the big one company.",
+        "caption": "Polish astronomer Johannes Hevelius created Leo Minor in 1687 from unclaimed stars between Leo and Ursa Major. It has no mythology, just a small lion keeping the big one company.",
         "ra": 153,
         "dec": 35,
         "fov": 28,
@@ -3032,7 +3032,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lepus — the Hare, a small constellation crouching directly beneath Orion.",
+        "caption": "Let’s find Lepus, the Hare, a small constellation crouching directly beneath Orion.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3041,8 +3041,8 @@
         "bounds": false
       },
       {
-        "title": "Below Orion's feet",
-        "caption": "Lepus sits just below Orion's feet — Saiph and Rigel point the way. Look for a compact group of stars immediately below the hunter.",
+        "title": "Below Orion’s feet",
+        "caption": "Lepus sits just below Orion’s feet. Saiph and Rigel point the way. Look for a compact group of stars immediately below the hunter.",
         "ra": 83,
         "dec": -12,
         "fov": 55,
@@ -3057,7 +3057,7 @@
       },
       {
         "title": "Arneb and Nihal",
-        "caption": "Arneb and Nihal are the two brightest stars in Lepus, forming the Hare's neck. The Hare was placed at Orion's feet as his quarry, forever fleeing the hunter across the sky.",
+        "caption": "Arneb and Nihal are the two brightest stars in Lepus, forming the Hare’s neck. The Hare was placed at Orion’s feet as his quarry, forever fleeing the hunter across the sky.",
         "ra": 83,
         "dec": -19,
         "fov": 26,
@@ -3076,8 +3076,8 @@
         ]
       },
       {
-        "title": "Hind's Crimson Star",
-        "caption": "Hind's Crimson Star, near the edge of Lepus, is one of the deepest red stars visible to the naked eye — a pulsating carbon star nearing the end of its life.",
+        "title": "Hind’s Crimson Star",
+        "caption": "Hind’s Crimson Star, near the edge of Lepus, is one of the deepest red stars visible to the naked eye, a pulsating carbon star near the end of its life.",
         "ra": 80,
         "dec": -18,
         "fov": 22,
@@ -3098,7 +3098,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Libra — the Scales, the only zodiacal constellation representing an inanimate object, sandwiched between Virgo and Scorpius along the ecliptic.",
+        "caption": "Let’s find Libra, the Scales, the only zodiacal constellation representing an inanimate object, sandwiched between Virgo and Scorpius along the ecliptic.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3124,8 +3124,8 @@
         ]
       },
       {
-        "title": "The scorpion's old claws",
-        "caption": "Zubeneschamali is one of the few stars consistently described as greenish by observers. Zubenelgenubi is a wide naked-eye double, easily split with binoculars into a white pair. Their Arabic names mean 'northern claw' and 'southern claw,' recalling a time when they were considered part of Scorpius.",
+        "title": "The scorpion’s old claws",
+        "caption": "Zubeneschamali is one of the few stars consistently described as greenish by observers. Zubenelgenubi is a wide naked-eye double, easily split with binoculars into a white pair. Their Arabic names mean ‘northern claw’ and ‘southern claw,’ recalling a time when they were considered part of Scorpius.",
         "ra": 240,
         "dec": -25,
         "fov": 50,
@@ -3144,7 +3144,7 @@
       },
       {
         "title": "The scales of the zodiac",
-        "caption": "The Methuselah Star, inside Libra's boundary, is one of the oldest known stars — nearly as old as the universe itself at around 13.7 billion years. It's faint but visible in binoculars, a relic from a time before the Milky Way had fully formed.",
+        "caption": "The Methuselah Star, inside Libra’s boundary, is one of the oldest known stars, nearly as old as the universe itself at around 13.7 billion years. It’s faint but visible in binoculars, a relic from a time before the Milky Way had fully formed.",
         "ra": 228,
         "dec": -16,
         "fov": 34,
@@ -3168,7 +3168,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lupus — the Wolf, a southern constellation nestled between Centaurus and Scorpius along the Milky Way.",
+        "caption": "Let’s find Lupus, the Wolf, a southern constellation between Centaurus and Scorpius along the Milky Way.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3178,7 +3178,7 @@
       },
       {
         "title": "Between Centaurus and Scorpius",
-        "caption": "Lupus sits between Centaurus and Scorpius along the Milky Way. Look up from the Southern Pointers, Rigil Kentaurus and Hadar, to find Alpha Lupi, the Wolf's brightest star.",
+        "caption": "Lupus sits between Centaurus and Scorpius along the Milky Way. Look up from the Southern Pointers, Rigil Kentaurus and Hadar, to find Alpha Lupi, the Wolf’s brightest star.",
         "ra": 228,
         "dec": -42,
         "fov": 65,
@@ -3195,7 +3195,7 @@
       },
       {
         "title": "The Wolf",
-        "caption": "Lupus has a generous scattering of bright stars but no single memorable shape. The Greeks saw it as a wild animal impaled on a spear held by Centaurus — the two constellations were often depicted together.",
+        "caption": "Lupus has a generous scattering of bright stars but no single memorable shape. The Greeks saw it as a wild animal impaled on a spear held by Centaurus, and old atlases usually draw the two together.",
         "ra": 227,
         "dec": -44,
         "fov": 35,
@@ -3211,7 +3211,7 @@
       },
       {
         "title": "Supernova 1006",
-        "caption": "In 1006 AD, a supernova blazed in Lupus — the brightest stellar event in recorded history. Egyptian astrologer Ali ibn Ridwan described it as a quarter the brightness of the Moon; Chinese astronomers tracked the 'guest star' for over a year. Its expanding remnant is now a faint X-ray and radio shell.",
+        "caption": "In 1006 AD a supernova blazed in Lupus, the brightest stellar event in recorded history. Egyptian astrologer Ali ibn Ridwan described it as a quarter the brightness of the Moon, and Chinese astronomers tracked the ‘guest star’ for over a year. Its expanding remnant is now a faint X-ray and radio shell.",
         "ra": 228,
         "dec": -44,
         "fov": 22,
@@ -3231,7 +3231,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lynx — a long, faint northern constellation so named by Polish astronomer Johannes Hevelius because only someone with the eyes of a lynx could see it, filling the gap between Auriga and Ursa Major.",
+        "caption": "Let’s find Lynx, a long, faint northern constellation filling the gap between Auriga and Ursa Major. Polish astronomer Johannes Hevelius named it that because, he said, you would need the eyes of a lynx to see it.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3241,7 +3241,7 @@
       },
       {
         "title": "Between Capella and the Dipper",
-        "caption": "Lynx fills a large, empty gap between bright Capella and the Big Dipper's bowl. Scan the relatively barren stretch between them.",
+        "caption": "Lynx fills a large, empty gap between bright Capella and the Big Dipper’s bowl. Scan the relatively barren stretch between them.",
         "ra": 130,
         "dec": 47,
         "fov": 90,
@@ -3285,7 +3285,7 @@
       },
       {
         "title": "Alpha Lyncis",
-        "caption": "Alpha Lyncis is the sole beacon of the constellation — an orange-red giant and the only star here brighter than fourth magnitude. The long chain of fainter stars requires dark skies to trace.",
+        "caption": "Alpha Lyncis is the only real beacon here, an orange-red giant and the only star in the constellation brighter than fourth magnitude. The long chain of fainter stars requires dark skies to trace.",
         "ra": 120,
         "dec": 46,
         "fov": 55,
@@ -3304,7 +3304,7 @@
       },
       {
         "title": "The Intergalactic Wanderer",
-        "caption": "NGC 2419, the Intergalactic Wanderer, is a globular cluster about 300,000 light-years away — farther than the Magellanic Clouds. It orbits so far from the galactic center that astronomers once doubted it was bound to the Milky Way at all, earning it the name.",
+        "caption": "NGC 2419, the Intergalactic Wanderer, is a globular cluster about 300,000 light-years away, farther than the Magellanic Clouds. It orbits so far from the galactic center that astronomers once doubted it was bound to the Milky Way at all, which is how it got the name.",
         "ra": 120,
         "dec": 38,
         "fov": 28,
@@ -3323,7 +3323,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Lyra — a small constellation home to Vega, the fifth-brightest star in the sky.",
+        "caption": "Let’s find Lyra, a small constellation home to Vega, the fifth-brightest star in the sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3333,7 +3333,7 @@
       },
       {
         "title": "The Summer Triangle",
-        "caption": "Vega is the brightest corner of the Summer Triangle, an asterism it shares with Deneb in Cygnus and Altair in Aquila. Vega is the brightest of the three — impossible to miss.",
+        "caption": "Vega is the brightest corner of the Summer Triangle, an asterism it shares with Deneb in Cygnus and Altair in Aquila. Vega is the brightest of the three and impossible to miss.",
         "ra": 296,
         "dec": 30,
         "fov": 56,
@@ -3349,7 +3349,7 @@
       },
       {
         "title": "Vega",
-        "caption": "Vega was the original magnitude standard — astronomers defined it as exactly zero, the reference point for all stellar brightness. It was the north pole star around 12,000 BCE and will be again around 13,700 CE.",
+        "caption": "Vega was the original magnitude standard. Astronomers defined it as exactly zero and measured every other star against it. It was the north pole star around 12,000 BCE and will be again around 13,700 CE.",
         "ra": 283,
         "dec": 37,
         "fov": 30,
@@ -3368,7 +3368,7 @@
       },
       {
         "title": "The Lyre",
-        "caption": "Just below Vega, four fainter stars form a small parallelogram — the frame of the lyre. The Ring Nebula, easily found in a small telescope, lies between the two lower stars of the parallelogram.",
+        "caption": "Just below Vega, four fainter stars form a small parallelogram, the frame of the lyre. The Ring Nebula, easily found in a small telescope, lies between the two lower stars of the parallelogram.",
         "ra": 281,
         "dec": 36,
         "fov": 18,
@@ -3388,7 +3388,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Mensa — the Table Mountain, notable mainly because the southern edge of the Large Magellanic Cloud overlaps it.",
+        "caption": "Let’s find Mensa, the Table Mountain, notable mainly because the southern edge of the Large Magellanic Cloud overlaps it.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3398,7 +3398,7 @@
       },
       {
         "title": "Under the LMC",
-        "caption": "Mensa sits just below the Large Magellanic Cloud — the LMC's edge actually spills across the boundary into Mensa. None of Mensa's stars are bright, so the Cloud is the easiest way to find it.",
+        "caption": "Mensa sits just below the Large Magellanic Cloud, and the Cloud’s edge spills across the boundary into it. None of Mensa’s stars are bright, so the Cloud is the easiest way to find it.",
         "ra": 82,
         "dec": -71,
         "fov": 55,
@@ -3412,7 +3412,7 @@
       },
       {
         "title": "Table Mountain",
-        "caption": "French astronomer Nicolas-Louis de Lacaille named this constellation after Table Mountain near Cape Town — the flat-topped landmark overlooking his observing site during his 1751–52 survey of the southern sky. It is the faintest of all 88 constellations.",
+        "caption": "French astronomer Nicolas-Louis de Lacaille named this constellation after Table Mountain near Cape Town, the flat-topped landmark that overlooked his observing site during his 1751–52 survey of the southern sky. It is the faintest of all 88 constellations.",
         "ra": 82,
         "dec": -73,
         "fov": 28,
@@ -3433,7 +3433,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Microscopium — the Microscope, a faint constellation tucked below Capricornus.",
+        "caption": "Let’s find Microscopium, the Microscope, a faint constellation below Capricornus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3443,7 +3443,7 @@
       },
       {
         "title": "Below Capricornus",
-        "caption": "Microscopium sits below Capricornus, not far from Fomalhaut, in an empty stretch of sky with no bright stars. Follow the point of Capricornus's arrowhead to find its faint pattern.",
+        "caption": "Microscopium sits below Capricornus, not far from Fomalhaut, in an empty stretch of sky with no bright stars. Follow the point of Capricornus’s arrowhead to find its faint pattern.",
         "ra": 321,
         "dec": -30,
         "fov": 55,
@@ -3457,8 +3457,8 @@
         ]
       },
       {
-        "title": "Lacaille's microscope",
-        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled the gaps between ancient constellations with 14 new ones, all named after instruments of the Enlightenment. Microscopium honors the compound microscope — the revolutionary instrument that opened the invisible world to science.",
+        "title": "Lacaille’s microscope",
+        "caption": "Microscopium honors the compound microscope, the instrument that opened the invisible world to science. Lacaille added it during his 1751 survey of the southern sky, one of 14 constellations he named for the tools of the Enlightenment.",
         "ra": 315,
         "dec": -35,
         "fov": 24,
@@ -3479,7 +3479,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Monoceros — the Unicorn, a faint constellation filling the space between Orion, Canis Major, and Canis Minor.",
+        "caption": "Let’s find Monoceros, the Unicorn, a faint constellation filling the space between Orion, Canis Major, and Canis Minor.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3489,7 +3489,7 @@
       },
       {
         "title": "Inside the Winter Triangle",
-        "caption": "Monoceros fills the interior of the Winter Triangle formed by Sirius, Procyon, and Betelgeuse — three of the brightest stars in the sky. The Unicorn's own stars are faint, but the landmarks around it are unmistakable.",
+        "caption": "Monoceros fills the interior of the Winter Triangle formed by Sirius, Procyon, and Betelgeuse, three of the brightest stars in the sky. The Unicorn’s own stars are faint, but the landmarks around it could not be plainer.",
         "ra": 107,
         "dec": 0,
         "fov": 70,
@@ -3505,7 +3505,7 @@
       },
       {
         "title": "Beta Monocerotis",
-        "caption": "Monoceros was invented around 1612 by Dutch cartographer Petrus Plancius to fill the gap between Orion's dogs. The unicorn may come from the biblical 're'em' — really a wild ox, but mistranslated as 'unicorn' in the King James Bible. Beta Monocerotis, its finest treasure, is a triple star system resolvable in any small telescope.",
+        "caption": "Monoceros was invented around 1612 by Dutch cartographer Petrus Plancius to fill the gap between Orion’s dogs. The unicorn may come from the biblical re’em, really a wild ox, which the King James Bible mistranslated as ‘unicorn.’ Beta Monocerotis, the best thing here, is a triple star system that splits in any small telescope.",
         "ra": 104,
         "dec": -1,
         "fov": 38,
@@ -3524,7 +3524,7 @@
       },
       {
         "title": "The Rosette Nebula",
-        "caption": "The Rosette Nebula, one of the sky's most photogenic objects, appears as a full-moon-sized glowing ring about 5,200 light-years away. The star cluster at its center blew a cavity in the surrounding gas and is visible in binoculars.",
+        "caption": "The Rosette Nebula appears as a glowing ring the size of a full moon, about 5,200 light-years away. The star cluster at its center blew a cavity in the surrounding gas, and shows in binoculars.",
         "ra": 98,
         "dec": 4,
         "fov": 22,
@@ -3544,7 +3544,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Musca — the Fly, a small, compact southern constellation just past the Southern Cross.",
+        "caption": "Let’s find Musca, the Fly, a small, compact southern constellation just past the Southern Cross.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3554,7 +3554,7 @@
       },
       {
         "title": "Past the Southern Cross",
-        "caption": "Find the Southern Cross and look just beyond Acrux, at the foot of the Cross. Musca's compact diamond of stars sits right there.",
+        "caption": "Find the Southern Cross and look just beyond Acrux, at the foot of the Cross. Musca’s compact diamond of stars sits right there.",
         "ra": 185,
         "dec": -64,
         "fov": 55,
@@ -3568,7 +3568,7 @@
       },
       {
         "title": "A compact diamond",
-        "caption": "Dutch explorers Keyser and de Houtman mapped Musca in the 1590s and named it the Fly, but their illustration on Plancius's globe was unlabeled. When Bayer copied the unnamed insect into his influential 1603 star atlas, he guessed wrong and called it Apis — the Bee. The mistake stuck for two centuries until Lacaille corrected it.",
+        "caption": "Dutch explorers Keyser and de Houtman mapped Musca in the 1590s and named it the Fly, but their illustration on Plancius’s globe was unlabeled. When Bayer copied the unnamed insect into his influential 1603 star atlas, he guessed wrong and called it Apis, the Bee. The mistake stuck for two centuries until Lacaille corrected it.",
         "ra": 188,
         "dec": -69,
         "fov": 22,
@@ -3584,7 +3584,7 @@
       },
       {
         "title": "The Dark Doodad",
-        "caption": "Musca is home to the Dark Doodad — a narrow lane of interstellar dust named for its squiggly shape. About 700 light-years away and 30 light-years long, this molecular cloud blocks the light of countless stars behind it.",
+        "caption": "Musca is home to the Dark Doodad, a narrow lane of interstellar dust named for its squiggly shape. About 700 light-years away and 30 light-years long, this molecular cloud blocks the light of countless stars behind it.",
         "ra": 189,
         "dec": -71,
         "fov": 6.5,
@@ -3618,7 +3618,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Norma — the Carpenter's Square, a small faint constellation embedded in the rich southern Milky Way between Scorpius and Centaurus.",
+        "caption": "Let’s find Norma, the Carpenter’s Square, a small faint constellation embedded in the rich southern Milky Way between Scorpius and Centaurus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3628,7 +3628,7 @@
       },
       {
         "title": "Between Scorpius and Centaurus",
-        "caption": "Norma sits between the scorpion's tail and the centaur's foot. Scan from the Southern Pointers toward Shaula on the scorpion's stinger. Norma is a faint group in between, embedded in a spectacular stretch of Milky Way.",
+        "caption": "Norma sits between the scorpion’s tail and the centaur’s foot. Scan from the Southern Pointers toward Shaula on the scorpion’s stinger. Norma is a faint group in between, embedded in a bright, crowded stretch of Milky Way.",
         "ra": 244,
         "dec": -47,
         "fov": 60,
@@ -3651,8 +3651,8 @@
         ]
       },
       {
-        "title": "Lacaille's square",
-        "caption": "French astronomer Nicolas-Louis de Lacaille named this constellation l'Équerre et la Règle — a draughtsman's set square and rule. Its two brightest stars, representing the rule, were transferred to Scorpius when constellation boundaries were redrawn in 1930, leaving only the faint shape of the square.",
+        "title": "Lacaille’s square",
+        "caption": "French astronomer Nicolas-Louis de Lacaille named this constellation l’Équerre et la Règle, a draughtsman’s set square and rule. Its two brightest stars, the rule, moved to Scorpius when constellation boundaries were redrawn in 1930, leaving only the faint shape of the square.",
         "ra": 244,
         "dec": -50,
         "fov": 25,
@@ -3668,7 +3668,7 @@
       },
       {
         "title": "The Great Attractor",
-        "caption": "This brilliant star cloud hides one of the great mysteries in cosmology. Somewhere behind all this gas and dust lies the Great Attractor — a concentration of mass equivalent to a million billion suns, pulling the Milky Way and everything around it toward this spot at 600 km/s. We can barely see it because it's in the Zone of Avoidance, the band of sky obscured by our own galaxy's disk. The Norma Galaxy Cluster, near its center, was only confirmed through X-ray and radio observations that can peer through the dust.",
+        "caption": "This brilliant star cloud hides one of the great mysteries in cosmology. Somewhere behind all this gas and dust lies the Great Attractor, a concentration of mass equivalent to a million billion suns. It is pulling the Milky Way and everything around it toward this spot at 600 km/s. We can barely see it because it sits in the Zone of Avoidance, the band of sky our own galaxy’s disk blocks. X-ray and radio observations that see through the dust are what confirmed the Norma Galaxy Cluster near its center.",
         "ra": 244,
         "dec": -55,
         "fov": 22,
@@ -3691,7 +3691,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Octans — the Octant, the constellation that contains the south celestial pole. Unlike the north, where Polaris serves as a convenient landmark, the south has no bright star to mark the spot.",
+        "caption": "Let’s find Octans, the Octant, the constellation that contains the south celestial pole. The north has Polaris for a landmark. The south has no bright star at all to mark the spot.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3701,7 +3701,7 @@
       },
       {
         "title": "Finding the south celestial pole",
-        "caption": "The practical way to find the south celestial pole is through the Southern Cross. Extend the long axis of Crux past Acrux and it points almost straight to the pole. You can also draw a line perpendicular to the Southern Pointers — the two lines intersect near the pole.",
+        "caption": "The practical way to find the south celestial pole is through the Southern Cross. Extend the long axis of Crux past Acrux and it points almost straight to the pole. You can also draw a line perpendicular to the Southern Pointers. The two lines cross near the pole.",
         "ra": 204.85,
         "dec": -79.8,
         "fov": 51.5,
@@ -3731,7 +3731,7 @@
       },
       {
         "title": "Waiting for a pole star",
-        "caption": "Sigma Octantis, the nearest naked-eye star to the pole, is so dim it's invisible from any light-polluted site — a poor substitute for Polaris. The south pole's lack of a bright marker is a temporary cosmic accident. Precession is slowly shifting Earth's axis, and around 9250 AD, Delta Velorum will come within 0.2° of the south pole — closer than Polaris ever gets to the north pole.",
+        "caption": "Sigma Octantis, the nearest naked-eye star to the pole, is so dim that any light-polluted site washes it out. It is a poor substitute for Polaris. The missing marker is a temporary accident of timing. Precession is slowly shifting Earth’s axis, and around 9250 AD, Delta Velorum will come within 0.2° of the south pole, closer than Polaris ever gets to the north.",
         "ra": 87.61,
         "dec": -67.43,
         "fov": 80,
@@ -3750,8 +3750,8 @@
         ]
       },
       {
-        "title": "Lacaille's octant",
-        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled the gaps between ancient constellations with 14 new ones, all named after instruments of the Enlightenment. Octans honors the reflecting octant, a navigation instrument that preceded the sextant.",
+        "title": "Lacaille’s octant",
+        "caption": "Octans honors the reflecting octant, the navigation instrument that came before the sextant. Lacaille added it during his 1751 survey of the southern sky, one of 14 constellations he named for the instruments of the Enlightenment.",
         "ra": 309.77,
         "dec": -83.89,
         "fov": 25.63,
@@ -3772,7 +3772,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Ophiuchus — the Serpent Bearer, a large constellation straddling the celestial equator between Scorpius and Hercules.",
+        "caption": "Let’s find Ophiuchus, the Serpent Bearer, a large constellation straddling the celestial equator between Scorpius and Hercules.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3782,7 +3782,7 @@
       },
       {
         "title": "Above Antares",
-        "caption": "Start at brilliant Antares in Scorpius and scan above it, with the Milky Way on your left. Five stars there define the central pentagon of the serpent bearer's body. The topmost and brightest, Rasalhague, locates the head.",
+        "caption": "Start at brilliant Antares in Scorpius and scan above it, with the Milky Way on your left. Five stars there define the central pentagon of the serpent bearer’s body. The topmost and brightest, Rasalhague, locates the head.",
         "ra": 258,
         "dec": -3,
         "fov": 75,
@@ -3797,7 +3797,7 @@
       },
       {
         "title": "Bearer and serpent",
-        "caption": "Ophiuchus represents Asclepius, the Greek god of medicine, holding a serpent — the origin of the Rod of Asclepius still used as a medical symbol. What you see here is actually two constellations drawn as one figure: the serpent is Serpens, the only constellation split into two disconnected pieces — its head and tail separated by the body of Ophiuchus.",
+        "caption": "Ophiuchus is Asclepius, the Greek god of medicine, holding a serpent. That is where the Rod of Asclepius on medical signs comes from. What you see here is two constellations drawn as one figure. The serpent is Serpens, the only constellation split into disconnected pieces, its head and tail on either side of the body of Ophiuchus.",
         "ra": 257,
         "dec": -4,
         "fov": 58,
@@ -3814,8 +3814,8 @@
         ]
       },
       {
-        "title": "Kepler's Star",
-        "caption": "In October 1604, a new star appeared in Ophiuchus, outshining Jupiter and remaining visible in daylight for three weeks. Kepler, Galileo, and astronomers in Korea and China all recorded it. It was the last supernova observed in our galaxy — and over four centuries later, no one has seen another.",
+        "title": "Kepler’s Star",
+        "caption": "In October 1604, a new star appeared in Ophiuchus, outshining Jupiter and remaining visible in daylight for three weeks. Kepler, Galileo, and astronomers in Korea and China all recorded it. It was the last supernova seen in our galaxy. Four centuries later, no one has seen another.",
         "ra": 262,
         "dec": -15,
         "fov": 30,
@@ -3837,7 +3837,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Orion — arguably the most recognizable constellation in the sky, visible from every inhabited place on Earth.",
+        "caption": "Let’s find Orion, the most recognizable constellation in the sky, visible from every inhabited place on Earth.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3847,7 +3847,7 @@
       },
       {
         "title": "The Belt",
-        "caption": "Orion straddles the celestial equator, so it's visible from almost everywhere on Earth. Start with the Belt — three bright stars of nearly equal brightness in a perfectly straight row. Nothing else in the sky looks quite like it.",
+        "caption": "Orion straddles the celestial equator, so it’s visible from almost everywhere on Earth. Start with the Belt, three bright stars of nearly equal brightness in a dead straight row. Nothing else in the sky looks quite like it.",
         "ra": 83,
         "dec": 5,
         "fov": 82,
@@ -3858,7 +3858,7 @@
       },
       {
         "title": "Three in a row",
-        "caption": "Alnitak, Alnilam, and Mintaka — the Belt stars are a tight, unmistakable line that stands out from far across the sky. Once you've found them, the rest of the Hunter falls into place around them.",
+        "caption": "Alnitak, Alnilam, and Mintaka. The Belt is a tight line of three that stands out from far across the sky. Once you’ve found them, the rest of the Hunter falls into place around them.",
         "ra": 84,
         "dec": -1,
         "fov": 22,
@@ -3874,7 +3874,7 @@
       },
       {
         "title": "The Hunter",
-        "caption": "At one shoulder glows Betelgeuse — a red supergiant nearing the end of its life. At the opposite foot blazes Rigel — brilliant blue-white and one of the most luminous stars in the galaxy. The color contrast between them is visible to the naked eye.",
+        "caption": "At one shoulder glows Betelgeuse, a red supergiant near the end of its life. At the opposite foot blazes Rigel, brilliant blue-white and among the most luminous stars in the galaxy. The color contrast between them is visible to the naked eye.",
         "ra": 84,
         "dec": -1,
         "fov": 48,
@@ -3889,8 +3889,8 @@
         "art": true
       },
       {
-        "title": "The sky's signpost",
-        "caption": "The Belt is one of the most useful landmarks in the sky. Follow it one way and you reach Aldebaran, the red eye of Taurus, and the Pleiades beyond it. Follow it the other way and you reach Sirius — the brightest star in the entire night sky.",
+        "title": "The sky’s signpost",
+        "caption": "The Belt is the most useful landmark in the sky. Follow it one way and you reach Aldebaran, the red eye of Taurus, with the Pleiades beyond it. Follow it the other way and you reach Sirius, the brightest star in the entire night sky.",
         "ra": 83,
         "dec": 2,
         "fov": 68,
@@ -3911,7 +3911,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pavo — the Peacock, one of the \"Southern Birds\" created by Dutch navigators Keyser and de Houtman during their 1595 voyage to the East Indies.",
+        "caption": "Let’s find Pavo, the Peacock, one of the “Southern Birds” created by Dutch navigators Keyser and de Houtman during their 1595 voyage to the East Indies.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3921,7 +3921,7 @@
       },
       {
         "title": "Near the Crane",
-        "caption": "Look for a bright, isolated blue-white star not far from Alnair in Grus. That's Peacock, the constellation's brightest star — a name it only got in the 1930s, when the Royal Air Force insisted that all navigation stars must have proper names.",
+        "caption": "Look for a bright, isolated blue-white star not far from Alnair in Grus. That’s Peacock, the constellation’s brightest star. It only got the name in the 1930s, when the Royal Air Force insisted that every navigation star have a proper name.",
         "ra": 306.41,
         "dec": -56.74,
         "fov": 60,
@@ -3935,8 +3935,8 @@
         ]
       },
       {
-        "title": "Hera's sacred bird",
-        "caption": "In Greek myth, the peacock was sacred to Hera. When she set the hundred-eyed giant Argus to guard Zeus's lover Io, Hermes killed him — and Hera placed Argus's eyes on her peacock's tail. The constellation itself probably depicts the green peafowl that Keyser and de Houtman encountered in Java, not the blue peacock the Greeks knew.",
+        "title": "Hera’s sacred bird",
+        "caption": "In Greek myth, the peacock was sacred to Hera. When she set the hundred-eyed giant Argus to guard Zeus’s lover Io, Hermes killed him, and Hera placed Argus’s eyes on her peacock’s tail. The constellation itself probably depicts the green peafowl that Keyser and de Houtman encountered in Java, not the blue peacock the Greeks knew.",
         "ra": 294.83,
         "dec": -64.78,
         "fov": 32.76,
@@ -3957,7 +3957,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pegasus — the Winged Horse, whose four bright stars form the Great Square of Pegasus, one of the most recognizable asterisms in the sky.",
+        "caption": "Let’s find Pegasus, the Winged Horse. Its four bright stars form the Great Square of Pegasus, an asterism almost anyone can pick out.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -3967,7 +3967,7 @@
       },
       {
         "title": "The Great Square",
-        "caption": "Look for a large, empty square of four stars. The interior is strikingly bare — this emptiness is what makes it so easy to spot. One corner, Alpheratz, is shared with Andromeda.",
+        "caption": "Look for a large, empty square of four stars. The interior is bare, and that emptiness is what makes it easy to spot. One corner, Alpheratz, is shared with Andromeda.",
         "ra": 345,
         "dec": 20,
         "fov": 75,
@@ -3999,7 +3999,7 @@
       },
       {
         "title": "The myth of Andromeda",
-        "caption": "Pegasus sprang from the blood of Medusa when Perseus beheaded her. It's part of the largest mythological group in the sky — six neighboring constellations tell the story of Andromeda's rescue from a sea monster.",
+        "caption": "Pegasus sprang from the blood of Medusa when Perseus beheaded her. It is one of six neighboring constellations that tell the story of Andromeda’s rescue from a sea monster, the largest mythological group in the sky.",
         "ra": 8,
         "dec": 30,
         "fov": 90,
@@ -4032,7 +4032,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Perseus — the Hero, lying in the Milky Way between Cassiopeia and Taurus.",
+        "caption": "Let’s find Perseus, the Hero, lying in the Milky Way between Cassiopeia and Taurus.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4042,7 +4042,7 @@
       },
       {
         "title": "Below Cassiopeia",
-        "caption": "Look below Cassiopeia's W shape for a bright star embedded in the Milky Way. That's Mirfak, Perseus's brightest star, surrounded by a loose cluster of young blue-white stars visible in binoculars.",
+        "caption": "Look below Cassiopeia’s W shape for a bright star embedded in the Milky Way. That’s Mirfak, Perseus’s brightest star, surrounded by a loose cluster of young blue-white stars visible in binoculars.",
         "ra": 46,
         "dec": 43,
         "fov": 70,
@@ -4056,7 +4056,7 @@
       },
       {
         "title": "The myth of Andromeda",
-        "caption": "Perseus is the hero who slew the Gorgon Medusa and rescued Princess Andromeda from the sea monster Cetus — riding in on the winged horse Pegasus, born from Medusa's blood. Six constellations in this part of the sky represent figures in the story.",
+        "caption": "Perseus is the hero who slew the Gorgon Medusa and rescued Princess Andromeda from the sea monster Cetus, riding in on the winged horse Pegasus that was born from Medusa’s blood. Six constellations in this part of the sky are figures in that story.",
         "ra": 14.39,
         "dec": 31.72,
         "fov": 90.27,
@@ -4085,7 +4085,7 @@
       },
       {
         "title": "The Demon Star",
-        "caption": "Algol is the \"Demon Star\" — it dims noticeably every 2.87 days when a fainter companion star passes in front of it. Ancient Arabic astronomers named it Ra's al-Ghul, the demon's head, and it marks the severed head of Medusa in Perseus's hand. It was one of the first variable stars recognized by modern astronomy.",
+        "caption": "Algol is the “Demon Star.” It dims every 2.87 days, when a fainter companion star passes in front of it. Ancient Arabic astronomers named it Ra’s al-Ghul, the demon’s head, and it marks the severed head of Medusa in Perseus’s hand. It was one of the first variable stars modern astronomy recognized.",
         "ra": 49.39,
         "dec": 46.14,
         "fov": 36.75,
@@ -4105,7 +4105,7 @@
       },
       {
         "title": "The Double Cluster",
-        "caption": "Between Perseus and Cassiopeia lies one of the finest sights in the sky — the Double Cluster, two rich star clusters side by side, visible as a fuzzy patch to the naked eye and spectacular through binoculars. Each cluster contains hundreds of young blue and red supergiants.",
+        "caption": "Between Perseus and Cassiopeia lies the Double Cluster, two rich star clusters side by side. To the naked eye it is a fuzzy patch. In binoculars it is one of the finest sights in the sky. Each cluster contains hundreds of young blue and red supergiants.",
         "ra": 40.04,
         "dec": 50.33,
         "fov": 22.55,
@@ -4138,7 +4138,7 @@
       },
       {
         "title": "Between two bright stars",
-        "caption": "Ankaa is the brightest star in the gap between Fomalhaut and Achernar. Its name comes from the Arabic al-ʽanqāʼ, meaning 'the phoenix.' It marks the head of the bird.",
+        "caption": "Ankaa is the brightest star in the gap between Fomalhaut and Achernar. Its name comes from the Arabic al-ʽanqāʼ, meaning ‘the phoenix.’ It marks the head of the bird.",
         "ra": 6.57,
         "dec": -42.31,
         "fov": 55,
@@ -4174,7 +4174,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled gaps between the classical constellations with instruments of art and science. He called this one le Chevalet et la Palette — the painter's easel and palette.",
+        "caption": "During his 1751 survey of the southern sky, Nicolas-Louis de Lacaille filled gaps between the classical constellations with instruments of art and science. He called this one le Chevalet et la Palette, the painter’s easel and palette.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4184,7 +4184,7 @@
       },
       {
         "title": "Near Canopus",
-        "caption": "Look for the faint stars of Pictor between Canopus and the Large Magellanic Cloud. Canopus, the second-brightest star in the sky, is the landmark here — Pictor's stars are dim.",
+        "caption": "Look for the faint stars of Pictor between Canopus and the Large Magellanic Cloud. Canopus, the second-brightest star in the sky, is the landmark here, because Pictor’s own stars are dim.",
         "ra": 95,
         "dec": -55,
         "fov": 55,
@@ -4199,7 +4199,7 @@
       },
       {
         "title": "A planet-forming star",
-        "caption": "Beta Pictoris is one of the most studied stars in astronomy. In 1984 it became the first star found to have a debris disk, and two giant planets have since been photographed orbiting within it — a solar system caught in the act of forming.",
+        "caption": "Beta Pictoris is among the most studied stars in astronomy. In 1984 it became the first star found to have a debris disk, and astronomers have since photographed two giant planets orbiting inside it. It is a solar system caught in the act of forming.",
         "ra": 84.94,
         "dec": -54.5,
         "fov": 23.95,
@@ -4279,7 +4279,7 @@
       },
       {
         "title": "Fleeing the monster",
-        "caption": "When the serpent-monster Typhon attacked the gods, Aphrodite and Eros leapt into the Euphrates and transformed into fish. They tied themselves together with a cord so they wouldn't lose each other. Alrescha, whose name is Arabic for 'the cord,' marks the knot where the two fish are bound.",
+        "caption": "When the serpent-monster Typhon attacked the gods, Aphrodite and Eros leapt into the Euphrates and transformed into fish. They tied themselves together with a cord so they wouldn’t lose each other. Alrescha, whose name is Arabic for ‘the cord,’ marks the knot where the two fish are bound.",
         "ra": 10,
         "dec": 14,
         "fov": 62,
@@ -4302,7 +4302,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Piscis Austrinus is one of Ptolemy's original 48 constellations, older than its zodiac neighbor Pisces. It has one bright star surrounded by faint ones — look for it below Aquarius.",
+        "caption": "Piscis Austrinus is one of Ptolemy’s original 48 constellations, older than its zodiac neighbor Pisces. It has one bright star surrounded by faint ones. Look for it below Aquarius.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4312,7 +4312,7 @@
       },
       {
         "title": "The lonely star",
-        "caption": "Fomalhaut is unmistakable: a bright star with nothing else like it nearby. Its name is Arabic for 'mouth of the fish,' and that's where it sits in the constellation. Extend the right side of the Great Square of Pegasus downward to find it.",
+        "caption": "Fomalhaut is unmistakable: a bright star with nothing else like it nearby. Its name is Arabic for ‘mouth of the fish,’ and that’s where it sits in the constellation. Extend the right side of the Great Square of Pegasus downward to find it.",
         "ra": 343.63,
         "dec": -5.65,
         "fov": 71.25,
@@ -4343,7 +4343,7 @@
       },
       {
         "title": "The sacred fish",
-        "caption": "The constellation is linked to Atargatis, a Syrian goddess who threw herself into a lake and was transformed into a fish. Fomalhaut is ringed by a vast debris disk where a planetesimal collision was caught on camera — what astronomers first thought was a planet turned out to be an expanding cloud of dust.",
+        "caption": "The constellation is linked to Atargatis, a Syrian goddess who threw herself into a lake and was transformed into a fish. A vast debris disk rings Fomalhaut, and a planetesimal collision inside it was caught on camera. What astronomers first took for a planet turned out to be an expanding cloud of dust.",
         "ra": 336,
         "dec": -30,
         "fov": 22,
@@ -4366,7 +4366,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Puppis is the stern of a ship — look for it in the dense star fields of the Milky Way, past Sirius in the direction away from Orion's Belt.",
+        "caption": "Puppis is the stern of a ship. Look for it in the dense star fields of the Milky Way, past Sirius in the direction away from Orion’s Belt.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4376,7 +4376,7 @@
       },
       {
         "title": "Beyond Sirius",
-        "caption": "From Sirius, the brightest star in the sky, continue away from Orion's Belt and you'll enter the rich star fields of Puppis. The background is dense with stars because the constellation sits in the Milky Way.",
+        "caption": "From Sirius, the brightest star in the sky, continue away from Orion’s Belt and you’ll enter the rich star fields of Puppis. The background is dense with stars because the constellation sits in the Milky Way.",
         "ra": 101.84,
         "dec": -24.12,
         "fov": 71.25,
@@ -4404,7 +4404,7 @@
       },
       {
         "title": "The Ship Argo",
-        "caption": "Puppis was once part of Argo Navis — the great ship of Jason and the Argonauts, and the largest of Ptolemy's original 48 constellations. French astronomer Nicolas-Louis de Lacaille split it into three parts in 1755: Puppis (the stern), Vela (the sails), and Carina (the keel).",
+        "caption": "Puppis is the stern of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille cut the ship into three in 1755: Puppis, Vela the sails, and Carina the keel.",
         "ra": 130,
         "dec": -48,
         "fov": 55,
@@ -4433,7 +4433,7 @@
       },
       {
         "title": "A blazing blue star",
-        "caption": "Naos is one of the hottest stars visible to the naked eye — a blue supergiant with a surface temperature of 40,000 K, seven times hotter than the Sun. It spins so fast that its spectral lines are smeared by the rotation.",
+        "caption": "Naos is one of the hottest stars visible to the naked eye, a blue supergiant at 40,000 K, seven times the Sun’s surface temperature. It spins so fast that the rotation smears its spectral lines.",
         "ra": 112,
         "dec": -40,
         "fov": 43,
@@ -4452,7 +4452,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Pyxis — the Compass (la Boussole in the original French). It was created in the 1750s by Nicolas-Louis de Lacaille, who stole stars from Argo Navis to make one of his 14 instrument constellations.",
+        "caption": "Let’s find Pyxis, the Compass (la Boussole in the original French). Nicolas-Louis de Lacaille made it in the 1750s out of stars he took from Argo Navis, one of his 14 instrument constellations.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4462,7 +4462,7 @@
       },
       {
         "title": "Between Naos and Regor",
-        "caption": "Sirius and Canopus, the two brightest stars in the sky, frame this region. Between them, look for Naos in Puppis and Regor in Vela — Pyxis sits in the gap between those two blue stars.",
+        "caption": "Sirius and Canopus, the two brightest stars in the sky, frame this region. Between them, look for Naos in Puppis and Regor in Vela. Pyxis sits in the gap between those two blue stars.",
         "ra": 115.91,
         "dec": -35.21,
         "fov": 52.17,
@@ -4486,7 +4486,7 @@
       },
       {
         "title": "The mast that became a compass",
-        "caption": "The stars of Pyxis were originally part of the great ship Argo Navis. When Lacaille carved up the southern sky in the 1750s, he repurposed them for his mariner's compass. In 1844, John Herschel proposed renaming the constellation Malus (the mast), reclaiming it as a fourth subdivision of the old ship. The idea had support, but ultimately Lacaille's compass won out.",
+        "caption": "The stars of Pyxis were originally part of the great ship Argo Navis. When Lacaille carved up the southern sky in the 1750s, he repurposed them for his mariner’s compass. In 1844, John Herschel proposed renaming the constellation Malus (the mast), reclaiming it as a fourth subdivision of the old ship. The idea had support, but Lacaille’s compass won.",
         "ra": 129.34,
         "dec": -45.25,
         "fov": 55,
@@ -4516,7 +4516,7 @@
       },
       {
         "title": "A repeating nova",
-        "caption": "Pyxis is home to T Pyxidis, a white dwarf that steals matter from a companion star and erupts as a nova every couple of decades. It has flared six times since 1890, each time brightening dramatically before fading back to obscurity.",
+        "caption": "Pyxis is home to T Pyxidis, a white dwarf that steals matter from a companion star and erupts as a nova every couple of decades. It has flared six times since 1890, each time flaring bright and then fading back out of sight.",
         "ra": 129.91,
         "dec": -30.16,
         "fov": 25.96,
@@ -4540,7 +4540,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Reticulum — the Reticle, a small southern constellation whose four main stars form a compact diamond near the Large Magellanic Cloud.",
+        "caption": "Let’s find Reticulum, the Reticle, a small southern constellation whose four main stars form a compact diamond near the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4566,7 +4566,7 @@
       },
       {
         "title": "The diamond",
-        "caption": "Four stars form a tidy rhombus — one of the more recognizable patterns among the small southern constellations. Lacaille named it for the crosshair reticle in his telescope eyepiece.",
+        "caption": "Four stars form a tidy rhombus, one of the easier patterns to pick out among the small southern constellations. Lacaille named it for the crosshair reticle in his telescope eyepiece.",
         "ra": 59.95,
         "dec": -61.02,
         "fov": 18,
@@ -4590,7 +4590,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Sagitta — the Arrow. It's tiny but unmistakable, one of the few constellations that genuinely looks like its namesake.",
+        "caption": "Let’s find Sagitta, the Arrow. It is tiny, and one of the few constellations that really does look like the thing it is named for.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4615,7 +4615,7 @@
       },
       {
         "title": "A globular on the shaft",
-        "caption": "Globular cluster M71 sits right along the arrow's shaft — an easy binocular target. It's a loose, sparse globular, and for a long time astronomers debated whether it was really a globular or just a dense open cluster.",
+        "caption": "Globular cluster M71 sits right along the arrow’s shaft, an easy binocular target. It’s a loose, sparse globular, and for a long time astronomers debated whether it was really a globular or just a dense open cluster.",
         "ra": 297.72,
         "dec": 18.91,
         "fov": 10.75,
@@ -4635,7 +4635,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Sagittarius — a southern constellation best known for its distinctive Teapot asterism, pointing toward the heart of the Milky Way.",
+        "caption": "Let’s find Sagittarius, a southern constellation best known for its distinctive Teapot asterism, pointing toward the heart of the Milky Way.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4645,7 +4645,7 @@
       },
       {
         "title": "Along the Milky Way",
-        "caption": "The Milky Way runs through this region — the bright, hazy band is our galaxy seen edge-on. Sagittarius sits right along it, near the Galactic Center.",
+        "caption": "The Milky Way runs through this region. That bright, hazy band is our galaxy seen edge-on. Sagittarius sits right along it, near the Galactic Center.",
         "ra": 266.23,
         "dec": -24.09,
         "fov": 74.9,
@@ -4657,7 +4657,7 @@
       },
       {
         "title": "Find Scorpius first",
-        "caption": "Start with Scorpius — its distinctive fishhook curve is easy to recognise. Antares, the bright orange-red star at its heart, marks the scorpion's body. From there the tail curves away to a stinging pair of stars.",
+        "caption": "Start with Scorpius. Its fishhook curve is easy to recognise. Antares, the bright orange-red star at its heart, marks the scorpion’s body. From there the tail curves away to a stinging pair of stars.",
         "ra": 252.45,
         "dec": -31.98,
         "fov": 48,
@@ -4676,7 +4676,7 @@
       },
       {
         "title": "The Teapot",
-        "caption": "Look past Scorpius's tail to find the Teapot — eight bright stars whose spout aims back at the scorpion. Kaus Australis at the base of the spout is the brightest star in Sagittarius, and Nunki marks the top of the handle. Find those two and the rest of the teapot follows.",
+        "caption": "Look past Scorpius’s tail to find the Teapot, eight bright stars whose spout aims back at the scorpion. Kaus Australis at the base of the spout is the brightest star in Sagittarius, and Nunki marks the top of the handle. Find those two and the rest of the teapot follows.",
         "ra": 272.05,
         "dec": -30.92,
         "fov": 38.67,
@@ -4743,7 +4743,7 @@
       },
       {
         "title": "Steam from the spout",
-        "caption": "Pull back and look at the big picture. The 'steam' rising from the Teapot's spout is the brightest part of the Milky Way — the Galactic Center.",
+        "caption": "Pull back and look at the big picture. The ‘steam’ rising from the Teapot’s spout is the brightest part of the Milky Way, the Galactic Center.",
         "ra": 283.85,
         "dec": -27.27,
         "fov": 53.86,
@@ -4764,7 +4764,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Scorpius — one of the most recognizable constellations, shaped unmistakably like a scorpion curling through the Milky Way.",
+        "caption": "Let’s find Scorpius. It curls through the Milky Way in a long scorpion shape, and once you’ve found it you’ll never mistake it for anything else.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4774,7 +4774,7 @@
       },
       {
         "title": "In the Milky Way",
-        "caption": "Scorpius lies in a rich stretch of the Milky Way. Look for a bright orange-red star — that's Antares, the scorpion's heart, and your anchor for finding the rest.",
+        "caption": "Scorpius lies in a rich stretch of the Milky Way. Look for a bright orange-red star. That’s Antares, the scorpion’s heart, and your anchor for finding the rest.",
         "ra": 255.77,
         "dec": -30.42,
         "fov": 63.76,
@@ -4787,7 +4787,7 @@
         ]
       },
       {
-        "title": "The scorpion's curve",
+        "title": "The scorpion’s curve",
         "caption": "Stars arc from Antares to form the head and claws, while the tail sweeps away in a long curve through the Milky Way. Shaula marks the sting.",
         "ra": 252.13,
         "dec": -30.99,
@@ -4807,7 +4807,7 @@
       },
       {
         "title": "Hunter and scorpion",
-        "caption": "Scorpius rides the Milky Way with the Galactic Center glowing nearby in Sagittarius. Ancient myth says Scorpius and Orion the Hunter chase each other across the sky — when one rises, the other sets.",
+        "caption": "Scorpius rides the Milky Way with the Galactic Center glowing nearby in Sagittarius. Ancient myth says Scorpius and Orion the Hunter chase each other across the sky: when one rises, the other sets.",
         "ra": 255.76,
         "dec": -29.19,
         "fov": 52.54,
@@ -4826,7 +4826,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Sculptor — it's a large but very faint constellation south of Aquarius and Piscis Austrinus. No star is brighter than mag 4.3, but it harbors the spectacular NGC 253 galaxy.",
+        "caption": "Let’s find Sculptor, a large but very faint constellation south of Aquarius and Piscis Austrinus. No star in it is brighter than mag 4.3, but it holds the NGC 253 galaxy.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4836,7 +4836,7 @@
       },
       {
         "title": "Between Fomalhaut and Achernar",
-        "caption": "Draw a line from Fomalhaut to Achernar — Sculptor's faint stars lie near that line, opposite Alnair in Grus.",
+        "caption": "Draw a line from Fomalhaut to Achernar. Sculptor’s faint stars lie near that line, opposite Alnair in Grus.",
         "ra": 0,
         "dec": -40,
         "fov": 65,
@@ -4861,8 +4861,8 @@
         ]
       },
       {
-        "title": "Lacaille's workshop",
-        "caption": "Sculptor is one of 14 constellations Lacaille created in the 1750s, all named after instruments and tools of the arts and sciences. Its full original name was l'Atelier du Sculpteur — the Sculptor's Workshop.",
+        "title": "Lacaille’s workshop",
+        "caption": "Sculptor is one of 14 constellations Lacaille created in the 1750s, all named after instruments and tools of the arts and sciences. Its full original name was l’Atelier du Sculpteur, the Sculptor’s Workshop.",
         "ra": 5,
         "dec": -33,
         "fov": 42.08,
@@ -4879,7 +4879,7 @@
       },
       {
         "title": "A window out of the galaxy",
-        "caption": "Sculptor contains the south galactic pole — the view straight out the bottom of the Milky Way's disk. That's why the sky here is so dark and empty — and a prime window for studying distant galaxies. NGC 253, the Sculptor Galaxy, is one of the nearest and brightest spirals, spectacular in binoculars.",
+        "caption": "Sculptor contains the south galactic pole, the view straight out the bottom of the Milky Way’s disk. That is why the sky here is so dark and empty, and why it is a prime window onto distant galaxies. NGC 253, the Sculptor Galaxy, is one of the nearest and brightest spirals, and a fine sight in binoculars.",
         "ra": 5,
         "dec": -33,
         "fov": 28,
@@ -4900,7 +4900,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Scutum — the Shield. It sits in one of the richest parts of the Milky Way, near Aquila. The Scutum Star Cloud makes this region visibly bright to the naked eye.",
+        "caption": "Let’s find Scutum, the Shield. It sits in one of the richest parts of the Milky Way, near Aquila. The Scutum Star Cloud makes this region visibly bright to the naked eye.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4910,7 +4910,7 @@
       },
       {
         "title": "Near Altair",
-        "caption": "Look down the eagle's body from Altair for a noticeably bright patch of the Milky Way — the Scutum Star Cloud. Scutum's faint stars are embedded in it.",
+        "caption": "Look down the eagle’s body from Altair for a noticeably bright patch of the Milky Way, the Scutum Star Cloud. Scutum’s faint stars are embedded in it.",
         "ra": 284.92,
         "dec": -2.07,
         "fov": 40,
@@ -4925,8 +4925,8 @@
         ]
       },
       {
-        "title": "Sobieski's Shield",
-        "caption": "Scutum was created by Polish astronomer Johannes Hevelius in 1684 as Scutum Sobiescianum — the Shield of Sobieski, honoring King John III of Poland after his victory at the Battle of Vienna. It's the only constellation commemorating a specific historical event.",
+        "title": "Sobieski’s Shield",
+        "caption": "Johannes Hevelius created Scutum in 1684 as Scutum Sobiescianum, the Shield of Sobieski, for King John III of Poland after his victory at the Battle of Vienna. It’s the only constellation commemorating a specific historical event.",
         "ra": 280.36,
         "dec": -11.36,
         "fov": 24.26,
@@ -4944,7 +4944,7 @@
       },
       {
         "title": "The Wild Duck Cluster",
-        "caption": "Scutum's real treasure is M11 — the Wild Duck Cluster, one of the richest open clusters in the sky. It's a dense, spectacular swarm easily seen in binoculars.",
+        "caption": "The best thing in Scutum is M11, the Wild Duck Cluster, one of the richest open clusters in the sky. It’s a dense swarm, easy in binoculars.",
         "ra": 281.88,
         "dec": -7.24,
         "fov": 11.54,
@@ -4963,7 +4963,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Serpens — the giant serpent held by Ophiuchus the Serpent Bearer.",
+        "caption": "Let’s find Serpens, the giant serpent held by Ophiuchus the Serpent Bearer.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4972,8 +4972,8 @@
         "bounds": false
       },
       {
-        "title": "Find the serpent's head",
-        "caption": "Look for Unukalhai, the Serpent's brightest star, on a line from Arcturus to the Milky Way. From here the serpent's head reaches up toward the crown of Corona Borealis.",
+        "title": "Find the serpent’s head",
+        "caption": "Look for Unukalhai, the Serpent’s brightest star, on a line from Arcturus to the Milky Way. From here the serpent’s head reaches up toward the crown of Corona Borealis.",
         "ra": 245.52,
         "dec": 5.8,
         "fov": 75.22,
@@ -4990,7 +4990,7 @@
       },
       {
         "title": "The serpent and its bearer",
-        "caption": "The serpent's body snakes down to the Milky Way and then alongside it, held by Ophiuchus the Serpent Bearer, who represents Asclepius, the Greek god of medicine — the Rod of Asclepius, twined with a serpent, still serves as a medical symbol. Serpens is the only constellation divided into disconnected regions — its head (Serpens Caput) and tail (Serpens Cauda) on either side of Ophiuchus.",
+        "caption": "The serpent’s body snakes down to the Milky Way and then alongside it, held by Ophiuchus the Serpent Bearer. Ophiuchus is Asclepius, the Greek god of medicine, and the Rod of Asclepius twined with a serpent is still a medical symbol. Serpens is the only constellation divided into disconnected regions, its head (Serpens Caput) and tail (Serpens Cauda) on either side of Ophiuchus.",
         "ra": 255.72,
         "dec": 3.26,
         "fov": 59.23,
@@ -5008,7 +5008,7 @@
       },
       {
         "title": "The Eagle Nebula",
-        "caption": "Serpens Cauda contains the Eagle Nebula (M16), a star-forming region made iconic by Hubble's \"Pillars of Creation\" image. It appears as a fuzzy patch in binoculars.",
+        "caption": "Serpens Cauda contains the Eagle Nebula (M16), the star-forming region in Hubble’s “Pillars of Creation” image. It appears as a fuzzy patch in binoculars.",
         "ra": 271.82,
         "dec": -6.27,
         "fov": 28.31,
@@ -5030,7 +5030,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Sextans — the Sextant, a faint equatorial constellation south of Leo. Its stars are all quite dim, so use nearby Regulus as your anchor.",
+        "caption": "Let’s find Sextans, the Sextant, a faint equatorial constellation south of Leo. Its stars are all dim, so use nearby Regulus as your anchor.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5040,7 +5040,7 @@
       },
       {
         "title": "Find Sextans",
-        "caption": "Follow the line of Leo's foreleg to find Beta Sextantis. Sextans occupies the sparse area between Leo and Hydra along the celestial equator.",
+        "caption": "Follow the line of Leo’s foreleg to find Beta Sextantis. Sextans occupies the sparse area between Leo and Hydra along the celestial equator.",
         "ra": 152.22,
         "dec": 2.49,
         "fov": 57.01,
@@ -5055,8 +5055,8 @@
         ]
       },
       {
-        "title": "Hevelius's memorial",
-        "caption": "Sextans was created by Polish astronomer Johannes Hevelius in 1687, named for his beloved brass sextant that was destroyed when his observatory burned down in 1679. He rebuilt and kept observing — the constellation is a memorial to the lost instrument.",
+        "title": "Hevelius’s memorial",
+        "caption": "Johannes Hevelius created Sextans in 1687 and named it for the brass sextant he lost when his observatory burned down in 1679. He rebuilt and kept observing. The constellation is a memorial to the instrument.",
         "ra": 154.18,
         "dec": -3.15,
         "fov": 30.22,
@@ -5091,7 +5091,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Taurus — the Bull, anchored by brilliant orange Aldebaran and the iconic Pleiades star cluster.",
+        "caption": "Let’s find Taurus, the Bull, anchored by brilliant orange Aldebaran and the Pleiades star cluster.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5101,7 +5101,7 @@
       },
       {
         "title": "Follow the Belt",
-        "caption": "Follow the line of Orion's Belt and you run straight into Aldebaran, the angry eye of the charging bull. Its distinctly orange color makes it unmistakable.",
+        "caption": "Follow the line of Orion’s Belt and you run straight into Aldebaran, the angry eye of the charging bull. Its orange colour gives it away.",
         "ra": 73.85,
         "dec": 6.07,
         "fov": 73.85,
@@ -5132,7 +5132,7 @@
       },
       {
         "title": "Zeus and Europa",
-        "caption": "In Greek myth, Taurus is Zeus disguised as a white bull to abduct Europa across the sea to Crete. Only the front half appears in the sky — the hindquarters hidden beneath the waves. The V of the Hyades cluster traces his face, with orange Aldebaran as his glaring eye.",
+        "caption": "In Greek myth, Taurus is Zeus disguised as a white bull to abduct Europa across the sea to Crete. Only the front half appears in the sky, with the hindquarters hidden beneath the waves. The V of the Hyades cluster traces his face, with orange Aldebaran as his glaring eye.",
         "ra": 69.01,
         "dec": 16.44,
         "fov": 44,
@@ -5152,7 +5152,7 @@
       },
       {
         "title": "The Pleiades",
-        "caption": "The Pleiades, or Seven Sisters, are the daughters of the titan Atlas in Greek myth. This young star cluster is one of the nearest to Earth and has been recognized by cultures worldwide — from the Subaru logo to Matariki in Polynesia. Count how many you can see unaided — most people spot six or seven, though sharp eyes find more.",
+        "caption": "The Pleiades, or Seven Sisters, are the daughters of the titan Atlas in Greek myth. This young star cluster is one of the nearest to Earth, and cultures worldwide have their own name for it: Subaru in Japan, Matariki in Polynesia. Count how many you can see unaided. Most people spot six or seven, though sharp eyes find more.",
         "ra": 56.6,
         "dec": 24.1,
         "fov": 16,
@@ -5166,7 +5166,7 @@
       },
       {
         "title": "The Crab Nebula",
-        "caption": "Near the tip of the bull's lower horn lies the Crab Nebula (M1) — the remnant of a supernova recorded by Chinese and Japanese astronomers in 1054. It was bright enough to see in daylight for weeks. The expanding cloud of debris is still visible in binoculars.",
+        "caption": "Near the tip of the bull’s lower horn lies the Crab Nebula (M1), the remnant of a supernova Chinese and Japanese astronomers recorded in 1054. It was bright enough to see in daylight for weeks. The expanding cloud of debris is still visible in binoculars.",
         "ra": 83.63,
         "dec": 22.02,
         "fov": 16,
@@ -5185,7 +5185,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Telescopium — the Telescope, a small, faint southern constellation tucked below the tail of Scorpius.",
+        "caption": "Let’s find Telescopium, the Telescope, a small, faint southern constellation below the tail of Scorpius.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5194,8 +5194,8 @@
         "bounds": false
       },
       {
-        "title": "Follow the scorpion's tail",
-        "caption": "Where the scorpion's tail curls back into the Milky Way, follow the line of the three stars to Alpha Telescopii, the constellation's only bright star.",
+        "title": "Follow the scorpion’s tail",
+        "caption": "Where the scorpion’s tail curls back into the Milky Way, follow the line of the three stars to Alpha Telescopii, the constellation’s only bright star.",
         "ra": 261.22,
         "dec": -39.87,
         "fov": 50,
@@ -5222,8 +5222,8 @@
         ]
       },
       {
-        "title": "Lacaille's telescope",
-        "caption": "Telescopium was created by French astronomer Nicolas-Louis de Lacaille in the 1750s, one of several constellations of the Enlightenment he named after instruments of science and the arts. Its stars are faint and form no striking pattern — it is best located by its brighter neighbors.",
+        "title": "Lacaille’s telescope",
+        "caption": "Nicolas-Louis de Lacaille named Telescopium in the 1750s, one of several constellations he called after the instruments of science and the arts. Its stars are faint and form no striking pattern, so the way to find it is by its brighter neighbours.",
         "ra": 286.03,
         "dec": -49.51,
         "fov": 26.03,
@@ -5246,7 +5246,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Triangulum — the Triangle, a small northern constellation forming a narrow elongated triangle between Andromeda and Aries.",
+        "caption": "Let’s find Triangulum, the Triangle, a small northern constellation forming a narrow elongated triangle between Andromeda and Aries.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5256,7 +5256,7 @@
       },
       {
         "title": "Find Triangulum",
-        "caption": "Look between the Andromeda Galaxy and the Pleiades. Three stars form Triangulum's neat narrow triangle — it's one of the simplest shapes to recognize once you spot it.",
+        "caption": "Look between the Andromeda Galaxy and the Pleiades. Three stars form Triangulum’s neat narrow triangle, one of the simplest shapes to recognize once you spot it.",
         "ra": 34.97,
         "dec": 33.31,
         "fov": 61.02,
@@ -5279,7 +5279,7 @@
       },
       {
         "title": "Deltoton",
-        "caption": "Triangulum is one of Ptolemy's original 48 constellations from the 2nd century. The Greeks called it Deltoton, after the letter delta (Δ). It was sometimes said to represent Sicily — the famously triangular island whose ancient name Trinacria means \"three points\" — placed in the sky by Zeus at the request of Demeter, patron goddess of the island.",
+        "caption": "Triangulum is one of Ptolemy’s original 48 constellations from the 2nd century. The Greeks called it Deltoton, after the letter delta (Δ). Some said it was Sicily, the triangular island whose ancient name Trinacria means “three points,” placed in the sky by Zeus at the request of Demeter, the island’s patron goddess.",
         "ra": 32.65,
         "dec": 31.92,
         "fov": 18.36,
@@ -5296,7 +5296,7 @@
       },
       {
         "title": "The Triangulum Galaxy",
-        "caption": "M33, the Triangulum Galaxy, is the third-largest member of the Local Group — our neighborhood of galaxies that includes the Milky Way and Andromeda. Under excellent dark skies it appears as a large faint glow, one of the most distant objects visible to the naked eye.",
+        "caption": "M33, the Triangulum Galaxy, is the third-largest member of the Local Group, our neighborhood of galaxies that includes the Milky Way and Andromeda. Under excellent dark skies it appears as a large faint glow, about as far out as the naked eye can reach.",
         "ra": 24.93,
         "dec": 30.65,
         "fov": 10,
@@ -5316,7 +5316,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Triangulum Australe — the Southern Triangle, a compact, bright equilateral triangle easily recognized in the far south.",
+        "caption": "Let’s find Triangulum Australe, the Southern Triangle, a compact, bright equilateral triangle easily recognized in the far south.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5326,7 +5326,7 @@
       },
       {
         "title": "Find the Southern Triangle",
-        "caption": "Look near the Southern Pointers at the foot of Centaurus. The bright orange star Atria marks one vertex of the triangle — the other two are nearly as bright, making the shape unmistakable.",
+        "caption": "Look near the Southern Pointers at the foot of Centaurus. The bright orange star Atria marks one vertex. The other two are nearly as bright, which is what makes the shape so easy to pick out.",
         "ra": 223.53,
         "dec": -65.78,
         "fov": 43.46,
@@ -5351,7 +5351,7 @@
       },
       {
         "title": "The southern counterpart",
-        "caption": "Triangulum Australe was first depicted on a celestial globe by Petrus Plancius in 1589, one of the earliest constellations added from European voyages to the southern seas. It serves as a southern counterpart to the ancient northern Triangle.",
+        "caption": "Petrus Plancius first drew Triangulum Australe on a celestial globe in 1589, one of the earliest constellations added from European voyages to the southern seas. It is the southern counterpart to the ancient northern Triangle.",
         "ra": 240.98,
         "dec": -66.76,
         "fov": 18,
@@ -5380,7 +5380,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Tucana — the Toucan, best known for hosting the Small Magellanic Cloud and the brilliant globular cluster 47 Tucanae.",
+        "caption": "Let’s find Tucana, the Toucan, best known for hosting the Small Magellanic Cloud and the brilliant globular cluster 47 Tucanae.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5409,7 +5409,7 @@
       },
       {
         "title": "The Toucan",
-        "caption": "Tucana was introduced by Dutch cartographer Petrus Plancius in 1598, based on observations from the first Dutch expeditions to the East Indies. It is one of several southern birds Plancius created from those voyages, along with the Crane, the Peacock, the Phoenix, and the Bird of Paradise.",
+        "caption": "Petrus Plancius introduced Tucana in 1598, from observations made on the first Dutch expeditions to the East Indies. It is one of several southern birds he drew from those voyages, along with the Crane, the Peacock, the Phoenix, and the Bird of Paradise.",
         "ra": 355,
         "dec": -64,
         "fov": 28,
@@ -5427,7 +5427,7 @@
       },
       {
         "title": "47 Tucanae",
-        "caption": "The fuzzy star nestled against the edge of the SMC is 47 Tucanae — one of the largest and brightest globular clusters in the sky, a dense swarm of millions of stars some 13,000 light-years away. It is not related to the SMC; the two just happen to lie along the same line of sight.",
+        "caption": "The fuzzy star against the edge of the SMC is 47 Tucanae, one of the largest and brightest globular clusters in the sky, a dense swarm of millions of stars some 13,000 light-years away. It has nothing to do with the SMC. The two just happen to lie along the same line of sight.",
         "ra": 6.02,
         "dec": -72.08,
         "fov": 16,
@@ -5450,7 +5450,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Ursa Major — home of the Big Dipper, one of the most recognizable star patterns in the sky.",
+        "caption": "Let’s find Ursa Major, home of the Big Dipper, the most recognizable star pattern in the northern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5460,7 +5460,7 @@
       },
       {
         "title": "The Big Dipper",
-        "caption": "The Big Dipper is unmistakable: four stars form the bowl, three arc away to form the handle. The two stars on the outer edge of the bowl — Dubhe and Merak — are the Pointer Stars, your most useful navigational tool in the northern sky.",
+        "caption": "The Big Dipper is unmistakable: four stars form the bowl, three arc away to form the handle. The two stars on the outer edge of the bowl, Dubhe and Merak, are the Pointer Stars, your most useful navigational tool in the northern sky.",
         "ra": 186,
         "dec": 56,
         "fov": 40,
@@ -5505,7 +5505,7 @@
       },
       {
         "title": "Follow the Pointers",
-        "caption": "Draw a line from Merak through Dubhe and keep going — about five times the gap between them — and you land on Polaris, the North Star. Polaris marks the celestial north pole and barely moves all night while every other star circles around it.",
+        "caption": "Draw a line from Merak through Dubhe and keep going, about five times the gap between them, and you land on Polaris, the North Star. Polaris marks the celestial north pole and barely moves all night while every other star circles around it.",
         "ra": 176.52,
         "dec": 71.25,
         "fov": 52.04,
@@ -5522,7 +5522,7 @@
       },
       {
         "title": "The Great Bear",
-        "caption": "The Big Dipper is just the tail of Ursa Major — the Great Bear, the third-largest constellation in the sky. Bear constellations appear in traditions across the globe — Greek, Native American, Siberian — suggesting the pattern may date back thousands of years, possibly carried by early peoples crossing the Bering land bridge. Few star figures have such deep roots in human history.",
+        "caption": "The Big Dipper is just the tail of Ursa Major, the Great Bear and the third-largest constellation in the sky. Greek, Native American, and Siberian traditions all see a bear here. The pattern may date back thousands of years, carried across the Bering land bridge by early peoples. No other star figure has roots that deep.",
         "ra": 168.22,
         "dec": 54.92,
         "fov": 58.31,
@@ -5537,8 +5537,8 @@
         ]
       },
       {
-        "title": "Callisto's punishment",
-        "caption": "In Greek myth, Ursa Major is Callisto, a nymph transformed into a bear by the jealous goddess Hera. When Zeus placed her in the sky, Hera asked the sea gods to forbid the bear from ever bathing in the ocean — and so she never sets below the horizon, circling the pole endlessly.",
+        "title": "Callisto’s punishment",
+        "caption": "In Greek myth, Ursa Major is Callisto, a nymph transformed into a bear by the jealous goddess Hera. When Zeus placed her in the sky, Hera asked the sea gods to forbid the bear from ever bathing in the ocean, and so she never sets below the horizon, circling the pole instead.",
         "ra": 161.89,
         "dec": 62.66,
         "fov": 88.13,
@@ -5560,7 +5560,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Ursa Minor — the Little Bear, whose tail-tip star Polaris marks the north celestial pole and has guided navigators for centuries.",
+        "caption": "Let’s find Ursa Minor, the Little Bear, whose tail-tip star Polaris marks the north celestial pole and has guided navigators for centuries.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5570,7 +5570,7 @@
       },
       {
         "title": "Use the Big Dipper",
-        "caption": "The two Pointer Stars at the outer edge of the Big Dipper's bowl — Merak and Dubhe — point directly to Polaris. Extend the line about five times the distance between them. Polaris is not the brightest star in the sky, so many beginners are surprised by how modest it looks.",
+        "caption": "The two Pointer Stars at the outer edge of the Big Dipper’s bowl, Merak and Dubhe, point directly to Polaris. Extend the line about five times the distance between them. Polaris is not the brightest star in the sky, and beginners are often surprised by how modest it looks.",
         "ra": 170.66,
         "dec": 67.15,
         "fov": 80.22,
@@ -5587,7 +5587,7 @@
       },
       {
         "title": "The Little Dipper",
-        "caption": "Polaris marks the tip of the Little Dipper's handle. The bowl opens toward Kochab and Pherkad, the two brightest bowl stars. The rest of the dipper is faint and needs reasonably dark skies.",
+        "caption": "Polaris marks the tip of the Little Dipper’s handle. The bowl opens toward Kochab and Pherkad, the two brightest bowl stars. The rest of the dipper is faint and needs reasonably dark skies.",
         "ra": 220.98,
         "dec": 76.47,
         "fov": 32,
@@ -5608,7 +5608,7 @@
       },
       {
         "title": "The wandering pole",
-        "caption": "Due to Earth's precession, the celestial pole slowly traces a circle among the stars over 26,000 years. Around 2700 BC, Thuban in Draco was the pole star. Polaris will reach its closest approach to the true pole around 2100 before slowly drifting away.",
+        "caption": "Earth’s precession walks the celestial pole in a circle among the stars, once every 26,000 years. Around 2700 BC, Thuban in Draco was the pole star. Polaris will reach its closest approach to the true pole around 2100 before slowly drifting away.",
         "ra": 270.11,
         "dec": 66.57,
         "fov": 56.68,
@@ -5629,7 +5629,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Vela — the Sails, a southern Milky Way constellation that was once part of the great ship Argo Navis.",
+        "caption": "Let’s find Vela, the Sails, a southern Milky Way constellation that was once part of the great ship Argo Navis.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5639,7 +5639,7 @@
       },
       {
         "title": "The False Cross",
-        "caption": "Along the Milky Way between Crux and Canopus, four stars form the False Cross — a larger, dimmer echo of the Southern Cross that can confuse seekers. Two of these, Alsephina and Markeb, are part of Vela.",
+        "caption": "Along the Milky Way between Crux and Canopus, four stars form the False Cross, a larger and dimmer echo of the Southern Cross that catches people out. Two of these, Alsephina and Markeb, are part of Vela.",
         "ra": 136.12,
         "dec": -63.67,
         "fov": 52.83,
@@ -5670,7 +5670,7 @@
       },
       {
         "title": "The Ship Argo",
-        "caption": "Vela was once part of Argo Navis — the great ship of Jason and the Argonauts, and the largest of Ptolemy's original 48 constellations. French astronomer Nicolas-Louis de Lacaille split it into three parts in 1755: Carina (the keel), Vela (the sails), and Puppis (the stern).",
+        "caption": "Vela is the sails of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille split it into three in 1755: Carina the keel, Vela, and Puppis the stern.",
         "ra": 130,
         "dec": -48,
         "fov": 55,
@@ -5699,7 +5699,7 @@
       },
       {
         "title": "The Vela Supernova Remnant",
-        "caption": "The Vela Supernova Remnant is the nearest known supernova remnant to Earth, covering nearly 8° of sky. The star exploded about 11,000 years ago — recent enough that early humans may have witnessed it.",
+        "caption": "The Vela Supernova Remnant is the nearest known supernova remnant to Earth, covering nearly 8° of sky. The star exploded about 11,000 years ago, recent enough that people alive at the time would have seen it.",
         "ra": 128.5,
         "dec": -45.5,
         "fov": 45.31,
@@ -5718,7 +5718,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Virgo — the Maiden, the second-largest constellation and the largest in the zodiac, anchored by brilliant blue-white Spica.",
+        "caption": "Let’s find Virgo, the Maiden, the second-largest constellation and the largest in the zodiac, anchored by brilliant blue-white Spica.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5728,7 +5728,7 @@
       },
       {
         "title": "Arc to Arcturus, speed on to Spica",
-        "caption": "Follow the arc of the Big Dipper's handle to orange Arcturus, then continue that same curve onward to arrive at Spica. No other bright star is nearby, so Spica is unmistakable.",
+        "caption": "Follow the arc of the Big Dipper’s handle to orange Arcturus, then continue that same curve onward to arrive at Spica. No other bright star is nearby, so Spica is unmistakable.",
         "ra": 194.59,
         "dec": 26.28,
         "fov": 97.58,
@@ -5774,7 +5774,7 @@
       },
       {
         "title": "The Grain Goddess",
-        "caption": "Virgo is one of the oldest constellations, long associated with the harvest. Spica means \"ear of grain,\" and she is traditionally depicted holding a sheaf of wheat. The Greeks identified her with Demeter, goddess of the harvest, and Vindemiatrix — \"the grape gatherer\" — ties her to the vine as well.",
+        "caption": "Virgo is one of the oldest constellations, long associated with the harvest. Spica means “ear of grain,” and old charts draw her holding a sheaf of wheat. The Greeks identified her with Demeter, goddess of the harvest, and the star Vindemiatrix, “the grape gatherer,” ties her to the vine as well.",
         "ra": 199,
         "dec": 0,
         "fov": 60,
@@ -5794,7 +5794,7 @@
       },
       {
         "title": "The Last Immortal",
-        "caption": "In another tradition, Virgo is Astraea, the goddess of justice. During the Golden Age she lived among mortals, but as humanity grew corrupt she was the last immortal to abandon the earth, taking her place in the sky. She once held the scales of justice in her outstretched hand — those scales later became Libra, the constellation next door.",
+        "caption": "In another tradition, Virgo is Astraea, the goddess of justice. During the Golden Age she lived among mortals, but as humanity grew corrupt she was the last immortal to abandon the earth, taking her place in the sky. She once held the scales of justice in her outstretched hand. Those scales later became Libra, the constellation next door.",
         "ra": 208.3,
         "dec": -8.6,
         "fov": 74.07,
@@ -5815,7 +5815,7 @@
       },
       {
         "title": "The Virgo Cluster",
-        "caption": "The northern reaches of Virgo contain the Virgo Cluster — over a thousand galaxies some 65 million light-years away, the heart of the nearest large galaxy supercluster. In a telescope, this region is dense with faint smudges of light, each an entire galaxy.",
+        "caption": "The northern reaches of Virgo contain the Virgo Cluster, over a thousand galaxies some 65 million light-years away and the heart of the nearest large galaxy supercluster. In a telescope, this region is dense with faint smudges of light, each an entire galaxy.",
         "ra": 187,
         "dec": 12,
         "fov": 25,
@@ -5834,7 +5834,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Volans — the Flying Fish, a small, faint southern constellation wedged between Carina and the Large Magellanic Cloud.",
+        "caption": "Let’s find Volans, the Flying Fish, a small, faint southern constellation between Carina and the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5866,7 +5866,7 @@
       },
       {
         "title": "The Flying Fish",
-        "caption": "Volans represents a type of tropical flying fish. It was created by Dutch navigators Keyser and de Houtman at the end of the 16th century, part of their suite of exotic southern animals.",
+        "caption": "Volans represents a type of tropical flying fish. Dutch navigators Keyser and de Houtman created it at the end of the 16th century, part of their suite of exotic southern animals.",
         "ra": 117.39,
         "dec": -69.2,
         "fov": 30.77,
@@ -5888,7 +5888,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let's find Vulpecula — the Little Fox, a small, faint constellation tucked into the Milky Way between Cygnus and Sagitta.",
+        "caption": "Let’s find Vulpecula, the Little Fox, a small, faint constellation in the Milky Way between Cygnus and Sagitta.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -5898,7 +5898,7 @@
       },
       {
         "title": "Find Vulpecula",
-        "caption": "Find Sagitta, the tiny arrow below Albireo in Cygnus. Vulpecula sprawls just above it. Its brightest star Anser is faint but marks the fox's position.",
+        "caption": "Find Sagitta, the tiny arrow below Albireo in Cygnus. Vulpecula sprawls just above it. Its brightest star Anser is faint but marks the fox’s position.",
         "ra": 295,
         "dec": 24,
         "fov": 40,
@@ -5913,7 +5913,7 @@
       },
       {
         "title": "The Fox and the Goose",
-        "caption": "Polish astronomer Johannes Hevelius created this constellation in 1687, originally calling it Vulpecula cum Ansere — the Little Fox with the Goose. The goose was eventually dropped, but its name lives on in the brightest star, Anser.",
+        "caption": "Polish astronomer Johannes Hevelius created this constellation in 1687, originally calling it Vulpecula cum Ansere, the Little Fox with the Goose. The goose was eventually dropped, but its name lives on in the brightest star, Anser.",
         "ra": 294.39,
         "dec": 24.19,
         "fov": 21.61,
@@ -5933,7 +5933,7 @@
       },
       {
         "title": "The Dumbbell Nebula",
-        "caption": "The Dumbbell Nebula sits inside Vulpecula's borders — the first planetary nebula ever discovered, found by Charles Messier in 1764. It is one of the largest and brightest planetary nebulae in the sky.",
+        "caption": "The Dumbbell Nebula sits inside Vulpecula’s borders, the first planetary nebula anyone discovered. Charles Messier found it in 1764. It is one of the largest and brightest planetary nebulae in the sky.",
         "ra": 299.9,
         "dec": 22.72,
         "fov": 8,
