@@ -3,7 +3,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let’s find Andromeda, home of the Andromeda Galaxy, the most distant object visible to the naked eye.",
+        "caption": "Let’s find Andromeda, home of the Andromeda Galaxy, the nearest big galaxy to our own.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -96,7 +96,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let’s find Antlia, the Air Pump. It is one of the faintest constellations in the sky, invented by Lacaille in the 1750s, and it lies between Hydra and Vela in the southern spring sky.",
+        "caption": "Let’s find Antlia, the Air Pump. It is one of the faintest constellations in the sky, invented by Lacaille in the 1750s, and it lies between Hydra and Vela in the far southern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -106,7 +106,7 @@
       },
       {
         "title": "Between Hydra and Vela",
-        "caption": "From Alphard, the solitary orange star that marks Hydra’s heart, drop south toward the bright stars of Vela. Antlia sits in that empty-looking gap. It is best seen from February to April and is invisible north of about 45°N.",
+        "caption": "From Alphard, the solitary orange star that marks Hydra’s heart, drop south toward the bright stars of Vela. Antlia sits in that empty-looking gap. It is best seen from February to April, and its southern end never rises at all north of about 50°N.",
         "ra": 150,
         "dec": -22,
         "fov": 70,
@@ -210,7 +210,7 @@
       },
       {
         "title": "Two remarkable nebulae",
-        "caption": "The Saturn Nebula and the Helix Nebula both lie within Aquarius. The Helix is the closest planetary nebula to Earth at about 650 light-years. In a telescope it appears as a ghostly ring, larger than a full moon. The Saturn Nebula earns its name from the lobes flanking its disc, visible in larger telescopes.",
+        "caption": "The Saturn Nebula and the Helix Nebula both lie within Aquarius. The Helix is one of the closest planetary nebulae to Earth at about 650 light-years. In a telescope it appears as a ghostly ring, nearly as wide as a full moon. The Saturn Nebula earns its name from the lobes flanking its disc, visible in larger telescopes.",
         "ra": 330,
         "dec": -10,
         "fov": 40,
@@ -564,7 +564,7 @@
       },
       {
         "title": "Lacaille’s engraving tool",
-        "caption": "Caelum honors the burin, the engraving tool printmakers and sculptors cut with. It is one of 14 instrument constellations Lacaille introduced after his 1751–52 Cape of Good Hope survey, and one of the hardest to identify: no bright stars, no deep-sky objects of note. A completionist’s target.",
+        "caption": "Caelum honors the burin, the engraving tool printmakers and sculptors cut with. It is one of 14 constellations Lacaille introduced after his 1751–52 Cape of Good Hope survey, and one of the hardest to identify: no bright stars, no deep-sky objects of note. A completionist’s target.",
         "ra": 71,
         "dec": -41,
         "fov": 28,
@@ -593,7 +593,7 @@
       },
       {
         "title": "Sprawling but dim",
-        "caption": "The left arm of Cassiopeia’s W points to the dark void between Polaris and Capella where the Giraffe lives. It’s the third largest constellation by area, but easy to miss because its main stars are so faint.",
+        "caption": "The left arm of Cassiopeia’s W points to the dark void between Polaris and Capella where the Giraffe lives. It’s one of the largest constellations by area, but easy to miss because its main stars are so faint.",
         "ra": 68,
         "dec": 70,
         "fov": 60,
@@ -608,7 +608,7 @@
       },
       {
         "title": "NGC 2403",
-        "caption": "Petrus Plancius invented it in 1613, and it represents the giraffe that carried Rebekah to Isaac. Its best target is NGC 2403, one of the nearest spiral galaxies beyond our Local Group and a fine binocular object from dark skies.",
+        "caption": "Petrus Plancius invented it in 1613 and drew a giraffe. A later mapmaker, Jacob Bartsch, read it instead as the camel that carried Rebekah to Isaac, and the misreading has followed the constellation ever since. Its best target is NGC 2403, one of the nearest spiral galaxies beyond our Local Group and a fine binocular object from dark skies.",
         "ra": 72,
         "dec": 63,
         "fov": 50,
@@ -775,7 +775,7 @@
       },
       {
         "title": "The Great Dog",
-        "caption": "Adhara, at the hindquarters, is intrinsically far more luminous than Sirius, but appears dimmer because it’s nearly 30 times as far away.",
+        "caption": "Adhara, at the hindquarters, is intrinsically far more luminous than Sirius, but appears dimmer because it’s about 50 times as far away.",
         "ra": 103,
         "dec": -21,
         "fov": 36,
@@ -891,7 +891,7 @@
       },
       {
         "title": "The sea goat’s outline",
-        "caption": "Deneb Algedi at the tail is the brightest star, an eclipsing binary that dips every 24.5 hours. Neptune was first spotted in Capricornus in 1846.",
+        "caption": "Deneb Algedi at the tail is the brightest star, an eclipsing binary that dips every 24.5 hours.",
         "ra": 315,
         "dec": -20,
         "fov": 33,
@@ -938,7 +938,7 @@
       },
       {
         "title": "The Ship Argo",
-        "caption": "Carina was once part of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille broke it up in 1755 into Carina the keel, Vela the sails, and Puppis the stern.",
+        "caption": "Carina was once part of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille broke it up in 1756 into Carina the keel, Vela the sails, and Puppis the stern.",
         "ra": 130,
         "dec": -48,
         "fov": 55,
@@ -1132,7 +1132,7 @@
       },
       {
         "title": "The full centaur",
-        "caption": "Menkent marks the Centaur’s head, far from the bright pointers at the hooves. Omega Centauri, the sky’s brightest globular cluster, is visible as a fuzzy star near the boundary.",
+        "caption": "Menkent marks the Centaur’s shoulder, far from the bright pointers at the hooves. Omega Centauri, the sky’s brightest globular cluster, is visible as a fuzzy star near the boundary.",
         "ra": 201,
         "dec": -48,
         "fov": 55,
@@ -1323,7 +1323,7 @@
       },
       {
         "title": "Mira the Wonderful",
-        "caption": "Mira is one of the sky’s most famous variable stars, pulsating over about 332 days. At maximum it outshines every other star in Cetus; at minimum it vanishes entirely. Tau Ceti, just 12 light-years away, is one of the nearest Sun-like stars.",
+        "caption": "Mira is one of the sky’s most famous variable stars, pulsating over about 332 days. At its best maxima it rivals Diphda, the brightest star in Cetus; at minimum it vanishes entirely. Tau Ceti, just 12 light-years away, is one of the nearest Sun-like stars.",
         "ra": 30,
         "dec": -8,
         "fov": 35,
@@ -1497,7 +1497,7 @@
       },
       {
         "title": "Noah’s dove",
-        "caption": "Columba likely represents Noah’s dove returning with an olive branch. The faint star Mu Columbae is a runaway. A supernova millions of years ago hurled it out of the Orion Nebula region at over 100 km/s, and it is still racing through this quiet corner of sky.",
+        "caption": "Columba likely represents Noah’s dove returning with an olive branch. The faint star Mu Columbae is a runaway. Two binary stars ran into each other in the Orion Nebula region a few million years ago and flung it out at over 100 km/s, and it is still racing through this quiet corner of sky.",
         "ra": 89,
         "dec": -36,
         "fov": 18,
@@ -1676,7 +1676,7 @@
       },
       {
         "title": "The Blaze Star",
-        "caption": "The Blaze Star (T CrB) is a recurrent nova near the crown. It is normally invisible, and erupts to naked-eye brightness roughly every 80 years. It last blew in 1946, so the next one is due any time.",
+        "caption": "The Blaze Star (T CrB) is a recurrent nova near the crown. It is normally invisible, and erupts to naked-eye brightness roughly every 80 years. It last blew in 1866 and again in 1946. If it keeps that rhythm the next eruption is close, and for a few nights the crown will have an extra jewel.",
         "ra": 236,
         "dec": 29,
         "fov": 10,
@@ -1959,7 +1959,7 @@
       },
       {
         "title": "Deneb",
-        "caption": "Deneb marks the swan’s tail at the top of the cross. It looks similar in brightness to nearby stars, but Deneb is a distant supergiant roughly 2,600 light-years away. Few stars the naked eye can see put out more light.",
+        "caption": "Deneb marks the swan’s tail at the top of the cross. It looks similar in brightness to nearby stars, but Deneb is a supergiant somewhere between 1,600 and 2,600 light-years away. It is too bright for Gaia to measure, so the distance is still unsettled. Few stars the naked eye can see put out more light.",
         "ra": 303,
         "dec": 39,
         "fov": 48,
@@ -2104,7 +2104,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let’s find Dorado, the Swordfish, a southern constellation best known for containing most of the Large Magellanic Cloud.",
+        "caption": "Let’s find Dorado, the Dolphinfish, a southern constellation best known for containing most of the Large Magellanic Cloud.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -2129,7 +2129,7 @@
       },
       {
         "title": "The Large Magellanic Cloud",
-        "caption": "The LMC is a nearby satellite galaxy of the Milky Way, spanning about seven degrees. It dominates Dorado’s territory, dwarfing the constellation’s own stars.",
+        "caption": "The LMC is a nearby satellite galaxy of the Milky Way, spanning about ten degrees, twenty times the width of the full Moon. It dominates Dorado’s territory, dwarfing the constellation’s own stars.",
         "ra": 73,
         "dec": -60,
         "fov": 28,
@@ -2303,7 +2303,7 @@
       },
       {
         "title": "From Orion to Achernar",
-        "caption": "The river begins at Cursa, next to Rigel in Orion, and meanders all the way to Achernar deep in the southern sky. Eridanus is the sixth-largest constellation and one of the longest, spanning nearly a third of the sky from end to end.",
+        "caption": "The river begins at Cursa, next to Rigel in Orion, and meanders all the way to Achernar deep in the southern sky. Eridanus is the sixth-largest constellation and one of the longest, spanning some 60° from end to end.",
         "ra": 55,
         "dec": -30,
         "fov": 80,
@@ -2635,7 +2635,7 @@
       },
       {
         "title": "Lacaille’s instruments",
-        "caption": "Horologium honors Huygens’s pendulum clock, the invention that first made accurate navigation at sea possible. It is one of 14 constellations Lacaille named after instruments of the Enlightenment during his 1751 survey of the southern sky.",
+        "caption": "Horologium honors Huygens’s pendulum clock, the first timepiece steady enough for serious astronomy. At sea it was hopeless. Swell and temperature wrecked the pendulum, and longitude waited another century for Harrison’s chronometer. It is one of 14 constellations Lacaille named after instruments of the Enlightenment during his 1751 survey of the southern sky.",
         "ra": 48,
         "dec": -50,
         "fov": 30,
@@ -2795,7 +2795,7 @@
       },
       {
         "title": "A nearby neighbor",
-        "caption": "Epsilon Indi is one of the nearest Sun-like stars at just 12 light-years. It hosts a pair of brown dwarfs, objects too small to sustain hydrogen fusion but larger than any planet.",
+        "caption": "Epsilon Indi is an orange dwarf just 12 light-years away, one of the closest stars to the Sun. It hosts a pair of brown dwarfs, objects too small to sustain hydrogen fusion but larger than any planet.",
         "ra": 316,
         "dec": -50,
         "fov": 25,
@@ -3144,7 +3144,7 @@
       },
       {
         "title": "The scales of the zodiac",
-        "caption": "The Methuselah Star, inside Libra’s boundary, is one of the oldest known stars, nearly as old as the universe itself at around 13.7 billion years. It’s faint but visible in binoculars, a relic from a time before the Milky Way had fully formed.",
+        "caption": "The Methuselah Star, inside Libra’s boundary, is one of the oldest known stars, nearly as old as the universe itself at around 12 billion years. It’s faint but visible in binoculars, a relic from a time before the Milky Way had fully formed.",
         "ra": 228,
         "dec": -16,
         "fov": 34,
@@ -3285,7 +3285,7 @@
       },
       {
         "title": "Alpha Lyncis",
-        "caption": "Alpha Lyncis is the only real beacon here, an orange-red giant and the only star in the constellation brighter than fourth magnitude. The long chain of fainter stars requires dark skies to trace.",
+        "caption": "Alpha Lyncis is the only real beacon here, an orange-red giant and much the brightest star in the constellation. The long chain of fainter stars requires dark skies to trace.",
         "ra": 120,
         "dec": 46,
         "fov": 55,
@@ -3524,7 +3524,7 @@
       },
       {
         "title": "The Rosette Nebula",
-        "caption": "The Rosette Nebula appears as a glowing ring the size of a full moon, about 5,200 light-years away. The star cluster at its center blew a cavity in the surrounding gas, and shows in binoculars.",
+        "caption": "The Rosette Nebula appears as a glowing ring more than twice the width of a full moon, about 5,200 light-years away. The star cluster at its center blew a cavity in the surrounding gas, and shows in binoculars.",
         "ra": 98,
         "dec": 4,
         "fov": 22,
@@ -3568,7 +3568,7 @@
       },
       {
         "title": "A compact diamond",
-        "caption": "Dutch explorers Keyser and de Houtman mapped Musca in the 1590s and named it the Fly, but their illustration on Plancius’s globe was unlabeled. When Bayer copied the unnamed insect into his influential 1603 star atlas, he guessed wrong and called it Apis, the Bee. The mistake stuck for two centuries until Lacaille corrected it.",
+        "caption": "Dutch explorers Keyser and de Houtman mapped Musca in the 1590s and named it the Fly, but their illustration on Plancius’s globe was unlabeled. When Bayer copied the unnamed insect into his influential 1603 star atlas, he guessed wrong and called it Apis, the Bee. The mistake stuck for 150 years, until Lacaille put the fly back in 1752.",
         "ra": 188,
         "dec": -69,
         "fov": 22,
@@ -4105,7 +4105,7 @@
       },
       {
         "title": "The Double Cluster",
-        "caption": "Between Perseus and Cassiopeia lies the Double Cluster, two rich star clusters side by side. To the naked eye it is a fuzzy patch. In binoculars it is one of the finest sights in the sky. Each cluster contains hundreds of young blue and red supergiants.",
+        "caption": "Between Perseus and Cassiopeia lies the Double Cluster, two rich star clusters side by side. To the naked eye it is a fuzzy patch. In binoculars it is one of the finest sights in the sky. Each cluster holds hundreds of hot young blue stars, with a scattering of red supergiants among them.",
         "ra": 40.04,
         "dec": 50.33,
         "fov": 22.55,
@@ -4154,7 +4154,7 @@
       },
       {
         "title": "Rising from the ashes",
-        "caption": "The phoenix descends from the Egyptian Bennu, a solar bird linked to Ra. Herodotus tells the story: every 500 years the bird builds a nest of cinnamon and myrrh at the Temple of the Sun in Heliopolis, sets it alight, and is reborn from the ashes.",
+        "caption": "The phoenix descends from the Egyptian Bennu, a solar bird linked to Ra. Herodotus reports that every 500 years the bird carries its dead parent, sealed in myrrh, to the Temple of the Sun at Heliopolis. The nest of cinnamon and the self-immolation came later, from Ovid and Pliny.",
         "ra": 14,
         "dec": -48,
         "fov": 35,
@@ -4404,7 +4404,7 @@
       },
       {
         "title": "The Ship Argo",
-        "caption": "Puppis is the stern of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille cut the ship into three in 1755: Puppis, Vela the sails, and Carina the keel.",
+        "caption": "Puppis is the stern of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille cut the ship into three in 1756: Puppis, Vela the sails, and Carina the keel.",
         "ra": 130,
         "dec": -48,
         "fov": 55,
@@ -4452,7 +4452,7 @@
     "steps": [
       {
         "title": "Orient yourself",
-        "caption": "Let’s find Pyxis, the Compass (la Boussole in the original French). Nicolas-Louis de Lacaille made it in the 1750s out of stars he took from Argo Navis, one of his 14 instrument constellations.",
+        "caption": "Let’s find Pyxis, the Compass (la Boussole in the original French). Nicolas-Louis de Lacaille made it in the 1750s out of stars he took from Argo Navis, one of the 14 constellations he added to the southern sky.",
         "random": true,
         "fov": 80,
         "photo": true,
@@ -4862,7 +4862,7 @@
       },
       {
         "title": "Lacaille’s workshop",
-        "caption": "Sculptor is one of 14 constellations Lacaille created in the 1750s, all named after instruments and tools of the arts and sciences. Its full original name was l’Atelier du Sculpteur, the Sculptor’s Workshop.",
+        "caption": "Sculptor is one of 14 constellations Lacaille created in the 1750s, all but one named after instruments and tools of the arts and sciences. Its full original name was l’Atelier du Sculpteur, the Sculptor’s Workshop.",
         "ra": 5,
         "dec": -33,
         "fov": 42.08,
@@ -5426,7 +5426,7 @@
       },
       {
         "title": "47 Tucanae",
-        "caption": "The fuzzy star against the edge of the SMC is 47 Tucanae, one of the largest and brightest globular clusters in the sky, a dense swarm of millions of stars some 13,000 light-years away. It has nothing to do with the SMC. The two just happen to lie along the same line of sight.",
+        "caption": "The fuzzy star against the edge of the SMC is 47 Tucanae, one of the largest and brightest globular clusters in the sky, a dense swarm of up to a million stars some 15,000 light-years away. It has nothing to do with the SMC. The two just happen to lie along the same line of sight.",
         "ra": 6.02,
         "dec": -72.08,
         "fov": 16,
@@ -5669,7 +5669,7 @@
       },
       {
         "title": "The Ship Argo",
-        "caption": "Vela is the sails of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille split it into three in 1755: Carina the keel, Vela, and Puppis the stern.",
+        "caption": "Vela is the sails of Argo Navis, the ship of Jason and the Argonauts and the largest of Ptolemy’s original 48 constellations. Nicolas-Louis de Lacaille split it into three in 1756: Carina the keel, Vela, and Puppis the stern.",
         "ra": 130,
         "dec": -48,
         "fov": 55,
