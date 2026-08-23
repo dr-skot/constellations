@@ -61,7 +61,15 @@ function startFindGuide(con) {
         lessonFindQuestion: !!_guideSaved.quiz?.lessonMode,
       }),
     });
-  }).catch(() => {});      // a failed load leaves the explorer exactly as it was
+  },
+  // Rejection handler as the SECOND argument to .then, not a .catch chained after it.
+  // A trailing .catch also swallows anything thrown by the callback above — and by then
+  // explore.quiz is nulled, both bars are hidden and the overlay is up, so a throw from
+  // guideStart would strand the learner on a half-transitioned screen with nothing
+  // logged. This way only a failed LOAD is absorbed, which is the case that genuinely
+  // means "leave the explorer exactly as it was"; a bug still surfaces, as it did before
+  // this file had any handler at all.
+  () => {});
 }
 
 // ── Public: close the guide ───────────────────────────────────────────────────

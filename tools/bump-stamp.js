@@ -76,19 +76,40 @@ function survey(pages) {
 // name the same two JSON files find-help.html fetches.
 function fetchedAtRuntime(pages) {
   const found = new Set();
+  const missed = [];
   const CALL = /stampedUrl\(\s*(['"])([^'"]+)\1/g;
+
+  // A path inside an inline <script> resolves against the PAGE, the way survey() already
+  // resolves src=/href=. A path inside a js/ module resolves against whatever document
+  // loaded it, and every such path here is written for a root-level page — so js/ stays
+  // root-relative. Getting this wrong was invisible: a stampedUrl('data.json') in
+  // perf/step.html means perf/data.json in the browser, existsSync(root/data.json) is
+  // false, and the asset was silently dropped from the fingerprint — the exact
+  // invisible-asset bug this function exists to prevent.
   const sources = [];
   for (const name of fs.readdirSync(path.join(root, 'js'))) {
-    if (name.endsWith('.js')) sources.push(`js/${name}`);
+    if (name.endsWith('.js')) sources.push({ rel: `js/${name}`, base: '.' });
   }
-  sources.push(...pages);
-  for (const rel of sources) {
+  for (const page of pages) sources.push({ rel: page, base: path.dirname(page) });
+
+  for (const { rel, base } of sources) {
     const src = fs.readFileSync(path.join(root, rel), 'utf8');
     let m;
     CALL.lastIndex = 0;
     while ((m = CALL.exec(src))) {
-      if (fs.existsSync(path.join(root, m[2]))) found.add(m[2]);
+      const target = path.join(base, m[2]).replace(/^\.\//, '');
+      if (fs.existsSync(path.join(root, target))) found.add(target);
+      else missed.push(`${rel}: stampedUrl('${m[2]}') → ${target}`);
     }
+  }
+
+  // Say so rather than dropping it. An asset that resolves to nothing is either a typo or
+  // a file that moved, and in both cases it is stamped in the URL while being hashed by
+  // nobody — so the stamp stops changing when it changes, which is the one failure the
+  // whole mechanism exists to rule out.
+  if (missed.length) {
+    console.log('Warning — stampedUrl() paths that resolve to no file, so nothing hashes them:');
+    for (const s of missed) console.log(`  ${s}`);
   }
   return [...found];
 }

@@ -279,6 +279,20 @@ async function main() {
           g.problems.join(' | '));
   }
 
+  // A stub is the shape of corruption the gate is least able to see: _guideFor treats a
+  // guide with no steps as "no guide", so it vanishes from the UI with nothing said. The
+  // gate walks raw entries rather than filtered ones precisely so it can notice, and it
+  // must not fall over on the way — a guide entry with no `steps` key at all used to
+  // crash the walk with "Cannot read properties of undefined".
+  {
+    check('a guide with no steps key is reported, not thrown on',
+          _guideProblems({ rotation: 0 }).some(p => /steps/.test(p)),
+          JSON.stringify(_guideProblems({ rotation: 0 })));
+    check('a guide stubbed with an empty steps array is reported',
+          _guideProblems({ steps: [] }).some(p => /steps/.test(p)),
+          JSON.stringify(_guideProblems({ steps: [] })));
+  }
+
   // The gate defers to step-display for the layer names rather than keeping a copy. A
   // hand-copied list is a validator that eventually lies about the module it defers to:
   // add a layer there and valid data starts drawing "key nothing reads".

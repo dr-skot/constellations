@@ -52,8 +52,17 @@ console.log(out.trim());
 // page; where the JavaScript happens to live does not change what a bare fetch costs.
 const BARE_FETCH = /fetch\(\s*(['"])(?!https?:|\/\/)([^'"]+)\1/g;
 
-// Every file that can run script in the browser: js/, plus the HTML entry points in the
-// same two directories bump-stamp.js treats as pages.
+// js/, plus the HTML files that are actually STAMPED ENTRY POINTS — the same test
+// bump-stamp.js's entryPoints() applies, which is a page containing '?v=', not merely a
+// page in one of the two directories.
+//
+// The distinction is not pedantic. fix.html, align-art.html, frame.html and
+// rift-editor.html are dev tools whose scripts carry no stamp at all. Demanding
+// stampedUrl() in one of them would be advice that does nothing: with no '?v=' on the
+// page, cacheStamp() returns '' and stampedUrl() hands back the bare path unchanged —
+// and fetchedAtRuntime() would not scan the file either, so the asset would still be in
+// nobody's fingerprint. A guard whose remedy is a no-op is the #83 failure mode wearing a
+// green tick, which is worse than not checking.
 function scannedSources() {
   const sources = [];
   for (const name of fs.readdirSync(path.join(root, 'js')).sort()) {
@@ -63,7 +72,9 @@ function scannedSources() {
     const abs = path.join(root, dir);
     if (!fs.existsSync(abs)) continue;
     for (const name of fs.readdirSync(abs).sort()) {
-      if (name.endsWith('.html')) sources.push(path.join(dir, name).replace(/^\.\//, ''));
+      if (!name.endsWith('.html')) continue;
+      const rel = path.join(dir, name).replace(/^\.\//, '');
+      if (fs.readFileSync(path.join(root, rel), 'utf8').includes('?v=')) sources.push(rel);
     }
   }
   return sources;

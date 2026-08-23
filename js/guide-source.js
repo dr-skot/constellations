@@ -161,6 +161,14 @@ function _guideProblems(guide) {
   if (guide.rotation != null && typeof guide.rotation !== 'number') {
     problems.push(`guide rotation is not a number: ${guide.rotation}`);
   }
+  // A stub is the corruption this gate is least able to see from the outside: _guideFor
+  // reads "no steps" as "no guide", so a guide someone meant to write and left empty just
+  // vanishes from the UI with nothing said anywhere. Reported here, where the raw entry is
+  // in hand. Also stops the walk below throwing on an entry with no steps key at all.
+  if (!Array.isArray(guide.steps) || !guide.steps.length) {
+    problems.push('guide has no steps — it will silently not exist');
+    return problems;
+  }
   guide.steps.forEach((step, i) => {
     for (const k of Object.keys(step)) {
       if (!known.includes(k)) problems.push(`#${i}: key nothing reads: ${k}`);
