@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btn-reset-progress').addEventListener('click', () => {
     if (!confirm('Erase all progress?')) return;
-    ['con-exposure', 'lesson-count'].forEach(k => localStorage.removeItem(k));
+    localStorage.removeItem('con-exposure');
     sessionStorage.removeItem('lesson-session');
     renderCourseMap();
   });

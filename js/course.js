@@ -121,8 +121,6 @@ function endLesson() {
     pct >= 0.5 ? 'Almost there!' : 'Keep going!';
   document.getElementById('res-stars').textContent =
     good ? '★★★' : pct >= 0.5 ? '★★' : '★';
-  const cnt = parseInt(localStorage.getItem('lesson-count') || '0') + 1;
-  localStorage.setItem('lesson-count', cnt);
   renderResultProgress();
   // The result screen has its own hash, so the address bar stops describing the
   // lesson that just ended. It is a transient route: a reload lands on the course
