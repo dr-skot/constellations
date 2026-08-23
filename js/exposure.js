@@ -43,10 +43,16 @@ function loadExposure() {
   } catch { return { _v2: true }; }
 }
 
-// Private. With the calibration seed adapter now inside this module, nothing outside needs
-// to write the record — and a public save is an invitation to do load-mutate-save at the
-// call site, which is the pattern this module exists to hold. Private, it is true by
-// construction that resetExposure() and the two recorders are the only ways in.
+// Internal by CONVENTION, not by construction — these are classic scripts sharing one
+// global scope, so the underscore is a marker, not a wall, and anything on the page can
+// still call this. What the convention is protecting is worth stating plainly, since
+// nothing enforces it:
+//
+// a caller that does `const e = loadExposure(); … ; _saveExposure(e)` holds the record
+// across whatever sits between those lines. Anything that writes in the gap — a recorder
+// firing from a click, an await, an animation frame — is then silently overwritten by the
+// stale copy. updateExposure(mutate) exists so the read and the write cannot be separated,
+// and it is the reason nothing outside this file needs a raw save at all.
 function _saveExposure(data) {
   _exposureStore().setItem(EXPOSURE_KEY, JSON.stringify(data));
 }
@@ -83,7 +89,16 @@ function _migrateExposure(old) {
     }
   }
   old._v2 = true;
-  _saveExposure(old);
+  // The persist is guarded separately from the read. This save sits inside loadExposure's
+  // try, which exists for JSON.parse — so without this, a store that can be READ but not
+  // WRITTEN (quota reached, Safari with storage blocked) drops a legacy learner into the
+  // parse-failure branch and hands back an EMPTY record. The next recordSeen would then
+  // write that emptiness over their entire history the moment a write succeeded.
+  //
+  // A failed write costs the persistence, never the data: the migrated record is returned
+  // either way, and the fold simply runs again next load. That is the in-memory-only
+  // behaviour rejected as the general case, which is exactly right as the failure case.
+  try { _saveExposure(old); } catch (e) { /* keep the record; re-fold next load */ }
   return old;
 }
 

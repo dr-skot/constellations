@@ -60,10 +60,14 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   `localStorage`**, unlike `guideStart`'s roll or `prepareGuide`'s origin, which are
   required — there any default was wrong, here the default is the real store.
 
-  **Saving is private.** No caller can hand the module a record it loaded earlier and might
-  have let go stale; `updateExposure` brackets an edit between a fresh read and the write.
-  That is what makes `resetExposure()` a guarantee rather than a convention — before it,
-  "Reset all progress" reached past everything to `localStorage.removeItem('con-exposure')`.
+  **Saving is internal by convention.** `_saveExposure` is underscore-marked, not hidden —
+  these are classic scripts in one global scope and nothing enforces it. The convention is
+  worth keeping because a caller that does `const e = loadExposure(); … ; _saveExposure(e)`
+  holds the record across whatever sits between those lines, and any write in that gap is
+  silently overwritten by the stale copy. `updateExposure(mutate)` exists so the read and
+  the write cannot be separated. Before this module, "Reset all progress" reached past
+  everything to `localStorage.removeItem('con-exposure')`; `resetExposure()` replaced that,
+  and no caller now names the key.
 
   Two behaviours worth knowing before changing anything here:
 

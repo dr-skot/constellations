@@ -69,6 +69,32 @@ const stored = store => JSON.parse(store.getItem('con-exposure'));
         stored(store).Ori['identify/diagram-ac'] === undefined);
 }
 
+// A failed write during migration must not cost the learner their record.
+//
+// The fold happens on read and persists as it goes, so the save sits inside the same try
+// that guards JSON.parse. A store that can be READ but not WRITTEN — quota reached, Safari
+// with storage blocked — then lands a legacy learner in the parse-failure branch, which
+// returns an empty record. The next recordSeen would persist that emptiness over their
+// whole history the moment a write succeeded. This is the one thing the app cannot
+// regenerate, so a write failure has to cost the persistence, never the data.
+{
+  const store = makeStore({
+    'con-exposure': JSON.stringify({
+      Ori: { 'identify/diagram': { seen: 3, correct: 2 }, 'identify/diagram-ac': { seen: 4, correct: 1 } },
+    }),
+  });
+  store.setItem = () => { throw new Error('QuotaExceededError'); };
+  initExposure({ store });
+  const got = loadExposure();
+
+  check('a v1 record survives a store that cannot be written',
+        !exposureIsEmpty(got), JSON.stringify(got));
+  check('and it is the migrated record, not the raw one',
+        got.Ori && got.Ori['identify/diagram'].seen === 7 &&
+        got.Ori['identify/diagram-ac'] === undefined,
+        JSON.stringify(got.Ori));
+}
+
 // A record already at v2 must not be re-folded, and must not be rewritten for nothing.
 {
   const store = makeStore({
