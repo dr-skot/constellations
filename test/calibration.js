@@ -28,7 +28,10 @@ const origLog = console.log, origTable = console.table;
 console.log = () => {}; console.table = () => {};
 
 const jsDir = path.join(__dirname, '..', 'js');
-for (const f of ['data.js', 'lesson.js', 'calibration.js', 'course.js', 'calibration-ui.js']) {
+// exposure.js before anything that reads the record, as index.html loads it. Not
+// injected: it falls back to the localStorage stub above, which is what this file wants.
+for (const f of ['data.js', 'exposure.js', 'lesson.js', 'calibration.js', 'course.js',
+                 'calibration-ui.js']) {
   vm.runInThisContext(fs.readFileSync(path.join(jsDir, f), 'utf8'), { filename: f });
 }
 
@@ -198,10 +201,11 @@ origLog('── seedExposureFromCalibration (adapter) ───────');
 {
   localStorage.clear();
   seedExposureFromCalibration(5);           // seed a high threshold first
-  const before = loadExposure();
   const sample = C.find(c => c.stars.length > 0 && c.diff <= 3);
-  before[sample.abbr]['identify/diagram'].correct = 9;   // simulate real practice
-  saveExposure(before);
+  // Simulate real practice on top of the seed. Through updateExposure rather than a raw
+  // save: saveExposure is private to js/exposure.js now, and the point of that is that a
+  // caller cannot hold a record across its own read and write.
+  updateExposure(d => { d[sample.abbr]['identify/diagram'].correct = 9; });
   seedExposureFromCalibration(3);           // lower re-run must not demote
   const after = loadExposure();
   check('adapter: re-run merges upward only (never demotes)',
@@ -270,8 +274,11 @@ origLog('── entry logic ─────────────────�
   check('firstRun: empty exposure → true', calibrationIsFirstRun() === true);
   seedExposureFromCalibration(3);   // now there is progress
   check('firstRun: seeded exposure → false', calibrationIsFirstRun() === false);
+  // The empty-but-migrated shape, written straight to the store rather than through a
+  // save the module no longer exposes. This is the shape a returning learner carries after
+  // the v1 fold ran and before they answered anything.
   localStorage.clear();
-  saveExposure({ _v2: true });      // the empty-but-migrated shape
+  localStorage.setItem('con-exposure', JSON.stringify({ _v2: true }));
   check('firstRun: {_v2:true} only → true', calibrationIsFirstRun() === true);
 }
 

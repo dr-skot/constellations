@@ -61,6 +61,10 @@ console.table = quiet;
 // ── Load source files ──────────────────────────────────────
 const jsDir = path.join(__dirname, '..', 'js');
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'data.js'), 'utf8'), { filename: 'data.js' });
+// The exposure record moved out of course.js into its own module. Deliberately not
+// injected: it falls back to the localStorage stub, so this file's nine direct writes to
+// 'con-exposure' stay visible to loadExposure exactly as before.
+vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'exposure.js'), 'utf8'), { filename: 'exposure.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'lesson.js'), 'utf8'), { filename: 'lesson.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'lesson-session.js'), 'utf8'), { filename: 'lesson-session.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'course.js'), 'utf8'), { filename: 'course.js' });

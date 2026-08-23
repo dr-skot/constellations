@@ -121,6 +121,25 @@ function recordCorrect(abbr, key) {
   _saveExposure(data);
 }
 
+// Apply an arbitrary edit as one load-modify-save. The caller supplies WHAT to change;
+// this owns the storage around it.
+//
+// The level check's seeding is the one user: it credits every constellation at or below
+// D*, which is level-check knowledge this module deliberately does not have. Moving that
+// adapter in here would have meant exposure.js calling applyCalibrationSeed — the record
+// importing from the level check, which is backwards. This inverts it: the level check
+// keeps its own rule and hands the edit in.
+//
+// It is not a public save in disguise. saveExposure took a record the caller had loaded
+// earlier and might have let go stale; this brackets the edit between a fresh read and the
+// write, so there is no window to hold a record across.
+function updateExposure(mutate) {
+  const data = loadExposure();
+  mutate(data);
+  _saveExposure(data);
+  return data;
+}
+
 // ── Erasing ──────────────────────────────────────────────────────────────────
 // A verb rather than a key. "Reset all progress" used to name 'con-exposure' itself, in a
 // file that owns nothing about the record.

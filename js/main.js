@@ -156,7 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btn-reset-progress').addEventListener('click', () => {
     if (!confirm('Erase all progress?')) return;
-    localStorage.removeItem('con-exposure');
+    // A verb on the record, not a storage key. This line used to name 'con-exposure'
+    // itself — the only writer of the learner's record that lived outside the code that
+    // owns it, so the module's guarantees were a convention rather than a fact.
+    // (The lesson session is a different key with a different owner; see #91.)
+    resetExposure();
     sessionStorage.removeItem('lesson-session');
     renderCourseMap();
   });

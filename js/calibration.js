@@ -104,13 +104,14 @@ function dStarFromProbeResults(results) {
   return computeDStar(byBand);
 }
 
-// Impure adapter: load the live exposure, seed it against the real catalog C,
-// and persist. Returns the written exposure. localStorage-only and session-safe;
-// a re-run merges upward (Math.max), so calling it again with a lower D* never
+// Impure adapter: seed the live exposure against the real catalog C. Returns the written
+// record. A re-run merges upward (Math.max), so calling it again with a lower D* never
 // demotes. A destructive reset is a separate settings action (out of scope).
+//
+// The load-modify-save belongs to js/exposure.js — updateExposure brackets the edit
+// between a read and a write, so nothing outside that module touches storage. What to
+// change stays here, because "which constellations does D* credit" is level-check
+// knowledge and the record has no business knowing what D* is.
 function seedExposureFromCalibration(dStar) {
-  const data = loadExposure();
-  applyCalibrationSeed(data, C, dStar);
-  saveExposure(data);
-  return data;
+  return updateExposure(data => applyCalibrationSeed(data, C, dStar));
 }

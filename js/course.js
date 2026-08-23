@@ -7,74 +7,10 @@
 // with the same id — so we accumulate into an array rather than overwriting.
 // All boundary draw and hit-test code must iterate over all rings.
 // ═══════════════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════════════
-// PER-CONSTELLATION EXPOSURE TRACKING
-// ═══════════════════════════════════════════════════════════
-
-// Storage: { abbr: { "identify/diagram": { seen, correct }, ... } }
-function loadExposure() {
-  try {
-    const raw = JSON.parse(localStorage.getItem('con-exposure')) || {};
-    if (!raw._v2) return migrateExposure(raw);
-    return raw;
-  } catch { return { _v2: true }; }
-}
-function saveExposure(data) { localStorage.setItem('con-exposure', JSON.stringify(data)); }
-
-// True when an exposure record holds no real progress — only the `_v2` version
-// marker (or nothing). Lives here, beside loadExposure, so the storage shape's one
-// private key stays owned by one module. Drives the calibration first-run offer (#34).
-function exposureIsEmpty(exposure) {
-  return Object.keys(exposure).filter(k => k !== '_v2').length === 0;
-}
-
-// One-time migration: fold old 16-tier keys into new 7-tier keys.
-function migrateExposure(old) {
-  const foldMap = {
-    'identify/diagram-ac': 'identify/diagram',
-    'identify/stars-ac':   'identify/stars',
-    'identify/photo-ac':   'identify/photo',
-    'find/diagram-nb':     'find/diagram',
-    'find/stars-nb':       'find/stars',
-    'navigate/diagram':    'find/diagram',
-    'navigate/stars':      'find/stars',
-    'navigate/photo':      'find/photo',
-    'navigate/photo-nb':   'find/photo-nb',
-  };
-  for (const abbr of Object.keys(old)) {
-    const e = old[abbr];
-    if (!e || typeof e !== 'object') continue;
-    for (const [src, dst] of Object.entries(foldMap)) {
-      if (!e[src]) continue;
-      if (!e[dst]) e[dst] = { seen: 0, correct: 0 };
-      e[dst].seen    += e[src].seen    || 0;
-      e[dst].correct += e[src].correct || 0;
-      delete e[src];
-    }
-  }
-  old._v2 = true;
-  saveExposure(old);
-  return old;
-}
-
-function recordSeen(abbr, key) {
-  const data = loadExposure();
-  if (!data[abbr]) data[abbr] = {};
-  if (!data[abbr][key]) data[abbr][key] = { seen: 0, correct: 0 };
-  data[abbr][key].seen++;
-  data[abbr][key].lastSeen = Date.now();
-  console.log(`[expo] seen ${abbr} ${key} → ${data[abbr][key].seen}`);
-  saveExposure(data);
-}
-
-function recordCorrect(abbr, key) {
-  const data = loadExposure();
-  if (!data[abbr]) data[abbr] = {};
-  if (!data[abbr][key]) data[abbr][key] = { seen: 0, correct: 0 };
-  data[abbr][key].correct++;
-  console.log(`[expo] correct ${abbr} ${key} → ${data[abbr][key].correct}`);
-  saveExposure(data);
-}
+// The learner's EXPOSURE record moved to js/exposure.js. It had been here — in the file
+// named for the course SCREEN — since before there was anywhere better, read from four
+// other files, with "Reset all progress" reaching past it to localStorage.removeItem.
+// This file is the course screen again: the map, the result screen, the detail popover.
 
 // ═══════════════════════════════════════════════════════════
 // LESSON FLOW

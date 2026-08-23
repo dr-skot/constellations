@@ -78,6 +78,10 @@ console.log = () => {}; console.table = () => {};
 // before course.js; it was added when the planner was extracted out of course.js.
 const jsDir = path.join(__dirname, '..', 'js');
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'data.js'), 'utf8'), { filename: 'data.js' });
+// The exposure record has its own module now; it used to live inside course.js. No
+// initExposure call here — it falls back to the localStorage stub set above, which is
+// exactly the in-memory record this capture wants.
+vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'exposure.js'), 'utf8'), { filename: 'exposure.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'lesson.js'), 'utf8'), { filename: 'lesson.js' });
 vm.runInThisContext(fs.readFileSync(path.join(jsDir, 'course.js'), 'utf8'), { filename: 'course.js' });
 
