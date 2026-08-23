@@ -11,7 +11,7 @@
 //   • computeDStar(correct)  — pure scorer → the known-difficulty threshold D*.
 //   • applyCalibrationSeed(exposure, catalog, dStar) — pure seeding core.
 //   • seedExposureFromCalibration(dStar) — the impure load→seed→save adapter,
-//     mirroring generateNextLesson()/recordSeen() in course.js.
+//     mirroring generateNextLesson() in course.js and recordSeen() in exposure.js.
 
 // ── D* scoring: best-separator / step-fit (decision #28) ───────────────────
 // Given the 8 per-band probe results (`correct[k]` = band k+1 answered right),

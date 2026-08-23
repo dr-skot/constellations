@@ -9,7 +9,7 @@
 
 // ── Entry points (ticket #34) ──────────────────────────────────────────────
 // True when the learner has no recorded progress yet — the first-run trigger.
-// exposureIsEmpty (course.js) owns knowledge of the stored shape.
+// exposureIsEmpty (js/exposure.js) owns knowledge of the stored shape.
 function calibrationIsFirstRun() {
   return exposureIsEmpty(loadExposure());
 }

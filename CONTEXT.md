@@ -49,8 +49,39 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   previous spacing.
 
 - **exposure** — the per-constellation practice record (`{abbr: {tierKey: {seen, correct,
-  lastSeen}}}`), persisted to localStorage by course.js. The input planLesson reads; never a
-  global it reaches for.
+  lastSeen}}}`), owned by `js/exposure.js`. The input planLesson reads; never a global it
+  reaches for.
+
+  It is the only thing this app stores that it cannot regenerate — a lesson, a reveal, a
+  guide position all rebuild from the catalog; what somebody has practised exists nowhere
+  else. Six verbs: `loadExposure()`, `recordSeen(abbr, tierKey)`,
+  `recordCorrect(abbr, tierKey)`, `updateExposure(mutate)`, `resetExposure()`, and the pure
+  `exposureIsEmpty(record)`. `initExposure({ store })` swaps the store; it **defaults to
+  `localStorage`**, unlike `guideStart`'s roll or `prepareGuide`'s origin, which are
+  required — there any default was wrong, here the default is the real store.
+
+  **Saving is private.** No caller can hand the module a record it loaded earlier and might
+  have let go stale; `updateExposure` brackets an edit between a fresh read and the write.
+  That is what makes `resetExposure()` a guarantee rather than a convention — before it,
+  "Reset all progress" reached past everything to `localStorage.removeItem('con-exposure')`.
+
+  Two behaviours worth knowing before changing anything here:
+
+  - **The v1→v2 fold runs on read and persists as it goes** — a write inside a getter, kept
+    deliberately. Migrating in memory only would re-fold on every load until the learner
+    happened to answer something, and leave the old 16-tier keys in their browser
+    indefinitely. A consequence: `resetExposure()` removes the key, and the next read puts
+    it back holding `{_v2: true}`, because reading an absent record migrates `{}`.
+  - **`recordSeen` stamps `lastSeen`; `recordCorrect` does not.** **heat** decays from
+    `lastSeen`, and the level check credits `correct` with no `lastSeen` on purpose so
+    seeded constellations stay hot in the review queue. A `recordCorrect` that stamped it
+    would quietly cool them.
+
+  Deliberately not owned: `applyCalibrationSeed` and `calibrationSeedTargets` stay in
+  `js/calibration.js`. Which constellations `D*` credits is level-check knowledge, and a
+  record that stores progress has no business knowing what `D*` is —
+  `seedExposureFromCalibration` is one line over `updateExposure`, so the load-modify-save
+  belongs to the record while the rule belongs to the level check.
 
 - **heat** — a constellation's review priority: staleness (time since `lastSeen`, exp. rise over
   a 4h half-life) weighted by tier urgency, plus jitter. Hotter = more overdue → sorted first

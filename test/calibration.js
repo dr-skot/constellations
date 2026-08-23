@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-// localStorage stub so course.js's loadExposure/saveExposure round-trip in-process.
+// localStorage stub so js/exposure.js's record round-trips in-process.
 const lsStore = {};
 global.localStorage = {
   getItem: k => lsStore[k] ?? null,
@@ -164,8 +164,11 @@ origLog('── seedExposureFromCalibration (adapter) ───────');
   const dStar = 3;
   const data = seedExposureFromCalibration(dStar);
 
-  // Persisted round-trip: what we return equals what loadExposure reads back.
-  check('adapter: persists to localStorage', JSON.stringify(loadExposure()) === JSON.stringify(data));
+  // That a write is readable back is a fact about the record, and lives in
+  // test/exposure.js. What this file asserts is that the SEED adapter went through it —
+  // the seeded record is what a later read returns, not something left in memory.
+  check('adapter: the seed it returns is the seed that was stored',
+    JSON.stringify(loadExposure()) === JSON.stringify(data));
 
   const renderableAtOrBelow = C.filter(c => c.stars.length > 0 && c.diff <= dStar);
   const renderableAbove     = C.filter(c => c.stars.length > 0 && c.diff >  dStar);
@@ -261,12 +264,9 @@ origLog('── flow helpers ─────────────────
 // ═══════════════════════════════════════════════════════════
 origLog('── entry logic ─────────────────────────────────');
 
-// exposureIsEmpty (course.js) — the shape-aware emptiness predicate first-run reads.
-{
-  check('exposureIsEmpty: {} → true', exposureIsEmpty({}) === true);
-  check('exposureIsEmpty: {_v2:true} → true', exposureIsEmpty({ _v2: true }) === true);
-  check('exposureIsEmpty: with a con → false', exposureIsEmpty({ _v2: true, Ori: {} }) === false);
-}
+// exposureIsEmpty itself is covered by test/exposure.js — it is a fact about the record,
+// and asserting it here is how the record ended up with no test of its own. What belongs
+// here is what the LEVEL CHECK does with the answer, which is calibrationIsFirstRun below.
 
 // calibrationIsFirstRun: true only when there is no recorded progress.
 {
