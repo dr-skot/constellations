@@ -67,13 +67,23 @@ function survey(pages) {
 // would be hashed by nobody: editing js/constellation-blurbs.json alone would leave the
 // stamp unchanged, the URL identical, and the cached copy in place. The stamp has to
 // cover what it versions or it is decoration.
-function fetchedAtRuntime() {
+//
+// HTML pages are scanned too, not just js/ (#84). A stampedUrl() call in an inline
+// <script> carries the stamp correctly but, if only js/ were scanned, its asset would be
+// in nobody's hash — so editing that asset alone would leave the stamp unchanged and the
+// URL identical, which is the very failure this function exists to prevent, one directory
+// over. It has been latent rather than live only because js/find-guide.js happened to
+// name the same two JSON files find-help.html fetches.
+function fetchedAtRuntime(pages) {
   const found = new Set();
-  const dir = path.join(root, 'js');
   const CALL = /stampedUrl\(\s*(['"])([^'"]+)\1/g;
-  for (const name of fs.readdirSync(dir)) {
-    if (!name.endsWith('.js')) continue;
-    const src = fs.readFileSync(path.join(dir, name), 'utf8');
+  const sources = [];
+  for (const name of fs.readdirSync(path.join(root, 'js'))) {
+    if (name.endsWith('.js')) sources.push(`js/${name}`);
+  }
+  sources.push(...pages);
+  for (const rel of sources) {
+    const src = fs.readFileSync(path.join(root, rel), 'utf8');
     let m;
     CALL.lastIndex = 0;
     while ((m = CALL.exec(src))) {
@@ -98,7 +108,7 @@ function fingerprint(files) {
 
 const pages = entryPoints();
 const { files: htmlFiles, stamps } = survey(pages);
-const files = [...new Set([...htmlFiles, ...fetchedAtRuntime()])].sort();
+const files = [...new Set([...htmlFiles, ...fetchedAtRuntime(pages)])].sort();
 const want = fingerprint(files);
 
 const wrong = pages.filter(p => stamps[p].length !== 1 || stamps[p][0] !== want);

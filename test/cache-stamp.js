@@ -44,14 +44,37 @@ console.log(out.trim());
 
 // A fetch of a same-origin path, not wrapped in stampedUrl(). Absolute URLs are left
 // alone: a third-party host has its own caching and no stamp of ours to carry.
+//
+// HTML is scanned as well as js/, added 2026-08-23 (#84). Scanning js/ alone is why #83
+// went unseen for as long as it did: find-help.html's two bare fetches sat in an inline
+// <script>, one directory up from anything this looked at, and the guard written to
+// prevent exactly that bug could not see the instance of it. A served page is a served
+// page; where the JavaScript happens to live does not change what a bare fetch costs.
 const BARE_FETCH = /fetch\(\s*(['"])(?!https?:|\/\/)([^'"]+)\1/g;
+
+// Every file that can run script in the browser: js/, plus the HTML entry points in the
+// same two directories bump-stamp.js treats as pages.
+function scannedSources() {
+  const sources = [];
+  for (const name of fs.readdirSync(path.join(root, 'js')).sort()) {
+    if (name.endsWith('.js')) sources.push(`js/${name}`);
+  }
+  for (const dir of ['.', 'perf']) {
+    const abs = path.join(root, dir);
+    if (!fs.existsSync(abs)) continue;
+    for (const name of fs.readdirSync(abs).sort()) {
+      if (name.endsWith('.html')) sources.push(path.join(dir, name).replace(/^\.\//, ''));
+    }
+  }
+  return sources;
+}
+
 const offenders = [];
-for (const name of fs.readdirSync(path.join(root, 'js')).sort()) {
-  if (!name.endsWith('.js')) continue;
-  const src = fs.readFileSync(path.join(root, 'js', name), 'utf8');
+for (const rel of scannedSources()) {
+  const src = fs.readFileSync(path.join(root, rel), 'utf8');
   let m;
   BARE_FETCH.lastIndex = 0;
-  while ((m = BARE_FETCH.exec(src))) offenders.push(`js/${name}: fetch('${m[2]}')`);
+  while ((m = BARE_FETCH.exec(src))) offenders.push(`${rel}: fetch('${m[2]}')`);
 }
 
 if (offenders.length) {
