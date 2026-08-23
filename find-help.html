@@ -203,9 +203,14 @@
 
     // ── Boot ──────────────────────────────────────────────────────────────────
     if (con) {
+      // stampedUrl (js/cache-stamp.js, loaded above) carries the page's ?v= onto a
+      // runtime fetch. bump-stamp.js only versions what the markup references as
+      // src=/href=, so a bare fetch here is invisible to it: no busting, and an iOS
+      // client keeps the old guides indefinitely — which is what happened to the
+      // fact-check pass (ff6ccfc, 2eda9ee). Same fence js/find-guide.js sits behind.
       Promise.all([
-        fetch('js/finding-guides.json').then(r => r.json()),
-        fetch('js/sky-objects.json').then(r => r.json()),
+        fetch(stampedUrl('js/finding-guides.json')).then(r => r.json()),
+        fetch(stampedUrl('js/sky-objects.json')).then(r => r.json()),
       ]).then(([guides, catalog]) => {
           const guide = guides[con.name];
           if (!guide || !guide.steps || !guide.steps.length) {
