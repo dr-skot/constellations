@@ -181,6 +181,27 @@ function saveLessonSession() {
   )));
 }
 
+// The one place that forgets a lesson (#91). Three callers reach it for three different
+// reasons — endLesson (finished), "Reset all progress" (erased), and the level check
+// handing off to a fresh lesson on a seeded exposure (superseded) — and each used to spell
+// it as its own `sessionStorage.removeItem` against a string literal, so the layer that
+// claims to own this key did not own it: five sites named the string, two were the owner.
+//
+// The three genuinely want the same operation, which was worth checking rather than
+// assuming: none carries a condition of its own, and all three are load-bearing rather
+// than defensive — the result screen's next-lesson button routes through
+// navigate('lesson'), so without endLesson's clear it would resume the lesson that just
+// finished. What the name buys is a home for the policy the removals don't have yet:
+// saveLessonSession already refuses a level check, and the clears refused nothing.
+//
+// STORAGE ONLY, deliberately. It does not touch session.run or session.questions — a
+// cleared session means "nothing to resume after a reload", not "no lesson in progress".
+// endLesson clears the key and then renders the result screen off the spent lesson still
+// in memory, so widening this would break it.
+function clearLessonSession() {
+  sessionStorage.removeItem('lesson-session');
+}
+
 function tryResumeLesson() {
   try {
     const restored = sessionFromJSON(JSON.parse(sessionStorage.getItem('lesson-session')), C);

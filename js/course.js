@@ -44,7 +44,10 @@ function startLesson() {
 
 function endLesson() {
   stopExploreQuiz();
-  sessionStorage.removeItem('lesson-session');
+  // The lesson is over, so there is nothing to resume — the result screen's next-lesson
+  // button goes through navigate('lesson'), which would otherwise resume the one that
+  // just finished. The spent lesson stays in memory; only the resumable copy goes.
+  clearLessonSession();
   document.getElementById('identify-breadcrumb').style.display = 'none';
   const n = session.questions.length, c = session.correct;
   const pct = n > 0 ? c / n : 0;

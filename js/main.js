@@ -163,12 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btn-reset-progress').addEventListener('click', () => {
     if (!confirm('Erase all progress?')) return;
-    // A verb on the record, not a storage key. This line used to name 'con-exposure'
-    // itself — the only writer of the learner's record that lived outside the code that
-    // owns it, so the module's guarantees were a convention rather than a fact.
-    // (The lesson session is a different key with a different owner; see #91.)
+    // Two verbs, two owners, no storage keys. Both lines used to name their key here —
+    // 'con-exposure' until js/exposure.js took it, 'lesson-session' until #91 — which made
+    // each module's guarantees a convention rather than a fact. Erasing progress erases
+    // both: the record of what has been practised, and any lesson still resumable.
     resetExposure();
-    sessionStorage.removeItem('lesson-session');
+    clearLessonSession();
     renderCourseMap();
   });
   document.getElementById('btn-continue').addEventListener('click', () => {

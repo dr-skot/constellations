@@ -191,6 +191,22 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   used to write a one-question session and mark it answered in order to borrow the reveal,
   which is what issue #73 removed.
 
+  **Three verbs, one owner** (`js/quiz.js`): `saveLessonSession()`, `tryResumeLesson()`,
+  `clearLessonSession()`. Nothing else names the key — three other files used to delete it
+  directly, so the layer that claimed to own `sessionStorage` for it did not (#91). The
+  clearers reach it for three different reasons — *finished* (`endLesson`), *erased*
+  ("Reset all progress"), *superseded* (a **level check** handing off to a fresh lesson on
+  a seeded **exposure**) — and all three want the same operation, which was checked rather
+  than assumed: none carries a condition, and each is load-bearing, since the result
+  screen's next-lesson button routes through `navigate('lesson')` and would otherwise
+  resume the lesson that just finished. What the name buys is somewhere for a clearing
+  policy to live, the way `saveLessonSession` already refuses anything but a lesson.
+
+  `clearLessonSession` is **storage only** — it leaves `session.run` and the questions
+  alone. A cleared session means "nothing to resume after a reload", not "no lesson in
+  progress": `endLesson` clears the key and then renders the result screen off the spent
+  lesson still in memory.
+
 ## Navigation
 
 The pipeline reads: *hash → **route** → **screen***. `js/screens.js` is the single owner;

@@ -128,8 +128,10 @@ function initCalibration() {
   document.getElementById('cal-skip').addEventListener('click', calSkip);
   document.getElementById('cal-start-lesson').addEventListener('click', () => {
     // Drop any stale in-flight lesson so this generates a fresh one on the seeded
-    // exposure (navigate('lesson') would otherwise resume a leftover session).
-    sessionStorage.removeItem('lesson-session');
+    // exposure (navigate('lesson') would otherwise resume a leftover session). The one
+    // caller clearing a session it does not own: a level check never writes one, so
+    // whatever is there belongs to a lesson the learner left to come here.
+    clearLessonSession();
     navigate('lesson');
   });
   // Re-enter the route rather than calling its action directly: same hash, so it
