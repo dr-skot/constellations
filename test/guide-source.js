@@ -1,0 +1,281 @@
+#!/usr/bin/env node
+// The guide source (issue #87, spec #82): the single home for loading, preparing and
+// validating a finding guide.
+//
+// fetch is injected at initGuideSource, so the whole module runs here against a fake —
+// the cache, the null path, the rejection path, the random fill, the roll and the schema
+// gate. That is the point of injecting it: before this, the pipeline lived half in
+// find-guide.js and half in an inline <script>, and neither half was reachable from node.
+
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
+
+const root = path.join(__dirname, '..');
+const jsDir = path.join(root, 'js');
+
+// data.js, projection.js and guide-renderer.js touch these at load.
+global.window = global;
+global.addEventListener = () => {};
+global.document = { getElementById: () => null, querySelector: () => null };
+global.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+global.sessionStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+
+const origLog = console.log; console.log = () => {};
+for (const f of ['cache-stamp.js', 'data.js', 'projection.js', 'guide-renderer.js',
+                 'guide-source.js']) {
+  vm.runInThisContext(fs.readFileSync(path.join(jsDir, f), 'utf8'), { filename: f });
+}
+console.log = origLog;
+
+const failures = [];
+const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
+  : (failures.push(name), console.log(`FAIL: ${name}` + (detail ? ` — ${detail}` : '')));
+
+// ── A fake sky ───────────────────────────────────────────────────────────────
+// Small enough to reason about, shaped like the real data: an opening `random` step
+// plus fixed ones, and a guide with no steps to exercise the "no guide" path.
+const GUIDES = {
+  Orion: {
+    rotation: -0.127,
+    steps: [
+      { random: true, fov: 90, title: 'Orient yourself', caption: 'Look up.' },
+      { ra: 83.8, dec: -1.2, fov: 30, title: 'The belt', caption: 'Three in a row.',
+        highlight: ['Mintaka'], diagram: true },
+      { ra: 88.8, dec: 7.4, fov: 20, rotation: 0.5, title: 'Betelgeuse', caption: 'Red.' },
+    ],
+  },
+  Lyra: {
+    steps: [
+      { random: true, fov: 90, title: 'Start', caption: 'Anywhere.' },
+      { ra: 279.2, dec: 38.8, fov: 25, title: 'Vega', caption: 'Bright.' },
+    ],
+  },
+  Antlia: { steps: [] },        // present but empty — no guide, as far as callers go
+};
+
+const CATALOG = { Mintaka: { ra: 83.0, dec: -0.3 } };
+
+const ORI = { name: 'Orion', abbr: 'Ori', ra: 83.0, dec: 5.0 };
+const LYR = { name: 'Lyra', abbr: 'Lyr', ra: 283.0, dec: 36.0 };
+const ANT = { name: 'Antlia', abbr: 'Ant', ra: 152.0, dec: -32.0 };
+const NOPE = { name: 'Nosuchopia', abbr: 'Nop', ra: 0, dec: 0 };
+
+const ORIGIN = { ra: 80, dec: 5 };
+
+// A fake fetch that counts calls and can be told to fail.
+function makeFetch({ fail = false } = {}) {
+  const calls = [];
+  const fn = url => {
+    calls.push(url);
+    if (fail) return Promise.reject(new Error('network down'));
+    const body = url.indexOf('finding-guides') !== -1 ? GUIDES : CATALOG;
+    return Promise.resolve({ json: () => Promise.resolve(body) });
+  };
+  fn.calls = calls;
+  return fn;
+}
+
+async function main() {
+  // ── The cache ──────────────────────────────────────────────────────────────
+  // Four questions, two fetches. The old find-guide.js kept _guidesCache for exactly
+  // this reason and the inline copy in find-help.html had no cache at all.
+  {
+    const fetch = makeFetch();
+    initGuideSource({ fetch });
+    await Promise.all([
+      hasGuide(ORI), hasGuide(LYR),
+      prepareGuide(ORI, { origin: ORIGIN }), skyCatalog(),
+    ]);
+    check('four questions cost two fetches', fetch.calls.length === 2,
+          `made ${fetch.calls.length}: ${fetch.calls.join(', ')}`);
+  }
+
+  // ── No guide, versus a load that failed ────────────────────────────────────
+  // Two outcomes, deliberately different: find-help.html already writes "No finding
+  // guide is available for this constellation yet" for one and "Could not load finding
+  // guide." for the other, and a single null would collapse them.
+  {
+    const fetch = makeFetch();
+    initGuideSource({ fetch });
+    check('hasGuide is false for a guide with no steps', (await hasGuide(ANT)) === false);
+    check('hasGuide is false for a constellation not in the data', (await hasGuide(NOPE)) === false);
+    check('hasGuide is true for a written guide', (await hasGuide(ORI)) === true);
+    check('prepareGuide resolves null for a guide with no steps',
+          (await prepareGuide(ANT, { origin: ORIGIN })) === null);
+    check('prepareGuide resolves null for a constellation not in the data',
+          (await prepareGuide(NOPE, { origin: ORIGIN })) === null);
+  }
+  {
+    const fetch = makeFetch({ fail: true });
+    initGuideSource({ fetch });
+    let rejected = false;
+    await prepareGuide(ORI, { origin: ORIGIN }).catch(() => { rejected = true; });
+    check('prepareGuide rejects when the load fails', rejected);
+  }
+
+  // A failed load must not be remembered as an answer. find-guide.js only ever assigned
+  // _guidesCache on success, so a guide tapped after a dropped connection tried again;
+  // caching the rejected promise would make the first failure permanent for the session.
+  {
+    let attempts = 0, failing = true;
+    const fetch = url => {
+      attempts++;
+      if (failing) return Promise.reject(new Error('network down'));
+      const body = url.indexOf('finding-guides') !== -1 ? GUIDES : CATALOG;
+      return Promise.resolve({ json: () => Promise.resolve(body) });
+    };
+    initGuideSource({ fetch });
+    await prepareGuide(ORI, { origin: ORIGIN }).catch(() => {});
+    failing = false;
+    const second = await prepareGuide(ORI, { origin: ORIGIN }).catch(() => null);
+    check('a failed load is retried rather than remembered', second !== null,
+          `second attempt still failed after ${attempts} fetch call(s)`);
+  }
+
+  // ── The prep ───────────────────────────────────────────────────────────────
+  // `origin` is the caller's answer to "where is the learner looking?" — the current
+  // view in-app, a random sky point standalone. The module never reaches for explore.P,
+  // which is the whole reason it runs here at all.
+  {
+    initGuideSource({ fetch: makeFetch() });
+    const g = await prepareGuide(ORI, { origin: ORIGIN });
+    const opener = g.steps[0];
+    check('the random step is filled from origin',
+          opener.ra === ORIGIN.ra && opener.dec === ORIGIN.dec,
+          `got ra=${opener.ra} dec=${opener.dec}`);
+    check('the random step keeps its own fov and copy',
+          opener.fov === 90 && opener.title === 'Orient yourself');
+    check('a fixed step is untouched',
+          g.steps[1].ra === 83.8 && g.steps[1].dec === -1.2 && g.steps[1].fov === 30);
+
+    const other = await prepareGuide(ORI, { origin: { ra: 200, dec: -40 } });
+    check('a second call fills from its own origin',
+          other.steps[0].ra === 200 && other.steps[0].dec === -40);
+  }
+
+  // The cached guide must survive being prepared. guideStart mutates nothing today, but
+  // find-guide.js copied defensively for a reason: the cache is shared by every caller,
+  // and one host writing through it would silently reshape the next host's guide.
+  {
+    initGuideSource({ fetch: makeFetch() });
+    const first = await prepareGuide(ORI, { origin: ORIGIN });
+    first.steps[1].ra = 999;
+    first.steps.push({ ra: 1, dec: 1, fov: 1 });
+    const second = await prepareGuide(ORI, { origin: ORIGIN });
+    check('mutating a prepared guide does not reach the cache',
+          second.steps.length === 3 && second.steps[1].ra === 83.8,
+          `got ${second.steps.length} steps, [1].ra=${second.steps[1].ra}`);
+  }
+
+  // ── The roll ───────────────────────────────────────────────────────────────
+  // Two branches: north-up at the constellation, plus the guide's own rotation where it
+  // sets one. Only 2 of the 88 real guides do (Orion and Ursa Major), so the fallback is
+  // the case that carries the corpus.
+  //
+  // The expected values come from js/guide-renderer.js's guideNorthUpR — the same
+  // primitive the old stanza called, not a re-derivation of it. What is being tested is
+  // the COMPOSITION this module took over, which is where the two hosts differed and
+  // where the ordering contract lived. The golden in test/guide-source-golden.json is the
+  // independent check on the whole corpus; #89 replays it.
+  {
+    initGuideSource({ fetch: makeFetch() });
+    const northUpOri = guideNorthUpR(raDecToVec(ORI.ra, ORI.dec));
+    const northUpLyr = guideNorthUpR(raDecToVec(LYR.ra, LYR.dec));
+
+    const lyr = await prepareGuide(LYR, { origin: ORIGIN });
+    check('with no guide rotation the roll is north-up at the constellation',
+          lyr.roll === northUpLyr, `got ${lyr.roll}, want ${northUpLyr}`);
+
+    const ori = await prepareGuide(ORI, { origin: ORIGIN });
+    check('a guide rotation is added to north-up',
+          ori.roll === northUpOri + (-0.127), `got ${ori.roll}, want ${northUpOri - 0.127}`);
+    check('the two branches actually differ', ori.roll !== northUpOri);
+  }
+
+  // ── The schema gate ────────────────────────────────────────────────────────
+  // The step schema is 15 fields and splits in two: step-display.js owns the nine that
+  // say WHAT TO SHOW, and nothing owned the six that say WHERE TO POINT and WHAT TO SAY.
+  // This gates those six, reporting `problems` the way makeStepDisplay does — same idiom,
+  // so a maintainer reads one kind of complaint, not two.
+  //
+  // It must NOT complain about step-display's own fields; a step legitimately carrying
+  // `highlight` and `diagram` is not malformed.
+  {
+    const BAD = {
+      Bad: {
+        steps: [
+          { random: true, fov: 90, title: 'a', caption: 'b' },
+          { ra: 1, dec: 2, fov: 3, title: 'c', caption: 'd', hilight: ['Rigel'] },  // typo
+          { dec: 2, fov: 3, title: 'e', caption: 'f' },                             // no ra
+        ],
+      },
+    };
+    initGuideSource({
+      fetch: url => Promise.resolve({
+        json: () => Promise.resolve(url.indexOf('finding-guides') !== -1 ? BAD : CATALOG),
+      }),
+    });
+    const g = await prepareGuide({ name: 'Bad', abbr: 'Bad', ra: 0, dec: 0 }, { origin: ORIGIN });
+    const joined = (g.problems || []).join(' | ');
+    check('a key nothing reads is reported', /hilight/.test(joined), joined);
+    check('a fixed step with no ra is reported', /\bra\b/.test(joined), joined);
+    check('the random step is not asked for an ra it does not carry',
+          !/#0/.test(joined), joined);
+  }
+  {
+    initGuideSource({ fetch: makeFetch() });
+    const g = await prepareGuide(ORI, { origin: ORIGIN });
+    check('a sound guide reports no problems', g.problems.length === 0,
+          g.problems.join(' | '));
+    check("step-display's own fields are not flagged here",
+          !/highlight|diagram/.test(g.problems.join(' ')));
+  }
+
+  // ── Warming ────────────────────────────────────────────────────────────────
+  // find-guide.js fired _loadGuides().catch(() => {}) at script load, so the first tap
+  // was instant. With fetch injected there IS no fetch at load time, so warming becomes
+  // something a host asks for — which is the better shape anyway: a module that opens a
+  // connection merely by being on the page cannot be quietly loaded by a test or a tool.
+  {
+    const fetch = makeFetch();
+    initGuideSource({ fetch });
+    await warmGuideSource();
+    check('warming loads the data', fetch.calls.length === 2, `${fetch.calls.length} calls`);
+    await hasGuide(ORI);
+    check('a question after warming costs no further fetch', fetch.calls.length === 2,
+          `${fetch.calls.length} calls`);
+  }
+  {
+    initGuideSource({ fetch: makeFetch({ fail: true }) });
+    let threw = false;
+    await warmGuideSource().catch(() => { threw = true; });
+    check('warming swallows a failed load', !threw);
+  }
+
+  // ── The fence ──────────────────────────────────────────────────────────────
+  // The whole reason this module exists is that one of the two hosts fetched outside the
+  // ?v= fence (#83). Assert the module is inside it, so the next person to touch these
+  // paths cannot quietly step back out.
+  {
+    const fetch = makeFetch();
+    initGuideSource({ fetch });
+    await warmGuideSource();
+    check('both fetches go through stampedUrl',
+          fetch.calls.every(u => u === stampedUrl(u)), fetch.calls.join(', '));
+    check('it fetches the guides and the catalog, and nothing else',
+          fetch.calls.length === 2 &&
+          fetch.calls.some(u => u.indexOf('js/finding-guides.json') === 0) &&
+          fetch.calls.some(u => u.indexOf('js/sky-objects.json') === 0),
+          fetch.calls.join(', '));
+  }
+
+  console.log('');
+  if (failures.length) {
+    console.log(`❌ ${failures.length} FAILURE(S): ${failures.join(', ')}`);
+    process.exit(1);
+  }
+  console.log('✅ ALL PASSED');
+}
+
+main().catch(e => { console.log('THREW:', e.message); process.exit(1); });
