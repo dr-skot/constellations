@@ -40,7 +40,12 @@ function snapshotRestored(r) {
     lessonLabel: r.lessonLabel,
     idx: r.idx,
     correct: r.correct,
-    lessonIdx: 0,          // adapter always sets this; capture snapshot has it too
+    // Frozen golden furniture, not a live field. The capture harness recorded the
+    // pre-#92 session shape, where resuming set `lessonIdx = 0`; it now sets a run
+    // instead, and sessionFromJSON never produced either. Re-capturing to drop this
+    // would throw away the golden's independence from the code under test for a
+    // cosmetic gain, so the constant stays and says why.
+    lessonIdx: 0,
     answered: false,
     questions: r.questions.map(q => ({
       abbr: q.con.abbr, type: q.type, mode: q.mode, answerMode: q.answerMode ?? null,
@@ -68,7 +73,11 @@ const { serializeCases, resumeCases } = buildScenarios(C);
 origLog('── Serialize golden ────────────────────────────');
 for (let i = 0; i < serializeCases.length; i++) {
   const c = serializeCases[i], g = golden.serialize[i];
-  // Adapter policy: only an active lesson (lessonIdx != null) persists.
+  // Adapter policy: only an active lesson persists. The scenarios carry the pre-#92
+  // spelling of that fact (`lessonIdx`), because they feed the frozen capture harness
+  // as well as this file; the app itself asks isLesson(session) now. Either way the
+  // policy under test is the adapter's, not this replica's — sessionToJSON is pure and
+  // never sees it.
   const produced = c.session.lessonIdx == null
     ? null
     : norm(sessionToJSON(c.session, c.revState, c.eqRevState));

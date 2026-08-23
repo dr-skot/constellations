@@ -307,7 +307,9 @@ check('questionKey: find/photo noBounds:true → find/photo-nb',
     { chosen: testCons[0], wasCorrect: true, rotation: 0.5, choices: [] },
     { chosen: testCons[1], wasCorrect: false, rotation: 1.2, choices: [] },
   ];
-  session.lessonIdx = 0;
+  // Only a lesson persists — saveLessonSession asks the run (#92), where it used to ask
+  // `lessonIdx != null`. This assignment is what makes the save below happen at all.
+  session.run = RUN_LESSON;
   session.lessonLabel = 'Test Lesson';
 
   saveLessonSession();
@@ -326,14 +328,23 @@ check('questionKey: find/photo noBounds:true → find/photo-nb',
   const origShowLQ = showLessonQuestion;
   showLessonQuestion = () => { resumedQuestion = session.questions[session.idx]; };
 
-  // Reset session to verify resume restores it
+  // Reset session to verify resume restores it — INCLUDING the run. Leaving the run set
+  // from the save above made every assertion below pass on a leftover value: deleting
+  // `session.run = RUN_LESSON` from tryResumeLesson kept the whole suite green while a
+  // resumed lesson silently stopped re-saving, so a second reload dropped the learner
+  // back to the first resume point and Quit went to the course instead of the result.
   session.questions = [];
   session.idx = 0;
   session.correct = 0;
   session.lessonLabel = '';
+  session.run = RUN_NONE;
 
   const resumed = tryResumeLesson();
   check('Save/resume: tryResumeLesson returns true', resumed === true);
+  // Resuming is what makes the restored session a lesson again; the payload carries no
+  // run of its own. Without this the session resumes but will not persist.
+  check('Save/resume: the resumed session is a lesson again', isLesson(session) === true,
+    `run is ${session.run}`);
   check('Save/resume: session.idx restored to 2', session.idx === 2);
   check('Save/resume: session.correct restored to 1', session.correct === 1);
   check('Save/resume: session.lessonLabel restored', session.lessonLabel === 'Test Lesson');

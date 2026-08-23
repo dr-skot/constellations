@@ -1,12 +1,44 @@
 // ═══════════════════════════════════════════════════════════
+// THE RUN  (issue #92)
+// ═══════════════════════════════════════════════════════════
+// Which run the learner is in, as ONE value on the session. A run is a lesson or a level
+// check, or there is no run in flight.
+//
+// This replaced two fields that were the same fact split in half — `session.calibration`
+// (a boolean, 9 sites, one of them reached by destructuring in quizScoreReadout, where no
+// grep for `session.calibration` finds it) and `session.lessonIdx` (6 sites, only ever 0
+// or null, read twice and both times as `== null` — a boolean wearing an index's name).
+// Every writer had to set both consistently: calBegin wrote `calibration = true` AND
+// `lessonIdx = null`, startLesson wrote `lessonIdx = 0` AND `calibration = false`, and
+// nothing enforced the pairing. Setting one and forgetting the other made a session that
+// was a lesson and a level check at once, which fails silently and expensively — a level
+// check that records exposures writes over the learner's record before D* has measured
+// them; a lesson that will not persist loses itself on the next reload.
+//
+// One field makes that unrepresentable rather than merely unwritten. Plain assignment,
+// no setter: unlike askQuestion, which is a transition with a rule, a run has no rule
+// beyond being one value at a time, and a setter that only assigns is noise.
+//
+// (There was a third spelling, `explore.quiz.lessonMode`, distinguishing a lesson's find
+// question from the explorer's practice quiz. The practice quiz had been unreachable
+// since March 2026, so it and the flag were deleted rather than carried.)
+const RUN_NONE        = 'none';
+const RUN_LESSON      = 'lesson';
+const RUN_LEVEL_CHECK = 'level-check';
+
+function runKind(session) { return session?.run || RUN_NONE; }
+function isLesson(session) { return runKind(session) === RUN_LESSON; }
+function isLevelCheck(session) { return runKind(session) === RUN_LEVEL_CHECK; }
+
+// ═══════════════════════════════════════════════════════════
 // QUIZ STATE
 // ═══════════════════════════════════════════════════════════
 let settings = { mode: 'diagram', diff: '1', hem: 'B' };
 let session = {
   questions: [], idx: 0, correct: 0,
   history: [], choices: [],
-  lessonIdx: null, lessonLabel: '', lastMastered: false,
-  calibration: false, calResults: []   // level-check mode (see js/calibration-ui.js)
+  run: RUN_NONE, lessonLabel: '', lastMastered: false,
+  calResults: []   // the level check's probe results (see js/calibration-ui.js)
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -79,8 +111,8 @@ function currentCon() {
 // A parameter rather than a fork, in the same spirit as #64: both flows ask this, so the
 // wording cannot later change for only one of them. The x / 8 counter and the progress
 // bar are untouched — position is honest, score is not.
-function quizScoreReadout({ correct, calibration }) {
-  return calibration ? 'Finding your level…' : `${correct} correct`;
+function quizScoreReadout({ correct, run }) {
+  return run === RUN_LEVEL_CHECK ? 'Finding your level…' : `${correct} correct`;
 }
 
 // ── The identify screen's panel ──────────────────────────────────────────────
@@ -141,7 +173,7 @@ function redrawIdentifyFigure() {
 // sessionStorage, the "only persist an active lesson" policy, and the DOM/toggle-
 // group application; sessionToJSON/sessionFromJSON own the payload shape.
 function saveLessonSession() {
-  if (session.lessonIdx == null) return;
+  if (!isLesson(session)) return;
   sessionStorage.setItem('lesson-session', JSON.stringify(sessionToJSON(
     session,
     typeof revState !== 'undefined' ? revState : undefined,
@@ -157,7 +189,10 @@ function tryResumeLesson() {
     session.idx = restored.idx;
     session.correct = restored.correct;
     session.history = restored.history;
-    session.lessonIdx = 0;
+    // The payload carries no run of its own — resuming is what makes this a lesson, and
+    // only a lesson is ever persisted (saveLessonSession refuses anything else). That is
+    // why LESSON_SESSION_V did not have to move for #92.
+    session.run = RUN_LESSON;
     session.lessonLabel = restored.lessonLabel;
     // No session.answered to reset — each question carries its own state, restored from
     // the payload (#77). Resetting it here is exactly how a reload used to land on an
@@ -192,7 +227,7 @@ function getDistractors(correct, pool) {
 function updatePrevBtn() {
   // Calibration has no "previous" (going back would let a probe be re-answered and
   // re-scored); the quiz keeps its normal Previous affordance.
-  if (session.calibration) { document.getElementById('btn-prev').classList.remove('show'); return; }
+  if (isLevelCheck(session)) { document.getElementById('btn-prev').classList.remove('show'); return; }
   document.getElementById('btn-prev').classList.toggle('show', session.idx > 0);
 }
 
@@ -221,7 +256,7 @@ function showLessonQuestion() {
   // right answer must not credit the constellation. It still transitions, because the
   // state describes the question, not the bookkeeping.
   const firstAsk = askQuestion(q);
-  if (firstAsk && !session.calibration) recordSeen(q.con.abbr, questionKey(q));
+  if (firstAsk && !isLevelCheck(session)) recordSeen(q.con.abbr, questionKey(q));
   // Persist the transition itself. Both branches below happen to save when they set
   // their own first-ask field (q.rotation, q.startP) — which is exactly the accidental
   // encoding #77 removes, so the state must not depend on it still being true.
@@ -306,11 +341,11 @@ function showLessonQuestion() {
     }
     // Re-rendering an answered question has to make the same depth decision the live
     // answer made below, including the level check's "no way out" (#64). It is above
-    // the calibration fork rather than below it, so the flag is asked here too —
+    // the level-check fork rather than below it, so the run is asked here too —
     // otherwise a re-shown probe would sprout the link the live one refuses. Not
     // reachable today (a probe's caption has no anchor, so nothing can start a detour
     // back to one), which is exactly the kind of fork the #64 Background warned about.
-    const revealLink = session.calibration ? false : 'blurb';
+    const revealLink = isLevelCheck(session) ? false : 'blurb';
     document.getElementById('feedback').innerHTML = hist.wasCorrect
       ? `✓ Correct! — ${conLabel(con, { link: revealLink })}`
       : `✗ That was ${conLabel(con, { link: revealLink })}`;
@@ -352,10 +387,10 @@ function handleAnswer(chosen, correct) {
     else if (b.textContent === chosen.name && chosen !== correct) b.classList.add('err');
   });
 
-  // Calibration level check: record the probe result (by diff band) for D* scoring —
-  // no exposure write, no reveal. Everything else (screen, choices, feedback) is the
-  // quiz's own, so the probe looks identical to an identify question.
-  if (session.calibration) {
+  // Level check: record the probe result (by diff band) for D* scoring — no exposure
+  // write, no reveal. Everything else (screen, choices, feedback) is the quiz's own, so
+  // the probe looks identical to an identify question.
+  if (isLevelCheck(session)) {
     const right = chosen === correct;
     session.calResults[session.idx] = { diff: correct.diff, correct: right };
     // session.correct still counts — the payoff panel reports it once at the end. It is
@@ -422,7 +457,7 @@ function handleAutocompleteAnswer() {
 }
 
 function nextLessonQuestion() {
-  if (session.calibration) {
+  if (isLevelCheck(session)) {
     session.idx++;
     if (session.idx >= session.questions.length) finishCalibrationProbes();
     else showLessonQuestion();

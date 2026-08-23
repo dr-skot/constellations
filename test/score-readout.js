@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // What the quiz header reports, for a lesson and for a level check (issue #67).
 //
-// The level check runs on the real quiz screen with a session.calibration flag rather
-// than a replica — the right call, and it stays. But it inherited the running score,
+// The level check runs on the real quiz screen under a level-check RUN rather than a
+// replica — the right call, and it stays. But it inherited the running score,
 // and a score is wrong here: a level check works by climbing PAST the point where you
 // stop being right, so computeDStar can find the band where misses start outnumbering
 // hits. Getting later probes wrong is the measurement working. The header said
@@ -28,11 +28,11 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
 // ── 1. A lesson still reports its score, unchanged ───────────────────────────
 {
   check('a fresh lesson reads zero',
-    quizScoreReadout({ correct: 0, calibration: false }) === '0 correct',
-    quizScoreReadout({ correct: 0, calibration: false }));
+    quizScoreReadout({ correct: 0, run: RUN_LESSON }) === '0 correct',
+    quizScoreReadout({ correct: 0, run: RUN_LESSON }));
   check('a lesson in progress counts up',
-    quizScoreReadout({ correct: 7, calibration: false }) === '7 correct',
-    quizScoreReadout({ correct: 7, calibration: false }));
+    quizScoreReadout({ correct: 7, run: RUN_LESSON }) === '7 correct',
+    quizScoreReadout({ correct: 7, run: RUN_LESSON }));
 }
 
 // ── 2. A level check reports no count at all ─────────────────────────────────
@@ -40,7 +40,7 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
 // the absence of the digits rather than one exact wording.
 {
   for (const correct of [0, 1, 5]) {
-    const out = quizScoreReadout({ correct, calibration: true });
+    const out = quizScoreReadout({ correct, run: RUN_LEVEL_CHECK });
     check(`a probe with ${correct} right shows no count`, !/\d/.test(out), out);
     check(`a probe with ${correct} right does not say "correct"`,
       !/correct/i.test(out), out);
@@ -52,7 +52,7 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
 // removes is a learner abandoning the check because it looks like failure. Naming the
 // activity is what makes the screen agree with the offer that preceded it.
 {
-  const out = quizScoreReadout({ correct: 0, calibration: true });
+  const out = quizScoreReadout({ correct: 0, run: RUN_LEVEL_CHECK });
   check('the probe header names the activity', out.trim().length > 0, JSON.stringify(out));
   check('and reads as placement, not scoring', /level/i.test(out), out);
 }
@@ -60,10 +60,10 @@ const check = (name, ok, detail) => ok ? console.log(`OK: ${name}`)
 // ── 4. One function, both flows ──────────────────────────────────────────────
 {
   check('the lesson and probe readouts genuinely differ',
-    quizScoreReadout({ correct: 3, calibration: false }) !==
-    quizScoreReadout({ correct: 3, calibration: true }));
+    quizScoreReadout({ correct: 3, run: RUN_LESSON }) !==
+    quizScoreReadout({ correct: 3, run: RUN_LEVEL_CHECK }));
   check('the count comes from the session, not a global',
-    quizScoreReadout({ correct: 11, calibration: false }) === '11 correct');
+    quizScoreReadout({ correct: 11, run: RUN_LESSON }) === '11 correct');
 }
 
 console.log('');

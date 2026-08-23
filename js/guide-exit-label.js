@@ -20,10 +20,11 @@
 //                   or null when none is in flight
 //   conName         for the viewer, the constellation it was showing — the viewer's
 //                   own name for itself, as its breadcrumb reads
-//   lessonFindQuestion  a lesson's find question is waiting underneath, from the
-//                   saved explorer quiz's `lessonMode`. Deliberately narrower than
-//                   that flag's name: the guide only saves a quiz when it opens over
-//                   the explorer, which is the one surface a find question uses.
+//   lessonFindQuestion  a lesson's find question is waiting underneath — the guide
+//                   saved an explorer quiz on its way in, and an explorer quiz is
+//                   only ever a lesson's find question (#92). This used to read the
+//                   `lessonMode` flag and be deliberately narrower than that flag's
+//                   name; the flag is gone and the two now say the same thing.
 function guideExitLabel({ route = null, conName = null, lessonFindQuestion = false } = {}) {
   // The unnamed-viewer case cannot be reached through the app — the router declines a
   // detour to an abbr it cannot resolve — but it is still a return to the viewer, so

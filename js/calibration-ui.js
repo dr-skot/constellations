@@ -38,14 +38,14 @@ function startCalibration() {
 
 // Offer → run the 8 shuffled probes on the REAL identify screen (#screen-identify), so a probe
 // is literally an identify/diagram question — same header, circle, choices, feedback.
-// We build a calibration `session` and hand off to showLessonQuestion; the identify
-// screen's answer/next handlers branch on session.calibration (js/quiz.js). lessonIdx:null
-// keeps saveLessonSession a no-op (a level check never persists as a resumable lesson);
-// rotation:0 keeps each probe north-up so it measures recognition fairly.
+// We build a level-check `session` and hand off to showLessonQuestion; the identify screen's
+// answer/next handlers ask the run (js/quiz.js). Naming the run also keeps saveLessonSession
+// a no-op — a level check never persists as a resumable lesson — which used to be a separate
+// `lessonIdx: null` this had to remember to write beside the flag (#92). rotation:0 keeps
+// each probe north-up so it measures recognition fairly.
 function calBegin() {
   const probes = shuffleInPlace(calibrationProbes(C));
-  session.calibration = true;
-  session.lessonIdx = null;
+  session.run = RUN_LEVEL_CHECK;
   session.questions = probes.map(con =>
     ({ con, type: 'identify', mode: 'diagram', answerMode: 'choice', rotation: 0 }));
   session.idx = 0;
@@ -60,7 +60,7 @@ function calBegin() {
 
 // Called from nextLessonQuestion (js/quiz.js) after the last probe: score → seed → payoff.
 function finishCalibrationProbes() {
-  session.calibration = false;
+  session.run = RUN_NONE;
   calFinish(dStarFromProbeResults(session.calResults));
 }
 

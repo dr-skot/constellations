@@ -70,10 +70,12 @@
     session.idx = 0;
     session.correct = 0;
     session.history = [];
-    session.lessonIdx = 0;
+    // The probe has to be a real LESSON, not just a session with questions in it: only a
+    // lesson persists, so saveLessonSession's per-question sessionStorage write is part of
+    // the workload the #80 stall probe is here to reproduce. This used to be two fields
+    // (lessonIdx = 0, calibration = false) that had to agree; it is one now (#92).
+    session.run = RUN_LESSON;
     session.lessonLabel = 'Perf run';
-    session.viewMode = false;
-    session.calibration = false;
     try { showLessonQuestion(); } catch (e) { return false; }
     return true;
   }

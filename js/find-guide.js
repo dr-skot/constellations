@@ -58,7 +58,7 @@ function startFindGuide(con) {
       exitLabel: guideExitLabel({
         route: detour?.name || null,
         conName: detourCon?.name || null,
-        lessonFindQuestion: !!_guideSaved.quiz?.lessonMode,
+        lessonFindQuestion: !!_guideSaved.quiz,
       }),
     });
   },

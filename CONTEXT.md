@@ -110,10 +110,37 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
 
 ## Session
 
+- **run** — which of the two things the learner is doing, as one value on the session:
+  `session.run` is `RUN_LESSON`, `RUN_LEVEL_CHECK`, or `RUN_NONE`, and `isLesson(session)` /
+  `isLevelCheck(session)` (js/quiz.js) are the two questions the app asks of it. A run is what
+  a **quiz** is *for*: it decides whether an ask records an **exposure**, whether the session
+  persists as a resumable **lesson session**, whether Previous exists, what the score slot
+  says, and what a reveal's **link depth** is.
+
+  It replaced two fields holding the same fact in halves — `session.calibration` and
+  `session.lessonIdx` (never an index: read twice, both as `== null`). Every writer had to set
+  both in agreement, and nothing enforced it; setting one and forgetting the other made a
+  session that was a lesson and a level check at once, which fails silently and expensively —
+  a level check that records exposures overwrites the learner's record before `D*` has
+  measured them. One field makes that unrepresentable rather than merely unwritten (#92).
+
+  **Starting a run is a plain assignment, deliberately.** Unlike `askQuestion`, which is a
+  transition with a rule, a run has no rule beyond being one value at a time, and a setter
+  that only assigns is noise. The one place that guards is the **level check**'s **exit
+  action**, which ends the run *only if* the run is the level check — while the fact lived in
+  two fields that exit cleared one of them and so could not end a lesson even in principle,
+  and the offer panel is reachable mid-lesson from the course map and Settings.
+
+  Not persisted: the **lesson session** payload carries no run, because only a lesson is ever
+  written and resuming is what makes the restored session a lesson. That is why `#92` moved no
+  payload version.
+
 - **quiz** — a sequence of **questions** put to the learner one at a time, carrying a score and
-  a progress readout. One of the things the learner can be doing, alongside the **level check**,
-  free explore, and the constellation viewer. A **lesson** is a quiz of 12 questions chosen by
-  **planLesson**; the explorer's practice quiz (`startExploreQuiz`) is a quiz that is not a lesson.
+  a progress readout. One of the things the learner can be doing, alongside free explore and the
+  constellation viewer. A **lesson** is a quiz of 12 questions chosen by **planLesson**; the
+  **level check** is a quiz of 8 probes that is not a lesson. Those are the only two — the
+  explorer once had a "Find It" practice quiz of its own, but its entry point was replaced by
+  the constellation search in March 2026 and the rest of it was deleted in #92.
 
 - **question** — one item of a quiz, of exactly two kinds. An **identify question** shows a
   figure and asks for its name (by choice buttons or autocomplete). A **find question** shows
@@ -151,15 +178,15 @@ Ubiquitous language for this codebase. Use these terms in code, comments, and re
   on the transition into `asked`** — `askQuestion(q)` returns true only for that transition, so
   a reload mid-question or a step back with Previous cannot record a second **exposure**. The
   old guard asked "no answer yet", which is true on every one of those renders (#77).
-  `explore.quiz.answered` survives, because the explorer's practice **quiz** is a quiz that is
-  not a **lesson** and has nothing else to keep it in; on the lesson path it is a projection of
-  the question's state, not an independent copy.
+  `explore.quiz.answered` survives as the explorer's own **projection** of that state — read by
+  the draw pass (`resolveDisplayFlags`) and the click/drag guards, which have no question in
+  reach — never as an independent copy. It used to survive for a second reason as well, that the
+  explorer's practice quiz had nothing else to keep it in; that quiz is gone (#92).
 
-- **lesson session** — the in-flight run of a lesson: the `session` object (questions, idx,
-  correct, history, lessonIdx/Label — no `answered`, see **question state**) plus the two
-  reveal-toggle states
-  `revState` (identify questions) and `eqRevState` (the explorer, so find questions and the
-  practice quiz). Persisted to `sessionStorage['lesson-session']`
+- **lesson session** — the in-flight lesson: the `session` object (questions, idx, correct,
+  history, lessonLabel, and the **run** — no `answered`, see **question state**) plus the two
+  reveal-toggle states `revState` (identify questions) and `eqRevState` (the explorer, so
+  find questions). Persisted to `sessionStorage['lesson-session']`
   so a page reload resumes mid-lesson. It belongs to lessons alone: the constellation viewer
   used to write a one-question session and mark it answered in order to borrow the reveal,
   which is what issue #73 removed.

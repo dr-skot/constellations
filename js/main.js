@@ -47,7 +47,7 @@ _loadBlurbs().catch(() => {});  // warm the cache so the first tap is instant
 function questionOnDisplay() {
   if (!session.questions[session.idx]) return false;
   return currentScreen() === 'identify'    // an identify question
-      || (currentScreen() === 'explore' && !!explore.quiz?.lessonMode);   // a find question
+      || (currentScreen() === 'explore' && !!explore.quiz);   // a find question
 }
 
 // The resume a question comes back by. One thunk for both kinds: showLessonQuestion picks
@@ -108,12 +108,19 @@ function _initRouting() {
       },
     },
     exits: {
-      // Leaving the level check leaves calibration mode, so a probe exit via a
-      // breadcrumb or the gear (not just Quit) can't leak the flag into a later
-      // lesson, which would skip exposure recording and re-seed from probe
-      // results. This replaces a preamble that cleared the flag on EVERY route
-      // change, because handleRoute could not tell a departure from an arrival.
-      calibration: () => { session.calibration = false; },
+      // Leaving the level check leaves level-check mode, so a probe exit via a
+      // breadcrumb or the gear (not just Quit) can't leak it into a later lesson,
+      // which would skip exposure recording and re-seed from probe results. This
+      // replaced a preamble that cleared the flag on EVERY route change, because
+      // handleRoute could not tell a departure from an arrival.
+      //
+      // The guard is load-bearing and was free before #92: while the run lived in two
+      // fields this cleared `calibration` and left `lessonIdx` alone, so it could not
+      // end a lesson even in principle. With one field an unconditional clear would —
+      // and the offer panel is reachable mid-lesson, from the course map's "Level check"
+      // button and from Settings. So this says only what it has always meant: leaving
+      // the level check ends the level check, and nothing else.
+      calibration: () => { if (isLevelCheck(session)) session.run = RUN_NONE; },
     },
   });
 
@@ -178,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('identify-autocomplete-submit')
     .addEventListener('click', handleAutocompleteAnswer);
   document.getElementById('btn-prev').addEventListener('click', () => {
-    if (session.calibration) return;   // no going back within a level check
+    if (isLevelCheck(session)) return;   // no going back within a level check
     if (session.idx > 0 && session.history[session.idx - 1]) {
       session.idx--;
       showLessonQuestion();
@@ -196,14 +203,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   document.getElementById('btn-quit').addEventListener('click', () => {
-    if (session.calibration) {         // quitting a level check → back to course, no seeding
-      navigate('course');              // leaving the route clears the flag (its exit action)
+    if (isLevelCheck(session)) {       // quitting a level check → back to course, no seeding
+      navigate('course');              // leaving the route ends the run (its exit action)
       return;
     }
     // Quit belongs to the quiz. It used to need a third meaning — "leave the viewer" —
     // because the viewer was showing on this screen (issue #73); the viewer leaves by
     // its own breadcrumb now.
-    if (session.lessonIdx != null) {
+    if (isLesson(session)) {
       endLesson();
     } else {
       navigate('course');
@@ -216,9 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initCalibration();
 
   // Explore mode
+  // Next belongs to whoever built the quiz, and only one thing does: a lesson's find
+  // question, which supplies onNext. The `else` arm here advanced the explorer's own
+  // practice quiz, deleted with it.
   document.getElementById('eq-next').addEventListener('click', () => {
-    if (explore.quiz?.onNext) explore.quiz.onNext();
-    else nextExploreQuestion();
+    explore.quiz?.onNext?.();
   });
   document.addEventListener('keydown', e => {
     if (currentScreen() !== 'explore') return;

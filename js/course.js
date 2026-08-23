@@ -33,9 +33,9 @@ function startLesson() {
   const { label, questions } = generateNextLesson();
   session.questions = questions;
   session.idx = 0; session.correct = 0;
-  session.history = []; session.lessonIdx = 0;
+  session.history = [];
+  session.run = RUN_LESSON;   // one assignment; it used to take two, in agreement
   session.lessonLabel = label;
-  session.calibration = false;
   document.getElementById('identify-breadcrumb-stage').textContent = label;
   document.getElementById('identify-breadcrumb').style.display = '';
   saveLessonSession();
@@ -154,8 +154,6 @@ function startLessonFindQuestion(q) {
     stageMode: q.mode,
     bounds: !q.noBounds,
     noBounds: !!q.noBounds,
-    lessonMode: true,
-    score: 0, total: 0,
     onNext: () => nextLessonQuestion()
   };
   document.getElementById('explore-free-hdr').style.display = 'none';

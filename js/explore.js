@@ -845,16 +845,16 @@ function drawExplore() {
   endDrawPhases();
 }
 
-function startExploreQuiz() {
-  const pool = C.filter(c => BOUNDS[c.abbr]).sort(() => Math.random() - 0.5);
-  explore.quiz = { pool, idx: 0, score: 0, total: 0, target: null, answered: false };
-  document.getElementById('explore-quiz-bar').style.display = '';
-  exState.bounds = true;
-  if (_exToggleGroups.layers) _exToggleGroups.layers.setValue('bounds', true);
-  localStorage.setItem('ex-bounds', '1');
-  nextExploreQuestion();
-}
-
+// The explorer's own "Find It" practice quiz used to start here — its own pool, its own
+// running score, its own next-question loop. Its button was replaced by the constellation
+// search in e6fc8c1 (March 2026) and startExploreQuiz() had no caller for five months. It
+// was already half-dead before that: it set no stageMode, so resolveDisplayFlags had long
+// since been drawing it with free-explore layers rather than a quiz's.
+//
+// So explore.quiz is now built in exactly ONE place — startLessonFindQuestion in course.js —
+// and means exactly one thing: a lesson's find question is on display. That is what let
+// `lessonMode` go; nothing is left for it to distinguish against. If a practice quiz is ever
+// wanted again it should be a route with a screen, not a second shape for this property.
 function stopExploreQuiz() {
   explore.quiz = null;
   document.getElementById('explore-quiz-bar').style.display = 'none';
@@ -865,26 +865,14 @@ function stopExploreQuiz() {
   requestExploreDraw();
 }
 
-function nextExploreQuestion() {
-  const q = explore.quiz;
-  if (q.idx >= q.pool.length) {
-    q.pool.sort(() => Math.random() - 0.5);
-    q.idx = 0;
-  }
-  q.target = q.pool[q.idx++];
-  q.answered = false;
-  document.getElementById('eq-target-name').textContent = q.target.name;
-  document.getElementById('eq-score').textContent = `${q.score} / ${q.total}`;
-  document.getElementById('eq-feedback').textContent = '';
-  document.getElementById('eq-feedback').className = '';
-  document.getElementById('eq-label-area').classList.remove('answered');
-  document.getElementById('eq-next').classList.remove('show');
-  document.getElementById('eq-reveal-controls').style.display = 'none';
-  requestExploreDraw();
-}
-
 function handleExploreClick(px, py) {
   const q = explore.quiz;
+  // This early return is also what keeps explore.js loadable by find-help.html, which does
+  // NOT load quiz.js: everything below the hit-test now reaches the lesson `session`
+  // unconditionally (it used to be behind `if (q.lessonMode)`), and `session` does not
+  // exist on that page. Nothing there can ever build an explore.quiz — course.js and
+  // find-guide.js are not loaded, and guide-renderer only ever nulls it — so the guard
+  // holds. A second host that DID build one would need quiz.js with it.
   if (!q || q.answered) return;
   const canvas = document.getElementById('explore-canvas');
   const W = canvas.width, H = canvas.height;
@@ -906,28 +894,23 @@ function handleExploreClick(px, py) {
   }) || null;
   const correct = clicked && clicked.abbr === q.target.abbr;
   q.answered = true;
-  // On the lesson path the question owns the fact; explore.quiz.answered is the
-  // explorer's own projection of it, for the draw pass and the click/drag guards. The
-  // practice quiz has no question behind it and keeps the flag as its only record (#77).
-  if (q.lessonMode) answerCurrentQuestion(session);
+  // The question owns the fact; explore.quiz.answered is the explorer's own projection of
+  // it, for the draw pass and the click/drag guards, which have no question in reach (#77).
+  answerCurrentQuestion(session);
   q.clicked = clicked;
-  q.total++;
-  if (correct) q.score++;
-  if (correct && q.lessonMode) {
+  if (correct) {
     session.correct++;
     recordCorrect(q.target.abbr, questionKey({
       type: 'find', mode: q.stageMode, noBounds: q.noBounds
     }));
   }
-  if (q.lessonMode) {
-    document.getElementById('find-hud-score').textContent = quizScoreReadout(session);
-  }
+  document.getElementById('find-hud-score').textContent = quizScoreReadout(session);
   const fb = document.getElementById('eq-feedback');
   // A find question's one step away is the finding guide for the RIGHT answer, opened
-  // directly (#64). The practice quiz is not a lesson and is not depth-limited, so it
-  // keeps the full modal.
+  // directly (#64) — never the full modal. That alternative was the practice quiz's, and
+  // it went with it; there is no longer a find question that is not a lesson's.
   fb.innerHTML = findAnswerCaption({
-    target: q.target, clicked, correct, link: q.lessonMode ? 'guide' : 'full',
+    target: q.target, clicked, correct, link: 'guide',
   });
   fb.className = correct ? 'correct' : 'wrong';
   document.getElementById('eq-label-area').classList.add('answered');
@@ -936,13 +919,11 @@ function handleExploreClick(px, py) {
   eqRevealReset(q.stageMode === 'photo');
   document.getElementById('eq-reveal-controls').style.display = '';
   // Save answer to lesson history for reload persistence
-  if (q.lessonMode) {
-    session.history[session.idx] = {
-      chosen: clicked, wasCorrect: correct,
-      exploreState: snapshotView(explore)
-    };
-    saveLessonSession();
-  }
+  session.history[session.idx] = {
+    chosen: clicked, wasCorrect: correct,
+    exploreState: snapshotView(explore)
+  };
+  saveLessonSession();
   requestExploreDraw();
 }
 
