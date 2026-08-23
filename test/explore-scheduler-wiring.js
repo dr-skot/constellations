@@ -355,7 +355,7 @@ function guideFlyingTo(to, frames) {
   guideStop();                                   // no leftover guide from the case before
   for (let i = 0; i < 10 && rafQueue.length; i++) { clock += 16; runFrames(clock); }
   clock += 1000;
-  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG);
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG, { roll: 0 });
   guideGoTo(to);
   for (let i = 0; i < frames; i++) { clock += 16; runFrames(clock); }
 }
@@ -486,7 +486,7 @@ function guideFlyingTo(to, frames) {
   guideFlyingTo(1, 2);                             // session A, flight in the air
   guideStop();                                     // torn down, no frame run
   clock += 16;
-  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG);
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG, { roll: 0 });
   guideGoTo(1);                                    // session B: stops A, fires A's abort
   const nav = navShown();
   check('a dead session\'s abort does not un-hide the next guide\'s nav',
@@ -537,7 +537,7 @@ function guideFlyingTo(to, frames) {
 {
   guideStop();
   guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG,
-             { exitLabel: '← Back to lesson' });
+             { roll: 0, exitLabel: '← Back to lesson' });
   check('the exit carries the caller\'s label',
     el('fg-back-btn').textContent === '← Back to lesson', el('fg-back-btn').textContent);
 
@@ -549,10 +549,52 @@ function guideFlyingTo(to, frames) {
   // A guide started without one leaves whatever the markup says — the find-help.html case.
   el('fg-back-btn').textContent = 'untouched';
   guideStop();
-  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG);
+  guideStart(GUIDE_STEPS.map(s => Object.assign({}, s)), CATALOG, { roll: 0 });
   check('a guide with no label of its own leaves the button alone',
     el('fg-back-btn').textContent === 'untouched', el('fg-back-btn').textContent);
   land();
+}
+
+// ── 24. The default roll is told to the guide, not sniffed off explore.R ─────
+// A step without a `rotation` of its own falls through to the guide's default roll
+// (_stepR). That default used to be `explore.R` as it stood at the instant guideStart
+// was called, so every caller had to assign explore.R first — an ordering contract
+// between two modules, written down nowhere, and the reason both hosts carried an
+// identical roll stanza immediately above their guideStart call.
+//
+// It is not an edge case: 270 of the 338 real steps have no rotation of their own,
+// across 53 guides where every step falls through. Note that GUIDE_STEPS above cannot
+// catch this — all three set `rotation: 0` — which is how the contract stayed invisible.
+{
+  stopCameraAnimation();
+  guideStop();
+  const BARE = [{ ra: 80, dec: 5, fov: 60, title: 'Bare', caption: 'No rotation of its own.' }];
+  const ROLL = 0.5;
+
+  explore.R = 1.234;            // the value the old code would have captured
+  guideStart(BARE.map(s => Object.assign({}, s)), CATALOG, { roll: ROLL });
+  land();
+  check('a step with no rotation of its own takes the roll guideStart was told',
+    explore.R === ROLL, `R ${explore.R}, wanted ${ROLL}`);
+
+  // And the ordering contract is gone: whatever explore.R happens to be on the way in
+  // cannot change where the guide lands.
+  guideStop();
+  explore.R = -2.5;
+  guideStart(BARE.map(s => Object.assign({}, s)), CATALOG, { roll: ROLL });
+  land();
+  check('and explore.R on the way in no longer decides it',
+    explore.R === ROLL, `R ${explore.R}, wanted ${ROLL}`);
+
+  // A step that DOES carry its own rotation still wins over the guide's default.
+  guideStop();
+  const OWN = [{ ra: 80, dec: 5, fov: 60, rotation: 0.25, title: 'Own', caption: 'Has one.' }];
+  guideStart(OWN.map(s => Object.assign({}, s)), CATALOG, { roll: ROLL });
+  land();
+  const want = guideNorthUpR(raDecToVec(80, 5)) + 0.25;
+  check('a step with its own rotation still overrides the default roll',
+    explore.R === want, `R ${explore.R}, wanted ${want}`);
+  guideStop();
 }
 
 console.log(failures.length ? `\n${failures.length} FAILED` : '\nall passed');

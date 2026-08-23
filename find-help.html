@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Finding … — Sky Trainer</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/base.css?v=29ba41b4a9d1">
-  <link rel="stylesheet" href="css/explore.css?v=29ba41b4a9d1">
+  <link rel="stylesheet" href="css/base.css?v=76e3496e3ba6">
+  <link rel="stylesheet" href="css/explore.css?v=76e3496e3ba6">
   <style>
     header {
       display: flex;
@@ -145,24 +145,24 @@
        a fresh guide-renderer.js gets a page that loads and then throws on the first
        camera flight. The stamp makes the set arrive or not arrive together. Bump it
        with index.html's whenever app JS changes. -->
-  <script src="js/cache-stamp.js?v=29ba41b4a9d1"></script>
-  <script src="js/data.js?v=29ba41b4a9d1"></script>
-  <script src="js/lesson.js?v=29ba41b4a9d1"></script>
+  <script src="js/cache-stamp.js?v=76e3496e3ba6"></script>
+  <script src="js/data.js?v=76e3496e3ba6"></script>
+  <script src="js/lesson.js?v=76e3496e3ba6"></script>
   <!-- All four figure sets, as in index.html: the Figures setting applies wherever
        figures are drawn, and this page reads it at boot. -->
-  <script src="js/stellarium-data.js?v=29ba41b4a9d1"></script>
-  <script src="js/ford-data.js?v=29ba41b4a9d1"></script>
-  <script src="js/rey-data.js?v=29ba41b4a9d1"></script>
-  <script src="js/diagram-sources.js?v=29ba41b4a9d1"></script>
-  <script src="js/draw-phases.js?v=29ba41b4a9d1"></script>
-  <script src="js/render-scheduler.js?v=29ba41b4a9d1"></script>
-  <script src="js/projection.js?v=29ba41b4a9d1"></script>
-  <script src="js/reveal.js?v=29ba41b4a9d1"></script>
-  <script src="js/render.js?v=29ba41b4a9d1"></script>
-  <script src="js/explore-gl.js?v=29ba41b4a9d1"></script>
-  <script src="js/explore.js?v=29ba41b4a9d1"></script>
-  <script src="js/step-display.js?v=29ba41b4a9d1"></script>
-  <script src="js/guide-renderer.js?v=29ba41b4a9d1"></script>
+  <script src="js/stellarium-data.js?v=76e3496e3ba6"></script>
+  <script src="js/ford-data.js?v=76e3496e3ba6"></script>
+  <script src="js/rey-data.js?v=76e3496e3ba6"></script>
+  <script src="js/diagram-sources.js?v=76e3496e3ba6"></script>
+  <script src="js/draw-phases.js?v=76e3496e3ba6"></script>
+  <script src="js/render-scheduler.js?v=76e3496e3ba6"></script>
+  <script src="js/projection.js?v=76e3496e3ba6"></script>
+  <script src="js/reveal.js?v=76e3496e3ba6"></script>
+  <script src="js/render.js?v=76e3496e3ba6"></script>
+  <script src="js/explore-gl.js?v=76e3496e3ba6"></script>
+  <script src="js/explore.js?v=76e3496e3ba6"></script>
+  <script src="js/step-display.js?v=76e3496e3ba6"></script>
+  <script src="js/guide-renderer.js?v=76e3496e3ba6"></script>
   <script>
     // Honour the learner's Figures choice before anything draws. There is no
     // switcher on this page, so this is the only read.
@@ -236,8 +236,10 @@
       const startDec = (Math.random() * 2 - 1) * 60;
       steps.forEach(s => { if (s.random) { s.ra = startRa; s.dec = startDec; } });
 
+      // Handed to guideStart below rather than staged in explore.R (#88): the roll a
+      // step falls back to when it declares no rotation of its own.
       const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
-      explore.R = guide.rotation != null ? defaultR + guide.rotation : defaultR;
+      const roll = guide.rotation != null ? defaultR + guide.rotation : defaultR;
 
       document.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') document.getElementById('fg-btn-next').click();
@@ -249,6 +251,7 @@
       });
 
       guideStart(steps, catalog, {
+        roll,
         stepKey: `find-help-step-${con.abbr}`,
         onLastNext: () => { guideStop(); window.location.href = 'find-help.html'; },
       });

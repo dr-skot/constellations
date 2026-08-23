@@ -54,8 +54,12 @@ function startFindGuide(con) {
     const steps = guide.steps.map(s => Object.assign({}, s));
     const { ra: curRa, dec: curDec } = vecToRaDec(explore.P);
     steps.forEach(s => { if (s.random) { s.ra = curRa; s.dec = curDec; } });
+    // The guide's default roll, for steps that declare no rotation of their own. It is
+    // handed to guideStart now rather than staged in explore.R immediately beforehand
+    // (#88) — that was an ordering contract nothing wrote down, and 270 of the 338 steps
+    // in the corpus depend on it. guideGoTo sets explore.R for the step it lands on.
     const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
-    explore.R = guide.rotation != null ? defaultR + guide.rotation : defaultR;
+    const roll = guide.rotation != null ? defaultR + guide.rotation : defaultR;
 
     // Two places the exit can return to, and they are asked in the order exitFindGuide
     // takes them: a detour in flight wins, otherwise it is whatever the saved state puts
@@ -65,6 +69,7 @@ function startFindGuide(con) {
     const origin = detourOrigin();
     const originCon = origin?.name === 'view' ? C.find(c => c.abbr === origin.param) : null;
     guideStart(steps, _catalogCache, {
+      roll,
       onLastNext: exitFindGuide,
       exitLabel: guideExitLabel({
         route: origin?.name || null,

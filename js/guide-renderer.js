@@ -480,7 +480,20 @@ function guideGoTo(i, immediate) {
   }
 }
 
+// `roll` is REQUIRED: the roll a step falls back to when it declares no rotation of its
+// own, which is 270 of the 338 steps in the corpus. It used to be read off explore.R at
+// exactly this moment, so every caller had to assign explore.R immediately beforehand —
+// an ordering contract between two modules that was written down nowhere, and the reason
+// both hosts carried an identical roll stanza above their guideStart call.
+//
+// No `?? explore.R` fallback on purpose. A fallback keeps the old timing-dependent
+// behaviour alive for whoever forgets, and the whole point is that forgetting should be
+// impossible rather than quiet. Throwing is how a signature is enforced in a language
+// that does not enforce one: two call sites, both loud, both immediate.
 function guideStart(steps, catalog, options = {}) {
+  if (typeof options.roll !== 'number') {
+    throw new Error('guideStart: options.roll is required (a number) — see issue #88');
+  }
   _gs = { steps, catalog, idx: -1, animating: false,
           flight: 0,                // which flight is in the air (see _guideFlightSeq)
           stepDisplay: null,        // the full display of steps[idx]
@@ -488,7 +501,7 @@ function guideStart(steps, catalog, options = {}) {
           overlaysHidden: false,    // the learner's Hide overlays toggle
           onLastNext: options.onLastNext || null, stepKey: options.stepKey || null,
           exitLabel: options.exitLabel || null,   // what the exit says, if the caller says
-          defaultR: explore.R };
+          defaultR: options.roll };
   _guideAddListeners();
   const saved = _gs.stepKey ? parseInt(localStorage.getItem(_gs.stepKey), 10) : NaN;
   guideGoTo((!isNaN(saved) && saved >= 0 && saved < steps.length) ? saved : 0, true);
