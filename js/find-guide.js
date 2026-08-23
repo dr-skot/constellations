@@ -1,33 +1,21 @@
 // js/find-guide.js
-// In-app finding guide — invoked from a find/navigate challenge
+// The in-app finding-guide SESSION: how a guide is entered, what it interrupts, and where
+// leaving it goes.
+//
+// Loading, preparing and validating a guide is not here any more — that is the GUIDE
+// SOURCE (js/guide-source.js, spec #82). This file used to open-code the pipeline, and
+// find-help.html open-coded it a second time with its fetches outside the ?v= fence (#83).
+// What is left is the part that is genuinely about this app rather than about the data:
+// the chrome the guide takes over, the quiz it suspends, and the detour it may be riding.
 
-let _guidesCache  = null;
-let _catalogCache = null;
-let _guideSaved   = null;   // saved quiz state while guide is open
-
-// ── Data ────────────────────────────────────────────────────────────────────
-function _loadGuides() {
-  if (_guidesCache) return Promise.resolve(_guidesCache);
-  return Promise.all([
-    fetch(stampedUrl('js/finding-guides.json')).then(r => r.json()),
-    fetch(stampedUrl('js/sky-objects.json')).then(r => r.json()),
-  ]).then(([guides, catalog]) => {
-    _guidesCache  = guides;
-    _catalogCache = catalog;
-    return guides;
-  });
-}
-
-// Pre-fetch in the background so the first tap is instant
-_loadGuides().catch(() => {});
+let _guideSaved = null;   // saved quiz + chrome + view while a guide is open
 
 // ── Public: show/hide help button based on guide availability ────────────────
 function updateFindHelpBtn(con) {
   const btn = document.getElementById('find-help-btn');
   btn.style.display = 'none';
-  _loadGuides().then(guides => {
-    btn.style.display = (guides[con.name]?.steps?.length) ? 'block' : 'none';
-  }).catch(() => {});
+  hasGuide(con).then(exists => { btn.style.display = exists ? 'block' : 'none'; })
+               .catch(() => {});
 }
 
 // ── Public: open the guide ───────────────────────────────────────────────────
@@ -35,9 +23,15 @@ function updateFindHelpBtn(con) {
 // flight (the guide was launched from a quiz question or a level-check probe, see
 // issue #35), ending it returns them. Otherwise the explorer is restored.
 function startFindGuide(con) {
-  _loadGuides().then(guides => {
-    const guide = guides[con.name];
-    if (!guide?.steps?.length) return;
+  // Where the learner is looking, read at the moment they asked rather than whenever the
+  // data lands. Every guide opens on a `random` step, which means "start from here"; the
+  // sky they were looking at when they tapped is the one they meant. The old code read
+  // explore.P after the load resolved, which is the same thing whenever the guides are
+  // already warm — which is always, in practice — and the wrong thing if they are not.
+  const origin = vecToRaDec(explore.P);
+
+  Promise.all([prepareGuide(con, { origin }), skyCatalog()]).then(([guide, catalog]) => {
+    if (!guide) return;                       // no guide written for this constellation
 
     const quizBar = document.getElementById('explore-quiz-bar');
     const navRow  = document.getElementById('find-nav-row');
@@ -51,33 +45,23 @@ function startFindGuide(con) {
     navRow.style.display  = 'none';
     document.getElementById('find-guide-overlay').style.display  = '';
 
-    const steps = guide.steps.map(s => Object.assign({}, s));
-    const { ra: curRa, dec: curDec } = vecToRaDec(explore.P);
-    steps.forEach(s => { if (s.random) { s.ra = curRa; s.dec = curDec; } });
-    // The guide's default roll, for steps that declare no rotation of their own. It is
-    // handed to guideStart now rather than staged in explore.R immediately beforehand
-    // (#88) — that was an ordering contract nothing wrote down, and 270 of the 338 steps
-    // in the corpus depend on it. guideGoTo sets explore.R for the step it lands on.
-    const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
-    const roll = guide.rotation != null ? defaultR + guide.rotation : defaultR;
-
     // Two places the exit can return to, and they are asked in the order exitFindGuide
     // takes them: a detour in flight wins, otherwise it is whatever the saved state puts
     // back — a lesson's find question if "? Help" opened the guide over one, free
     // explore if nothing did. The wording itself is a pure decision and lives in
     // js/guide-exit-label.js; this only gathers the facts it needs.
-    const origin = detourOrigin();
-    const originCon = origin?.name === 'view' ? C.find(c => c.abbr === origin.param) : null;
-    guideStart(steps, _catalogCache, {
-      roll,
+    const detour = detourOrigin();
+    const detourCon = detour?.name === 'view' ? C.find(c => c.abbr === detour.param) : null;
+    guideStart(guide.steps, catalog, {
+      roll: guide.roll,
       onLastNext: exitFindGuide,
       exitLabel: guideExitLabel({
-        route: origin?.name || null,
-        conName: originCon?.name || null,
+        route: detour?.name || null,
+        conName: detourCon?.name || null,
         lessonFindQuestion: !!_guideSaved.quiz?.lessonMode,
       }),
     });
-  });
+  }).catch(() => {});      // a failed load leaves the explorer exactly as it was
 }
 
 // ── Public: close the guide ───────────────────────────────────────────────────

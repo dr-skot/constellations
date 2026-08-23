@@ -331,6 +331,41 @@ async function main() {
           fetch.calls.join(', '));
   }
 
+  // ── The golden: the whole real corpus, byte for byte ───────────────────────
+  // test/guide-source-golden.json was captured BEFORE this module existed, from a verbatim
+  // transcription of the prep stanza the two hosts open-coded (#86). Replaying it here is
+  // what makes the move in #89 a proof rather than a claim: if the module prepares all 88
+  // guides exactly as the old duplicated code did, moving the hosts onto it cannot change
+  // what a learner sees.
+  //
+  // Fed the REAL data, and the same pinned origin the capture recorded — so a `random`
+  // opener that fills differently shows up as a diff rather than as a coincidence.
+  {
+    const golden = JSON.parse(fs.readFileSync(path.join(root, 'test/guide-source-golden.json'), 'utf8'));
+    const realGuides  = JSON.parse(fs.readFileSync(path.join(jsDir, 'finding-guides.json'), 'utf8'));
+    const realCatalog = JSON.parse(fs.readFileSync(path.join(jsDir, 'sky-objects.json'), 'utf8'));
+    initGuideSource({
+      fetch: url => Promise.resolve({
+        json: () => Promise.resolve(url.indexOf('finding-guides') !== -1 ? realGuides : realCatalog),
+      }),
+    });
+
+    const diffs = [];
+    for (const want of golden.guides) {
+      const con = C.find(c => c.abbr === want.abbr);
+      if (!con) { diffs.push(`${want.name}: not in the catalog`); continue; }
+      const got = await prepareGuide(con, { origin: golden.origin });
+      if (!got) { diffs.push(`${want.name}: prepareGuide returned null`); continue; }
+      if (got.roll !== want.roll) diffs.push(`${want.name}: roll ${got.roll} != ${want.roll}`);
+      if (JSON.stringify(got.steps) !== JSON.stringify(want.steps)) {
+        diffs.push(`${want.name}: steps differ`);
+      }
+      if (got.problems.length) diffs.push(`${want.name}: ${got.problems.join('; ')}`);
+    }
+    check(`all ${golden.guides.length} real guides prepare exactly as captured`,
+          diffs.length === 0, diffs.slice(0, 5).join(' | '));
+  }
+
   console.log('');
   if (failures.length) {
     console.log(`❌ ${failures.length} FAILURE(S): ${failures.join(', ')}`);

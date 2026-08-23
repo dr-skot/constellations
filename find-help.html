@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Finding … — Sky Trainer</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/base.css?v=76e3496e3ba6">
-  <link rel="stylesheet" href="css/explore.css?v=76e3496e3ba6">
+  <link rel="stylesheet" href="css/base.css?v=9434328087a5">
+  <link rel="stylesheet" href="css/explore.css?v=9434328087a5">
   <style>
     header {
       display: flex;
@@ -145,24 +145,27 @@
        a fresh guide-renderer.js gets a page that loads and then throws on the first
        camera flight. The stamp makes the set arrive or not arrive together. Bump it
        with index.html's whenever app JS changes. -->
-  <script src="js/cache-stamp.js?v=76e3496e3ba6"></script>
-  <script src="js/data.js?v=76e3496e3ba6"></script>
-  <script src="js/lesson.js?v=76e3496e3ba6"></script>
+  <script src="js/cache-stamp.js?v=9434328087a5"></script>
+  <script src="js/data.js?v=9434328087a5"></script>
+  <script src="js/lesson.js?v=9434328087a5"></script>
   <!-- All four figure sets, as in index.html: the Figures setting applies wherever
        figures are drawn, and this page reads it at boot. -->
-  <script src="js/stellarium-data.js?v=76e3496e3ba6"></script>
-  <script src="js/ford-data.js?v=76e3496e3ba6"></script>
-  <script src="js/rey-data.js?v=76e3496e3ba6"></script>
-  <script src="js/diagram-sources.js?v=76e3496e3ba6"></script>
-  <script src="js/draw-phases.js?v=76e3496e3ba6"></script>
-  <script src="js/render-scheduler.js?v=76e3496e3ba6"></script>
-  <script src="js/projection.js?v=76e3496e3ba6"></script>
-  <script src="js/reveal.js?v=76e3496e3ba6"></script>
-  <script src="js/render.js?v=76e3496e3ba6"></script>
-  <script src="js/explore-gl.js?v=76e3496e3ba6"></script>
-  <script src="js/explore.js?v=76e3496e3ba6"></script>
-  <script src="js/step-display.js?v=76e3496e3ba6"></script>
-  <script src="js/guide-renderer.js?v=76e3496e3ba6"></script>
+  <script src="js/stellarium-data.js?v=9434328087a5"></script>
+  <script src="js/ford-data.js?v=9434328087a5"></script>
+  <script src="js/rey-data.js?v=9434328087a5"></script>
+  <script src="js/diagram-sources.js?v=9434328087a5"></script>
+  <script src="js/draw-phases.js?v=9434328087a5"></script>
+  <script src="js/render-scheduler.js?v=9434328087a5"></script>
+  <script src="js/projection.js?v=9434328087a5"></script>
+  <script src="js/reveal.js?v=9434328087a5"></script>
+  <script src="js/render.js?v=9434328087a5"></script>
+  <script src="js/explore-gl.js?v=9434328087a5"></script>
+  <script src="js/explore.js?v=9434328087a5"></script>
+  <script src="js/step-display.js?v=9434328087a5"></script>
+  <script src="js/guide-renderer.js?v=9434328087a5"></script>
+  <!-- After step-display.js (the schema gate reads _SD_LAYERS from it) and after
+       guide-renderer.js (the roll uses guideNorthUpR). -->
+  <script src="js/guide-source.js?v=9434328087a5"></script>
   <script>
     // Honour the learner's Figures choice before anything draws. There is no
     // switcher on this page, so this is the only read.
@@ -202,25 +205,32 @@
     }
 
     // ── Boot ──────────────────────────────────────────────────────────────────
+    // The guide source (js/guide-source.js) owns loading, caching, preparing and
+    // validating. This page used to open-code all of it, with its two fetches outside
+    // the ?v= fence — bug #83, and the reason spec #82 exists.
+    initGuideSource({ fetch: (...a) => fetch(...a) });
+
     if (con) {
-      // stampedUrl (js/cache-stamp.js, loaded above) carries the page's ?v= onto a
-      // runtime fetch. bump-stamp.js only versions what the markup references as
-      // src=/href=, so a bare fetch here is invisible to it: no busting, and an iOS
-      // client keeps the old guides indefinitely — which is what happened to the
-      // fact-check pass (ff6ccfc, 2eda9ee). Same fence js/find-guide.js sits behind.
-      Promise.all([
-        fetch(stampedUrl('js/finding-guides.json')).then(r => r.json()),
-        fetch(stampedUrl('js/sky-objects.json')).then(r => r.json()),
-      ]).then(([guides, catalog]) => {
-          const guide = guides[con.name];
-          if (!guide || !guide.steps || !guide.steps.length) {
+      // `origin` is this page's answer to "where is the learner looking?" — the question
+      // every guide's opening `random` step asks. In the app it is the current view; here
+      // there is no prior view, so a random patch of sky stands in. That difference is the
+      // whole reason origin is a value the caller passes rather than something the module
+      // reaches for.
+      const origin = { ra: Math.random() * 360, dec: (Math.random() * 2 - 1) * 60 };
+
+      // Two outcomes, deliberately distinct: null means no guide is written for this
+      // constellation, a rejection means the load failed. This page has always shown two
+      // different messages for them, which is why the module keeps them apart.
+      prepareGuide(con, { origin })
+        .then(guide => {
+          if (!guide) {
             document.getElementById('fg-caption-label').textContent = con.name;
             document.getElementById('fg-caption-text').textContent = 'No finding guide is available for this constellation yet.';
             document.getElementById('fg-btn-next').disabled = true;
             document.getElementById('fg-btn-prev').disabled = true;
             return;
           }
-          init(guide, catalog);
+          return skyCatalog().then(catalog => init(guide, catalog));
         })
         .catch(() => {
           document.getElementById('fg-caption-text').textContent = 'Could not load finding guide.';
@@ -231,16 +241,6 @@
       initExploreGL(document.getElementById('explore-gl-canvas'));
       initExploreDrag();
 
-      const steps = guide.steps.map(s => Object.assign({}, s));
-      const startRa = Math.random() * 360;
-      const startDec = (Math.random() * 2 - 1) * 60;
-      steps.forEach(s => { if (s.random) { s.ra = startRa; s.dec = startDec; } });
-
-      // Handed to guideStart below rather than staged in explore.R (#88): the roll a
-      // step falls back to when it declares no rotation of its own.
-      const defaultR = guideNorthUpR(raDecToVec(con.ra, con.dec));
-      const roll = guide.rotation != null ? defaultR + guide.rotation : defaultR;
-
       document.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') document.getElementById('fg-btn-next').click();
         if (e.key === 'ArrowLeft') document.getElementById('fg-btn-prev').click();
@@ -250,8 +250,8 @@
         e.preventDefault(); guideStop(); window.location.href = 'find-help.html';
       });
 
-      guideStart(steps, catalog, {
-        roll,
+      guideStart(guide.steps, catalog, {
+        roll: guide.roll,
         stepKey: `find-help-step-${con.abbr}`,
         onLastNext: () => { guideStop(); window.location.href = 'find-help.html'; },
       });

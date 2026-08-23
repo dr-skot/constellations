@@ -126,6 +126,13 @@ function _initRouting() {
 // INIT
 // ═══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // The guide source needs its fetch before anything can ask it a question. Warming is
+  // explicit now: find-guide.js used to fire a load at script-load time, which a module
+  // with an injected fetch cannot do — and should not, since a file that opens a network
+  // connection merely by being on the page cannot be quietly loaded by a test or a tool.
+  initGuideSource({ fetch: (...a) => fetch(...a) });
+  warmGuideSource();
+
   _initRouting();
   try { initExploreGL(document.getElementById('explore-gl-canvas')); } catch(e) { console.error('GL init failed:', e); }
 
@@ -314,9 +321,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // blurb-only modal would sprout the link a moment after opening.
     modalGuideLink.style.display = 'none';
     if (!actions) return;
-    _loadGuides().then(guides => {
+    // Asked of the guide source, which owns the question. This used to reach across into
+    // find-guide.js's _loadGuides — an underscore-private name in another file — and
+    // re-derive the answer as `guides[con.name]?.steps?.length`, a second copy of a rule
+    // that also encoded the fact that guides are keyed by display name.
+    hasGuide(con).then(exists => {
       if (modalAbbrCurrent !== con.abbr) return;
-      if (guides[con.name]?.steps?.length) modalGuideLink.style.display = '';
+      if (exists) modalGuideLink.style.display = '';
     }).catch(() => {});
   }
 
