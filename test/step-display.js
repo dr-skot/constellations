@@ -429,8 +429,16 @@ const oracleHasOverlays = (step) =>
 }
 
 // ---- Cycle 10: the real guide data ------------------------------------------
-// Replay the frozen capture, and gate the data: an unresolvable id or a field nothing
-// reads fails here rather than drawing nothing and logging nothing in the browser.
+// Replay the frozen capture: a change in normalization, or in the guide data, shows up
+// as a diff. This is a regression freeze on makeStepDisplay's OUTPUT, and it stays here.
+//
+// The data GATE moved to test/guide-source.js (#90). It used to sit in this block too,
+// asserting `problems` empty — but only over the nine fields this module reads. A step
+// declares two independent things (CONTEXT.md), and the other six had no gate at all, so
+// a maintainer editing the JSON got half an answer from here and no answer about the
+// rest. One walk over the whole 15-field schema now lives beside the guide source, which
+// owns the other half. Different question, different home: this file asks "does
+// makeStepDisplay still normalize the way it did?", that one asks "is the data sound?".
 {
   const guides  = JSON.parse(fs.readFileSync(path.join(jsDir, 'finding-guides.json'), 'utf8'));
   const catalog = JSON.parse(fs.readFileSync(path.join(jsDir, 'sky-objects.json'), 'utf8'));
@@ -452,10 +460,6 @@ const oracleHasOverlays = (step) =>
     }
   }
   check('golden replay byte-for-byte', mismatches === 0, `${mismatches} steps differ — ${first}`);
-
-  const problems = built.flatMap(b => b.display.problems.map(p => `${b.label} — ${p}`));
-  check('the guide data has no unresolvable ids and no fields nothing reads',
-    problems.length === 0, problems.join(' ; '));
 }
 
 console.log('');

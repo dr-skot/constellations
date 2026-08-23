@@ -366,6 +366,40 @@ async function main() {
           diffs.length === 0, diffs.slice(0, 5).join(' | '));
   }
 
+  // ── The corpus gate: is the guide data sound? ──────────────────────────────
+  // One walk over all 88 guides and 338 steps, asking BOTH halves of the 15-field step
+  // schema. A step declares two independent things (CONTEXT.md): where to point and what
+  // to show. makeStepDisplay gates the nine fields of the second half; the guide source
+  // gates the six of the first, plus the guide-level keys.
+  //
+  // One walk rather than two, and here rather than split across two files, because this
+  // is an assertion about the DATA, not about either module. Someone editing 180 KB of
+  // JSON wants one command that answers "is my data sound?", not two that each answer
+  // half of it. test/step-display.js keeps its own golden replay — that is a regression
+  // freeze on makeStepDisplay's output, which is a different question.
+  {
+    const guides  = JSON.parse(fs.readFileSync(path.join(jsDir, 'finding-guides.json'), 'utf8'));
+    const catalog = JSON.parse(fs.readFileSync(path.join(jsDir, 'sky-objects.json'), 'utf8'));
+
+    const problems = [];
+    let stepCount = 0;
+    for (const [name, guide] of Object.entries(guides)) {
+      // Where to point, what to say, and the guide-level keys.
+      for (const p of _guideProblems(guide)) problems.push(`${name} ${p}`);
+      // What to show — unresolvable catalog ids, fields nothing reads.
+      (guide.steps || []).forEach((step, i) => {
+        stepCount++;
+        for (const p of makeStepDisplay(step, catalog).problems) problems.push(`${name}#${i} — ${p}`);
+      });
+    }
+
+    check(`the corpus is the expected size (88 guides, 338 steps)`,
+          Object.keys(guides).length === 88 && stepCount === 338,
+          `${Object.keys(guides).length} guides, ${stepCount} steps`);
+    check('the guide data is sound across all 15 fields of the step schema',
+          problems.length === 0, problems.slice(0, 8).join(' ; '));
+  }
+
   console.log('');
   if (failures.length) {
     console.log(`❌ ${failures.length} FAILURE(S): ${failures.join(', ')}`);

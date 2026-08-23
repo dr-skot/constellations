@@ -237,11 +237,67 @@ still runs the enter action.
 
 ## Finding guides
 
+- **guide source** — the single home for loading, preparing and validating a finding
+  guide (`js/guide-source.js`, spec #82). Five verbs:
+  `initGuideSource({ fetch })`, `warmGuideSource()`, `hasGuide(con) → Promise<boolean>`,
+  `prepareGuide(con, { origin }) → Promise<{ steps, roll, problems } | null>`, and
+  `skyCatalog() → Promise<catalog>`. Behind it: the two stamped fetches and their shared
+  cache, the defensive step copy, the `random` fill, the roll, and the schema gate.
+
+  It takes a **con**, never a name, because the guide JSON is keyed by *display name* — an
+  exact string match, `Boötes` diaeresis included — and that key was the one piece of
+  knowledge every caller had to share with the data file. Owning the join is the depth:
+  no caller knows how guides are keyed, so re-keying the JSON by abbr would be a one-line
+  change here and nowhere else.
+
+  `origin` is a value the caller passes, never something the module reaches for. "Where is
+  the learner looking?" is a question only the host can answer, and the two hosts answer it
+  differently on purpose: in-app it is the current view, so a guide opens where the learner
+  already is; `find-help.html` has no prior view, so a random patch of sky stands in. Not
+  reaching for `explore.P` is also what puts the whole module under node.
+
+  **`null` and a rejection mean different things.** `null` is "no guide is written for this
+  constellation"; a rejection is "the load failed". `find-help.html` has always shown two
+  different messages for them. A missing `origin` **throws** rather than rejecting, for the
+  same reason: calling the function wrong is not a network problem and must not reach a
+  learner as one. (Every guide's opener is a `random` step with no coordinates of its own,
+  so a missing origin would otherwise aim the camera at `NaN` in silence.)
+
+  `fetch` is injected at `initGuideSource` — the `initRouter` / `planLesson` precedent —
+  which is what forced the warm-up to become an explicit `warmGuideSource()`. That is the
+  better shape anyway: a module that opens a network connection merely by being on the page
+  cannot be quietly loaded by a test or a tool.
+
 - **step** — one panel of a finding guide (88 guides, 338 steps). A step declares two
   independent things: **where to point** (`ra`/`dec`/`fov`/`rotation`, or `random` for the
   opening step) and **what to show**. They differ in how they transition — the camera is
   **tweened** between steps by `guideAnimateTo`, the display is **intersected** — and that
   difference is why the seam sits between them.
+
+  Both halves now have an owner, and the 15-field schema splits along exactly that line:
+  the **step display** owns the nine that say what to show, the **guide source** owns
+  `ra`/`dec`/`fov`/`rotation`/`random` and `title`/`caption`. Each reports `problems` in the
+  same idiom, so the data draws one kind of complaint rather than two, and
+  `test/guide-source.js` walks the whole corpus asking both. Before #82 the second half was
+  owned by nobody: a typo in a guide-level `rotation` was silently ignored and flew every
+  step of that guide at the wrong roll.
+
+  Exactly one step per guide is `random` — the opener, 88 of 88 — and only two guides
+  (Orion, Ursa Major) set a guide-level `rotation`. 270 of the 338 steps declare no
+  rotation of their own and fall back to the guide's **roll**.
+
+- **roll** — the camera rotation a guide's step falls back to when it declares no
+  `rotation` of its own: north-up at the constellation, plus the guide-level `rotation`
+  where one is set. Computed by the **guide source** and passed to
+  `guideStart(steps, catalog, { roll })`, where it is **required** — no default.
+
+  It used to be read off `explore.R` at the instant `guideStart` was called, so every
+  caller had to assign `explore.R` immediately beforehand or 270 of the 338 steps rolled
+  wrong. That was an ordering contract between two modules written down nowhere, and it is
+  why both hosts carried an identical roll stanza directly above their `guideStart` call —
+  duplication that read as sloppiness and was actually a leaking seam. The parameter has no
+  `?? explore.R` fallback on purpose: a fallback keeps the timing-dependent behaviour alive
+  for whoever forgets, and forgetting is the failure being removed (#88).
 
 - **step display** — what a step asks the explorer to show, as one value
   (`js/step-display.js`, pure). Built by `makeStepDisplay(step, catalog)`, the single
