@@ -75,6 +75,17 @@ for (const name of Object.keys(guides).sort()) {
   entries.push({ name, abbr: con.abbr, roll, steps });
 }
 
+// Bail BEFORE writing. A guide key that no longer resolves to a constellation — someone
+// renamed one in data.js — means this run captured fewer than 88 guides, and writing that
+// first would leave a truncated golden in the tree that a later replay accepts as
+// authoritative. The non-zero exit is no protection once the file is already overwritten.
+if (missing.length) {
+  console.log(`${missing.length} guide key(s) with no catalog constellation:`);
+  for (const m of missing) console.log(`  ${m}`);
+  console.log('\nRefusing to write a partial golden. Nothing was changed.');
+  process.exit(1);
+}
+
 const golden = { origin: ORIGIN, guides: entries };
 const out = path.join(__dirname, 'guide-source-golden.json');
 fs.writeFileSync(out, JSON.stringify(golden, null, 2) + '\n');
@@ -83,8 +94,3 @@ const stepCount = entries.reduce((n, e) => n + e.steps.length, 0);
 const randomCount = entries.reduce((n, e) => n + e.steps.filter(s => s.random).length, 0);
 console.log(`Captured ${entries.length} guides / ${stepCount} steps ` +
             `(${randomCount} random) -> ${path.relative(process.cwd(), out)}`);
-if (missing.length) {
-  console.log(`\n${missing.length} guide key(s) with no catalog constellation:`);
-  for (const m of missing) console.log(`  ${m}`);
-  process.exit(1);
-}

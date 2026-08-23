@@ -24,14 +24,19 @@ function initGuideSource({ fetch } = {}) {
 function _loadGuideData() {
   if (_inFlight) return _inFlight;
   if (!_fetch) return Promise.reject(new Error('guide source: initGuideSource was never called'));
-  _inFlight = Promise.all([
+  const p = _inFlight = Promise.all([
     _fetch(stampedUrl('js/finding-guides.json')).then(r => r.json()),
     _fetch(stampedUrl('js/sky-objects.json')).then(r => r.json()),
   ]).then(([guides, catalog]) => ({ guides, catalog }));
   // A failure is not an answer. find-guide.js only ever assigned _guidesCache on success,
   // so a guide tapped after a dropped connection tried again; holding on to the rejected
   // promise would make the first failure permanent for the rest of the session.
-  return _inFlight.catch(e => { _inFlight = null; throw e; });
+  //
+  // Guarded on identity: this module advertises that initGuideSource can be called again,
+  // so a slow FIRST load can still be in the air when a SECOND one starts. Clearing
+  // _inFlight unconditionally would then throw away the newer load's cache when the older
+  // one finally rejects, and the next question would re-fetch both files for nothing.
+  return p.catch(e => { if (_inFlight === p) _inFlight = null; throw e; });
 }
 
 // Pull the data down ahead of the first question, so the first tap is instant.
@@ -68,7 +73,22 @@ function _guideFor(guides, con) {
 // A guide ready to hand to guideStart. Resolves null when there is no guide for this
 // constellation; REJECTS when the load failed — find-help.html already writes two
 // different messages for those two cases.
+// `origin` is REQUIRED. Every guide's opener is a `random` step, which carries no
+// coordinates of its own because it is told where to point here. Omitting the origin
+// therefore does not degrade gracefully — it yields an opener with no ra/dec, and
+// raDecToVec(undefined, undefined) aims the camera at NaN: a blank sky, silently. The
+// schema gate cannot catch it either, since it exempts random steps from carrying
+// coordinates by design.
+//
+// It THROWS rather than rejecting. A rejection from here means "the load failed", which
+// find-help.html renders as "Could not load finding guide."; calling the function wrong
+// is not a network problem and must not be reported to a learner as one. Same reasoning
+// as guideStart's roll (#88).
 function prepareGuide(con, { origin } = {}) {
+  if (!origin || typeof origin.ra !== 'number' || typeof origin.dec !== 'number') {
+    throw new Error('prepareGuide: origin { ra, dec } is required — every guide opens on ' +
+                    'a random step that has no coordinates of its own');
+  }
   return _loadGuideData().then(d => {
     const guide = _guideFor(d.guides, con);
     if (!guide) return null;
@@ -110,21 +130,40 @@ function _guideRoll(guide, con) {
 // Where to point, and what to say. This module's half.
 const GS_CAMERA_FIELDS = ['ra', 'dec', 'fov', 'rotation', 'random'];
 const GS_COPY_FIELDS   = ['title', 'caption'];
-// What to show. step-display.js's half — listed only so this gate stays quiet about
+// What to show. step-display.js's half — known here only so this gate stays quiet about
 // fields that are somebody else's business. A step carrying `highlight` is not malformed.
-const GS_DISPLAY_FIELDS = ['photo', 'diagram', 'bounds', 'art', 'names',
-                           'lines', 'lineColor', 'lineWidth',
-                           'highlight', 'precessionCircle'];
-const GS_KNOWN_FIELDS = GS_CAMERA_FIELDS.concat(GS_COPY_FIELDS, GS_DISPLAY_FIELDS);
+//
+// The layer names are READ FROM _SD_LAYERS rather than retyped. A hand-copied list is a
+// validator that will eventually lie about the module it defers to: add a sixth layer
+// there, use it in a step, and this gate would report "key nothing reads" for data that
+// is perfectly valid. The rest are step-display's non-layer fields, which have no list
+// of their own to borrow.
+// _SD_LAYERS is referenced directly, with no typeof guard: a guard would fall back to an
+// empty list and quietly report every layer field as unknown, which is a worse lie than
+// the drift it was guarding against. Both pages load step-display.js before this file, so
+// a missing _SD_LAYERS is a load-order bug and deserves to say so by name.
+const GS_DISPLAY_EXTRAS = ['lines', 'lineColor', 'lineWidth', 'highlight', 'precessionCircle'];
+function _gsKnownFields() {
+  return GS_CAMERA_FIELDS.concat(GS_COPY_FIELDS, _SD_LAYERS, GS_DISPLAY_EXTRAS);
+}
+
+// Guide-level keys. The real data has exactly two, and a typo in one of them is worse
+// than a typo in a step: `rotaion: 0.31` is silently ignored and the whole guide flies at
+// the wrong roll, every step of it.
+const GS_GUIDE_FIELDS = ['rotation', 'steps'];
 
 function _guideProblems(guide) {
   const problems = [];
+  const known = _gsKnownFields();
+  for (const k of Object.keys(guide)) {
+    if (!GS_GUIDE_FIELDS.includes(k)) problems.push(`guide key nothing reads: ${k}`);
+  }
   if (guide.rotation != null && typeof guide.rotation !== 'number') {
     problems.push(`guide rotation is not a number: ${guide.rotation}`);
   }
   guide.steps.forEach((step, i) => {
     for (const k of Object.keys(step)) {
-      if (!GS_KNOWN_FIELDS.includes(k)) problems.push(`#${i}: key nothing reads: ${k}`);
+      if (!known.includes(k)) problems.push(`#${i}: key nothing reads: ${k}`);
     }
     // A `random` step is told where to point at prepare time, so it is the one step that
     // legitimately arrives without coordinates. Every other step must carry its own.

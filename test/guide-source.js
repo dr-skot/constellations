@@ -17,13 +17,24 @@ const jsDir = path.join(root, 'js');
 // data.js, projection.js and guide-renderer.js touch these at load.
 global.window = global;
 global.addEventListener = () => {};
-global.document = { getElementById: () => null, querySelector: () => null };
+// cache-stamp.js reads the page's ?v= off the first stamped script or link. A document
+// that answers null gives an EMPTY stamp, which makes stampedUrl(u) return u unchanged —
+// and that turns any "did this go through stampedUrl?" assertion into u === u, true for a
+// bare fetch too. The review caught this file asserting exactly that. Serve a real stamp
+// so the fence assertion below can actually fail.
+const TEST_STAMP = 'abc123def456';
+global.document = {
+  getElementById: () => null,
+  querySelector: () => ({ getAttribute: () => `js/anything.js?v=${TEST_STAMP}` }),
+};
 global.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 global.sessionStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 
 const origLog = console.log; console.log = () => {};
-for (const f of ['cache-stamp.js', 'data.js', 'projection.js', 'guide-renderer.js',
-                 'guide-source.js']) {
+// step-display.js before guide-source.js, as both pages load them: the schema gate reads
+// _SD_LAYERS from it rather than retyping the layer names.
+for (const f of ['cache-stamp.js', 'data.js', 'projection.js', 'step-display.js',
+                 'guide-renderer.js', 'guide-source.js']) {
   vm.runInThisContext(fs.readFileSync(path.join(jsDir, f), 'utf8'), { filename: f });
 }
 console.log = origLog;
@@ -154,6 +165,27 @@ async function main() {
           other.steps[0].ra === 200 && other.steps[0].dec === -40);
   }
 
+  // Every guide's opening step is `random`, and a random step carries no coordinates of
+  // its own — it is told where to point at prepare time. So a missing origin does not
+  // degrade, it produces an opener with no ra/dec at all, and raDecToVec(undefined,
+  // undefined) points the camera at NaN: a blank sky, no error, no complaint. The schema
+  // gate cannot catch it either, since it exempts random steps from carrying coordinates.
+  //
+  // A THROW rather than a rejection, and deliberately: a rejection means "the load
+  // failed", and find-help.html renders that as "Could not load finding guide." Calling
+  // the function wrong is not a network problem and must not be reported as one. Same
+  // treatment as guideStart's roll (#88), for the same reason.
+  {
+    initGuideSource({ fetch: makeFetch() });
+    let threw = false;
+    try { prepareGuide(ORI); } catch (e) { threw = /origin/.test(e.message); }
+    check('prepareGuide throws when origin is missing', threw);
+
+    let threwOnPartial = false;
+    try { prepareGuide(ORI, { origin: { ra: 80 } }); } catch (e) { threwOnPartial = true; }
+    check('prepareGuide throws when origin is half an answer', threwOnPartial);
+  }
+
   // The cached guide must survive being prepared. guideStart mutates nothing today, but
   // find-guide.js copied defensively for a reason: the cache is shared by every caller,
   // and one host writing through it would silently reshape the next host's guide.
@@ -232,6 +264,32 @@ async function main() {
           !/highlight|diagram/.test(g.problems.join(' ')));
   }
 
+  // A typo in a GUIDE-level key is worse than one in a step: `rotaion` is silently
+  // ignored and the whole guide flies at the wrong roll, every step of it. The per-step
+  // sweep was already here; the guide object was not being swept at all.
+  {
+    const TYPO = { Typo: { rotaion: 0.31, steps: [{ random: true, fov: 90, title: 'a', caption: 'b' }] } };
+    initGuideSource({
+      fetch: url => Promise.resolve({
+        json: () => Promise.resolve(url.indexOf('finding-guides') !== -1 ? TYPO : CATALOG),
+      }),
+    });
+    const g = await prepareGuide({ name: 'Typo', abbr: 'Typ', ra: 0, dec: 0 }, { origin: ORIGIN });
+    check('a misspelled guide-level key is reported', /rotaion/.test(g.problems.join(' | ')),
+          g.problems.join(' | '));
+  }
+
+  // The gate defers to step-display for the layer names rather than keeping a copy. A
+  // hand-copied list is a validator that eventually lies about the module it defers to:
+  // add a layer there and valid data starts drawing "key nothing reads".
+  {
+    check('the layer names come from step-display, not a second copy',
+          _gsKnownFields().length === GS_CAMERA_FIELDS.length + GS_COPY_FIELDS.length +
+                                     _SD_LAYERS.length + GS_DISPLAY_EXTRAS.length &&
+          _SD_LAYERS.every(n => _gsKnownFields().includes(n)),
+          _gsKnownFields().join(','));
+  }
+
   // ── Warming ────────────────────────────────────────────────────────────────
   // find-guide.js fired _loadGuides().catch(() => {}) at script load, so the first tap
   // was instant. With fetch injected there IS no fetch at load time, so warming becomes
@@ -261,8 +319,11 @@ async function main() {
     const fetch = makeFetch();
     initGuideSource({ fetch });
     await warmGuideSource();
-    check('both fetches go through stampedUrl',
-          fetch.calls.every(u => u === stampedUrl(u)), fetch.calls.join(', '));
+    check('the harness serves a non-empty stamp, so the next check can fail',
+          cacheStamp() === TEST_STAMP, `stamp is "${cacheStamp()}"`);
+    check('both fetches carry the page stamp',
+          fetch.calls.every(u => u.indexOf(`?v=${TEST_STAMP}`) !== -1),
+          fetch.calls.join(', '));
     check('it fetches the guides and the catalog, and nothing else',
           fetch.calls.length === 2 &&
           fetch.calls.some(u => u.indexOf('js/finding-guides.json') === 0) &&
