@@ -132,10 +132,27 @@ function identifyPanel() {
         // Only a reveal already on screen redraws — the panel knows whether there is
         // one, which is what the lesson session used to be asked.
         if (!_identifyPanel.shownIntent()) return;
-        const redraw = () => _identifyPanel.redraw(identifyRevealIntent());
-        const img = _identifyPanel.photoImg;
-        if (value === 'photo' && (!img.complete || img.naturalWidth === 0)) img.onload = redraw;
-        else redraw();
+        // Redraw NOW, whatever the photograph is doing. Waiting for a late photo is the
+        // panel's job and it already does it, with a guard this could not express: its
+        // handler repaints only if the constellation is still the one showing. This used
+        // to assign over that handler slot — onload is one last-writer-wins slot, not a
+        // subscription — replacing the guarded version with an unguarded one (#93).
+        // Redrawing immediately is also what makes the toggle feel alive: it used to
+        // defer the WHOLE repaint until the image landed, so turning the photo layer
+        // *off* mid-download did nothing at all.
+        //
+        // Redrawing now is not merely nicer, it is REQUIRED: the panel's handler repaints
+        // with `shown.intent`, which only a redraw updates. Defer this call and the photo
+        // lands against the pre-toggle intent and never appears at all.
+        //
+        // Known trade-off, accepted deliberately: turning the photo ON before it has
+        // downloaded now repaints to the "photo on, not loaded" reveal — which shows
+        // neither photograph nor stars (js/reveal.js documents that as pre-extraction
+        // behaviour, kept on purpose). With Diagram also off that is a bare gradient for
+        // the rest of the download, where the old code left the previous frame up. It
+        // self-corrects when the image lands. Making it show stars instead would change
+        // what a reveal looks like, which is a design decision and not this ticket's.
+        _identifyPanel.redraw(identifyRevealIntent());
       },
     });
   }

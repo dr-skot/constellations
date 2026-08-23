@@ -2,7 +2,21 @@
 // RENDERING
 // ═══════════════════════════════════════════════════════════
 
-const artCache = {};  // abbr -> HTMLImageElement | 'loading' | 'error'
+// Keyed by art SOURCE, not constellation: Puppis and Vela both display Carina's artwork
+// (ART_ALIAS), and a metered connection should pay for that picture once.
+// Written ONLY by ensureArtLoaded below — asserted by test/image-loading.js, because a
+// second writer is exactly how the waiter queue got orphaned (#93). Reads are fine.
+const artCache = {};  // src -> HTMLImageElement | 'loading' | 'error'
+
+// The image constructor, injected so the waiter queue can be tested under node, where
+// there is no Image. It DEFAULTS to the real one, deliberately unlike initGuideSource's
+// required fetch: nothing here opens a connection merely by being loaded, and
+// find-help.html is a second host that would have to remember the init — forgetting
+// exactly that on exactly that page was #82's first bug. A default the browser always
+// gets right is the safer shape here, the same call initExposure made about its store.
+let _createImage = null;
+function initImageLoader({ createImage } = {}) { _createImage = createImage || null; }
+function _newImage() { return _createImage ? _createImage() : new Image(); }
 
 // ── Reveal controls state ──
 // The identify screen's layer choices, persisted with the lesson session. The buttons that
@@ -152,37 +166,12 @@ function renderCanvas(canvas, con, mode, showLabels = false, angle = 0) {
   if (mode === 'reveal' || showLabels) drawLabels(ctx, rotateProj(proj, angle, W, H), W);
 }
 
-// showArtworkMode: overlay artwork on top of whatever is already on the canvas.
-// showLabels=true draws star name labels after the artwork is composited.
-//
-// NO CALLERS as of 2026-08-19 — the only other mention in the repo is
-// perf/bisect.js stubbing it out by name. The reveal panel composites its own
-// artwork now. Left in place rather than deleted as a drive-by; the late-arrival
-// guard below is therefore inert, whatever it says.
-function showArtworkMode(canvas, con, showLabels = false) {
-  const src = artSrc(con.abbr);
-  const art = ART[src];
-  if (!art) return;
-
-  if (artCache[src] instanceof HTMLImageElement) {
-    drawArtwork(canvas, con, artCache[src], showLabels);
-    return;
-  }
-  if (artCache[src] === 'loading' || artCache[src] === 'error') return;
-
-  artCache[src] = 'loading';
-  const img = new Image();
-  img.onload = () => {
-    artCache[src] = img;
-    // Artwork that arrives late only draws if the question it belongs to is still up and
-    // still answered — asked of the question itself now, not a session flag that the find
-    // path never wrote (#77).
-    if (currentCon() === con && sessionAnswered(session))
-      drawArtwork(canvas, con, img, showLabels);
-  };
-  img.onerror = () => { artCache[src] = 'error'; };
-  img.src = art.url;
-}
+// showArtworkMode used to overlay artwork onto whatever was already on the canvas, and
+// had had NO CALLERS since 2026-08-19 — the reveal panel composites its own artwork. It
+// was left in place rather than deleted as a drive-by, with a note that its late-arrival
+// guard was "inert, whatever it says". It is deleted now (#93), because it was also a
+// second writer of the artwork cache: the very shape of bug that ticket exists to remove,
+// sitting in dead code where nothing could ever catch it going wrong.
 
 // drawArtwork: composites the artwork image over the existing canvas content.
 // angle (radians): if set, rotate anchor points around canvas centre so the
@@ -584,14 +573,18 @@ function ensureArtLoaded(con, onLoaded) {
     if (onLoaded) (_artWaiting[src] = _artWaiting[src] || []).push(onLoaded);
     return;
   }
-  if (artCache[src]) return;                  // loaded already, or known bad
+  // Already loaded, or known bad. The callback is deliberately NOT invoked: it means
+  // "the artwork arrived late, repaint", and a caller holding a cached image has
+  // already painted it — paintReveal reads artCache directly. Pinned by a test,
+  // because it is the kind of thing a new caller assumes the other way round.
+  if (artCache[src]) return;
   artCache[src] = 'loading';
   if (onLoaded) (_artWaiting[src] = _artWaiting[src] || []).push(onLoaded);
-  const img = new Image();
+  const img = _newImage();
   img.onload = () => {
     artCache[src] = img;
     const waiting = _artWaiting[src] || [];
-    delete _artWaiting[src];
+    delete _artWaiting[src];              // before the calls: the queue drains once
     for (const cb of waiting) cb();
   };
   img.onerror = () => { artCache[src] = 'error'; delete _artWaiting[src]; };

@@ -34,10 +34,10 @@ function viewerPanel() {
       layers: viewerLayers,
       onLayerChange(value, on) {
         viewerLayers[value] = on;
-        const redraw = () => _viewerPanel.redraw(viewerIntent());
-        const img = _viewerPanel.photoImg;
-        if (value === 'photo' && (!img.complete || img.naturalWidth === 0)) img.onload = redraw;
-        else redraw();
+        // Redraw now; the panel's own guarded handler repaints when a late photograph
+        // lands. This was a line-for-line copy of the identify screen's version, and
+        // carried the same defect — see js/quiz.js and #93.
+        _viewerPanel.redraw(viewerIntent());
       },
     });
     _viewerPanel.circular(true);

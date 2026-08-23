@@ -431,7 +431,7 @@
     } },
     { id: 'art', what: 'constellation artwork', apply: function () {
       if (typeof ART === 'object' && ART) { for (var k in ART) delete ART[k]; }
-      stub('ensureArtLoaded'); stub('drawArtwork'); stub('showArtworkMode');
+      stub('ensureArtLoaded'); stub('drawArtwork');   // showArtworkMode deleted in #93
     } },
     // paintReveal replaced redrawReveal/startReveal; the panel calls it (issue #71).
     { id: 'reveal', what: 'the answer reveal redraw', apply: function () {

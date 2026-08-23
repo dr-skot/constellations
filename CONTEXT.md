@@ -313,6 +313,50 @@ still runs the enter action.
   round-trip stays a fixed point. Pure obj↔obj: sessionStorage and the DOM
   toggle-group application stay in the quiz.js adapter (`saveLessonSession`/`tryResumeLesson`).
 
+## Images
+
+- **late-arriving image** — a photograph or an artwork that is still downloading when
+  something wants to draw it. The rule is that whoever wants it says so and is *told* when
+  it lands; nobody polls, and nobody starts a load of their own.
+
+- **artwork cache / `ensureArtLoaded(con, onLoaded)`** (`js/render.js`) — the single owner of
+  artwork loading. Keyed by art **source**, not constellation, because Puppis and Vela both
+  display Carina's artwork (`ART_ALIAS`) and a metered connection should pay once. Holds an
+  image, `'loading'`, or `'error'`. A caller arriving mid-flight is queued in `_artWaiting`
+  and told when the image lands; the queue drains exactly once.
+
+  **`artCache` is written only here.** That is asserted by `test/image-loading.js`, not left
+  to convention, because a second writer is precisely what broke it: the explorer's WebGL
+  art layer used to start its own load, mark the cache `'loading'`, and on arrival write the
+  image in **without draining the queue**. Anything queued behind it waited forever — the
+  learner saw the **Art** toggle on with no artwork under it, until they navigated away and
+  back. `ensureArtLoaded`'s own comment had described that failure, in the present tense, as
+  the thing its queue prevents (#93). A correct mechanism is not self-enforcing.
+
+  Two behaviours worth knowing: **a cached image fires no callback** — the callback means
+  "it arrived late, repaint", and a caller holding a cached image has already painted it,
+  since `paintReveal` reads the cache directly. And **a failed image drops its waiters**
+  rather than calling them: a waiter's job is to repaint *with* the artwork, and there is
+  nothing to repaint with. `'error'` is remembered so a broken image is never retried.
+
+  The image constructor is injected by `initImageLoader({ createImage })`, which is what puts
+  the queue under node. It **defaults to the real `Image`** — deliberately unlike
+  `initGuideSource`'s required `fetch`, and for the same reason `initExposure` defaults its
+  store: nothing here opens a connection merely by being loaded, and `find-help.html` is a
+  second host that would otherwise have to remember the init. Forgetting exactly that, on
+  exactly that page, was #82's first bug.
+
+- **the reveal's photograph** — the panel (`js/reveal-panel.js`) owns one `<img>` and installs
+  a **guarded** handler on it: repaint only if that constellation is still the one showing.
+  Callers never touch the handler. The identify screen's and the viewer's layer toggles used
+  to assign over it — `onload` is a single last-writer-wins slot, not a subscription — which
+  replaced the guarded handler with an unguarded one. They redraw immediately now and let the
+  panel handle lateness, which also means toggling the photo layer *off* mid-download works;
+  it used to defer the whole repaint until the image landed.
+
+  Separate from the explorer's own photo cache (`loadExplorePhoto`, `js/explore.js`), which
+  feeds WebGL textures rather than a canvas repaint and keeps its own life.
+
 ## Finding guides
 
 - **guide source** — the single home for loading, preparing and validating a finding

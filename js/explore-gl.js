@@ -308,6 +308,11 @@ function drawExplorePhotoLayerGL(con, cam) {
   glDrawMesh(glPhotoMesh[con.abbr], glPhotoTex[con.abbr], 1.0, false, cam.center, PHOTO_BLACK_FLOOR);
 }
 
+// Art sources this layer has already registered a redraw for, so the per-frame art pass
+// asks the owner once rather than once per frame. Not a second cache — the artwork cache
+// is render.js's alone; this only remembers "I have a callback outstanding".
+const _glArtPending = new Set();
+
 // ── Public: draw art layer ─────────────────────────────────
 function drawExploreArtLayerGL(con, cam) {
   if (!gl) return;
@@ -315,20 +320,34 @@ function drawExploreArtLayerGL(con, cam) {
   const art = ART[src];
   if (!art || art.anchors.length < 3) return;
 
-  // Ensure art image loaded (artCache shared with render.js)
-  if (!artCache[src]) {
-    artCache[src] = 'loading';
-    const img = new Image();
-    img.onload = () => {
-      artCache[src] = img;
-      glArtTex[src] = glUploadTex(img);
-      if (document.getElementById('screen-explore').classList.contains('active')) requestExploreDraw();
-    };
-    img.onerror = () => { artCache[src] = 'error'; };
-    img.src = art.url;
+  // Ask the owner (js/render.js) rather than loading it here. This used to start its own
+  // load, mark the shared cache as loading, and on arrival write the image in WITHOUT
+  // draining ensureArtLoaded's waiter queue — so a reveal panel that had queued behind it
+  // was never told, and sat with its Art toggle on and no artwork under it (#93). The
+  // owner's own comment describes that failure as the thing its queue prevents; the
+  // mechanism was right and this was walking around it.
+  //
+  // No texture upload in the callback: line below uploads lazily on the next draw, which
+  // is the frame this redraw request is asking for.
+  if (!(artCache[src] instanceof HTMLImageElement)) {
+    // A failed load drops its waiters (see ensureArtLoaded), so the callback that would
+    // clear this never runs. Clear it here instead: leaving the source flagged "callback
+    // outstanding" for the life of the page is harmless only while 'error' also blocks
+    // this draw, and something that is only safe by coincidence is worth not writing.
+    if (artCache[src] === 'error') { _glArtPending.delete(src); return; }
+    // Register interest once per source. This runs on every frame of the art pass, and
+    // ensureArtLoaded queues whatever it is handed — without this, a two-second load
+    // behind another caller would pile up a callback per frame.
+    if (!_glArtPending.has(src)) {
+      _glArtPending.add(src);
+      ensureArtLoaded(con, () => {
+        _glArtPending.delete(src);
+        if (document.getElementById('screen-explore').classList.contains('active')) requestExploreDraw();
+      });
+    }
     return;
   }
-  if (!(artCache[src] instanceof HTMLImageElement)) return;
+  _glArtPending.delete(src);
   if (!glArtTex[src]) glArtTex[src] = glUploadTex(artCache[src]);
   if (!glArtMesh[con.abbr]) glArtMesh[con.abbr] = glBuildArtMesh(con);
 
