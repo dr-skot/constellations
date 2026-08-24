@@ -42,7 +42,7 @@ async function main() {
   console.error(`# page: ${page.url}`);
 
   const ws = new WebSocket(page.webSocketDebuggerUrl);
-  let id = 0, targetId = null, havePageTarget = false;
+  let id = 0, targetId = null, havePageTarget = false, targetWaiter = null;
   const pending = new Map();
 
   const raw = (method, params = {}) => new Promise((res, rej) => {
@@ -84,6 +84,7 @@ async function main() {
           targetId = info.targetId;      // pre-12.2 devices announce no page target
         }
       }
+      if (targetId && targetWaiter) { targetWaiter(); targetWaiter = null; }
       return;
     }
     if (msg.method === 'Target.dispatchMessageFromTarget') {
@@ -108,9 +109,31 @@ async function main() {
     ws.addEventListener('error', e => rej(new Error('ws: ' + (e.message || 'failed'))));
   });
 
-  // Nudge the device into announcing its target, then give it a moment to arrive.
-  try { await raw('Inspector.enable'); } catch {}
-  await new Promise(r => setTimeout(r, 400));
+  // Nudge the device into announcing its target, then wait for it to arrive.
+  //
+  // This doubles as the liveness check, and it is the one worth failing fast on.
+  // A locked screen or a backgrounded Safari suspends the web process while the
+  // proxy happily still lists the page and still opens a socket: the targets
+  // simply never announce. Waiting IOS_TIMEOUT for that is 60 seconds spent
+  // learning the phone is asleep, so this gives up on the handshake in 1.5s and
+  // says which of the two it is. A slow PROBE still gets its full budget below —
+  // this bounds only the handshake.
+  // Fired, never awaited. On a suspended page this reply never arrives either, so
+  // awaiting it hangs BEFORE the bounded wait below can help — which is precisely
+  // how a 1.5s guard still cost 65 seconds. The target announcements are what we
+  // are actually waiting for; this is only the nudge that provokes them.
+  raw('Inspector.enable').catch(() => {});
+  const gotTarget = await new Promise(res => {
+    if (targetId) return res(true);
+    const timer = setTimeout(() => { targetWaiter = null; res(false); }, 1500);
+    targetWaiter = () => { clearTimeout(timer); res(true); };
+  });
+  if (!gotTarget) {
+    console.error('# The socket opened but no target announced in 1.5s, so the page is');
+    console.error('# suspended: the phone is locked, or Safari is backgrounded, or the');
+    console.error('# tab is not frontmost. Wake it, foreground the tab, and retry.');
+    process.exit(7);
+  }
   try { await send('Runtime.enable'); } catch {}
 
   // WebKit's Runtime.evaluate has no awaitPromise, so the async body stashes its
