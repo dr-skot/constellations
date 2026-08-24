@@ -41,17 +41,34 @@ function drawBackground(ctx, W, H, con, starField) {
   ctx.globalAlpha = 1; ctx.restore();
 }
 
+// One path for the whole figure, stroked once. This used to begin a path and
+// stroke it per SEGMENT, and with a shadow set every stroke() is its own
+// render-to-scratch, blur, composite — so the explorer paid that cost about 300
+// times a frame (33 constellations x ~10 segments) instead of 33.
+//
+// That single change is the whole of issue #80: 15 draws/s -> 60 on an iPhone at
+// fov 110, with the glow unchanged. It stayed hidden for so long because the cost
+// is per DRAW CALL, not per pixel — perf/load-sweep.js swept a 25x range of
+// backing-store pixels and correctly saw nothing move, and the phase table read
+// 1.5-2.7ms because the blur is the rasterizer's work, not JavaScript's.
+//
+// moveTo starts a NEW SUBPATH, so the segments stay disconnected and the geometry
+// is identical — the pen never draws from the end of one segment to the start of
+// the next. The one real difference is that overlapping glows no longer stack, so
+// joints at a shared star read evenly instead of brighter.
 function drawLines(ctx, proj, con) {
   ctx.save();
   ctx.strokeStyle = 'rgba(80,145,230,0.52)';
   ctx.lineWidth = 1.5;
   ctx.shadowColor = 'rgba(100,160,255,0.4)';
   ctx.shadowBlur = 5;
+  ctx.beginPath();
   for (const [i, j] of con.lines) {
     const a = proj[i], b = proj[j];
     if (!a || !b) continue;
-    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
   }
+  ctx.stroke();
   ctx.restore();
 }
 
