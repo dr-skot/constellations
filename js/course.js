@@ -43,6 +43,15 @@ function startLesson() {
 }
 
 function endLesson() {
+  // A guide opened over a find question lives INSIDE the lesson, so the lesson ending
+  // ends it. Quit stayed reachable under a running guide and this did not exist, so
+  // quitting left the overlay displayed and the guide's state set while the app moved to
+  // the result screen — coming back to the explorer then showed free-explore chrome and
+  // a running guide at once, still offering "← Back to lesson" (#94). Ordering the two
+  // lifetimes is the fix; hiding Quit during a guide is what stops it being reachable.
+  // closeFindGuide, not exitFindGuide: the latter RESUMES what the guide interrupted,
+  // and what it would resume is the lesson being ended.
+  closeFindGuide();
   stopExploreQuiz();
   // The lesson is over, so there is nothing to resume — the result screen's next-lesson
   // button goes through navigate('lesson'), which would otherwise resume the one that
@@ -159,11 +168,9 @@ function startLessonFindQuestion(q) {
     noBounds: !!q.noBounds,
     onNext: () => nextLessonQuestion()
   };
-  document.getElementById('explore-free-hdr').style.display = 'none';
-  document.querySelector('.explore-layers').style.display = 'none';
+  // One name, not five assignments that had to agree (#94).
+  applyExploreChrome(EXPLORE_CHROME_FIND);
   document.getElementById('breadcrumb-stage').textContent = session.lessonLabel;
-  document.getElementById('find-quiz-hdr').style.display = '';
-  document.getElementById('find-nav-row').style.display = '';
   const total = session.questions.length;
   document.getElementById('find-hud-progress').textContent = `${session.idx + 1} / ${total}`;
   // Same readout function as the identify header — a find question is only ever a
@@ -173,7 +180,6 @@ function startLessonFindQuestion(q) {
   document.getElementById('find-prog-fill').style.width = `${(session.idx / total) * 100}%`;
   document.getElementById('eq-target-name').textContent = q.con.name;
   document.getElementById('find-btn-prev').classList.toggle('show', session.idx > 0);
-  document.getElementById('explore-quiz-bar').style.display = '';
 
   if (hist) {
     // Restore answered state

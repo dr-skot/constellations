@@ -845,6 +845,76 @@ function drawExplore() {
   endDrawPhases();
 }
 
+// ═══════════════════════════════════════════════════════════
+// CHROME MODE  (issue #94)
+// ═══════════════════════════════════════════════════════════
+// What the explorer is WEARING, as one value. The screen hosts three things — free
+// explore, a lesson's find question, and a finding guide — and six elements switch
+// between them.
+//
+// Three writers used to set them and they disagreed about which they owned. Starting a
+// find question set FIVE and tearing one down set FIVE — every element except the guide
+// overlay, which neither had ever heard of. The guide wrote THREE (the question bar, the
+// nav row and its own overlay), saving and restoring the first two as display strings and
+// leaving the rest wherever the previous mode had put them. It worked for the one path
+// that happened to be covered, because returning from a guide by a detour re-runs the
+// find question, which sets its five again. Nothing stated the rule; nothing noticed when
+// a path missed it. Two reachable bugs came of it — a layers row left live over a guide
+// that owns the layers (a dead control that still wrote the learner's setting to storage),
+// and a lesson Quit left over a guide, which ended the lesson without tearing it down.
+//
+// The overlay having had exactly one owner is worth remembering: bringing it into this
+// table is what let stopExploreQuiz hide a guide without ending it, which is the same bug
+// again with the guide invisible. Hiding the overlay is not closing the guide — see
+// closeFindGuide, and the router actions that call it.
+//
+// EVERY MODE DECLARES EVERY ELEMENT. That totality is the point: a writer that sets a
+// subset is not expressible, so the old bug cannot be written again rather than merely
+// being fixed. Pure, so the truth table is asserted in node (test/explore-chrome.js) the
+// way resolveDisplayFlags and the step display are.
+const EXPLORE_CHROME_FREE  = 'free';
+const EXPLORE_CHROME_FIND  = 'find';
+const EXPLORE_CHROME_GUIDE = 'guide';
+
+// A guide is a TAKEOVER, not a layer on top of what it interrupted: it shows its overlay
+// and nothing else, including over a lesson's find question. That is what removes the
+// stranding Quit — by removing the control rather than special-casing it — and the
+// competing "1 / 12" and "1 / 3" readouts. The guide's exit names where it goes
+// ("← Back to lesson", see js/guide-exit-label.js), so nobody is left guessing.
+function exploreChrome(mode) {
+  switch (mode) {
+    case EXPLORE_CHROME_FREE:
+      return { freeHeader: true,  layers: true,  quizHeader: false, navRow: false, quizBar: false, guideOverlay: false };
+    case EXPLORE_CHROME_FIND:
+      return { freeHeader: false, layers: false, quizHeader: true,  navRow: true,  quizBar: true,  guideOverlay: false };
+    case EXPLORE_CHROME_GUIDE:
+      return { freeHeader: false, layers: false, quizHeader: false, navRow: false, quizBar: false, guideOverlay: true };
+    default:
+      // Not a silent fallback. A mode nobody declared is a programming mistake, and
+      // defaulting to some chrome would hide it behind a screen that merely looks a bit
+      // wrong — the reasoning that makes prepareGuide throw on a missing origin.
+      throw new Error(`exploreChrome: unknown mode ${JSON.stringify(mode)}`);
+  }
+}
+
+// The impure half: the one place that reaches for these elements.
+const _CHROME_EL = {
+  freeHeader:   () => document.getElementById('explore-free-hdr'),
+  layers:       () => document.querySelector('.explore-layers'),
+  quizHeader:   () => document.getElementById('find-quiz-hdr'),
+  navRow:       () => document.getElementById('find-nav-row'),
+  quizBar:      () => document.getElementById('explore-quiz-bar'),
+  guideOverlay: () => document.getElementById('find-guide-overlay'),
+};
+
+function applyExploreChrome(mode) {
+  const want = exploreChrome(mode);
+  for (const part of Object.keys(_CHROME_EL)) {
+    const el = _CHROME_EL[part]();
+    if (el) el.style.display = want[part] ? '' : 'none';
+  }
+}
+
 // The explorer's own "Find It" practice quiz used to start here — its own pool, its own
 // running score, its own next-question loop. Its button was replaced by the constellation
 // search in e6fc8c1 (March 2026) and startExploreQuiz() had no caller for five months. It
@@ -857,11 +927,7 @@ function drawExplore() {
 // wanted again it should be a route with a screen, not a second shape for this property.
 function stopExploreQuiz() {
   explore.quiz = null;
-  document.getElementById('explore-quiz-bar').style.display = 'none';
-  document.getElementById('find-quiz-hdr').style.display = 'none';
-  document.getElementById('find-nav-row').style.display = 'none';
-  document.getElementById('explore-free-hdr').style.display = '';
-  document.querySelector('.explore-layers').style.display = '';
+  applyExploreChrome(EXPLORE_CHROME_FREE);
   requestExploreDraw();
 }
 

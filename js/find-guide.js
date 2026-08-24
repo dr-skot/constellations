@@ -8,7 +8,20 @@
 // What is left is the part that is genuinely about this app rather than about the data:
 // the chrome the guide takes over, the quiz it suspends, and the detour it may be riding.
 
-let _guideSaved = null;   // saved quiz + chrome + view while a guide is open
+let _guideSaved = null;   // saved quiz + view while a guide is open
+
+// Which open-request is current. A guide's data is fetched, so between the tap and the
+// guide existing there is a window in which _guideSaved is still null and closeFindGuide
+// has nothing to close — while the controls that would close it are still on screen,
+// because the takeover chrome is not applied until the data lands. Quit during that
+// window ended the lesson and then let the guide open over the wreckage, publishing a
+// step display and flying the camera on a hidden screen, exit labelled "← Back to
+// lesson" for a lesson that had finished (#94).
+//
+// Ordering two lifetimes has no hold on one that does not exist yet, so cancellation is
+// a generation token: every open takes the next number, every close burns it, and a load
+// that lands on a stale number stands down.
+let _guideGen = 0;
 
 // ── Public: show/hide help button based on guide availability ────────────────
 function updateFindHelpBtn(con) {
@@ -30,20 +43,23 @@ function startFindGuide(con) {
   // already warm — which is always, in practice — and the wrong thing if they are not.
   const origin = vecToRaDec(explore.P);
 
+  const gen = ++_guideGen;
+
   Promise.all([prepareGuide(con, { origin }), skyCatalog()]).then(([guide, catalog]) => {
+    if (gen !== _guideGen) return;            // superseded or cancelled while loading
     if (!guide) return;                       // no guide written for this constellation
 
-    const quizBar = document.getElementById('explore-quiz-bar');
-    const navRow  = document.getElementById('find-nav-row');
-    // Capture the bars' prior visibility so exit restores exactly what was showing
-    // — the guide can be launched from a find quiz (bars visible) or from the info
-    // modal's "Finding guide" link in free explore (bars hidden). See issue #4.
-    _guideSaved = { quiz: explore.quiz, quizBarDisplay: quizBar.style.display, navRowDisplay: navRow.style.display, ...snapshotView(explore) };
+    // The suspended quiz is the whole of what has to be remembered. It used to be saved
+    // alongside two elements' display strings, which is how four of the six went
+    // unrestored — and the quiz already answers the same question those strings did:
+    // a guide opened over a find question has one, a guide opened from free explore
+    // does not. See issue #4 for the two entry paths, #94 for why naming the mode on
+    // the way out beats restoring what was showing on the way in.
+    _guideSaved = { quiz: explore.quiz, ...snapshotView(explore) };
     explore.quiz = null;
 
-    quizBar.style.display = 'none';
-    navRow.style.display  = 'none';
-    document.getElementById('find-guide-overlay').style.display  = '';
+    // A guide is a takeover: its overlay and nothing else, whichever way it was opened.
+    applyExploreChrome(EXPLORE_CHROME_GUIDE);
 
     // Two places the exit can return to, and they are asked in the order exitFindGuide
     // takes them: a detour in flight wins, otherwise it is whatever the saved state puts
@@ -72,22 +88,40 @@ function startFindGuide(con) {
   () => {});
 }
 
-// ── Public: close the guide ───────────────────────────────────────────────────
-function exitFindGuide() {
-  if (!_guideSaved) return;
+// ── Public: tear the guide down, going nowhere ────────────────────────────────
+// Stops the guide and takes its chrome off, and that is all — no resume, no detour.
+// Split out from exitFindGuide because a lesson ending has to end a guide living inside
+// it WITHOUT returning to the question it would otherwise resume: that question is the
+// one being ended (#94). Returns what was suspended, or null if no guide was open.
+//
+// Free explore is the chrome it leaves behind because it is the only mode that is always
+// safe: whoever called this decides what comes next and names its own mode, and a detour
+// may be heading for the constellation viewer, a different screen entirely.
+function closeFindGuide() {
+  // Burn the token first and unconditionally: a guide still loading has no _guideSaved to
+  // find, and cancelling it is the entire point of being called during that window.
+  _guideGen++;
+  if (!_guideSaved) return null;
   guideStop();
-  document.getElementById('find-guide-overlay').style.display = 'none';
-
   const saved = _guideSaved;
   _guideSaved = null;
+  applyExploreChrome(EXPLORE_CHROME_FREE);
+  return saved;
+}
 
-  // A detour in flight owns where to go next — back to the question we left.
+// ── Public: close the guide and go back where it came from ────────────────────
+function exitFindGuide() {
+  const saved = closeFindGuide();
+  if (!saved) return;
+
+  // A detour in flight owns where to go next — back to the question we left, whose own
+  // re-render names its chrome.
   if (inDetour()) { endDetour(); return; }
 
-  // Default: restore the explore view and the find-quiz bars we came from.
+  // Otherwise the guide restores what it suspended. The saved quiz IS the mode: a guide
+  // opened over a find question has one, a guide opened from free explore does not.
   explore.quiz = saved.quiz;
   applyView(explore, saved);
-  document.getElementById('explore-quiz-bar').style.display = saved.quizBarDisplay;
-  document.getElementById('find-nav-row').style.display     = saved.navRowDisplay;
+  if (saved.quiz) applyExploreChrome(EXPLORE_CHROME_FIND);
   requestExploreDraw();
 }

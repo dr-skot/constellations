@@ -236,6 +236,48 @@ hand-rolled twice (spec #44).
   code that wants the latter must ask the flow. Both bugs that came of forgetting this — #69 and
   #75 — were `currentScreen()` standing in for a fact it does not carry.
 
+- **chrome mode** — which set of controls the explore **screen** is wearing, as one value
+  (`exploreChrome(mode)` in `js/explore.js`, pure; `applyExploreChrome(mode)` writes the DOM).
+  Three modes, six elements, and **every mode declares every element**:
+
+  | | free header | layer toggles | lesson header | nav row | question bar | guide overlay |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | `free` | ✓ | ✓ | | | | |
+  | `find` | | | ✓ | ✓ | ✓ | |
+  | `guide` | | | | | | ✓ |
+
+  Totality is the point, not tidiness. Three writers used to set these and disagreed about
+  which they owned: starting a find question set **five** and ending one set **five** — every
+  element but the guide overlay, which neither had heard of — while the **finding guide**
+  wrote **three**, saving and restoring two of them as display strings. It survived because
+  returning from a guide by a **detour** re-runs the find question, which sets its five again.
+  A writer that sets a subset is now unwritable, and an unknown mode **throws** rather than
+  falling back: a mode nobody declared is a programming mistake, not a screen that should look
+  slightly wrong (the reasoning behind `prepareGuide` throwing on a missing origin).
+
+  **Hiding the overlay is not closing the guide.** The overlay had exactly one owner before
+  this, and bringing it into the table let `stopExploreQuiz` take it off the screen while the
+  guide's state stayed live — the same dead-layer-toggles bug with the guide invisible, since
+  a running guide still outranks `exState` in the **display flags**. Every arrival at the
+  explorer calls `closeFindGuide()` first, and so does ending a lesson.
+
+  **A guide is a takeover** — its overlay and nothing else, whichever way it was opened.
+  Two reachable bugs came of it being a layer instead (#94). A guide opened from free explore
+  left the layer toggles live, and a running guide owns the layers (the **step display** is
+  complete-or-null and `exState` is not consulted), so tapping *Art* moved the button, wrote
+  the new value to storage, and changed nothing on screen — a dead control that silently
+  rewrote a stored setting. And *? Help* left the lesson header above the guide including a
+  live *Quit*, which ended the lesson without tearing the guide down, stranding a running
+  guide over free-explore chrome still offering "← Back to lesson".
+
+  **Leaving a guide names the mode it returns to** rather than restoring what was showing on
+  the way in. The suspended quiz is the whole of what has to be remembered, and it answers the
+  same question the saved display strings did: a guide over a find question has one, a guide
+  from free explore does not. `closeFindGuide()` tears a guide down and goes nowhere;
+  `exitFindGuide()` is that plus the resume. Ending a lesson calls the former — the guide
+  lives inside the lesson, so the lesson ending ends it, and what `exitFindGuide` would
+  resume is the lesson being ended.
+
 - **detour** — see Navigation below. Which routes come back, and how, is a per-route entry
   injected at boot beside the enter and exit actions; an entry may decline from where the
   flow currently is (the **level check** showing its offer or payoff has no question to

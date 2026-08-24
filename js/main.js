@@ -69,16 +69,26 @@ function _initRouting() {
     },
     actions: {
       course: () => renderCourseMap(),
+      // closeFindGuide BEFORE stopExploreQuiz, and for the same reason endLesson does it
+      // (#94): arriving at the explorer ends any guide that was running, and a guide is
+      // more than its overlay. stopExploreQuiz only puts free-explore chrome on, which
+      // takes the overlay off the screen while leaving the guide's state live — and a
+      // running guide still wins over exState in resolveDisplayFlags, so the layer
+      // toggles would come back visible and dead. Reachable with the browser Back button
+      // from a guide opened via "Finding guide →", which navigates before it opens.
+      //
+      // Called here rather than inside stopExploreQuiz because find-help.html loads
+      // explore.js without find-guide.js, where that would be a ReferenceError.
       explore: () => {
         restoreExploreState();
-        stopExploreQuiz(); requestExploreDraw();
+        closeFindGuide(); stopExploreQuiz(); requestExploreDraw();
       },
       // An explicit destination, so the saved free-explore state is deliberately
       // NOT restored — an unknown abbr just leaves the view where it is.
       exploreCon: abbr => {
         const con = C.find(c => c.abbr === abbr);
         if (con) { explore.P = raDecToVec(con.ra, con.dec); explore.R = 0; }
-        stopExploreQuiz(); requestExploreDraw();
+        closeFindGuide(); stopExploreQuiz(); requestExploreDraw();
       },
       view: abbr => {
         const con = C.find(c => c.abbr === abbr);
