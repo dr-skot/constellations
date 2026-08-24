@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Pages serves HTML with a ten-minute cache and a measurement tool is worth
+     re-fetching every time. Same reasoning as perf/index.html. -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Sky Trainer — composite probe</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:#080a14; color:#e8f0ff;
+    font:14px/1.45 system-ui,-apple-system,sans-serif; -webkit-text-size-adjust:100%; }
+  body { padding:10px; }
+  h1 { font-size:17px; margin:0 0 2px; }
+  p.lede { color:#8fa3c8; font-size:12px; margin:0 0 10px; }
+
+  /* The stage holds whichever DOM shape the current variant is testing. It is
+     the touch target too: every reading is taken with a finger down, because a
+     finger-free rAF loop on iOS measures the idle timer, not the display. */
+  #stage { position:relative; width:100%; touch-action:none; -webkit-user-select:none;
+    user-select:none; background:#010208; }
+
+  /* Variant chrome. These mirror css/explore.css exactly — #explore-area is the
+     outer rounded clip with the glow, #explore-wrap the inner rounded clip with
+     the border. The whole point of the probe is that these are suspects. */
+  .area-plain { position:relative; display:flex; width:100%; }
+  .area-clip  { position:relative; display:flex; width:100%;
+                overflow:hidden; border-radius:14px; }
+  .area-app   { position:relative; display:flex; width:100%;
+                overflow:hidden; border-radius:14px;
+                box-shadow:0 0 15px rgba(80,130,220,0.3); }
+  .wrap-plain { position:relative; width:100%; background:#010208; }
+  .wrap-clip  { position:relative; width:100%; background:#010208;
+                overflow:hidden; border-radius:14px; border:1px solid #2c3a5e; }
+  .wrap-plain > canvas, .wrap-clip > canvas { position:absolute; top:0; left:0; display:block; }
+
+  #big { font:600 34px/1.1 ui-monospace,Menlo,monospace; margin:10px 0 2px; }
+  #big small { font:400 13px/1 system-ui; color:#8fa3c8; display:block; margin-top:4px; }
+  #hint { font-size:13px; color:#f5c65b; min-height:18px; margin:2px 0 8px; }
+
+  button.go { display:block; width:100%; padding:14px; font-size:16px; font-weight:600;
+    background:linear-gradient(135deg,#5b8af5,#8f6bf5); color:#fff; border:0; border-radius:12px; }
+  button.alt { display:block; width:100%; padding:9px; font-size:13px; margin-top:6px;
+    background:#141c30; color:#cfe0ff; border:1px solid #2c3a5e; border-radius:10px; }
+
+  table { width:100%; border-collapse:collapse; margin-top:12px; font-size:12px; }
+  th, td { text-align:left; padding:5px 4px; border-bottom:1px solid #1b2540; }
+  th { color:#8fa3c8; font-weight:600; }
+  td.n { text-align:right; font-family:ui-monospace,Menlo,monospace; }
+  tr.now td { background:rgba(91,138,245,.18); }
+  tr.bad td:first-child { box-shadow:inset 3px 0 0 #f55b7a; }
+  tr.good td:first-child { box-shadow:inset 3px 0 0 #4bd07a; }
+  .ok { color:#4bd07a; } .bad { color:#f55b7a; } .pending { color:#54608a; }
+  #verdict { margin:12px 0; padding:11px; border-radius:10px; display:none;
+    background:#111a2e; border:1px solid #2c3a5e; font-size:13px; }
+  #verdict h2 { margin:0 0 5px; font-size:15px; }
+  #meta { margin-top:12px; font-size:11px; color:#54608a; word-break:break-all; }
+</style>
+</head>
+<body>
+  <h1>Composite probe — issue #80</h1>
+  <p class="lede">Nine DOM shapes, one at a time, each drawn with near-zero main-thread work.
+    If frame rate collapses on a shape rather than on an amount of drawing, the cost is the
+    compositor, not the app.</p>
+
+  <div id="big">–<small>tap Start, then hold a finger on the black panel and keep moving it</small></div>
+  <div id="hint"></div>
+
+  <div id="stage"></div>
+
+  <button class="go" id="start">Start sweep</button>
+  <button class="alt" id="reset">Reset</button>
+
+  <div id="verdict"></div>
+  <table id="results"><thead><tr>
+    <th>#</th><th>shape</th><th class="n">fps</th><th class="n">js ms</th><th>vs bare</th>
+  </tr></thead><tbody></tbody></table>
+  <div id="meta"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── The shapes under test ───────────────────────────────────────────────────
+  // Each is one DOM arrangement. `layers` are stacked bottom-first; `still` names
+  // the layers that are built once and NOT redrawn, which separates "this layer
+  // exists and is composited" from "this layer is dirtied every frame".
+  var VARIANTS = [
+    { id: 'bare',      label: 'bare rAF, no canvas',        layers: [],                  area: 'plain', wrap: 'plain' },
+    { id: '2d',        label: '2D canvas alone',            layers: ['2d'],              area: 'plain', wrap: 'plain' },
+    { id: 'gl',        label: 'GL canvas alone',            layers: ['gl'],              area: 'plain', wrap: 'plain' },
+    { id: 'stack',     label: '2D over GL, no clip',        layers: ['gl', '2d'],        area: 'plain', wrap: 'plain' },
+    { id: 'gl-dirty',  label: '2D over GL, 2D static',      layers: ['gl', '2d'],        area: 'plain', wrap: 'plain', still: ['2d'] },
+    { id: '2d-dirty',  label: '2D over GL, GL static',      layers: ['gl', '2d'],        area: 'plain', wrap: 'plain', still: ['gl'] },
+    { id: 'clip1',     label: '2D over GL, 1 rounded clip', layers: ['gl', '2d'],        area: 'plain', wrap: 'clip' },
+    { id: 'clip2',     label: '2D over GL, 2 rounded clips',layers: ['gl', '2d'],        area: 'clip',  wrap: 'clip' },
+    { id: 'app',       label: 'app shape (clips+glow+3rd)', layers: ['gl', '2d', 'ann'], area: 'app',   wrap: 'clip', still: ['ann'] }
+  ];
+
+  var TOUCHED_MS = 2200;   // measured window per variant, finger-down time only
+  var WARMUP     = 8;      // frames discarded after a shape is built
+
+  var stage   = document.getElementById('stage');
+  var bigEl   = document.getElementById('big');
+  var hintEl  = document.getElementById('hint');
+  var tbody   = document.querySelector('#results tbody');
+  var verdict = document.getElementById('verdict');
+
+  var results = {};
+  var current = null;      // id of the variant being measured
+  var touching = false;
+  var autoMode = /[?&]auto=1/.test(location.search);
+  var built = null;        // { draw(t), teardown() }
+
+  // ── Geometry ────────────────────────────────────────────────────────────────
+  // Match the app: #explore-area is `flex: 0 1 540px`, so the star view is up to
+  // 540 CSS px tall and as wide as the screen. Backing store is CSS x dpr, the
+  // same as exploreBackingScale() with no load multiplier.
+  var dpr = window.devicePixelRatio || 1;
+  function stageH() { return Math.max(200, Math.min(540, Math.round(window.innerHeight * 0.42))); }
+
+  // ── Layer builders ──────────────────────────────────────────────────────────
+  function sizeCanvas(c, w, h) {
+    c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+    c.style.width = w + 'px'; c.style.height = h + 'px';
+  }
+
+  // Deliberately trivial. The question is what a *dirty layer* costs to present,
+  // not what drawing costs — the phase table already answered that (~3ms). Keep
+  // the js column near zero so any fps loss is unambiguously downstream.
+  function make2D(canvas) {
+    var ctx = canvas.getContext('2d');
+    return function (t) {
+      var W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#9fc0ff';
+      ctx.beginPath();
+      ctx.arc(W * (0.5 + 0.35 * Math.cos(t / 400)), H * 0.5, 14 * dpr, 0, 6.2832);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(160,190,255,.5)'; ctx.lineWidth = 2 * dpr;
+      ctx.beginPath(); ctx.moveTo(0, H * 0.5); ctx.lineTo(W, H * 0.5); ctx.stroke();
+    };
+  }
+
+  var GL_VS = 'attribute vec2 aPos; varying vec2 vT;' +
+              'void main(){ vT = aPos*0.5+0.5; gl_Position = vec4(aPos,0.0,1.0); }';
+  var GL_FS = 'precision mediump float; varying vec2 vT; uniform sampler2D uTex;' +
+              'uniform float uT; void main(){ gl_FragColor = texture2D(uTex, vT + vec2(uT,0.0)); }';
+
+  // One textured full-screen quad — the same kind of work the photo layer does,
+  // minus the mesh. Fill rate was already ruled out by load-sweep, so the size of
+  // this quad is not the variable under test; its presence is.
+  function makeGL(canvas) {
+    var gl = canvas.getContext('webgl', { alpha: false }) ||
+             canvas.getContext('experimental-webgl', { alpha: false });
+    if (!gl) return null;
+    function sh(type, src) {
+      var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); return null; }
+      return s;
+    }
+    var p = gl.createProgram();
+    var vs = sh(gl.VERTEX_SHADER, GL_VS), fs = sh(gl.FRAGMENT_SHADER, GL_FS);
+    if (!vs || !fs) return null;
+    gl.attachShader(p, vs); gl.attachShader(p, fs); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.error(gl.getProgramInfoLog(p)); return null; }
+    gl.useProgram(p);
+
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    var aPos = gl.getAttribLocation(p, 'aPos');
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+    var N = 64, px = new Uint8Array(N * N * 4);
+    for (var i = 0; i < N * N; i++) {
+      var v = ((i * 37) % 251);
+      px[i*4] = v; px[i*4+1] = (v * 3) & 255; px[i*4+2] = (v * 7) & 255; px[i*4+3] = 255;
+    }
+    var tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, N, N, 0, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.uniform1i(gl.getUniformLocation(p, 'uTex'), 0);
+    var uT = gl.getUniformLocation(p, 'uT');
+
+    return function (t) {
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clearColor(0.004, 0.008, 0.032, 1.0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform1f(uT, (t / 3000) % 1);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+  }
+
+  // ── Build / tear down one shape ─────────────────────────────────────────────
+  function build(v) {
+    stage.innerHTML = '';
+    var h = stageH();
+    stage.style.height = h + 'px';
+
+    var area = document.createElement('div');
+    area.className = 'area-' + v.area;
+    area.style.height = h + 'px';
+    var wrap = document.createElement('div');
+    wrap.className = 'wrap-' + v.wrap;
+    wrap.style.height = h + 'px';
+    area.appendChild(wrap);
+    stage.appendChild(area);
+
+    var w = wrap.clientWidth || stage.clientWidth;
+    var draws = [];
+    var still = v.still || [];
+
+    v.layers.forEach(function (kind) {
+      var c = document.createElement('canvas');
+      wrap.appendChild(c);
+      sizeCanvas(c, w, h);
+      var fn = (kind === 'gl') ? makeGL(c) : make2D(c);
+      if (!fn) return;
+      fn(0);                                   // paint once, so a static layer has content
+      if (still.indexOf(kind) === -1) draws.push(fn);
+    });
+
+    return {
+      size: [Math.round(w * dpr), Math.round(h * dpr)],
+      draw: function (t) { for (var i = 0; i < draws.length; i++) draws[i](t); }
+    };
+  }
+
+  // ── Measure one shape ───────────────────────────────────────────────────────
+  // Frames and elapsed time accumulate only while a finger is down, so lifting
+  // pauses the reading instead of poisoning it. iOS throttles rAF hard on an
+  // untouched device (see perf/README.md), which is why this is not optional.
+  function measure(v) {
+    return new Promise(function (resolve) {
+      built = build(v);
+      current = v.id;
+      render();
+
+      var warm = 0, frames = 0, touchedMs = 0, jsMs = 0, prev = 0, running = true;
+
+      function tick(now) {
+        if (!running) return;
+        requestAnimationFrame(tick);
+
+        // A hidden tab keeps reporting document.hidden === false on some builds while
+        // rAF quietly stops, so a stalled sweep reads as "you are not touching" when
+        // in fact nothing is being delivered at all. Say which it is.
+        if (!touching) {
+          prev = 0;
+          hintEl.textContent = document.hidden
+            ? 'page is hidden — rAF is paused, nothing is being measured'
+            : 'hold a finger on the panel and keep it moving';
+          return;
+        }
+        hintEl.textContent = '';
+
+        var t0 = performance.now();
+        built.draw(now);
+        var t1 = performance.now();
+
+        if (warm < WARMUP) { warm++; prev = now; return; }
+
+        if (prev) { touchedMs += (now - prev); frames++; jsMs += (t1 - t0); }
+        prev = now;
+
+        if (frames) bigEl.innerHTML = Math.round(frames * 1000 / touchedMs) + ' fps' +
+          '<small>' + v.label + ' &middot; ' + Math.round(touchedMs) + ' / ' + TOUCHED_MS + ' ms</small>';
+
+        if (touchedMs >= TOUCHED_MS) {
+          running = false;
+          resolve({
+            id: v.id, label: v.label,
+            fps: Math.round(frames * 1000 / touchedMs),
+            jsMs: Math.round(jsMs / frames * 100) / 100,
+            frames: frames, touchedMs: Math.round(touchedMs), size: built.size
+          });
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // ── Sweep ───────────────────────────────────────────────────────────────────
+  async function sweep() {
+    results = {};
+    render();
+    for (var i = 0; i < VARIANTS.length; i++) {
+      var r = await measure(VARIANTS[i]);
+      results[r.id] = r;
+      render();
+    }
+    current = null;
+    stage.innerHTML = '';
+    stage.style.height = '0px';
+    bigEl.innerHTML = 'done<small>results below — read them off the screen, not over the cable</small>';
+    hintEl.textContent = '';
+    window.__compositeResults = results;
+    render();
+  }
+
+  // ── Readout ─────────────────────────────────────────────────────────────────
+  function render() {
+    // Re-point every render, not once at startup: sweep() rebinds `results` to a
+    // fresh object, so a handle taken at load time goes stale the moment a sweep
+    // begins and reports {} for the whole run — which is exactly what it did.
+    window.__compositeResults = results;
+    var bare = results.bare ? results.bare.fps : 0;
+    tbody.innerHTML = VARIANTS.map(function (v, i) {
+      var r = results[v.id];
+      var cls = current === v.id ? ' class="now"' : '';
+      var rel = '<span class="pending">–</span>';
+      if (r && bare) {
+        var pct = Math.round(r.fps * 100 / bare);
+        var bad = pct < 70;
+        if (!cls) cls = bad ? ' class="bad"' : ' class="good"';
+        rel = '<span class="' + (bad ? 'bad' : 'ok') + '">' + pct + '%</span>';
+      }
+      return '<tr' + cls + '><td>' + (i + 1) + '</td><td>' + v.label + '</td>' +
+        '<td class="n">' + (r ? r.fps : '<span class="pending">–</span>') + '</td>' +
+        '<td class="n">' + (r ? r.jsMs.toFixed(2) : '–') + '</td>' +
+        '<td>' + rel + '</td></tr>';
+    }).join('');
+
+    // The verdict names the first shape that lost a third of the bare rate, and
+    // says which of the three suspects that implicates. It is stated as the step
+    // that introduced the loss, not as a cause, because one row cannot prove one.
+    var done = VARIANTS.filter(function (v) { return results[v.id]; }).length;
+    if (done < VARIANTS.length || !bare) { verdict.style.display = 'none'; return; }
+    verdict.style.display = 'block';
+
+    var first = null;
+    for (var j = 1; j < VARIANTS.length; j++) {
+      var rr = results[VARIANTS[j].id];
+      if (rr && rr.fps < bare * 0.7) { first = VARIANTS[j]; break; }
+    }
+    if (!first) {
+      verdict.innerHTML = '<h2>No shape costs anything</h2><p>Every arrangement held ' +
+        'within 30% of the bare rAF rate (' + bare + ' fps). The compositor is not the ' +
+        'ceiling, so the cost is in what the app draws, not in how its layers are stacked. ' +
+        'Go back to the layer bisect in perf/index.html.</p>';
+    } else {
+      var which = first.id === '2d' || first.id === 'gl'
+        ? 'a single dirty canvas — presenting one layer at all'
+        : (first.id === 'stack' || first.id === 'gl-dirty' || first.id === '2d-dirty')
+          ? 'stacking two canvases, before any clipping'
+          : 'the rounded clip / glow chrome around the stack';
+      verdict.innerHTML = '<h2>First loss at: ' + first.label + '</h2>' +
+        '<p>' + results[first.id].fps + ' fps against ' + bare + ' bare, with ' +
+        results[first.id].jsMs.toFixed(2) + 'ms of main-thread work per frame. That ' +
+        'implicates <b>' + which + '</b>.</p>' +
+        '<p>Read the rows above it: whatever the last shape to hold full rate was, the ' +
+        'difference between it and this one is the whole cost.</p>';
+    }
+  }
+
+  // ── Touch gating ────────────────────────────────────────────────────────────
+  function down(e) { touching = true; if (e.cancelable) e.preventDefault(); }
+  function move(e) { if (e.cancelable) e.preventDefault(); }
+  function up()     { if (!autoMode) touching = false; }
+  stage.addEventListener('touchstart', down, { passive: false });
+  stage.addEventListener('touchmove',  move, { passive: false });
+  stage.addEventListener('touchend',   up);
+  stage.addEventListener('touchcancel', up);
+  // Desktop, for checking the harness itself works before it reaches a phone.
+  // The release listener is on window, not stage: a `mouseleave` release ended the
+  // hold every time a variant rebuilt the stage and the layout shifted under a
+  // stationary cursor, which reads identically to "the user let go".
+  stage.addEventListener('mousedown', down);
+  window.addEventListener('mouseup', up);
+
+  // ?auto=1 skips the touch gate entirely. For proving the harness runs on a
+  // desktop browser before it costs anyone phone time — never for a real reading,
+  // because an untouched iOS device throttles rAF to ~16Hz and the sweep would
+  // then be measuring the idle timer on every row equally.
+  if (autoMode) {
+    touching = true;
+    document.querySelector('p.lede').innerHTML +=
+      ' <b class="bad">auto=1: touch gate off — harness check only, not a valid reading.</b>';
+  }
+
+  document.getElementById('start').addEventListener('click', function () { sweep(); });
+  document.getElementById('reset').addEventListener('click', function () {
+    results = {}; current = null; stage.innerHTML = ''; stage.style.height = '0px';
+    bigEl.innerHTML = '–<small>tap Start, then hold and drag on the black panel</small>';
+    render();
+  });
+
+  document.getElementById('meta').textContent =
+    'dpr ' + dpr + ' · window ' + window.innerWidth + '×' + window.innerHeight + ' · ' + navigator.userAgent;
+
+  // For ios-eval.js. Note the cable tax: polling costs ~40% of frame rate on this
+  // device, so a number pulled through here is not the headline number.
+  window.__compositeSweep = sweep;
+  window.__compositeResults = results;
+
+  render();
+})();
+</script>
+</body>
+</html>
