@@ -16,6 +16,18 @@ const PORT = process.env.IOS_PORT || 9222;
 const src = process.argv[2] ? fs.readFileSync(process.argv[2], 'utf8')
                             : fs.readFileSync(0, 'utf8');
 
+// Nothing here may hang. Every await below can wait on a reply that never comes —
+// a stale session, a closed tab, a target that acknowledges and goes quiet — and
+// an unbounded wait on silence is indistinguishable from a broken cable. This
+// bounds the whole run, not one stage, so a failure costs seconds and says so.
+// IOS_WATCHDOG overrides; it must exceed IOS_TIMEOUT for a genuinely slow probe.
+const WATCHDOG = Number(process.env.IOS_WATCHDOG) ||
+                 Math.max(8000, (Number(process.env.IOS_TIMEOUT) || 60000) + 5000);
+setTimeout(() => {
+  console.error(`# gave up after ${WATCHDOG}ms. Run tmp/ios-trace.js for a per-step log.`);
+  process.exit(9);
+}, WATCHDOG).unref();
+
 async function main() {
   const pages = await fetch(`http://localhost:${PORT}/json`).then(r => r.json());
   const want = process.env.IOS_PAGE;
@@ -30,7 +42,7 @@ async function main() {
   console.error(`# page: ${page.url}`);
 
   const ws = new WebSocket(page.webSocketDebuggerUrl);
-  let id = 0, targetId = null;
+  let id = 0, targetId = null, havePageTarget = false;
   const pending = new Map();
 
   const raw = (method, params = {}) => new Promise((res, rej) => {
@@ -55,8 +67,23 @@ async function main() {
   const handle = msg => {
     if (msg.method === 'Target.targetCreated') {
       const info = msg.params?.targetInfo;
-      // Prefer the page target; a frame target also appears and must not win.
-      if (info && (info.type === 'page' || !targetId)) targetId = info.targetId;
+      // The FIRST page target wins, and nothing may overwrite it.
+      //
+      // This device announces five targets for one tab: page-33, three frames,
+      // then page-54. The previous rule ("type === 'page' || !targetId") let the
+      // LAST page target win, so every command went to page-54 — a blank,
+      // detached target that acknowledges the Target.sendMessageToTarget envelope
+      // and then never answers the inner command. The result was silence, and
+      // silence here means the poll loop below spins until it is killed. It also
+      // explains a probe reporting location.href === 'about:blank' for a tab that
+      // was plainly showing a real page.
+      if (info) {
+        if (info.type === 'page' && !havePageTarget) {
+          targetId = info.targetId; havePageTarget = true;
+        } else if (!targetId) {
+          targetId = info.targetId;      // pre-12.2 devices announce no page target
+        }
+      }
       return;
     }
     if (msg.method === 'Target.dispatchMessageFromTarget') {

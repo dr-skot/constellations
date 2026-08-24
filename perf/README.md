@@ -54,6 +54,39 @@ polls, because WebKit's `Runtime.evaluate` has no `awaitPromise`.
 `IOS_PAGE=3` picks a page when several are open; `IOS_TIMEOUT` and `IOS_DEBUG` are the
 other knobs.
 
+### When the cable goes quiet: run the trace, don't guess
+
+**`node perf/ios-trace.js <probe.js>` is the first move when a probe hangs**, not the
+last. It is `ios-eval.js` with a log line at every step, and the last line printed names
+the stage that stalled. One run answers what a dozen "bound this stage and see" runs
+cannot, because the failure mode of this protocol is *silence*, and silence looks the
+same from every stage.
+
+**A run that works is instant — about 480ms.** A run that sits there has already failed.
+Do not wait it out, and do not conclude the phone is unreachable; take the trace.
+
+**The trap it found: one tab announces five targets, and the last one is poison.**
+On iOS 26.6 a single Safari tab announces `page-33`, three `frame-*` targets, and then
+`page-54`. The old selection rule let the *last* page target win, so every command went
+to `page-54` — a blank, detached target that acknowledges the
+`Target.sendMessageToTarget` envelope and then never answers the inner command. Symptoms,
+all of which point away from the real cause:
+
+- probes hang forever rather than erroring (the poll loop awaits a reply that never comes,
+  so it never returns to its own deadline check);
+- a probe reports `location.href === "about:blank"` for a tab plainly showing a real page;
+- `location.href = …` "succeeds" and the phone does not move, because it navigated a
+  target nobody can see;
+- it works for a while and then stops, because the second page target only appears after
+  some tab churn.
+
+`ios-eval.js` now takes the **first** page target and never overwrites it. If you ever
+need to override, `IOS_TARGET=page-33 node perf/ios-trace.js …` forces one.
+
+None of this is the cable, the proxy, the firewall, or the network. Check
+`curl -s http://localhost:9221/json` (device listed) and `:9222/json` (page listed) —
+if both answer, the transport is fine and the problem is target selection.
+
 **Browsers do not share localStorage.** Measurements taken in Brave are invisible in
 Safari and vice versa, so a comparison run has to stay in one browser. Past freeze data
 lives in Brave.
